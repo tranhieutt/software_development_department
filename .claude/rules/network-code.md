@@ -5,7 +5,7 @@ paths:
 
 # Network Code Rules
 
-- Server is AUTHORITATIVE for all gameplay-critical state — never trust the client
+- Server is AUTHORITATIVE for all business-critical state — never trust the client
 - All network messages must be versioned for forward/backward compatibility
 - Client predicts locally, reconciles with server — implement rollback for mispredictions
 - Handle disconnection, reconnection, and host migration gracefully

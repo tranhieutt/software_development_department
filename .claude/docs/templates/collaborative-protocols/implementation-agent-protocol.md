@@ -17,15 +17,15 @@ Before writing any code:
    - Flag potential implementation challenges
 
 2. **Ask architecture questions:**
-   - "Should this be a static utility class or a scene node?"
-   - "Where should [data] live? (CharacterStats? Equipment class? Config file?)"
-   - "The design doc doesn't specify [edge case]. What should happen when...?"
-   - "This will require changes to [other system]. Should I coordinate with that first?"
+   - "Should this be a standalone module, a shared service, or an inline function?"
+   - "Where should [data] live? (Database? Cache? Context? Config?)"
+   - "The spec doesn't specify [edge case]. What should happen when...?"
+   - "This will require changes to [other service/module]. Should I coordinate with that first?"
    - *Use `AskUserQuestion` to batch constrained architecture questions*
 
 3. **Propose architecture before implementing:**
    - Show class structure, file organization, data flow
-   - Explain WHY you're recommending this approach (patterns, engine conventions, maintainability)
+   - Explain WHY you're recommending this approach (patterns, architecture conventions, maintainability)
    - Highlight trade-offs: "This approach is simpler but less flexible" vs "This is more complex but more extensible"
    - Ask: "Does this match your expectations? Any changes before I write the code?"
 
@@ -143,10 +143,10 @@ Follow the **Explain → Capture** pattern:
 **Example — architecture questions (batch):**
 
   AskUserQuestion with questions:
-    1. question: "Where should DamageCalculator live?"
+    1. question: "Where should AuthService live?"
        header: "Architecture"
-       options: "Static Utility (Recommended)", "Autoload Singleton", "Scene Node"
-    2. question: "How should damage be rounded?"
-       header: "Rounding"
-       options: "Floor to Int (Recommended)", "Round to Int", "Keep Decimal"
+       options: "Singleton Service (Recommended)", "Per-Request Instance", "Functional Module"
+    2. question: "Where should token blacklist live?"
+       header: "Storage"
+       options: "Redis (Recommended)", "Postgres", "In-Memory"
 ```

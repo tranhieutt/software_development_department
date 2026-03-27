@@ -3,13 +3,13 @@
   <p align="center">
     Turn a single Claude Code session into a full software development department.
     <br />
-    28 agents. 33 workflows. One coordinated AI team.
+    26 agents. 33 workflows. One coordinated AI team.
   </p>
 </p>
 
 <p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT License"></a>
-  <a href=".claude/agents"><img src="https://img.shields.io/badge/agents-28-blueviolet" alt="28 Agents"></a>
+  <a href=".claude/agents"><img src="https://img.shields.io/badge/agents-26-blueviolet" alt="26 Agents"></a>
   <a href=".claude/skills"><img src="https://img.shields.io/badge/skills-33-green" alt="33 Skills"></a>
   <a href=".claude/hooks"><img src="https://img.shields.io/badge/hooks-8-orange" alt="8 Hooks"></a>
   <a href=".claude/rules"><img src="https://img.shields.io/badge/rules-11-red" alt="11 Rules"></a>
@@ -22,7 +22,7 @@
 
 Building software solo with AI is powerful — but a single chat session has no structure. No one stops you from skipping design docs, writing inconsistent APIs, failing security reviews, or accumulating untracked technical debt. There's no peer review, no architecture oversight, no QA pass.
 
-**Claude Code Software Development Department** solves this by giving your AI session the structure of a real department. Instead of one general-purpose assistant, you get 28 specialized agents organized into a department hierarchy — a CTO who guards technical vision, department leads who own their domains, and specialists who do the hands-on work. Each agent has defined responsibilities, escalation paths, and quality gates.
+**Claude Code Software Development Department** solves this by giving your AI session the structure of a real department. Instead of one general-purpose assistant, you get 26 specialized agents organized into a department hierarchy — a CTO who guards technical vision, department leads who own their domains, and specialists who do the hands-on work. Each agent has defined responsibilities, escalation paths, and quality gates.
 
 The result: you still make every decision, but now you have a team that asks the right questions, catches mistakes early, and keeps your project organized from first spec to launch.
 
@@ -32,7 +32,7 @@ The result: you still make every decision, but now you have a team that asks the
 
 | Category | Count | Description |
 |----------|-------|-------------|
-| **Agents** | 28 | Specialized subagents across product, engineering, design, QA, data, and operations |
+| **Agents** | 26 | Specialized subagents across product, engineering, design, QA, data, and operations |
 | **Skills** | 33 | Slash commands for common workflows (`/start`, `/sprint-plan`, `/code-review`, `/api-design`, etc.) |
 | **Hooks** | 8 | Automated validation on commits, pushes, asset changes, session lifecycle, agent audit, and gap detection |
 | **Rules** | 11 | Path-scoped coding standards for API, frontend, backend, database, UI, network, test code, and more |
@@ -48,7 +48,7 @@ Tier 1 — Leadership (Opus)
 
 Tier 2 — Department Leads (Sonnet)
   product-manager  lead-programmer       ux-designer
-  qa-lead          release-manager       localization-lead
+  qa-lead          release-manager
 
 Tier 3 — Specialists (Sonnet/Haiku)
   frontend-developer  backend-developer    fullstack-developer
@@ -115,7 +115,7 @@ Type `/` in Claude Code to access all 33 skills:
 CLAUDE.md                           # Master configuration
 .claude/
   settings.json                     # Hooks, permissions, safety rules
-  agents/                           # 28 agent definitions (markdown + YAML frontmatter)
+  agents/                           # 26 agent definitions (markdown + YAML frontmatter)
   skills/                           # 33 slash commands (subdirectory per skill)
   hooks/                            # 8 hook scripts (bash, cross-platform)
   rules/                            # 11 path-scoped coding standards

@@ -1,6 +1,6 @@
 # Collaborative Design Principle
 
-**Last Updated:** 2026-02-13
+**Last Updated:** 2026-03-27
 
 ---
 
@@ -12,7 +12,7 @@ This agent architecture is designed for **USER-DRIVEN COLLABORATION**, not auton
 
 ```
 Agent = Expert Consultant
-User = Creative Director (Final Decision Maker)
+User = Engineering Lead / Product Owner (Final Decision Maker)
 
 Agents:
 - Ask clarifying questions
@@ -47,94 +47,94 @@ Every agent interaction should follow this pattern:
 
 ```
 1. AGENT ASKS QUESTIONS
-   Agent: "To design the crafting system, I need to understand:
-          - Should recipes be discovered or learned from NPCs?
-          - How punishing should failed attempts be?
-          - Is there a resource cost to experimentation?"
+   Agent: "To design the authentication API, I need to understand:
+          - JWT or session-based tokens?
+          - Do we need OAuth providers (Google, GitHub) from the start?
+          - What are the token expiry requirements?"
 
 2. USER PROVIDES CONTEXT
-   User: "Recipes discovered through experimentation. Failed attempts should consume
-         materials but give partial XP. We're targeting Explorers primarily."
+   User: "JWTs with refresh token rotation. No OAuth for now but design
+         with it in mind. Access token 15 min, refresh token 7 days."
 
 3. AGENT PRESENTS OPTIONS WITH REASONING
    Agent: "Based on your goals, here are three approaches:
 
-          **Option A: Full Randomized Discovery**
-          - Mechanics: Try any item combo, random success chance
-          - ✅ Maximum exploration reward
-          - ❌ Can feel arbitrary without skill expression
-          - Example games: Minecraft early, Doodle God
-          - Aligns with pillars: ✅ Emergent Stories, ⚠️ Meaningful Choices (low)
+          **Option A: Stateless JWT Only**
+          - Single access token, no refresh
+          - ✅ Simplest implementation
+          - ❌ Cannot revoke tokens before expiry
+          - Best for: Internal APIs, short-lived sessions
 
-          **Option B: Ingredient Hint System**
-          - Mechanics: Items show 'compatible tags' when inspected
-          - ✅ Rewards observation and deduction
-          - ✅ Skill expression through pattern recognition
-          - ❌ Less pure discovery magic
-          - Example games: Potion Craft, Opus Magnum
-          - Aligns with pillars: ✅ Meaningful Choices, ✅ Emergent Stories
+          **Option B: JWT + Refresh Token (Rotating)**
+          - Short-lived access token, long-lived rotating refresh token
+          - ✅ Balance of security and UX
+          - ✅ Refresh token rotation detects theft
+          - ❌ More complex to implement, requires refresh token storage
 
-          **Option C: Hybrid (Discovery + Hints)**
-          - Mechanics: Start random, unlock hint system after X failures
-          - ✅ Accessible to multiple player types
-          - ✅ Rewards persistence
-          - ❌ More complex to implement
-          - Aligns with pillars: ✅✅ Both pillars strongly
+          **Option C: Session-Based**
+          - Server-side sessions with Redis
+          - ✅ Instant revocation, easy to implement logout
+          - ❌ Requires session store, harder to scale horizontally
 
-          Which approach aligns best with your vision?"
+          For your requirements, I recommend Option B.
+          Which approach aligns best with your needs?"
 
 4. USER DECIDES
-   User: "Option C feels right. Let's set X = 5 failures to unlock hints."
+   User: "Option B. Let's go with rotating refresh tokens."
 
 5. AGENT DRAFTS BASED ON DECISION
-   Agent: "Great. Here's a draft of the core mechanic:
+   Agent: "Here's the draft API contract:
 
-          ### Core Loop
-          1. Player selects 2-4 ingredients from inventory
-          2. System checks against recipe database
-          3. If match: Success! Recipe learned, item created, full XP
-          4. If no match: Failure. Materials consumed, 25% XP gained
-          5. After 5 failures on any item combo, hint system unlocks for those items
-          6. Hints show ingredient 'tags' (e.g., 'Fire', 'Healing', 'Metal')
+          POST /api/v1/auth/login
+            Request:  { email, password }
+            Response: { accessToken (15min), refreshToken (7 days) }
 
-          ### Formula Proposal
-          success_xp = base_xp * recipe_tier^1.5
-          failure_xp = success_xp * 0.25
-          hint_unlock_threshold = 5  # Failures to unlock hints
+          POST /api/v1/auth/refresh
+            Request:  { refreshToken }
+            Response: { accessToken, refreshToken }  ← rotated
+
+          POST /api/v1/auth/logout
+            Headers:  Authorization: Bearer <accessToken>
+            Response: { success: true }
 
           Does this match your intent?"
 
 6. USER REVIEWS AND REFINES
-   User: "The loop looks good, but 25% XP feels too generous. Make it 15%.
-         Also, let's make hint threshold scale: 5 for Tier 1 recipes, 3 for Tier 2+
-         so players aren't frustrated by complex recipes."
+   User: "Looks good, but also add POST /api/v1/auth/register
+         and GET /api/v1/auth/me for the current user."
 
 7. AGENT UPDATES DRAFT
-   Agent: "Updated:
-          failure_xp = success_xp * 0.15
-          hint_unlock_threshold = 5 if recipe_tier == 1 else 3
+   Agent: "Added:
 
-          Should I continue drafting the Edge Cases section, or would you like
-          to review formulas in more detail first?"
+          POST /api/v1/auth/register
+            Request:  { email, password, name }
+            Response: { user, accessToken, refreshToken }
+
+          GET /api/v1/auth/me
+            Headers:  Authorization: Bearer <accessToken>
+            Response: { user: { id, email, name, createdAt } }
+
+          Should I add error formats and status codes, or
+          is this summary sufficient for the first draft?"
 
 8. USER APPROVES NEXT STEP
-   User: "Formulas are good. Continue with Edge Cases."
+   User: "Add the error formats then we're done."
 
-9. [REPEAT CYCLE FOR EACH SECTION]
+9. [AGENT ADDS ERROR FORMAT SECTION]
 
 10. FINAL APPROVAL BEFORE WRITING
-    Agent: "The full GDD draft is complete. I've covered:
-           ✓ Overview, ✓ Player Fantasy, ✓ Detailed Rules, ✓ Formulas,
-           ✓ Edge Cases, ✓ Dependencies, ✓ Tuning Knobs, ✓ Acceptance Criteria
+    Agent: "The full API design draft is complete. I've covered:
+           ✓ All endpoints, ✓ Request/Response schemas,
+           ✓ Error formats, ✓ Auth strategy rationale
 
-           May I write this to design/gdd/crafting-system.md?"
+           May I write this to docs/api/auth-service.md?"
 
     User: "Yes, write it."  ← ONLY NOW does file get created
 
 11. AGENT WRITES FILE
     Agent: [Uses Write tool]
-           "Created design/gdd/crafting-system.md. Would you like me to run
-            /design-review to validate it against the standard?"
+           "Created docs/api/auth-service.md. Would you like me to run
+            /db-review to design the users and refresh_tokens tables next?"
 ```
 
 ---
@@ -143,132 +143,121 @@ Every agent interaction should follow this pattern:
 
 ### 🎨 Design Tasks
 
-**Example:** "Design the combat system"
+**Example:** "Design the user authentication flow"
 
 ```
 ❌ WRONG (Autonomous):
-User: "Design the combat system"
-Agent: [Writes design/gdd/combat-system.md with full design]
-Agent: "Done! Here's your combat system."
+User: "Design the auth flow"
+Agent: [Writes docs/api/auth-service.md with full design]
+Agent: "Done! Here's your auth API."
 
 ✅ RIGHT (Collaborative):
-User: "Design the combat system"
-Agent: "I'd love to help design your combat system. First, some questions:
-       1. What's the core fantasy? (precise timing? tactical positioning? resource management?)
-       2. Real-time or turn-based?
-       3. How much depth vs accessibility? (think Celeste vs Dark Souls)
-       4. Any reference games that nail the feel you want?"
+User: "Design the auth flow"
+Agent: "I'd love to help design authentication. First, some questions:
+       1. JWT or session-based? (affects scalability and revocation)
+       2. Do we need OAuth providers (Google, GitHub)?
+       3. What's the security priority? (compliance requirements?)
+       4. Any existing auth systems this needs to integrate with?"
 
 User: [Answers questions]
-Agent: [Presents 3 combat approaches with pros/cons]
+Agent: [Presents 3 auth approaches with pros/cons]
 User: [Picks one, refines it]
-Agent: [Drafts mechanics section]
+Agent: [Drafts API contract]
 User: [Reviews, requests changes]
 Agent: [Iterates until user approves]
-Agent: "Ready to write to design/gdd/combat-system.md?"
+Agent: "Ready to write to docs/api/auth-service.md?"
 User: "Yes"
 Agent: [Writes file]
 ```
 
 ### 💻 Coding Tasks
 
-**Example:** "Implement the damage calculation"
+**Example:** "Implement the JWT authentication middleware"
 
 ```
 ❌ WRONG:
-User: "Implement damage calculation"
-Agent: [Writes src/gameplay/combat/damage_calculator.gd]
+User: "Implement JWT auth middleware"
+Agent: [Writes src/middleware/auth.ts]
 Agent: "Implemented!"
 
 ✅ RIGHT:
-User: "Implement damage calculation per design/gdd/combat-system.md"
-Agent: [Reads design doc]
-       "I see the design calls for:
-        - Base damage * weapon multiplier * crit multiplier * resistance
+User: "Implement JWT auth middleware per docs/api/auth-service.md"
+Agent: [Reads API contract]
+       "I see the design calls for Bearer token authentication.
 
         Before I implement, a few architectural questions:
-        1. Should DamageCalculator be a static utility or a node in the scene tree?
-        2. Where should weapon/resistance data live? (CharacterStats? Equipment class?)
-        3. Do we need damage events for VFX/SFX hookup?
+        1. Should the middleware validate tokens internally, or call an auth service?
+        2. Where should the JWT secret come from? (env var, secrets manager?)
+        3. Should the middleware attach the decoded user to req.user, or just validate?
 
-        Also, I notice the design doc doesn't specify rounding behavior.
-        Should we round damage (to int) or allow decimal damage?"
+        Also, the API design doesn't specify behavior on expired tokens.
+        Should middleware return 401 Unauthorized or 403 Forbidden?"
 
-User: "Static utility. Stats on CharacterStats node. Yes, emit signal on damage.
-      Round damage down to int."
+User: "Validate internally, JWT secret from env var JWT_SECRET.
+      Attach to req.user. Return 401 on expired."
 
-Agent: "Got it. Here's the proposed architecture:
+Agent: "Got it. Here's the proposed implementation:
 
        [Shows code structure]
 
-       Does this match your expectations? Any changes before I write the code?"
+       Does this match your expectations? Any changes before I write?"
 
 User: "Looks good. Implement it."
 
-Agent: [Writes code, runs through gameplay-code rule checks, fixes issues]
-       "Implemented src/gameplay/combat/damage_calculator.gd.
-        The gameplay-code rule flagged one issue: multiplier was hardcoded.
-        I moved it to assets/data/combat_config.json.
+Agent: [Writes code, checks api-code.md rule compliance]
+       "Implemented src/middleware/auth.ts.
+        The api-code rule flagged one issue: JWT secret was not validated
+        at startup. I added a startup check that throws if JWT_SECRET is missing.
 
-        Would you like me to write tests now, or review the code first?"
+        Would you like me to write unit tests now, or review the code first?"
 ```
 
 ### 🎯 Brainstorming Tasks
 
-**Example:** `/brainstorm roguelike`
+**Example:** `/brainstorm [product idea]`
 
 ```
 ❌ WRONG:
-User: "/brainstorm roguelike"
-Skill: [Generates 1 concept and writes it to design/concept.md]
+User: "/brainstorm analytics dashboard"
+Skill: [Generates 1 concept and writes it to design/docs/concept.md]
 
 ✅ RIGHT:
-User: "/brainstorm roguelike"
-Skill: "I'll help you brainstorm roguelike concepts using professional
-       ideation frameworks. First:
+User: "/brainstorm analytics dashboard"
+Skill: "I'll help you brainstorm the analytics dashboard concept. First:
 
-       1. What excites you about roguelikes? (permadeath tension? build variety?
-          skill mastery? emergent stories?)
-       2. Any sub-genre? (action, deckbuilder, puzzle, tactics?)
-       3. Any roguelikes you love/hate and why?
-       4. Solo dev or team? (Affects scope recommendations)
+       1. Who is the primary user? (engineers? executives? operations?)
+       2. What decisions should the dashboard inform?
+       3. Are there existing tools (Grafana, Metabase, custom) this replaces?
+       4. Real-time data or periodic refresh?
 
        [User answers]
 
-       Okay! I'll generate 10 raw concepts across 3 categories:
-       - Traditional (combat-focused)
-       - Hybrid (combat + other verb)
-       - Unconventional (non-combat primary loop)
+       Okay! I'll generate 3 product directions:
+       - Ops-focused (real-time alerting, incident detection)
+       - Business intelligence (trends, KPIs, forecasting)
+       - Developer metrics (deployments, error rates, latency)
 
-       [Generates 10 concepts with MDA analysis for each]
+       [Generates directions with trade-off analysis]
 
-       Which 2-3 resonate most? I'll do deep MDA + SDT analysis on those."
+       Which direction fits your users best? I'll do a full PRD outline for that one."
 
-User: "Concepts 3, 7, and 9 are interesting"
+User: "Developer metrics direction is closest"
 
-Skill: [Analyzes those 3 in depth]
-       "Here's the deep analysis:
+Skill: [Deep dives on developer metrics direction]
+       "Here's the detailed breakdown:
+       - Core metrics: deployment frequency, error rate, p99 latency, DORA metrics
+       - Data sources: CI/CD pipeline, APM, error tracking
+       - Update cadence: real-time for errors, hourly for trends
 
-       Concept 3: [Full breakdown]
-       Concept 7: [Full breakdown]
-       Concept 9: [Full breakdown]
+       Based on your team size and existing tools, I recommend starting with
+       deployment + error rate dashboards (easiest to instrument).
 
-       Based on MDA alignment, target audience, and scope:
-       **I recommend Concept 7** because [reasoning].
+       Want me to draft the PRD for this direction?"
 
-       But you should pick based on what excites YOU most.
-       Which concept do you want to develop into your game?"
+User: "Yes, draft the PRD"
 
-User: "Let's go with Concept 7"
-
-Skill: "Excellent. Should I:
-       A) Create the full concept document now (design/concept.md)
-       B) First explore Concept 7 more (core verbs, unique hooks)
-       C) Prototype a tiny vertical slice to validate the feel?"
-
-User: "A, create the doc"
-
-Skill: "Writing design/concept.md..."
+Skill: "I'll ask product-manager to draft the PRD. Should I write it to
+       design/docs/analytics-dashboard-prd.md when done?"
 ```
 
 ---
@@ -279,52 +268,52 @@ Skill: "Writing design/concept.md..."
 
 ✅ **Multiple Choice with Reasoning:**
 ```
-"Should enemies telegraph attacks?
- A) Yes, 0.5s before (accessible, rhythm-based)
- B) Yes, 0.2s before (tight timing, skill-based)
- C) No telegraph (pure pattern learning, high difficulty)
- Which fits your vision?"
+"How should we handle API versioning?
+ A) URL versioning (/api/v1/) — explicit, easy to understand, common
+ B) Header versioning (Accept-Version: v1) — cleaner URLs, less visible
+ C) No versioning now — simpler, migrate later
+ Which fits your team's API maturity?"
 ```
 
 ✅ **Constrained Options with Trade-offs:**
 ```
-"Inventory system options:
- 1. Grid-based (Resident Evil, Diablo): Deep space management, slower
- 2. List-based (Skyrim, Fallout): Fast access, less strategic
- 3. Hybrid (weight limit + limited slots): Medium complexity
+"Database for user sessions:
+ 1. Redis: Fast, purpose-built for sessions, requires separate infra
+ 2. PostgreSQL: Already in stack, slightly slower for session lookups
+ 3. JWT (stateless): No storage needed, harder to revoke
 
- Given your 'Meaningful Choices' pillar, I'd lean toward #1 or #3. Thoughts?"
+ Given you already have PostgreSQL, Option 2 or 3 avoids adding infra. Thoughts?"
 ```
 
 ✅ **Open-Ended with Context:**
 ```
-"The design doc doesn't specify what happens when a player dies while crafting.
- Some options:
- - Materials lost (harsh, risk/reward)
- - Materials returned to inventory (forgiving)
- - Work-in-progress saved (complex to implement)
+"The PRD doesn't specify rate limiting for the auth endpoints.
+ Some common approaches:
+ - Per IP (5 attempts/minute) — easy, bypassed by distributed attacks
+ - Per email (10 attempts/hour) — protects specific accounts
+ - Both (defense in depth) — recommended for production
 
- What fits your target difficulty?"
+ What level of protection do your security requirements need?"
 ```
 
 ### Bad Question Patterns
 
 ❌ **Too Open-Ended:**
 ```
-"What should the combat system be like?"
+"What should the API be like?"
 ← Too broad, user doesn't know where to start
 ```
 
 ❌ **Leading/Assuming:**
 ```
-"I'll make combat real-time since that's standard for this genre."
+"I'll use PostgreSQL since that's the most common choice."
 ← Didn't ask, just assumed
 ```
 
 ❌ **Binary Without Context:**
 ```
-"Should we have a skill tree? Yes or no?"
-← No pros/cons, no reference to game pillars
+"Should we cache this endpoint? Yes or no?"
+← No pros/cons, no reference to performance requirements
 ```
 
 ---
@@ -377,24 +366,24 @@ After introducing the topic in conversation, batch constrained questions:
 ```
 AskUserQuestion:
   questions:
-    - question: "Should crafting recipes be discovered or learned?"
-      header: "Discovery"
+    - question: "What token strategy should authentication use?"
+      header: "Token Strategy"
       options:
-        - label: "Experimentation"
-          description: "Players discover by trying combinations — high mystery"
-        - label: "NPC/Book Learning"
-          description: "Recipes taught explicitly — accessible, lower mystery"
-        - label: "Tiered Hybrid"
-          description: "Basic recipes learned, advanced discovered — best of both"
-    - question: "How punishing should failed crafts be?"
-      header: "Failure"
+        - label: "JWT + Refresh Tokens"
+          description: "Stateless, scalable, rotating refresh tokens for security"
+        - label: "Server Sessions (Redis)"
+          description: "Stateful, instant revocation, requires session store"
+        - label: "JWT Only"
+          description: "Simplest, no revocation until expiry"
+    - question: "Should we support OAuth providers now?"
+      header: "OAuth"
       options:
-        - label: "Materials Lost"
-          description: "All consumed on failure — high stakes, risk/reward"
-        - label: "Partial Recovery"
-          description: "50% returned — moderate risk"
-        - label: "No Loss"
-          description: "Materials returned, only time spent — forgiving"
+        - label: "No OAuth (MVP)"
+          description: "Email/password only — faster to implement"
+        - label: "Google + GitHub"
+          description: "Common providers — adds 1-2 days of work"
+        - label: "Design for it, implement later"
+          description: "Structure endpoints to support OAuth, implement in v2"
 ```
 
 ### Example — Design Decision (After Full Analysis)
@@ -404,15 +393,15 @@ After writing the full pros/cons analysis in conversation text:
 ```
 AskUserQuestion:
   questions:
-    - question: "Which crafting approach fits your vision?"
-      header: "Approach"
+    - question: "Which API versioning strategy should we use?"
+      header: "Versioning"
       options:
-        - label: "Hybrid Discovery (Recommended)"
-          description: "Discovery base with earned hints — balances exploration and accessibility"
-        - label: "Full Discovery"
-          description: "Pure experimentation — maximum mystery, risk of frustration"
-        - label: "Hint System"
-          description: "Progressive hints reveal recipes — accessible but less surprise"
+        - label: "URL versioning (Recommended)"
+          description: "/api/v1/ prefix — explicit and widely understood by consumers"
+        - label: "Header versioning"
+          description: "Accept-Version header — cleaner URLs, less intuitive"
+        - label: "No versioning yet"
+          description: "Skip for now, add when breaking changes are needed"
 ```
 
 ### Example — Strategic Decision
@@ -422,15 +411,15 @@ After presenting the full strategic analysis with pillar alignment:
 ```
 AskUserQuestion:
   questions:
-    - question: "How should we handle crafting scope for Alpha?"
-      header: "Scope"
+    - question: "How should we handle auth scope for Sprint 1?"
+      header: "Sprint Scope"
       options:
-        - label: "Simplify to Core (Recommended)"
-          description: "Recipe discovery only, 10 recipes — makes deadline, pillar visible"
-        - label: "Full Implementation"
-          description: "Complete system, 30 recipes — slips Alpha by 1 week"
-        - label: "Cut Entirely"
-          description: "Drop crafting, focus on combat — deadline met, pillar missing"
+        - label: "Core auth only (Recommended)"
+          description: "Register + Login + JWT — functional MVP, meets sprint deadline"
+        - label: "Full auth suite"
+          description: "Includes password reset, email verification — extends sprint by 3 days"
+        - label: "Defer to Sprint 2"
+          description: "Use mock auth for now, implement real auth next sprint"
 ```
 
 ### Team Skill Orchestration
@@ -439,13 +428,13 @@ In team skills, subagents return their analysis as text. The **orchestrator**
 (main session) calls `AskUserQuestion` at each decision point between phases:
 
 ```
-[game-designer returns 3 combat approaches with analysis]
+[lead-programmer returns 3 API design options with analysis]
 
 Orchestrator uses AskUserQuestion:
-  question: "Which combat approach should we develop?"
-  options: [concise summaries of the 3 approaches]
+  question: "Which API design approach should we implement?"
+  options: [concise summaries of the 3 options]
 
-[User picks → orchestrator passes decision to next phase]
+[User picks → orchestrator passes decision to backend-developer]
 ```
 
 ---
@@ -481,7 +470,7 @@ in conversation. This prevents context overflow during long iterative sessions.
 
 ```
 1. Agent creates file with skeleton (all section headers, empty bodies)
-   Agent: "May I create design/gdd/crafting-system.md with the section skeleton?"
+   Agent: "May I create docs/api/auth-service.md with the section skeleton?"
    User: "Yes"
 
 2. For EACH section:
@@ -512,9 +501,9 @@ When a change affects multiple files:
 
 ```
 Agent: "This implementation requires changes to 3 files:
-       1. src/gameplay/inventory.gd (core logic)
-       2. src/ui/inventory_ui.gd (display)
-       3. assets/data/inventory_config.json (constants)
+       1. src/middleware/auth.ts (JWT validation logic)
+       2. src/routes/auth.ts (register, login, refresh endpoints)
+       3. src/types/auth.ts (request/response type definitions)
 
        Should I:
        A) Show you the code first, then write all 3
@@ -561,36 +550,31 @@ Agents should be:
 Team skills (like `/team-combat`) orchestrate multiple agents, but still collaborative:
 
 ```
-User: "/team-combat 'grappling hook ability'"
+User: "/team-feature 'user authentication'"
 
 Skill (Coordinator):
-"I'll coordinate the combat team to design and implement the grappling hook.
+"I'll coordinate the feature team to design and implement authentication.
  Before we start, a few questions:
 
- 1. Is this a mobility tool, a combat tool, or both?
- 2. Should it pull enemies to the player, player to point, or both?
- 3. Any reference games? (Just Cause, Bionic Commando, Attack on Titan?)
+ 1. Email/password only, or also OAuth (Google, GitHub)?
+ 2. JWT or session-based tokens?
+ 3. Does this need email verification on registration?
 
  [User answers]
 
  Based on your answers, I'll have the team propose options.
 
- **Phase 1: Design (game-designer)**
- Starting design phase...
- [game-designer asks questions, presents options]
+ **Phase 1: API Design (lead-programmer)**
+ Starting API design phase...
+ [lead-programmer asks questions, presents endpoint options]
  [User makes decisions]
- game-designer: 'Design complete. Proceeding to architecture phase.'
+ lead-programmer: 'API contract complete. Proceeding to implementation.'
 
- **Phase 2: Architecture (gameplay-programmer)**
- [gameplay-programmer proposes code structure]
- [User approves or requests changes]
-
- **Phase 3: Parallel Implementation**
- I'll now coordinate 4 agents to implement in parallel:
- - gameplay-programmer: Core grapple physics
- - technical-artist: Cable VFX
- - sound-designer: Whoosh + impact SFX
- - ai-programmer: Enemy reactions to being grappled
+ **Phase 2: Implementation**
+ I'll now coordinate 3 agents:
+ - backend-developer: JWT middleware + auth endpoints
+ - frontend-developer: Login/register UI + token storage
+ - qa-tester: Test cases for all auth flows
 
  Each will show you their work before writing files. Proceed?"
 
@@ -599,10 +583,10 @@ User: "Yes"
 [Each agent shows their work, gets approval, then writes]
 
 Skill (Coordinator):
-"All 4 subsystems implemented. Would you like me to:
- A) Have gameplay-programmer integrate them now
- B) Let you test each independently first
- C) Run /code-review before integration?"
+"All components implemented. Would you like me to:
+ A) Have lead-programmer do a final code review
+ B) Run /gate-check to validate auth security requirements
+ C) Ask security-engineer to review for OWASP vulnerabilities?"
 ```
 
 The orchestration is automated, but **decision points stay with the user**.
@@ -629,10 +613,10 @@ If you answered "No" to any, the agent wasn't collaborative enough!
 
 ✅ **Good User Prompts:**
 ```
-"I want to design a skill tree. Ask me questions about how it should work,
+"I want to design an authentication flow. Ask me questions about requirements,
  then present options based on my answers."
 
-"Propose three approaches to the inventory system with pros/cons for each."
+"Propose three approaches to database schema design with pros/cons for each."
 
 "Before implementing this, show me the proposed architecture and explain
  your reasoning."
@@ -640,11 +624,11 @@ If you answered "No" to any, the agent wasn't collaborative enough!
 
 ❌ **Bad User Prompts (Enable Autonomous Behavior):**
 ```
-"Create a combat system" ← No guidance, agent forced to guess
+"Create an API" ← No guidance, agent forced to guess
 
 "Just do it" ← No collaboration opportunity
 
-"Implement everything in the design doc" ← No approval points
+"Implement everything in the PRD" ← No approval points
 ```
 
 ### For Agents:
@@ -655,12 +639,12 @@ Agents should internally follow:
 BEFORE proposing solutions:
 1. Identify what's ambiguous or unspecified
 2. Ask clarifying questions
-3. Gather context about user's vision and constraints
+3. Gather context about user's goals and constraints
 
 WHEN proposing solutions:
 1. Present 2-4 options (not just one)
 2. Explain trade-offs for each
-3. Reference game design theory, user's pillars, or comparable games
+3. Reference user's PRD/ADRs, comparable tools, or industry best practices
 4. Make a recommendation but defer final decision to user
 
 BEFORE writing files:
@@ -670,7 +654,7 @@ BEFORE writing files:
 
 WHEN implementing:
 1. Explain architectural choices
-2. Flag any deviations from design docs
+2. Flag any deviations from API contracts or design docs
 3. Ask about ambiguities rather than assuming
 ```
 
@@ -681,8 +665,8 @@ WHEN implementing:
 This principle has been fully embedded across the project:
 
 - **CLAUDE.md** — Collaboration protocol section added
-- **All 48 agent definitions** — Updated to enforce question-asking and approval
-- **All skills** — Updated to require approval before writing
-- **WORKFLOW-GUIDE.md** — Rewritten with collaborative examples
+- **All 26 agent definitions** — Updated to enforce question-asking and approval
+- **All 33 skills** — Updated to require approval before writing
+- **WORKFLOW-GUIDE.md** — Rewritten with software development workflow examples
 - **README.md** — Clarifies collaborative (not autonomous) design
-- **AskUserQuestion tool** — Integrated into 10 skills for structured option UI
+- **AskUserQuestion tool** — Integrated into team skills for structured option UI

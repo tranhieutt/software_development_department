@@ -5,12 +5,13 @@ Each agent owns a specific domain, enforcing separation of concerns and quality.
 
 ## Technology Stack
 
-- **Language**: [CHOOSE: TypeScript / Python / Go / Java / other]
-- **Frontend Framework**: [CHOOSE: React / Vue / Angular / Next.js / none]
-- **Backend Framework**: [CHOOSE: Express / FastAPI / NestJS / Rails / other]
-- **Database**: [CHOOSE: PostgreSQL / MySQL / MongoDB / other]
-- **Deployment**: [CHOOSE: Docker / Kubernetes / Vercel / Railway / other]
-- **CI/CD**: [CHOOSE: GitHub Actions / GitLab CI / CircleCI / other]
+<!-- Replace each [not configured] line with your chosen value after running /start -->
+- **Language**: [not configured] <!-- e.g. TypeScript / Python / Go / Java -->
+- **Frontend Framework**: [not configured] <!-- e.g. React / Vue / Angular / Next.js / none -->
+- **Backend Framework**: [not configured] <!-- e.g. Express / FastAPI / NestJS / Rails -->
+- **Database**: [not configured] <!-- e.g. PostgreSQL / MySQL / MongoDB -->
+- **Deployment**: [not configured] <!-- e.g. Docker / Kubernetes / Vercel / Railway -->
+- **CI/CD**: [not configured] <!-- e.g. GitHub Actions / GitLab CI / CircleCI -->
 
 > **First session?** If no stack has been configured yet, run `/start` to begin
 > the guided onboarding flow.

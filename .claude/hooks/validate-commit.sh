@@ -29,11 +29,11 @@ fi
 WARNINGS=""
 
 # Check design documents for required sections
-DESIGN_FILES=$(echo "$STAGED" | grep -E '^design/gdd/')
+DESIGN_FILES=$(echo "$STAGED" | grep -E '^design/specs/')
 if [ -n "$DESIGN_FILES" ]; then
     while IFS= read -r file; do
         if [[ "$file" == *.md ]] && [ -f "$file" ]; then
-            for section in "Overview" "Player Fantasy" "Detailed" "Formulas" "Edge Cases" "Dependencies" "Tuning Knobs" "Acceptance Criteria"; do
+            for section in "Overview" "User Value" "Detailed" "Formulas" "Edge Cases" "Dependencies" "Configuration" "Acceptance Criteria"; do
                 if ! grep -qi "$section" "$file"; then
                     WARNINGS="$WARNINGS\nDESIGN: $file missing required section: $section"
                 fi
@@ -68,14 +68,14 @@ if [ -n "$DATA_FILES" ]; then
     done <<< "$DATA_FILES"
 fi
 
-# Check for hardcoded gameplay values in gameplay code
+# Check for hardcoded magic numbers in source code
 # Uses grep -E (POSIX extended) instead of grep -P (Perl) for cross-platform compatibility
-CODE_FILES=$(echo "$STAGED" | grep -E '^src/gameplay/')
+CODE_FILES=$(echo "$STAGED" | grep -E '^src/')
 if [ -n "$CODE_FILES" ]; then
     while IFS= read -r file; do
         if [ -f "$file" ]; then
-            if grep -nE '(damage|health|speed|rate|chance|cost|duration)[[:space:]]*[:=][[:space:]]*[0-9]+' "$file" 2>/dev/null; then
-                WARNINGS="$WARNINGS\nCODE: $file may contain hardcoded gameplay values. Use data files."
+            if grep -nE '[[:space:]]=[[:space:]]*[0-9]{4,}' "$file" 2>/dev/null; then
+                WARNINGS="$WARNINGS\nCODE: $file may contain hardcoded magic numbers. Use config files."
             fi
         fi
     done <<< "$CODE_FILES"

@@ -26,7 +26,7 @@ Before writing any code:
    - Flag potential implementation challenges
 
 2. **Ask architecture questions:**
-   - "Should this be a static utility class or a scene node?"
+   - "Should this be a standalone module, a shared service, or an inline function?"
    - "Should this be a static utility class or a component/module?"
    - "Where should [data] live? (Service? Repository? Config file?)"
    - "The design doc doesn't specify [edge case]. What should happen when...?"

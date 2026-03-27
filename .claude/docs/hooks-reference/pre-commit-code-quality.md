@@ -56,5 +56,5 @@ exit $EXIT_CODE
 
 When this hook fails:
 1. For style violations: auto-fix with your formatter or invoke `lead-programmer`
-2. For hardcoded values: invoke `gameplay-programmer` to externalize the values
-3. For test failures: invoke `qa-tester` to diagnose and `gameplay-programmer` to fix
+2. For hardcoded config values: invoke `backend-developer` to externalize the values
+3. For test failures: invoke `qa-tester` to diagnose and `lead-programmer` to fix

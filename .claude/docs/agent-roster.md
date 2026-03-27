@@ -28,10 +28,9 @@
 | `accessibility-specialist` | 3 — Specialists | Sonnet | WCAG compliance, screen readers | Keyboard nav, ARIA, color contrast |
 | `prototyper` | 3 — Specialists | Haiku | Rapid prototyping, PoC builds | Fast iteration, throwaway code |
 | `community-manager` | 3 — Specialists | Sonnet | User community, support, feedback | Community platforms, user comms |
-| `localization-lead` | 2 — Leads | Sonnet | i18n/l10n, translation workflow | Locale formats, RTL, translation QA |
 
 ---
 
-**Total: 28 agents** across 3 tiers.
+**Total: 26 agents** across 3 tiers.
 
 See [agent-coordination-map.md](agent-coordination-map.md) for delegation and escalation paths.
