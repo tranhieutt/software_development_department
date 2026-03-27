@@ -1,37 +1,37 @@
 ---
 name: brainstorm
-description: "Guided game concept ideation — from zero idea to a structured game concept document. Uses professional studio ideation techniques, player psychology frameworks, and structured creative exploration."
-argument-hint: "[genre or theme hint, or 'open' for fully open brainstorm]"
+description: "Guided product concept ideation — from zero idea to a structured product concept document. Uses professional product thinking frameworks, user psychology, and structured creative exploration."
+argument-hint: "[product type or problem hint, or 'open' for fully open brainstorm]"
 user-invocable: true
 allowed-tools: Read, Glob, Grep, Write, WebSearch, AskUserQuestion
 ---
 
 When this skill is invoked:
 
-1. **Parse the argument** for an optional genre/theme hint (e.g., `roguelike`,
-   `space survival`, `cozy farming`). If `open` or no argument, start from
-   scratch.
+1. **Parse the argument** for an optional product type or problem hint (e.g., `productivity app`,
+   `API service`, `developer tool`, `marketplace`). If `open` or no argument, start from scratch.
 
 2. **Check for existing concept work**:
-   - Read `design/gdd/game-concept.md` if it exists (resume, don't restart)
-   - Read `design/gdd/game-pillars.md` if it exists (build on established pillars)
+   - Read `design/docs/product-concept.md` if it exists (resume, don't restart)
+   - Read `design/docs/product-pillars.md` if it exists (build on established pillars)
 
 3. **Run through ideation phases** interactively, asking the user questions at
    each phase. Do NOT generate everything silently — the goal is **collaborative
-   exploration** where the AI acts as a creative facilitator, not a replacement
-   for the human's vision.
+   exploration** where the AI acts as a product thinking facilitator, not a
+   replacement for the human's vision.
 
    **Use `AskUserQuestion`** at key decision points throughout brainstorming:
-   - Constrained taste questions (genre preferences, scope, team size)
+   - Constrained taste questions (product type, target users, scope)
    - Concept selection ("Which 2-3 concepts resonate?") after presenting options
-   - Direction choices ("Develop further, explore more, or prototype?")
+   - Direction choices ("Develop further, explore more, or start sprint planning?")
    - Pillar ranking after concepts are refined
-   Write full creative analysis in conversation text first, then use
-   `AskUserQuestion` to capture the decision with concise labels.
 
-   Professional studio brainstorming principles to follow:
+   Write full analysis in conversation text first, then use `AskUserQuestion`
+   to capture the decision with concise labels.
+
+   Professional product brainstorming principles to follow:
    - Withhold judgment — no idea is bad during exploration
-   - Encourage unusual ideas — outside-the-box thinking sparks better concepts
+   - Encourage unusual ideas — outside-the-box thinking sparks better products
    - Build on each other — "yes, and..." responses, not "but..."
    - Use constraints as creative fuel — limitations often produce the best ideas
    - Time-box each phase — keep momentum, don't over-deliberate early
@@ -40,61 +40,59 @@ When this skill is invoked:
 
 ### Phase 1: Creative Discovery
 
-Start by understanding the person, not the game. Ask these questions
+Start by understanding the person and their context, not the product. Ask these questions
 conversationally (not as a checklist):
 
-**Emotional anchors**:
-- What's a moment in a game that genuinely moved you, thrilled you, or made
-  you lose track of time? What specifically created that feeling?
-- Is there a fantasy or power trip you've always wanted in a game but never
-  quite found?
+**Problem anchors**:
+- What's a frustrating problem you personally experience that no existing tool solves well?
+- Is there a workflow, process, or task you've always wished was easier or more automated?
 
-**Taste profile**:
-- What 3 games have you spent the most time with? What kept you coming back?
-- Are there genres you love? Genres you avoid? Why?
-- Do you prefer games that challenge you, relax you, tell you stories,
-  or let you express yourself?
+**Experience profile**:
+- What 3 products (apps, tools, APIs, services) do you use most? What keeps you coming back?
+- Are there product categories you love or actively avoid? Why?
+- Do you prefer products that save time, reduce complexity, enable creativity, or connect people?
 
 **Practical constraints** (shape the sandbox before brainstorming):
-- Solo developer or team? What skills are available?
-- Timeline: weeks, months, or years?
-- Any platform constraints? (PC only? Mobile? Console?)
-- First game or experienced developer?
+- Solo developer or team? What skills and resources are available?
+- Timeline: weeks (MVP), months (v1), or years (full product)?
+- Any platform constraints? (Web only? Mobile? API-first? Desktop?)
+- First product or experienced builder?
+- Revenue model in mind? (SaaS, open source, freemium, one-time purchase?)
 
-**Synthesize** the answers into a **Creative Brief** — a 3-5 sentence
-summary of the person's emotional goals, taste profile, and constraints.
+**Synthesize** the answers into a **Product Brief** — a 3-5 sentence
+summary of the person's goals, experience context, and constraints.
 Read the brief back and confirm it captures their intent.
 
 ---
 
 ### Phase 2: Concept Generation
 
-Using the creative brief as a foundation, generate **3 distinct concepts**
+Using the product brief as a foundation, generate **3 distinct concepts**
 that each take a different creative direction. Use these ideation techniques:
 
 **Technique 1: Verb-First Design**
-Start with the core player verb (build, fight, explore, solve, survive,
-create, manage, discover) and build outward from there. The verb IS the game.
+Start with the core user verb (build, track, automate, connect, analyze, manage,
+discover, share, deploy) and build the product outward from there. The verb IS the product.
 
-**Technique 2: Mashup Method**
-Combine two unexpected elements: [Genre A] + [Theme B]. The tension between
-the two creates the unique hook. (e.g., "farming sim + cosmic horror",
-"roguelike + dating sim", "city builder + real-time combat")
+**Technique 2: Problem-Inversion Method**
+Take an existing frustration in a market and invert it. "What if [pain point] just...
+didn't exist?" Then design backward from that ideal state. Find the simplest product
+that bridges the current reality to that ideal.
 
-**Technique 3: Experience-First Design (MDA Backward)**
-Start from the desired player emotion (aesthetic goal from MDA framework:
-sensation, fantasy, narrative, challenge, fellowship, discovery, expression,
-submission) and work backward to the dynamics and mechanics that produce it.
+**Technique 3: Intersection Design**
+Combine two unexpected domains: [Audience A] + [Workflow B]. The intersection creates
+the unique hook. (e.g., "developers + financial compliance", "designers + data pipelines",
+"small teams + enterprise security")
 
 For each concept, present:
 - **Working Title**
 - **Elevator Pitch** (1-2 sentences — must pass the "10-second test")
-- **Core Verb** (the single most common player action)
-- **Core Fantasy** (the emotional promise)
-- **Unique Hook** (passes the "and also" test: "Like X, AND ALSO Y")
-- **Primary MDA Aesthetic** (which emotion dominates?)
+- **Core User Action** (the single most frequent thing a user does)
+- **Core Value Promise** (the outcome users pay/sign-up for)
+- **Unique Angle** (passes the "AND ALSO" test: "Like X, AND ALSO Y")
+- **Target User** (who specifically? Not "developers" — "backend engineers at 50-person startups")
 - **Estimated Scope** (small / medium / large)
-- **Why It Could Work** (1 sentence on market/audience fit)
+- **Why It Could Work** (1 sentence on market/timing fit)
 - **Biggest Risk** (1 sentence on the hardest unanswered question)
 
 Present all three. Ask the user to pick one, combine elements, or request
@@ -102,74 +100,70 @@ new concepts. Never pressure toward a choice — let them sit with it.
 
 ---
 
-### Phase 3: Core Loop Design
+### Phase 3: Core User Flow Design
 
-For the chosen concept, use structured questioning to build the core loop.
-The core loop is the beating heart of the game — if it isn't fun in
-isolation, no amount of content or polish will save the game.
+For the chosen concept, use structured questioning to build the core user flow.
+The core flow is the beating heart of the product — if it isn't valuable in
+isolation, no amount of features or polish will save the product.
 
-**30-Second Loop** (moment-to-moment):
-- What is the player physically doing most often?
-- Is this action intrinsically satisfying? (Would they do it with no
-  rewards, no progression, no story — just for the feel of it?)
-- What makes this action feel good? (Audio feedback, visual juice,
-  timing satisfaction, tactical depth?)
+**First-Use Flow** (the critical first 5 minutes):
+- What's the first action a new user takes?
+- When do they first experience value? (The "aha moment")
+- What friction exists between sign-up and first value? How to minimize it?
 
-**5-Minute Loop** (short-term goals):
-- What structures the moment-to-moment play into cycles?
-- Where does "one more turn" / "one more run" psychology kick in?
-- What choices does the player make at this level?
+**Core Usage Loop** (the repeating cycle):
+- What does a typical usage session look like from start to finish?
+- What triggers the user to open/use the product? (External trigger? Internal habit?)
+- What output or result makes the session feel successful?
 
-**Session Loop** (30-120 minutes):
-- What does a complete session look like?
-- Where are the natural stopping points?
-- What's the "hook" that makes them think about the game when not playing?
+**Retention Hook** (why they come back):
+- What makes users return daily / weekly?
+- What accumulates over time that makes the product more valuable? (Data? History? Network?)
+- What does the product feel like after 30 days vs. day 1?
 
-**Progression Loop** (days/weeks):
-- How does the player grow? (Power? Knowledge? Options? Story?)
-- What's the long-term goal? When is the game "done"?
+**Growth Loop** (how it spreads):
+- Does using the product naturally lead to sharing or inviting others?
+- What's the viral or referral mechanic (if any)?
 
-**Player Motivation Analysis** (based on Self-Determination Theory):
-- **Autonomy**: How much meaningful choice does the player have?
-- **Competence**: How does the player feel their skill growing?
-- **Relatedness**: How does the player feel connected (to characters,
-  other players, or the world)?
+**User Motivation Analysis** (based on Self-Determination Theory):
+- **Autonomy**: How much meaningful control does the user have over outcomes?
+- **Competence**: How does the user feel more capable or skilled over time?
+- **Relatedness**: How does the user feel connected (to team, community, or their work)?
 
 ---
 
 ### Phase 4: Pillars and Boundaries
 
-Game pillars are used by real AAA studios (God of War, Hades, The Last of
-Us) to keep hundreds of team members making decisions that all point the
-same direction. Even for solo developers, pillars prevent scope creep and
-keep the vision sharp.
+Product pillars are used by top companies (Notion, Linear, Stripe, Figma) to align
+teams around a single product vision. Even for solo builders, pillars prevent
+scope creep and keep decision-making fast and consistent.
 
 Collaboratively define **3-5 pillars**:
 - Each pillar has a **name** and **one-sentence definition**
-- Each pillar has a **design test**: "If we're debating between X and Y,
-  this pillar says we choose __"
-- Pillars should feel like they create tension with each other — if all
-  pillars point the same way, they're not doing enough work
+- Each pillar has a **design test**: "If we're choosing between feature X and Y,
+  this pillar says we build __"
+- Pillars should create productive tension — if all pillars agree on everything,
+  they're not doing enough work
 
-Then define **3+ anti-pillars** (what this game is NOT):
-- Anti-pillars prevent the most common form of scope creep: "wouldn't it
-  be cool if..." features that don't serve the core vision
-- Frame as: "We will NOT do [thing] because it would compromise [pillar]"
+Then define **3+ anti-pillars** (what this product is NOT):
+- Anti-pillars prevent the most common form of scope creep: "wouldn't it be cool if..."
+  features that dilute the core value
+- Frame as: "We will NOT build [thing] because it would compromise [pillar]"
 
 ---
 
-### Phase 5: Player Type Validation
+### Phase 5: User Segment Validation
 
-Using the Bartle taxonomy and Quantic Foundry motivation model, validate
-who this game is actually for:
+Using Jobs-to-be-Done and user motivation frameworks, validate who this product is for:
 
-- **Primary player type**: Who will LOVE this game? (Achievers, Explorers,
-  Socializers, Competitors, Creators, Storytellers)
-- **Secondary appeal**: Who else might enjoy it?
-- **Who is this NOT for**: Being clear about who won't like this game is as
-  important as knowing who will
-- **Market validation**: Are there successful games that serve a similar
-  player type? What can we learn from their audience size?
+- **Primary user segment**: Who will LOVE this product? Be specific — role, company size,
+  workflow context, pain level
+- **Secondary appeal**: Who else might find value in it?
+- **Who is this NOT for**: Being clear about who won't benefit is as important as knowing
+  who will — it prevents building for everyone and delighting no one
+- **Market validation**: Are there successful products serving adjacent user needs?
+  What can we learn from their growth path?
+- **Willingness to pay**: Is this a "must have" or "nice to have" for the target user?
 
 ---
 
@@ -177,34 +171,46 @@ who this game is actually for:
 
 Ground the concept in reality:
 
-- **Engine recommendation** (Godot / Unity / Unreal) with reasoning based
-  on concept needs, team expertise, and platform targets
-- **Art pipeline**: What's the art style and how labor-intensive is it?
-- **Content scope**: Estimate level/area count, item count, gameplay hours
-- **MVP definition**: What's the absolute minimum build that tests "is the
-  core loop fun?"
-- **Biggest risks**: Technical risks, design risks, market risks
-- **Scope tiers**: What's the full vision vs. what ships if time runs out?
+- **Tech stack recommendation** — Language, Framework, Database, Cloud provider — with
+  reasoning based on the concept's requirements, team expertise, and scalability needs
+- **Build vs. Buy decisions** — auth (Clerk/Supabase/custom?), payments (Stripe?),
+  search (Algolia?), email (SendGrid?), analytics (PostHog?)
+- **MVP definition** — the absolute minimum feature set that validates:
+  "Does this solve the user's pain better than what they use today?"
+- **Infrastructure scope** — monolith vs. microservices, serverless vs. dedicated,
+  multi-tenant vs. per-customer
+- **Biggest risks** — technical risks, design risks, market risks, regulatory risks
+- **Scope tiers**:
+  - **MVP** (weeks): Validates core hypothesis with minimum code
+  - **v1** (months): Shippable, complete product for early adopters
+  - **Full vision** (beyond): What it becomes if successful
 
 ---
 
-4. **Generate the game concept document** using the template at
-   `.claude/docs/templates/game-concept.md`. Fill in ALL sections from the
-   brainstorm conversation, including the MDA analysis, player motivation
-   profile, and flow state design sections.
+4. **Generate the product concept document** using the template at
+   `.claude/docs/templates/product-concept.md`. Fill in ALL sections from the
+   brainstorm conversation, including the user motivation analysis, value proposition,
+   and flow design sections.
 
-5. **Save to** `design/gdd/game-concept.md`, creating directories as needed.
+5. **Save to** `design/docs/product-concept.md`, creating directories as needed.
 
-6. **Suggest next steps** (in this order — this is the professional studio
+6. **Suggest next steps** (in this order — this is the professional product
    pre-production pipeline):
-   - "Run `/setup-engine [engine] [version]` to configure the engine and populate version-aware reference docs"
-   - "Use `/design-review design/gdd/game-concept.md` to validate completeness"
-   - "Discuss vision with the `creative-director` agent for pillar refinement"
-   - "Decompose the concept into individual systems with `/map-systems` — maps dependencies, assigns priorities, and creates the systems index"
-   - "Author per-system GDDs with `/design-system` — guided, section-by-section GDD writing"
-   - "Prototype the core loop with `/prototype [core-mechanic]`"
-   - "Playtest the prototype with `/playtest-report` to validate the hypothesis"
-   - "If validated, plan the first sprint with `/sprint-plan new`"
 
-7. **Output a summary** with the chosen concept's elevator pitch, pillars,
-   primary player type, engine recommendation, biggest risk, and file path.
+   - "Run `/design-review design/docs/product-concept.md` to validate completeness"
+   - "Refine concept and pillars with the `product-manager` agent"
+   - "Discuss technical approach with `cto` and `technical-director`"
+   - "Decompose the concept into systems and APIs with `/map-systems`"
+   - "Design the core API with `/api-design`"
+   - "Prototype the core flow with `/prototype [core-feature]`"
+   - "Validate the prototype with `ux-researcher` before full build"
+   - "Plan the first sprint with `/sprint-plan new`"
+
+7. **Output a summary** with:
+   - Chosen concept elevator pitch
+   - Product pillars (names only)
+   - Primary target user
+   - Tech stack recommendation
+   - MVP definition (1 sentence)
+   - Biggest risk
+   - File path of saved concept doc
