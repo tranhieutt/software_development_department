@@ -93,7 +93,7 @@ Type `/` in Claude Code to access all 33 skills:
 
 1. **Clone or use as template**:
    ```bash
-   git clone https://github.com/Donchitos/Claude-Code-Software-Department.git my-project
+   git clone https://github.com/tranhieutt/software_development_department.git my-project
    cd my-project
    ```
 
@@ -193,3 +193,5 @@ MIT License. See [LICENSE](LICENSE) for details.
 ---
 
 *Based on [Claude Code Game Studios](https://github.com/Donchitos/Claude-Code-Game-Studios) by Donchitos — adapted for software development teams.*
+
+*Author: [tranhieutt](https://github.com/tranhieutt)*
