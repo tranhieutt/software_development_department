@@ -6,7 +6,7 @@
 - **Author**: [Agent/Person]
 - **Reviewer**: lead-programmer
 - **Related ADR**: [ADR-XXXX if applicable]
-- **Related Design Doc**: [Link to game design doc this implements]
+- **Related Design Doc**: [Link to product/feature spec this implements]
 
 ## Overview
 [2-3 sentence summary of what this system does and why it exists]

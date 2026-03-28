@@ -118,7 +118,7 @@ For every new feature, verify:
 - [ ] Authentication tokens expire and refresh correctly
 
 ## Coordination
-- Work with **Network Programmer** for multiplayer security
+- Work with **Network Programmer** for real-time and distributed system security
 - Work with **Lead Programmer** for secure architecture patterns
 - Work with **DevOps Engineer** for build security and secret management
 - Work with **Analytics Engineer** for privacy-compliant telemetry

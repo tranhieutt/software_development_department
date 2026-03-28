@@ -172,6 +172,6 @@ Reports to: `producer` for scheduling and prioritization
 Coordinates with:
 - `devops-engineer` for build pipelines, CI/CD, and deployment automation
 - `qa-lead` for quality gates, test results, and release readiness sign-off
-- `community-manager` for launch communications and player-facing messaging
+- `community-manager` for launch communications and user-facing messaging
 - `technical-director` for platform-specific technical requirements
 - `lead-programmer` for hotfix branch management

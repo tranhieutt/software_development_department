@@ -48,44 +48,38 @@ Before writing any code:
 #### Example Interaction Pattern
 
 ```
-User: "Implement the damage calculation system per design/gdd/combat-system.md"
+User: "Implement the payment processing system per design/specs/payment-system.md"
 
 You (read and analyze):
 [Reads design doc]
 
-"I've read the combat system design. The damage formula is:
- final_damage = base_damage * weapon_multiplier * crit_multiplier * (1 - resistance)
+"I've read the payment processing design. The fee formula is:
+ final_charge = base_amount * processing_fee * (1 + tax_rate)
 
 Before I implement, a few architectural questions:
- 1. Should DamageCalculator be a static utility or an autoload singleton?
- 2. Where should weapon data live? (Equipment class? CharacterStats? Separate WeaponData resource?)
- 3. The design doc doesn't specify rounding behavior. Round down, round up, or keep decimal damage?
- 4. Should we emit a signal when damage is calculated (for VFX/SFX hookup)?"
+ 1. Should PaymentProcessor be a standalone module, a shared service, or an inline function?
+ 2. Where should user data live? (Profile model? AccountStats? Separate PaymentData resource?)
+ 3. The design doc doesn't specify rounding behavior. Round down, round up, or keep decimal amounts?
+ 4. Should we emit an event when payment is processed (for audit log hookup)?"
 
-User: "Static utility in src/gameplay/combat/. Weapon data in Equipment class. Round down to int. Yes, emit signal."
+User: "Shared service in src/payments/. User data in Profile model. Round down to cents. Yes, emit event."
 
 You (propose architecture):
 "Got it. Here's the proposed structure:
 
 ```
-# src/gameplay/combat/damage_calculator.gd
-class_name DamageCalculator
-extends RefCounted
-
-signal damage_calculated(target: Node, final_damage: int, is_crit: bool)
-
-static func calculate_damage(attacker: CharacterStats, target: CharacterStats, weapon: Equipment) -> int:
-    var base_damage: float = attacker.get_attack_power()
-    var weapon_mult: float = weapon.damage_multiplier
-    var crit_mult: float = 2.0 if _roll_crit(attacker.crit_chance) else 1.0
-    var resistance: float = target.get_resistance(weapon.damage_type)
-
-    var final_damage: int = floor(base_damage * weapon_mult * crit_mult * (1.0 - resistance))
-    damage_calculated.emit(target, final_damage, crit_mult > 1.0)
-    return final_damage
+# src/payments/payment_processor.ts
+class PaymentProcessor {
+  async processPayment(user: Profile, amount: number, taxRate: number): Promise<PaymentResult> {
+    const baseFee = config.processing_fee_rate;
+    const finalCharge = Math.floor(amount * baseFee * (1 + taxRate) * 100) / 100;
+    this.events.emit('payment_processed', { user, finalCharge });
+    return { success: true, charged: finalCharge };
+  }
+}
 ```
 
-Constants like crit_mult (2.0) will move to assets/data/combat_config.json per the data-driven rule.
+Constants like processing_fee_rate will be read from config/payment-config.json per the data-driven rule.
 
 Does this match your expectations? Any changes before I write the code?"
 
@@ -93,12 +87,12 @@ User: "Looks good. Implement it."
 
 You (implement):
 [Writes code]
-[gameplay-code rule flags hardcoded crit multiplier]
+[api-code rule flags hardcoded fee rate]
 
-"Implemented src/gameplay/combat/damage_calculator.gd.
+"Implemented src/payments/payment_processor.ts.
 
-The gameplay-code rule flagged one issue: crit multiplier was hardcoded (2.0).
-I moved it to assets/data/combat_config.json as 'critical_damage_multiplier': 2.0.
+The api-code rule flagged one issue: fee rate was hardcoded.
+I moved it to config/payment-config.json as 'processing_fee_rate': 0.029.
 
 File is ready. Would you like me to:
  A) Write tests now (recommended)
@@ -107,7 +101,7 @@ File is ready. Would you like me to:
 
 User: "A, write tests"
 
-You: [creates tests/combat/test_damage_calculator.gd]
+You: [creates tests/payments/payment_processor.test.ts]
      "Created test file with 6 test cases covering the acceptance criteria from the design doc.
       All tests passing. Ready to commit?"
 ```

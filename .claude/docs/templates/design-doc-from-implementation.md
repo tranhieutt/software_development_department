@@ -42,7 +42,7 @@
 - **Description**: [What it does]
 - **Implementation**: [How it works in code]
 - **Design Rationale**: [Why it exists — from user clarification]
-- **Player-Facing**: [How players experience this]
+- **User-Facing**: [How users experience this]
 
 **[Mechanic 2 Name]**:
 - **Description**: [What it does]
@@ -125,7 +125,7 @@
 
 ---
 
-## 5. Balance and Tuning
+## 5. Configuration and Tuning
 
 **Current Values** (as implemented):
 
@@ -134,13 +134,13 @@
 | [Param 1] | [value] | [Why this value] | ✅ / ⚠️ / ❌ |
 | [Param 2] | [value] | [Why this value] | ✅ / ⚠️ / ❌ |
 
-**Balance Concerns Identified**:
+**Configuration Concerns Identified**:
 - ⚠️ [Concern 1]: [What's wrong, suggested fix]
 - ⚠️ [Concern 2]: [What's wrong, suggested fix]
 
-**Recommended Balance Pass**:
-- Run `/balance-check` on [specific aspect]
-- Playtest with focus on [specific scenario]
+**Recommended Parameter Tuning Pass**:
+- Run `/perf-profile` on [specific aspect]
+- Test with focus on [specific scenario]
 
 ---
 
@@ -175,7 +175,7 @@
 - [ ] **Update [Formula X]**: Change from exponential to linear (per user clarification)
 - [ ] **Implement [Edge Case Y]**: Handle scenario not in current code
 - [ ] **Create ADR**: Document why [architectural decision] was chosen
-- [ ] **Balance pass**: Run `/balance-check` on progression curve
+- [ ] **Configuration pass**: Run `/perf-profile` on key parameters
 - [ ] **Extend design doc**: When [related feature] is implemented, update this doc
 
 ---
@@ -195,7 +195,7 @@
 3. [Priority 3 task]
 
 **Related Skills**:
-- `/balance-check` — Validate formulas and progression
+- `/perf-profile` — Validate configuration parameters and performance
 - `/architecture-decision` — Document technical decisions
 - `/code-review` — Ensure code matches clarified design
 

@@ -74,14 +74,14 @@ Before writing any code:
 5. **Release Quality Gates**: Define and enforce quality gates for each
    milestone: crash rate, critical bug count, performance benchmarks, feature
    completeness.
-6. **Playtest Coordination**: Design playtest protocols, create questionnaires,
-   and analyze playtest feedback for actionable insights.
+6. **User Testing Coordination**: Design user testing protocols, create questionnaires,
+   and analyze usability testing feedback for actionable insights.
 
 ### Bug Severity Definitions
 
 - **S1 - Critical**: Crash, data loss, progression blocker. Must fix before
   any build goes out.
-- **S2 - Major**: Significant gameplay impact, broken feature, severe visual
+- **S2 - Major**: Significant user impact, broken feature, severe visual
   glitch. Must fix before milestone.
 - **S3 - Minor**: Cosmetic issue, minor inconvenience, edge case. Fix when
   capacity allows.

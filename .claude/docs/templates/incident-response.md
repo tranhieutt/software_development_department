@@ -11,10 +11,10 @@
 
 ## Impact Summary
 
-[2-3 sentences describing what players experienced. Write from the player
+[2-3 sentences describing what users experienced. Write from the user
 perspective, not the technical perspective.]
 
-- **Players affected**: [estimated count or percentage]
+- **Users affected**: [estimated count or percentage]
 - **Platforms affected**: [PC / Console / Mobile / All]
 - **Regions affected**: [All / specific regions]
 - **Revenue impact**: [estimated if applicable]
@@ -25,7 +25,7 @@ perspective, not the technical perspective.]
 
 | Time (UTC) | Event | Action Taken |
 | ---- | ---- | ---- |
-| [HH:MM] | Incident detected via [monitoring/player report/etc.] | Incident commander assigned |
+| [HH:MM] | Incident detected via [monitoring/user report/etc.] | Incident commander assigned |
 | [HH:MM] | Root cause identified | [Brief description of cause] |
 | [HH:MM] | Mitigation deployed | [What was done] |
 | [HH:MM] | Service restored / Fix confirmed | Monitoring for recurrence |
@@ -64,7 +64,7 @@ prevent this? This is more important than the technical cause.]
 
 ---
 
-## Player Communication
+## User Communication
 
 ### Initial Acknowledgment
 *Sent: [Time] via [channel]*
@@ -79,8 +79,8 @@ prevent this? This is more important than the technical cause.]
 > [Text announcing the fix and any compensation]
 
 ### Compensation (if applicable)
-- **What**: [description of compensation — e.g., "500 premium currency + 24-hour XP boost"]
-- **Who**: [all players / affected players only / players who logged in during incident]
+- **What**: [description of compensation — e.g., "service credit or extended trial period"]
+- **Who**: [all users / affected users only / users who were active during incident]
 - **When**: [delivery date and method]
 - **Rationale**: [why this compensation is appropriate for the impact]
 

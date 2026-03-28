@@ -1,17 +1,18 @@
-# Systems Index: [Game Title]
+# Systems Index: [Application/Product Name]
 
 > **Status**: [Draft / Under Review / Approved]
 > **Created**: [Date]
 > **Last Updated**: [Date]
-> **Source Concept**: design/gdd/game-concept.md
+> **Source Concept**: design/specs/product-requirements.md
 
 ---
 
 ## Overview
 
-[One paragraph explaining the game's mechanical scope. What kind of systems does
-this game need? Reference the core loop and game pillars. This should help any
-team member understand the "big picture" of what needs to be designed and built.]
+[One paragraph explaining the application's technical scope. What kind of systems
+does this application need? Reference the core workflows and product pillars. This
+should help any team member understand the "big picture" of what needs to be
+designed and built.]
 
 ---
 
@@ -19,12 +20,12 @@ team member understand the "big picture" of what needs to be designed and built.
 
 | # | System Name | Category | Priority | Status | Design Doc | Depends On |
 |---|-------------|----------|----------|--------|------------|------------|
-| 1 | [e.g., Player Controller] | Core | MVP | [Not Started / In Design / In Review / Approved / Implemented] | [design/gdd/player-controller.md or "—"] | [e.g., Input System, Physics] |
-| 2 | [e.g., Camera System] | Core | MVP | Not Started | — | Player Controller |
+| 1 | [e.g., API Gateway] | Core | MVP | [Not Started / In Design / In Review / Approved / Implemented] | [design/specs/api-gateway.md or "—"] | [e.g., Auth System, Database] |
+| 2 | [e.g., Authentication System] | Core | MVP | Not Started | — | API Gateway |
 
 [Add a row for every identified system. Use the categories and priority tiers
-defined below. Mark systems that were inferred (not explicitly in the concept doc)
-with "(inferred)" in the system name.]
+defined below. Mark systems that were inferred (not explicitly in the requirements
+doc) with "(inferred)" in the system name.]
 
 ---
 
@@ -32,17 +33,17 @@ with "(inferred)" in the system name.]
 
 | Category | Description | Typical Systems |
 |----------|-------------|-----------------|
-| **Core** | Foundation systems everything depends on | Player controller, input, physics, camera, scene management, state machine |
-| **Gameplay** | The systems that make the game fun | Combat, AI, stealth, movement abilities, interaction |
-| **Progression** | How the player grows over time | XP/leveling, skill trees, unlocks, achievements, reputation |
-| **Economy** | Resource creation and consumption | Currency, loot, crafting, shops, item database, drop tables |
-| **Persistence** | Save state and continuity | Save/load, settings, cloud sync, profile management |
-| **UI** | Player-facing information displays | HUD, menus, inventory screen, dialogue UI, map, notifications |
-| **Audio** | Sound and music systems | Music manager, SFX bus, ambient audio, adaptive music, voice |
-| **Narrative** | Story and dialogue delivery | Dialogue system, quest tracking, cutscenes, journal, lore entries |
-| **Meta** | Systems outside the core game loop | Analytics, tutorials/onboarding, accessibility options, photo mode |
+| **Core** | Foundation systems everything depends on | API gateway, input handling, database layer, configuration, service registry, state management |
+| **Business Logic** | The systems that deliver product value | Authentication, authorization, user management, notifications, search, data processing |
+| **User Progression** | Feature adoption and user growth | Onboarding flows, feature flags, usage tracking, milestones, user preferences |
+| **Economy** | Resource and transaction management | Billing, subscriptions, usage metering, entitlements, payment processing |
+| **Persistence** | Data storage and continuity | Database access layer, caching, file storage, cloud sync, session management |
+| **UI** | User-facing information displays | Dashboard, navigation, settings panel, notification UI, data visualization |
+| **Integrations** | Third-party and external system connections | OAuth providers, webhooks, external APIs, import/export, SDK |
+| **Onboarding** | Tutorial flows, help system, in-app guidance | Onboarding wizard, contextual help, empty states, progressive disclosure |
+| **Meta** | Systems outside the core product flow | Analytics, error tracking, accessibility options, admin panel, audit logging |
 
-[Not every game needs every category. Remove categories that don't apply.
+[Not every application needs every category. Remove categories that don't apply.
 Add custom categories if needed.]
 
 ---
@@ -51,9 +52,9 @@ Add custom categories if needed.]
 
 | Tier | Definition | Target Milestone | Design Urgency |
 |------|------------|------------------|----------------|
-| **MVP** | Required for the core loop to function. Without these, you can't test "is this fun?" | First playable prototype | Design FIRST |
-| **Vertical Slice** | Required for one complete, polished area. Demonstrates the full experience. | Vertical slice / demo | Design SECOND |
-| **Alpha** | All features present in rough form. Complete mechanical scope, placeholder content OK. | Alpha milestone | Design THIRD |
+| **MVP** | Required for the core workflow to function. Without these, you can't test "does this deliver value?" | First working prototype | Design FIRST |
+| **Feature Demo** | Required for one complete, polished user flow. Demonstrates the full experience. | Feature demonstration / public beta | Design SECOND |
+| **Alpha** | All features present in rough form. Complete functional scope, placeholder content OK. | Alpha milestone | Design THIRD |
 | **Full Vision** | Polish, edge cases, nice-to-haves, and content-complete features. | Beta / Release | Design as needed |
 
 ---
@@ -88,16 +89,16 @@ Systems at the top are foundations; systems at the bottom are wrappers.]
 ## Recommended Design Order
 
 [Combining dependency sort and priority tiers. Design these systems in this
-order. Each system's GDD should be completed and reviewed before starting the
+order. Each system's spec should be completed and reviewed before starting the
 next, though independent systems at the same layer can be designed in parallel.]
 
 | Order | System | Priority | Layer | Agent(s) | Est. Effort |
 |-------|--------|----------|-------|----------|-------------|
-| 1 | [First system to design] | MVP | Foundation | game-designer | [S/M/L] |
-| 2 | [Second system] | MVP | Foundation | game-designer | [S/M/L] |
+| 1 | [First system to design] | MVP | Foundation | product-manager | [S/M/L] |
+| 2 | [Second system] | MVP | Foundation | technical-director | [S/M/L] |
 
 [Effort estimates: S = 1 session, M = 2-3 sessions, L = 4+ sessions.
-A "session" is one focused design conversation producing a complete GDD.]
+A "session" is one focused design conversation producing a complete spec.]
 
 ---
 
@@ -133,7 +134,7 @@ These should be prototyped early regardless of priority tier.]
 | Design docs reviewed | [N] |
 | Design docs approved | [N] |
 | MVP systems designed | [N/total MVP] |
-| Vertical Slice systems designed | [N/total VS] |
+| Feature Demo systems designed | [N/total FD] |
 
 ---
 
@@ -141,6 +142,6 @@ These should be prototyped early regardless of priority tier.]
 
 - [ ] Review and approve this systems enumeration
 - [ ] Design MVP-tier systems first (use `/design-system [system-name]`)
-- [ ] Run `/design-review` on each completed GDD
+- [ ] Run `/design-review` on each completed spec
 - [ ] Run `/gate-check pre-production` when MVP systems are designed
 - [ ] Prototype the highest-risk system early (`/prototype [system]`)

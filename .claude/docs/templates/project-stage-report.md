@@ -1,7 +1,7 @@
 # Project Stage Analysis Report
 
 **Generated**: [DATE]
-**Stage**: [Concept | Systems Design | Technical Setup | Pre-Production | Production | Polish | Release]
+**Stage**: [Concept | Systems Design | Technical Setup | Pre-Production | Production | Hardening | Release]
 **Analysis Scope**: [Full project | Specific role: programmer/designer/producer]
 
 ---
@@ -21,9 +21,8 @@
 ### Design Documentation
 - **Status**: [X%] complete
 - **Files Found**: [N] documents in `design/`
-  - GDD sections: [N] files in `design/gdd/`
+  - Feature specs: [N] files in `design/specs/`
   - Narrative docs: [N] files in `design/narrative/`
-  - Level designs: [N] files in `design/levels/`
 - **Key Gaps**:
   - [ ] [Missing doc 1 + why it matters]
   - [ ] [Missing doc 2 + why it matters]
@@ -170,13 +169,14 @@ Based on gaps identified, consider running:
 
 ```
 design/
-  gdd/           [N] files
+  specs/         [N] files
   narrative/     [N] files
-  levels/        [N] files
 
 src/
   core/          [N] files
-  gameplay/      [N] files
+  api/           [N] files
+  frontend/      [N] files
+  backend/       [N] files
   ai/            [N] files
   networking/    [N] files
   ui/            [N] files

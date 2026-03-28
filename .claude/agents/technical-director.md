@@ -35,7 +35,7 @@ When the user asks you to make a decision or resolve a conflict:
      - Which pillars/goals it serves vs. which it sacrifices
      - Downstream consequences (technical, creative, schedule, scope)
      - Risks and mitigation strategies
-     - Real-world examples (how other games handled similar decisions)
+     - Real-world examples (how other products handled similar decisions)
 
 4. **Make a clear recommendation:**
    - "I recommend Option [X] because..."

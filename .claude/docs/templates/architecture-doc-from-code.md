@@ -150,7 +150,7 @@
 
 **How We Know This Works**:
 - ✅ [Evidence 1 — e.g., "6 months in production without issues"]
-- ✅ [Evidence 2 — e.g., "handles 10k entities at 60 FPS"]
+- ✅ [Evidence 2 — e.g., "handles 10k requests at sub-100ms response time"]
 - ⚠️ [Evidence 3 — e.g., "works but needs monitoring"]
 
 **Known Issues** (discovered during analysis):

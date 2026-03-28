@@ -31,15 +31,15 @@
 ### Test Coverage
 - [ ] All critical path features tested and signed off
 - [ ] Full regression suite passed: [pass rate]%
-- [ ] Soak test passed (4+ hours continuous play)
+- [ ] Extended soak test passed (4+ hours continuous usage)
 - [ ] Edge case testing complete
 
 ### Performance
-- [ ] Target FPS met on minimum spec: [actual] / [target] FPS
+- [ ] API response time (p95) met: [actual] / [target] ms
 - [ ] Memory usage within budget: [actual] / [budget] MB
 - [ ] Load times within budget: [actual] / [target] seconds
-- [ ] No memory leaks over extended play (soak test)
-- [ ] No frame drops below [threshold] in normal gameplay
+- [ ] No memory leaks over extended usage (soak test)
+- [ ] No response time degradation under normal usage load
 
 ---
 
@@ -59,24 +59,21 @@
 
 - [ ] Minimum and recommended specs documented
 - [ ] Keyboard+mouse controls fully functional
-- [ ] Controller support tested (Xbox, PlayStation, generic)
 - [ ] Resolution scaling tested: 1080p, 1440p, 4K, ultrawide
 - [ ] Windowed, borderless, fullscreen modes working
 - [ ] Graphics settings save and load correctly
 - [ ] Store SDK integrated and tested: [Steam/Epic/GOG]
-- [ ] Achievements functional
-- [ ] Cloud saves functional
+- [ ] Core analytics events firing correctly
+- [ ] Data sync and persistence verified
 
-## Platform: Console (if applicable)
+## Platform: Mobile (if applicable)
 
-- [ ] TRC/TCR/Lotcheck requirements met
-- [ ] Platform controller prompts correct
-- [ ] Suspend/resume works
-- [ ] User switching handled
-- [ ] Network loss handled gracefully
-- [ ] Storage full scenario handled
-- [ ] Parental controls respected
-- [ ] Certification submission prepared
+- [ ] iOS build passes App Store review guidelines
+- [ ] Android build passes Play Store review guidelines
+- [ ] Push notifications functional on both platforms
+- [ ] Offline mode degrades gracefully
+- [ ] App size within platform limits
+- [ ] Deep links navigate correctly
 
 ---
 
@@ -84,9 +81,7 @@
 
 - [ ] Store page metadata complete and proofread
 - [ ] Screenshots current and meet platform requirements
-- [ ] Trailer current
-- [ ] Key art and capsule images final
-- [ ] Age ratings obtained: [ ] ESRB [ ] PEGI [ ] Other
+- [ ] Age ratings / content classifications obtained (if applicable)
 - [ ] Legal: EULA, Privacy Policy, Terms of Service
 - [ ] Pricing configured for all regions
 
@@ -99,7 +94,7 @@
 - [ ] Day-one patch prepared (if needed)
 - [ ] On-call team schedule set for first 72 hours
 - [ ] Community announcements drafted
-- [ ] Press/influencer keys prepared
+- [ ] Press kit and launch announcement ready
 - [ ] Support team briefed on known issues
 - [ ] Rollback plan documented and tested
 

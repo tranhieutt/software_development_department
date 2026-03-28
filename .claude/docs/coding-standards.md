@@ -3,6 +3,7 @@
 - All code must include doc comments on public APIs
 - Every system must have a corresponding architecture decision record in `docs/architecture/`
 - Configuration values must be data-driven (external config files), never hardcoded
+- Secrets and environment variables follow the standards in `.claude/rules/secrets-config.md`
 - All public methods must be unit-testable (dependency injection over singletons)
 - Commits must reference the relevant design document or task ID
 - **Verification-driven development**: Write tests first when adding new features or systems.

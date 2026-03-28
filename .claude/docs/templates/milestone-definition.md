@@ -3,7 +3,7 @@
 ## Overview
 
 - **Target Date**: [Date]
-- **Type**: [Prototype | Vertical Slice | Alpha | Beta | Gold | Post-Launch]
+- **Type**: [Prototype | Working Demo | Alpha | Beta | Release Candidate | Post-Launch]
 - **Duration**: [N weeks]
 - **Number of Sprints**: [N]
 
@@ -46,7 +46,7 @@ these are met.]
 | Gate | Threshold | Measurement Method |
 |------|-----------|-------------------|
 | Crash rate | < [X] per hour | Automated crash reporting |
-| Frame rate | > [X] FPS on min spec | Performance profiling |
+| API response time (p95) | < [X]ms | Performance profiling |
 | Load time | < [X] seconds | Automated timing |
 | Critical bugs | 0 open S1 | Bug tracker |
 | Major bugs | < [X] open S2 | Bug tracker |

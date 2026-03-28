@@ -8,6 +8,28 @@ Tài liệu này ghi lại lịch sử cập nhật tài liệu và source code 
 
 ---
 
+### [v1.5.0] - 2026-03-28
+
+**Chủ đề:** Dọn sạch game references trong toàn bộ `.claude/agents/`
+
+**Dọn game references — SEVERE (5 agents):**
+
+- `.claude/agents/accessibility-specialist.md` — Description: "game is playable" → "software is accessible"; xóa gamepad/Xbox/PlayStation/Switch/Pause lines; "quest reminders" → "Key action shortcuts"
+- `.claude/agents/ai-programmer.md` — Description: "game AI / NPC behavior" → "intelligent system features / LLM integrations"; "NPCs, enemies" → "recommendations, predictions"; "player time to react" → "explainable and auditable"
+- `.claude/agents/analytics-engineer.md` — Description: "player behavior tracking" → "user behavior tracking"; event examples `game.level.started`, `game.combat.enemy_killed` → `user.session.started`, `user.action.completed`; "game design decisions" → "product decisions"
+- `.claude/agents/performance-analyst.md` — Description: "profiles game performance / frame time" → "profiles application performance / response time"; "Gameplay Logic" → "Business Logic"; "game state" → "application state"
+- `.claude/agents/network-programmer.md` — Description: "multiplayer / netcode / matchmaking" → "real-time / WebSocket / event streaming"; "gameplay state" → "application state"; "entity interpolation" → "state interpolation"
+
+**Dọn game references — MODERATE (5 agents):**
+
+- `.claude/agents/producer.md` — "how other games handled" → "how other products handled"; "game design changes" → "product design changes"
+- `.claude/agents/technical-director.md` — "how other games handled" → "how other products handled"
+- `.claude/agents/qa-lead.md` — "Playtest Coordination" → "User Testing Coordination"; "gameplay impact" → "user impact"
+- `.claude/agents/release-manager.md` — "player-facing messaging" → "user-facing messaging"
+- `.claude/agents/security-engineer.md` — "multiplayer security" → "real-time and distributed system security"
+
+---
+
 ### [v1.4.0] - 2026-03-28
 
 **Chủ đề:** Review tổng thể lần 3 — Sửa số đếm, Mobile templates, Secrets rule, Dọn sạch game references
@@ -114,4 +136,4 @@ Tài liệu này ghi lại lịch sử cập nhật tài liệu và source code 
 
 ---
 
-Last Updated: 2026-03-28 — v1.4.0
+Last Updated: 2026-03-28 — v1.5.0
