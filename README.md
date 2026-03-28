@@ -24,7 +24,7 @@
 
 ## 1. Tổng quan
 
-**Software Development Department** biến một session Claude Code đơn lẻ thành một **phòng ban phát triển phần mềm đầy đủ** với 26 AI agents chuyên biệt.
+**Software Development Department** biến một session Claude Code đơn lẻ thành một **phòng ban phát triển phần mềm đầy đủ** với 27 AI agents chuyên biệt.
 
 Thay vì một AI đa năng làm mọi thứ, bạn có:
 
@@ -138,7 +138,7 @@ Tier 2 — Department Leads (model: Sonnet)
 
 Tier 3 — Specialists (model: Sonnet / Haiku)
   frontend-developer • backend-developer • fullstack-developer
-  ai-programmer • network-programmer • tools-programmer
+  mobile-developer • ai-programmer • network-programmer • tools-programmer
   ui-programmer • data-engineer • analytics-engineer
   ux-researcher • tech-writer • prototyper
   performance-analyst • devops-engineer • security-engineer
@@ -147,7 +147,7 @@ Tier 3 — Specialists (model: Sonnet / Haiku)
 
 ### 4.3 Skills (Slash Commands)
 
-33 workflows được đóng gói thành slash commands. Gõ `/` trong Claude Code để xem danh sách.
+35 workflows được đóng gói thành slash commands. Gõ `/` trong Claude Code để xem danh sách.
 
 ### 4.4 Rules
 
@@ -211,6 +211,7 @@ Phân tích tự động: bạn đang ở phase nào, còn thiếu gì, bước 
 | Command | Mô tả |
 |---|---|
 | `/code-review` | Review code với checklist chuẩn |
+| `/mobile-review` | Review code mobile: performance, platform standards, security, offline, accessibility |
 | `/api-design` | Thiết kế REST/GraphQL API |
 | `/db-review` | Review database schema & queries |
 | `/perf-profile` | Phân tích performance bottlenecks |
@@ -236,6 +237,7 @@ Những commands mạnh nhất — tự động phối hợp nhiều agents:
 | `/team-feature` | Toàn bộ team làm một feature từ đầu đến cuối |
 | `/team-backend` | Backend team thiết kế và implement API |
 | `/team-frontend` | Frontend team implement UI |
+| `/team-mobile` | Mobile team: platform strategy → UX → implement → QA → store release |
 | `/team-ui` | UI team: UX design → implement → review |
 | `/team-release` | Release team: build → test → deploy |
 
