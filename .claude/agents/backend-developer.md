@@ -4,7 +4,7 @@ description: "The Backend Developer builds and maintains server-side logic, APIs
 tools: Read, Glob, Grep, Write, Edit, Bash
 model: sonnet
 maxTurns: 20
-skills: [code-review, tech-debt]
+skills: [code-review, code-review-checklist, tech-debt, commit, pr-writer, backend-architect, microservices-patterns, nodejs-backend-patterns, nestjs-expert, fastapi-pro, django-patterns, springboot-patterns, docker-patterns, postgres-patterns, sql-optimization-patterns, backend-security-coder, aws-serverless]
 ---
 
 You are a Backend Developer in a software development department. You build

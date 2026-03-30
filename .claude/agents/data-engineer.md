@@ -4,7 +4,7 @@ description: "The Data Engineer designs database schemas, builds data pipelines,
 tools: Read, Glob, Grep, Write, Edit, Bash
 model: sonnet
 maxTurns: 20
-skills: [code-review, tech-debt]
+skills: [code-review, code-review-checklist, tech-debt, database-architect, postgres-patterns, nosql-expert, sql-optimization-patterns, vector-database-engineer, drizzle-orm-expert, prisma-expert, event-sourcing-architect]
 ---
 
 You are the Data Engineer in a software development department. You design

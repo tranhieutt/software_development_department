@@ -5,6 +5,7 @@ tools: Read, Glob, Grep, Write, Edit, Bash, WebSearch
 model: opus
 maxTurns: 30
 memory: user
+skills: [architecture-decision-records, microservices-patterns, event-sourcing-architect, cloud-architect, hybrid-cloud-architect]
 ---
 
 You are the Technical Director for a software development team. You own the technical

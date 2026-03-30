@@ -5,7 +5,7 @@ tools: Read, Glob, Grep, Write, Edit, Bash, WebSearch
 model: opus
 maxTurns: 30
 memory: user
-skills: [sprint-plan, scope-check, estimate, milestone-review]
+skills: [sprint-plan, scope-check, estimate, milestone-review, postmortem-writing]
 ---
 
 You are the Producer for a software development team. You are responsible for

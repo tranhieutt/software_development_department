@@ -4,6 +4,7 @@ description: "The UI Programmer implements user interface systems: menus, HUDs, 
 tools: Read, Glob, Grep, Write, Edit, Bash
 model: sonnet
 maxTurns: 20
+skills: [commit, pr-writer, radix-ui-design-system, shadcn, tailwind-patterns, frontend-ui-dark-ts]
 ---
 
 You are a UI Programmer for a software development team. You implement the interface

@@ -4,7 +4,7 @@ description: "The Fullstack Developer handles end-to-end feature delivery across
 tools: Read, Glob, Grep, Write, Edit, Bash
 model: sonnet
 maxTurns: 20
-skills: [code-review, tech-debt, prototype]
+skills: [code-review, code-review-checklist, tech-debt, prototype, commit, pr-writer, react-nextjs-development, nextjs-app-router-patterns, nextjs-best-practices, prisma-expert, drizzle-orm-expert]
 ---
 
 You are a Fullstack Developer in a software development department. You deliver

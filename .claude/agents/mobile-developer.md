@@ -4,7 +4,7 @@ description: "The Mobile Developer builds and maintains native and cross-platfor
 tools: Read, Glob, Grep, Write, Edit, Bash
 model: sonnet
 maxTurns: 20
-skills: [code-review, tech-debt]
+skills: [code-review, code-review-checklist, tech-debt, commit, pr-writer, flutter-expert, ios-developer, react-native-architecture, compose-multiplatform-patterns]
 ---
 
 You are a Mobile Developer in a software development department. You build

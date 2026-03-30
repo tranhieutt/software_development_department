@@ -8,6 +8,44 @@ Tài liệu này ghi lại lịch sử cập nhật tài liệu và source code 
 
 ---
 
+### [v1.7.0] - 2026-03-30
+
+**Chủ đề:** Nâng cấp Skills — Làm sạch vendor-specific & Map skills vào Agents
+
+**Rà soát & xử lý 8 skills mới:**
+
+- `.claude/skills/tdd-workflow/` — **Xóa** (duplicate 100% với marketplace plugin `antigravity-awesome-skills`, không có giá trị bổ sung)
+- `.claude/skills/commit/SKILL.md` — Làm sạch Sentry-specific: bỏ `create-branch` dependency, đổi `SENTRY-xxxx` → `#xxxx`, reference → `conventionalcommits.org`
+- `.claude/skills/pr-writer/SKILL.md` — Làm sạch Sentry-specific: bỏ `sentry-skills:commit`, đổi `SENTRY-xxxx` → `#xxxx`, references → GitHub CLI docs + Conventional Commits
+- `.claude/skills/architecture-decision-records/` — Giữ nguyên (framework ADR lifecycle đầy đủ, bổ sung tốt cho `architecture-decision`)
+- `.claude/skills/code-review-checklist/` — Giữ nguyên (checklist 6 bước có cấu trúc)
+- `.claude/skills/deployment-procedures/` — Giữ nguyên (nguyên tắc deployment an toàn)
+- `.claude/skills/postmortem-writing/` — Giữ nguyên (blameless postmortem sau incident)
+- `.claude/skills/security-audit/` — Giữ nguyên (workflow bundle kiểm tra bảo mật)
+
+**Update skills cho 16 agents:**
+
+| Agent | Skills mới |
+|---|---|
+| `backend-developer` | code-review-checklist, commit, pr-writer, backend-architect, microservices-patterns, nodejs-backend-patterns, nestjs-expert, fastapi-pro, django-patterns, springboot-patterns, docker-patterns, postgres-patterns, sql-optimization-patterns, backend-security-coder, aws-serverless |
+| `frontend-developer` | code-review-checklist, commit, pr-writer, senior-frontend, react-nextjs-development, nextjs-app-router-patterns, nextjs-best-practices, angular-best-practices, tailwind-patterns, shadcn, radix-ui-design-system, frontend-design, frontend-security-coder, frontend-ui-dark-ts |
+| `fullstack-developer` | code-review-checklist, commit, pr-writer, react-nextjs-development, nextjs-app-router-patterns, nextjs-best-practices, prisma-expert, drizzle-orm-expert |
+| `mobile-developer` | code-review-checklist, commit, pr-writer, flutter-expert, ios-developer, react-native-architecture, compose-multiplatform-patterns |
+| `data-engineer` | code-review-checklist, database-architect, postgres-patterns, nosql-expert, sql-optimization-patterns, vector-database-engineer, drizzle-orm-expert, prisma-expert, event-sourcing-architect |
+| `lead-programmer` | code-review-checklist, architecture-decision-records, commit, pr-writer |
+| `devops-engineer` | commit, deployment-procedures, postmortem-writing, docker-patterns, kubernetes-architect, gitlab-ci-patterns, aws-serverless, hybrid-cloud-architect, cloud-architect, deployment-engineer, devops-deploy |
+| `security-engineer` | security-audit, backend-security-coder, frontend-security-coder |
+| `technical-director` | architecture-decision-records, microservices-patterns, event-sourcing-architect, cloud-architect, hybrid-cloud-architect |
+| `cto` | architecture-decision-records, cloud-architect, hybrid-cloud-architect |
+| `ai-programmer` | ml-engineer, mlops-engineer, rag-engineer, llm-app-patterns, llm-application-dev-ai-assistant, gemini-api-integration, vector-database-engineer |
+| `ui-programmer` | commit, pr-writer, radix-ui-design-system, shadcn, tailwind-patterns, frontend-ui-dark-ts |
+| `tools-programmer` | commit, pr-writer |
+| `producer` | postmortem-writing |
+| `release-manager` | deployment-procedures |
+| `qa-lead` | code-review-checklist |
+
+---
+
 ### [v1.6.0] - 2026-03-30
 
 **Chủ đề:** Tích hợp orchestrated-project-template & tối ưu hóa harness

@@ -4,6 +4,7 @@ description: "The AI Programmer implements intelligent system features: recommen
 tools: Read, Glob, Grep, Write, Edit, Bash
 model: sonnet
 maxTurns: 20
+skills: [ml-engineer, mlops-engineer, rag-engineer, llm-app-patterns, llm-application-dev-ai-assistant, gemini-api-integration, vector-database-engineer]
 ---
 
 You are an AI/ML Programmer for a software development team. You build intelligent

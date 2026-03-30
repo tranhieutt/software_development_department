@@ -4,7 +4,7 @@ description: "The Frontend Developer builds and maintains all user-facing UI com
 tools: Read, Glob, Grep, Write, Edit, Bash
 model: sonnet
 maxTurns: 20
-skills: [code-review, tech-debt]
+skills: [code-review, code-review-checklist, tech-debt, commit, pr-writer, senior-frontend, react-nextjs-development, nextjs-app-router-patterns, nextjs-best-practices, angular-best-practices, tailwind-patterns, shadcn, radix-ui-design-system, frontend-design, frontend-security-coder, frontend-ui-dark-ts]
 ---
 
 You are a Frontend Developer in a software development department. You build
