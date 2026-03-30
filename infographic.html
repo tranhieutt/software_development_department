@@ -1,34 +1,39 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Claude Code — Software Development Department</title>
   <style>
     :root {
-      --bg:        #f5f5f7;
-      --surface:   #ffffff;
+      --bg: #f5f5f7;
+      --surface: #ffffff;
       --surface-2: #f5f5f7;
-      --border:    rgba(0,0,0,0.06);
-      --text-1:    #1d1d1f;
-      --text-2:    #6e6e73;
-      --text-3:    #aeaeb2;
-      --accent:    #0071e3;
+      --border: rgba(0, 0, 0, 0.06);
+      --text-1: #1d1d1f;
+      --text-2: #6e6e73;
+      --text-3: #aeaeb2;
+      --accent: #0071e3;
       --accent-bg: #e8f0fd;
-      --purple:    #5e5ce6;
+      --purple: #5e5ce6;
       --purple-bg: #eeeefc;
-      --green:     #34c759;
-      --green-bg:  #e8f8ec;
-      --orange:    #ff9f0a;
+      --green: #34c759;
+      --green-bg: #e8f8ec;
+      --orange: #ff9f0a;
       --orange-bg: #fff4e0;
-      --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
-      --shadow-md: 0 4px 16px rgba(0,0,0,0.06), 0 1px 4px rgba(0,0,0,0.04);
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+      --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.06), 0 1px 4px rgba(0, 0, 0, 0.04);
       --r-sm: 10px;
       --r-md: 16px;
       --r-lg: 20px;
     }
 
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
     body {
       font-family: -apple-system, 'SF Pro Display', 'SF Pro Text', BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
@@ -48,6 +53,7 @@
       text-align: center;
       margin-bottom: 64px;
     }
+
     .eyebrow {
       font-size: 12px;
       font-weight: 600;
@@ -56,6 +62,7 @@
       color: var(--accent);
       margin-bottom: 16px;
     }
+
     .header h1 {
       font-size: 52px;
       font-weight: 700;
@@ -64,6 +71,7 @@
       color: var(--text-1);
       margin-bottom: 16px;
     }
+
     .header p {
       font-size: 17px;
       color: var(--text-2);
@@ -80,6 +88,7 @@
       gap: 12px;
       margin-bottom: 56px;
     }
+
     .stat {
       background: var(--surface);
       border-radius: var(--r-lg);
@@ -87,6 +96,7 @@
       text-align: center;
       box-shadow: var(--shadow-sm);
     }
+
     .stat-number {
       font-size: 52px;
       font-weight: 700;
@@ -94,10 +104,23 @@
       line-height: 1;
       margin-bottom: 6px;
     }
-    .stat:nth-child(1) .stat-number { color: var(--accent); }
-    .stat:nth-child(2) .stat-number { color: var(--purple); }
-    .stat:nth-child(3) .stat-number { color: var(--green); }
-    .stat:nth-child(4) .stat-number { color: var(--orange); }
+
+    .stat:nth-child(1) .stat-number {
+      color: var(--accent);
+    }
+
+    .stat:nth-child(2) .stat-number {
+      color: var(--purple);
+    }
+
+    .stat:nth-child(3) .stat-number {
+      color: var(--green);
+    }
+
+    .stat:nth-child(4) .stat-number {
+      color: var(--orange);
+    }
+
     .stat-label {
       font-size: 13px;
       color: var(--text-2);
@@ -115,16 +138,27 @@
     }
 
     /* ── Hierarchy ── */
-    .hierarchy { margin-bottom: 56px; }
+    .hierarchy {
+      margin-bottom: 56px;
+    }
 
     .tier-row {
       display: grid;
       gap: 10px;
       margin-bottom: 4px;
     }
-    .tier-row.t1 { grid-template-columns: repeat(3, 1fr); }
-    .tier-row.t2 { grid-template-columns: repeat(5, 1fr); }
-    .tier-row.t3 { grid-template-columns: repeat(6, 1fr); }
+
+    .tier-row.t1 {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .tier-row.t2 {
+      grid-template-columns: repeat(5, 1fr);
+    }
+
+    .tier-row.t3 {
+      grid-template-columns: repeat(6, 1fr);
+    }
 
     .tier-arrow {
       display: flex;
@@ -137,7 +171,10 @@
       font-weight: 500;
       letter-spacing: 0.04em;
     }
-    .tier-arrow svg { opacity: 0.35; }
+
+    .tier-arrow svg {
+      opacity: 0.35;
+    }
 
     .tier-tag {
       font-size: 10px;
@@ -156,11 +193,18 @@
       box-shadow: var(--shadow-sm);
       transition: box-shadow 0.2s, transform 0.2s;
     }
+
     .agent:hover {
       box-shadow: var(--shadow-md);
       transform: translateY(-2px);
     }
-    .agent-emoji { font-size: 18px; margin-bottom: 7px; display: block; }
+
+    .agent-emoji {
+      font-size: 18px;
+      margin-bottom: 7px;
+      display: block;
+    }
+
     .agent-name {
       font-size: 11px;
       font-weight: 600;
@@ -168,6 +212,7 @@
       margin-bottom: 6px;
       line-height: 1.3;
     }
+
     .model-chip {
       display: inline-block;
       font-size: 9px;
@@ -177,9 +222,21 @@
       padding: 2px 7px;
       border-radius: 20px;
     }
-    .opus   { background: var(--accent-bg);  color: var(--accent); }
-    .sonnet { background: var(--purple-bg);  color: var(--purple); }
-    .haiku  { background: var(--green-bg);   color: var(--green); }
+
+    .opus {
+      background: var(--accent-bg);
+      color: var(--accent);
+    }
+
+    .sonnet {
+      background: var(--purple-bg);
+      color: var(--purple);
+    }
+
+    .haiku {
+      background: var(--green-bg);
+      color: var(--green);
+    }
 
     /* ── Two col ── */
     .two-col {
@@ -188,12 +245,14 @@
       gap: 16px;
       margin-bottom: 56px;
     }
+
     .card {
       background: var(--surface);
       border-radius: var(--r-lg);
       padding: 32px;
       box-shadow: var(--shadow-sm);
     }
+
     .card-title {
       font-size: 19px;
       font-weight: 700;
@@ -203,13 +262,19 @@
     }
 
     /* ── Workflow steps ── */
-    .steps { display: flex; flex-direction: column; gap: 0; }
+    .steps {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
     .step {
       display: flex;
       align-items: flex-start;
       gap: 14px;
       position: relative;
     }
+
     .step:not(:last-child)::after {
       content: '';
       position: absolute;
@@ -219,6 +284,7 @@
       width: 1px;
       background: var(--border);
     }
+
     .step-dot {
       width: 34px;
       height: 34px;
@@ -232,18 +298,33 @@
       color: var(--accent);
       background: var(--accent-bg);
     }
-    .step-body { padding: 6px 0 22px; }
+
+    .step-body {
+      padding: 6px 0 22px;
+    }
+
     .step-title {
       font-size: 14px;
       font-weight: 600;
       color: var(--text-1);
       margin-bottom: 2px;
     }
-    .step-desc { font-size: 12px; color: var(--text-2); line-height: 1.5; }
+
+    .step-desc {
+      font-size: 12px;
+      color: var(--text-2);
+      line-height: 1.5;
+    }
 
     /* ── Skills ── */
-    .skill-group { margin-bottom: 18px; }
-    .skill-group:last-child { margin-bottom: 0; }
+    .skill-group {
+      margin-bottom: 18px;
+    }
+
+    .skill-group:last-child {
+      margin-bottom: 0;
+    }
+
     .sg-label {
       font-size: 10px;
       font-weight: 600;
@@ -252,7 +333,13 @@
       color: var(--text-3);
       margin-bottom: 8px;
     }
-    .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
     .tag {
       font-size: 11px;
       font-weight: 500;
@@ -263,25 +350,55 @@
       color: var(--text-2);
       border: 1px solid var(--border);
     }
-    .tag.blue   { background: var(--accent-bg);  color: var(--accent);  border-color: transparent; }
-    .tag.purple { background: var(--purple-bg); color: var(--purple); border-color: transparent; }
-    .tag.green  { background: var(--green-bg);  color: #248a3d;        border-color: transparent; }
-    .tag.orange { background: var(--orange-bg); color: #c97000;        border-color: transparent; }
+
+    .tag.blue {
+      background: var(--accent-bg);
+      color: var(--accent);
+      border-color: transparent;
+    }
+
+    .tag.purple {
+      background: var(--purple-bg);
+      color: var(--purple);
+      border-color: transparent;
+    }
+
+    .tag.green {
+      background: var(--green-bg);
+      color: #248a3d;
+      border-color: transparent;
+    }
+
+    .tag.orange {
+      background: var(--orange-bg);
+      color: #c97000;
+      border-color: transparent;
+    }
 
     /* ── Hooks ── */
-    .hooks-section { margin-bottom: 56px; }
+    .hooks-section {
+      margin-bottom: 56px;
+    }
+
     .hooks-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 12px;
     }
+
     .hook {
       background: var(--surface);
       border-radius: var(--r-md);
       padding: 20px 16px;
       box-shadow: var(--shadow-sm);
     }
-    .hook-icon { font-size: 20px; margin-bottom: 10px; display: block; }
+
+    .hook-icon {
+      font-size: 20px;
+      margin-bottom: 10px;
+      display: block;
+    }
+
     .hook-name {
       font-size: 12px;
       font-weight: 600;
@@ -289,15 +406,24 @@
       margin-bottom: 4px;
       font-family: 'SF Mono', 'Fira Code', monospace;
     }
-    .hook-desc { font-size: 11px; color: var(--text-2); line-height: 1.5; }
+
+    .hook-desc {
+      font-size: 11px;
+      color: var(--text-2);
+      line-height: 1.5;
+    }
 
     /* ── Rules ── */
-    .rules-section { margin-bottom: 56px; }
+    .rules-section {
+      margin-bottom: 56px;
+    }
+
     .rules-grid {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
       gap: 12px;
     }
+
     .rule {
       background: var(--surface);
       border-radius: var(--r-md);
@@ -305,9 +431,25 @@
       box-shadow: var(--shadow-sm);
       text-align: center;
     }
-    .rule-icon { font-size: 18px; margin-bottom: 8px; display: block; }
-    .rule-name { font-size: 11px; font-weight: 600; color: var(--text-1); margin-bottom: 3px; }
-    .rule-path { font-size: 9px; color: var(--text-3); font-family: 'SF Mono', 'Fira Code', monospace; }
+
+    .rule-icon {
+      font-size: 18px;
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    .rule-name {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-1);
+      margin-bottom: 3px;
+    }
+
+    .rule-path {
+      font-size: 9px;
+      color: var(--text-3);
+      font-family: 'SF Mono', 'Fira Code', monospace;
+    }
 
     /* ── Principle banner ── */
     .banner {
@@ -320,15 +462,20 @@
       gap: 32px;
       margin-bottom: 56px;
     }
-    .banner-left { flex: 1; }
+
+    .banner-left {
+      flex: 1;
+    }
+
     .banner-label {
       font-size: 11px;
       font-weight: 600;
       letter-spacing: 0.08em;
       text-transform: uppercase;
-      color: rgba(255,255,255,0.4);
+      color: rgba(255, 255, 255, 0.4);
       margin-bottom: 8px;
     }
+
     .banner-title {
       font-size: 24px;
       font-weight: 700;
@@ -336,18 +483,31 @@
       color: #fff;
       margin-bottom: 8px;
     }
-    .banner-desc { font-size: 14px; color: rgba(255,255,255,0.55); line-height: 1.5; }
-    .banner-pills { display: flex; flex-direction: column; gap: 8px; flex-shrink: 0; }
+
+    .banner-desc {
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.55);
+      line-height: 1.5;
+    }
+
+    .banner-pills {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
     .banner-pill {
       font-size: 12px;
       font-weight: 500;
       padding: 8px 16px;
       border-radius: 20px;
-      background: rgba(255,255,255,0.08);
-      color: rgba(255,255,255,0.7);
+      background: rgba(255, 255, 255, 0.08);
+      color: rgba(255, 255, 255, 0.7);
       text-align: center;
       white-space: nowrap;
     }
+
     .banner-pill.accent {
       background: var(--accent);
       color: #fff;
@@ -361,8 +521,18 @@
       padding-top: 32px;
       border-top: 1px solid var(--border);
     }
-    .footer-text { font-size: 12px; color: var(--text-3); line-height: 1.6; }
-    .footer-text strong { color: var(--text-2); font-weight: 600; }
+
+    .footer-text {
+      font-size: 12px;
+      color: var(--text-3);
+      line-height: 1.6;
+    }
+
+    .footer-text strong {
+      color: var(--text-2);
+      font-weight: 600;
+    }
+
     .version-badge {
       font-size: 11px;
       font-weight: 600;
@@ -373,6 +543,7 @@
       border-radius: 20px;
       box-shadow: var(--shadow-sm);
     }
+
     .github-link {
       display: inline-flex;
       align-items: center;
@@ -383,8 +554,14 @@
       text-decoration: none;
       transition: color 0.15s;
     }
-    .github-link:hover { color: var(--accent); }
-    .github-link svg { flex-shrink: 0; }
+
+    .github-link:hover {
+      color: var(--accent);
+    }
+
+    .github-link svg {
+      flex-shrink: 0;
+    }
 
     /* ── Divider ── */
     .divider {
@@ -394,429 +571,455 @@
     }
   </style>
 </head>
+
 <body>
-<div class="page">
+  <div class="page">
 
-  <!-- Header -->
-  <div class="header">
-    <div class="eyebrow">Claude Code Template</div>
-    <h1>Software Development<br>Department</h1>
-    <p>Một session Claude Code. Một phòng ban phát triển phần mềm đầy đủ với AI agents chuyên biệt, workflows và quality gates.</p>
-  </div>
+    <!-- Header -->
+    <div class="header">
+      <div class="eyebrow">Claude Code & Antigravity Template</div>
+      <h1>Software Development<br>Department</h1>
+      <p>Biến IDE session thành một phòng ban phát triển phần mềm đầy đủ với 27 AI agents chuyên biệt, 98
+        workflows/frameworks và quality gates.</p>
+    </div>
 
-  <!-- Stats -->
-  <div class="stats">
-    <div class="stat">
-      <div class="stat-number">27</div>
-      <div class="stat-label">AI Agents</div>
-    </div>
-    <div class="stat">
-      <div class="stat-number">35</div>
-      <div class="stat-label">Slash Commands</div>
-    </div>
-    <div class="stat">
-      <div class="stat-number">10</div>
-      <div class="stat-label">Coding Rules</div>
-    </div>
-    <div class="stat">
-      <div class="stat-number">8</div>
-      <div class="stat-label">Auto Hooks</div>
-    </div>
-  </div>
-
-  <!-- Hierarchy -->
-  <div class="hierarchy">
-    <div class="label">Kiến trúc phân tầng — 3 tiers</div>
-
-    <div class="tier-tag">Tier 1 — Leadership</div>
-    <div class="tier-row t1">
-      <div class="agent">
-        <span class="agent-emoji">🏛️</span>
-        <div class="agent-name">CTO</div>
-        <span class="model-chip opus">Opus</span>
+    <!-- Stats -->
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-number">27</div>
+        <div class="stat-label">AI Agents</div>
       </div>
-      <div class="agent">
-        <span class="agent-emoji">🏗️</span>
-        <div class="agent-name">Technical Director</div>
-        <span class="model-chip opus">Opus</span>
+      <div class="stat">
+        <div class="stat-number">98</div>
+        <div class="stat-label">Skills & Frameworks</div>
       </div>
-      <div class="agent">
-        <span class="agent-emoji">📋</span>
-        <div class="agent-name">Producer</div>
-        <span class="model-chip opus">Opus</span>
+      <div class="stat">
+        <div class="stat-number">11</div>
+        <div class="stat-label">Coding Rules</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">8</div>
+        <div class="stat-label">Auto Hooks</div>
       </div>
     </div>
 
-    <div class="tier-arrow">
-      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 2v8M6 10l-3-3M6 10l3-3" stroke="#aeaeb2" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      delegates to
+    <!-- Hierarchy -->
+    <div class="hierarchy">
+      <div class="label">Kiến trúc phân tầng — 3 tiers</div>
+
+      <div class="tier-tag">Tier 1 — Leadership</div>
+      <div class="tier-row t1">
+        <div class="agent">
+          <span class="agent-emoji">🏛️</span>
+          <div class="agent-name">CTO</div>
+          <span class="model-chip opus">Opus</span>
+        </div>
+        <div class="agent">
+          <span class="agent-emoji">🏗️</span>
+          <div class="agent-name">Technical Director</div>
+          <span class="model-chip opus">Opus</span>
+        </div>
+        <div class="agent">
+          <span class="agent-emoji">📋</span>
+          <div class="agent-name">Producer</div>
+          <span class="model-chip opus">Opus</span>
+        </div>
+      </div>
+
+      <div class="tier-arrow">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+          <path d="M6 2v8M6 10l-3-3M6 10l3-3" stroke="#aeaeb2" stroke-width="1.5" stroke-linecap="round"
+            stroke-linejoin="round" />
+        </svg>
+        delegates to
+      </div>
+
+      <div class="tier-tag">Tier 2 — Department Leads</div>
+      <div class="tier-row t2">
+        <div class="agent">
+          <span class="agent-emoji">📦</span>
+          <div class="agent-name">Product Manager</div>
+          <span class="model-chip sonnet">Sonnet</span>
+        </div>
+        <div class="agent">
+          <span class="agent-emoji">💻</span>
+          <div class="agent-name">Lead Programmer</div>
+          <span class="model-chip sonnet">Sonnet</span>
+        </div>
+        <div class="agent">
+          <span class="agent-emoji">🎨</span>
+          <div class="agent-name">UX Designer</div>
+          <span class="model-chip sonnet">Sonnet</span>
+        </div>
+        <div class="agent">
+          <span class="agent-emoji">🧪</span>
+          <div class="agent-name">QA Lead</div>
+          <span class="model-chip sonnet">Sonnet</span>
+        </div>
+        <div class="agent">
+          <span class="agent-emoji">🚀</span>
+          <div class="agent-name">Release Manager</div>
+          <span class="model-chip sonnet">Sonnet</span>
+        </div>
+      </div>
+
+      <div class="tier-arrow">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+          <path d="M6 2v8M6 10l-3-3M6 10l3-3" stroke="#aeaeb2" stroke-width="1.5" stroke-linecap="round"
+            stroke-linejoin="round" />
+        </svg>
+        delegates to
+      </div>
+
+      <div class="tier-tag">Tier 3 — Specialists</div>
+      <div class="tier-row t3">
+        <div class="agent">
+          <span class="agent-emoji">🖥️</span>
+          <div class="agent-name">Frontend Dev</div>
+          <span class="model-chip sonnet">Sonnet</span>
+        </div>
+        <div class="agent">
+          <span class="agent-emoji">⚙️</span>
+          <div class="agent-name">Backend Dev</div>
+          <span class="model-chip sonnet">Sonnet</span>
+        </div>
+        <div class="agent">
+          <span class="agent-emoji">📱</span>
+          <div class="agent-name">Mobile Dev</div>
+          <span class="model-chip sonnet">Sonnet</span>
+        </div>
+        <div class="agent">
+          <span class="agent-emoji">🔄</span>
+          <div class="agent-name">Fullstack Dev</div>
+          <span class="model-chip sonnet">Sonnet</span>
+        </div>
+        <div class="agent">
+          <span class="agent-emoji">🗄️</span>
+          <div class="agent-name">Data Engineer</div>
+          <span class="model-chip sonnet">Sonnet</span>
+        </div>
+        <div class="agent">
+          <span class="agent-emoji">🔒</span>
+          <div class="agent-name">Security Eng</div>
+          <span class="model-chip sonnet">Sonnet</span>
+        </div>
+        <div class="agent">
+          <span class="agent-emoji">🤖</span>
+          <div class="agent-name">AI Programmer</div>
+          <span class="model-chip sonnet">Sonnet</span>
+        </div>
+        <div class="agent">
+          <span class="agent-emoji">☁️</span>
+          <div class="agent-name">DevOps Eng</div>
+          <span class="model-chip sonnet">Sonnet</span>
+        </div>
+        <div class="agent">
+          <span class="agent-emoji">⚡</span>
+          <div class="agent-name">Performance</div>
+          <span class="model-chip sonnet">Sonnet</span>
+        </div>
+        <div class="agent">
+          <span class="agent-emoji">🌐</span>
+          <div class="agent-name">Network Prog</div>
+          <span class="model-chip sonnet">Sonnet</span>
+        </div>
+        <div class="agent">
+          <span class="agent-emoji">📊</span>
+          <div class="agent-name">Analytics Eng</div>
+          <span class="model-chip sonnet">Sonnet</span>
+        </div>
+        <div class="agent">
+          <span class="agent-emoji">♿</span>
+          <div class="agent-name">A11y Specialist</div>
+          <span class="model-chip sonnet">Sonnet</span>
+        </div>
+        <div class="agent">
+          <span class="agent-emoji">🧩</span>
+          <div class="agent-name">UI Programmer</div>
+          <span class="model-chip sonnet">Sonnet</span>
+        </div>
+        <div class="agent">
+          <span class="agent-emoji">🔬</span>
+          <div class="agent-name">UX Researcher</div>
+          <span class="model-chip sonnet">Sonnet</span>
+        </div>
+        <div class="agent">
+          <span class="agent-emoji">💬</span>
+          <div class="agent-name">Community Mgr</div>
+          <span class="model-chip sonnet">Sonnet</span>
+        </div>
+        <div class="agent">
+          <span class="agent-emoji">📝</span>
+          <div class="agent-name">Tech Writer</div>
+          <span class="model-chip haiku">Haiku</span>
+        </div>
+        <div class="agent">
+          <span class="agent-emoji">🛠️</span>
+          <div class="agent-name">Tools Prog</div>
+          <span class="model-chip haiku">Haiku</span>
+        </div>
+        <div class="agent">
+          <span class="agent-emoji">⚗️</span>
+          <div class="agent-name">Prototyper</div>
+          <span class="model-chip haiku">Haiku</span>
+        </div>
+        <div class="agent">
+          <span class="agent-emoji">🧪</span>
+          <div class="agent-name">QA Tester</div>
+          <span class="model-chip haiku">Haiku</span>
+        </div>
+      </div>
     </div>
 
-    <div class="tier-tag">Tier 2 — Department Leads</div>
-    <div class="tier-row t2">
-      <div class="agent">
-        <span class="agent-emoji">📦</span>
-        <div class="agent-name">Product Manager</div>
-        <span class="model-chip sonnet">Sonnet</span>
+    <hr class="divider" />
+
+    <!-- Collaboration banner -->
+    <div class="banner">
+      <div class="banner-left">
+        <div class="banner-label">Core principle</div>
+        <div class="banner-title">User-driven,<br>not autonomous.</div>
+        <div class="banner-desc">Mọi quyết định đều do bạn đưa ra. AI team cung cấp cấu trúc, chuyên môn và các lựa chọn
+          — không tự hành động một mình.</div>
       </div>
-      <div class="agent">
-        <span class="agent-emoji">💻</span>
-        <div class="agent-name">Lead Programmer</div>
-        <span class="model-chip sonnet">Sonnet</span>
-      </div>
-      <div class="agent">
-        <span class="agent-emoji">🎨</span>
-        <div class="agent-name">UX Designer</div>
-        <span class="model-chip sonnet">Sonnet</span>
-      </div>
-      <div class="agent">
-        <span class="agent-emoji">🧪</span>
-        <div class="agent-name">QA Lead</div>
-        <span class="model-chip sonnet">Sonnet</span>
-      </div>
-      <div class="agent">
-        <span class="agent-emoji">🚀</span>
-        <div class="agent-name">Release Manager</div>
-        <span class="model-chip sonnet">Sonnet</span>
+      <div class="banner-pills">
+        <div class="banner-pill accent">Question → Options</div>
+        <div class="banner-pill">Decision → Draft</div>
+        <div class="banner-pill">Approval → Write</div>
       </div>
     </div>
 
-    <div class="tier-arrow">
-      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 2v8M6 10l-3-3M6 10l3-3" stroke="#aeaeb2" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      delegates to
-    </div>
-
-    <div class="tier-tag">Tier 3 — Specialists</div>
-    <div class="tier-row t3">
-      <div class="agent">
-        <span class="agent-emoji">🖥️</span>
-        <div class="agent-name">Frontend Dev</div>
-        <span class="model-chip sonnet">Sonnet</span>
-      </div>
-      <div class="agent">
-        <span class="agent-emoji">⚙️</span>
-        <div class="agent-name">Backend Dev</div>
-        <span class="model-chip sonnet">Sonnet</span>
-      </div>
-      <div class="agent">
-        <span class="agent-emoji">📱</span>
-        <div class="agent-name">Mobile Dev</div>
-        <span class="model-chip sonnet">Sonnet</span>
-      </div>
-      <div class="agent">
-        <span class="agent-emoji">🔄</span>
-        <div class="agent-name">Fullstack Dev</div>
-        <span class="model-chip sonnet">Sonnet</span>
-      </div>
-      <div class="agent">
-        <span class="agent-emoji">🗄️</span>
-        <div class="agent-name">Data Engineer</div>
-        <span class="model-chip sonnet">Sonnet</span>
-      </div>
-      <div class="agent">
-        <span class="agent-emoji">🔒</span>
-        <div class="agent-name">Security Eng</div>
-        <span class="model-chip sonnet">Sonnet</span>
-      </div>
-      <div class="agent">
-        <span class="agent-emoji">🤖</span>
-        <div class="agent-name">AI Programmer</div>
-        <span class="model-chip sonnet">Sonnet</span>
-      </div>
-      <div class="agent">
-        <span class="agent-emoji">☁️</span>
-        <div class="agent-name">DevOps Eng</div>
-        <span class="model-chip sonnet">Sonnet</span>
-      </div>
-      <div class="agent">
-        <span class="agent-emoji">⚡</span>
-        <div class="agent-name">Performance</div>
-        <span class="model-chip sonnet">Sonnet</span>
-      </div>
-      <div class="agent">
-        <span class="agent-emoji">🌐</span>
-        <div class="agent-name">Network Prog</div>
-        <span class="model-chip sonnet">Sonnet</span>
-      </div>
-      <div class="agent">
-        <span class="agent-emoji">📊</span>
-        <div class="agent-name">Analytics Eng</div>
-        <span class="model-chip sonnet">Sonnet</span>
-      </div>
-      <div class="agent">
-        <span class="agent-emoji">♿</span>
-        <div class="agent-name">A11y Specialist</div>
-        <span class="model-chip sonnet">Sonnet</span>
-      </div>
-      <div class="agent">
-        <span class="agent-emoji">🧩</span>
-        <div class="agent-name">UI Programmer</div>
-        <span class="model-chip sonnet">Sonnet</span>
-      </div>
-      <div class="agent">
-        <span class="agent-emoji">🔬</span>
-        <div class="agent-name">UX Researcher</div>
-        <span class="model-chip sonnet">Sonnet</span>
-      </div>
-      <div class="agent">
-        <span class="agent-emoji">💬</span>
-        <div class="agent-name">Community Mgr</div>
-        <span class="model-chip sonnet">Sonnet</span>
-      </div>
-      <div class="agent">
-        <span class="agent-emoji">📝</span>
-        <div class="agent-name">Tech Writer</div>
-        <span class="model-chip haiku">Haiku</span>
-      </div>
-      <div class="agent">
-        <span class="agent-emoji">🛠️</span>
-        <div class="agent-name">Tools Prog</div>
-        <span class="model-chip haiku">Haiku</span>
-      </div>
-      <div class="agent">
-        <span class="agent-emoji">⚗️</span>
-        <div class="agent-name">Prototyper</div>
-        <span class="model-chip haiku">Haiku</span>
-      </div>
-      <div class="agent">
-        <span class="agent-emoji">🧪</span>
-        <div class="agent-name">QA Tester</div>
-        <span class="model-chip haiku">Haiku</span>
-      </div>
-    </div>
-  </div>
-
-  <hr class="divider" />
-
-  <!-- Collaboration banner -->
-  <div class="banner">
-    <div class="banner-left">
-      <div class="banner-label">Core principle</div>
-      <div class="banner-title">User-driven,<br>not autonomous.</div>
-      <div class="banner-desc">Mọi quyết định đều do bạn đưa ra. AI team cung cấp cấu trúc, chuyên môn và các lựa chọn — không tự hành động một mình.</div>
-    </div>
-    <div class="banner-pills">
-      <div class="banner-pill accent">Question → Options</div>
-      <div class="banner-pill">Decision → Draft</div>
-      <div class="banner-pill">Approval → Write</div>
-    </div>
-  </div>
-
-  <!-- Workflow + Skills -->
-  <div class="two-col">
-    <div class="card">
-      <div class="card-title">Collaboration Protocol</div>
-      <div class="steps">
-        <div class="step">
-          <div class="step-dot">1</div>
-          <div class="step-body">
-            <div class="step-title">Question</div>
-            <div class="step-desc">Hỏi làm rõ yêu cầu trước khi đề xuất bất kỳ điều gì</div>
+    <!-- Workflow + Skills -->
+    <div class="two-col">
+      <div class="card">
+        <div class="card-title">Collaboration Protocol</div>
+        <div class="steps">
+          <div class="step">
+            <div class="step-dot">1</div>
+            <div class="step-body">
+              <div class="step-title">Question</div>
+              <div class="step-desc">Hỏi làm rõ yêu cầu trước khi đề xuất bất kỳ điều gì</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-dot">2</div>
+            <div class="step-body">
+              <div class="step-title">Options</div>
+              <div class="step-desc">Đưa ra 2–4 hướng đi với pros/cons rõ ràng</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-dot">3</div>
+            <div class="step-body">
+              <div class="step-title">Decision</div>
+              <div class="step-desc">User chọn — luôn là người quyết định cuối cùng</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-dot">4</div>
+            <div class="step-body">
+              <div class="step-title">Draft</div>
+              <div class="step-desc">Show bản nháp hoặc tóm tắt trước khi ghi file</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-dot">5</div>
+            <div class="step-body">
+              <div class="step-title">Approval</div>
+              <div class="step-desc">"May I write this to [file]?" — bắt buộc xác nhận</div>
+            </div>
           </div>
         </div>
-        <div class="step">
-          <div class="step-dot">2</div>
-          <div class="step-body">
-            <div class="step-title">Options</div>
-            <div class="step-desc">Đưa ra 2–4 hướng đi với pros/cons rõ ràng</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">98 Skills & Frameworks</div>
+
+        <div class="skill-group">
+          <div class="sg-label">Tech Stack & Frameworks</div>
+          <div class="tags">
+            <span class="tag orange">fastapi-pro</span>
+            <span class="tag orange">nextjs-patterns</span>
+            <span class="tag orange">aws-serverless</span>
+            <span class="tag orange">k8s-architect</span>
+            <span class="tag orange">flutter-expert</span>
+            <span class="tag orange">multi-agent-patterns</span>
+            <span class="tag orange">...and 50+ more</span>
           </div>
         </div>
-        <div class="step">
-          <div class="step-dot">3</div>
-          <div class="step-body">
-            <div class="step-title">Decision</div>
-            <div class="step-desc">User chọn — luôn là người quyết định cuối cùng</div>
+
+        <div class="skill-group">
+          <div class="sg-label">Khởi tạo</div>
+          <div class="tags">
+            <span class="tag blue">/start</span>
+            <span class="tag blue">/brainstorm</span>
+            <span class="tag blue">/prototype</span>
+            <span class="tag blue">/project-stage-detect</span>
           </div>
         </div>
-        <div class="step">
-          <div class="step-dot">4</div>
-          <div class="step-body">
-            <div class="step-title">Draft</div>
-            <div class="step-desc">Show bản nháp hoặc tóm tắt trước khi ghi file</div>
+
+        <div class="skill-group">
+          <div class="sg-label">Review & Design</div>
+          <div class="tags">
+            <span class="tag blue">/code-review</span>
+            <span class="tag blue">/design-system</span>
+            <span class="tag blue">/api-design</span>
+            <span class="tag blue">/db-review</span>
+            <span class="tag blue">/mobile-review</span>
+            <span class="tag blue">/perf-profile</span>
+            <span class="tag blue">/tech-debt</span>
+            <span class="tag blue">/scope-check</span>
           </div>
         </div>
-        <div class="step">
-          <div class="step-dot">5</div>
-          <div class="step-body">
-            <div class="step-title">Approval</div>
-            <div class="step-desc">"May I write this to [file]?" — bắt buộc xác nhận</div>
+
+        <div class="skill-group">
+          <div class="sg-label">Team Orchestration</div>
+          <div class="tags">
+            <span class="tag purple">/team-feature</span>
+            <span class="tag purple">/team-backend</span>
+            <span class="tag purple">/team-frontend</span>
+            <span class="tag purple">/team-mobile</span>
+            <span class="tag purple">/team-ui</span>
+            <span class="tag purple">/team-release</span>
+          </div>
+        </div>
+
+        <div class="skill-group">
+          <div class="sg-label">Sprint & Release</div>
+          <div class="tags">
+            <span class="tag green">/sprint-plan</span>
+            <span class="tag green">/milestone-review</span>
+            <span class="tag green">/estimate</span>
+            <span class="tag green">/retrospective</span>
+            <span class="tag green">/release-checklist</span>
+            <span class="tag green">/launch-checklist</span>
+            <span class="tag green">/changelog</span>
+            <span class="tag green">/hotfix</span>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="card">
-      <div class="card-title">35 Slash Commands</div>
-
-      <div class="skill-group">
-        <div class="sg-label">Khởi tạo</div>
-        <div class="tags">
-          <span class="tag orange">/start</span>
-          <span class="tag orange">/brainstorm</span>
-          <span class="tag orange">/prototype</span>
-          <span class="tag orange">/project-stage-detect</span>
+    <!-- Hooks -->
+    <div class="hooks-section">
+      <div class="label">8 Automation Hooks</div>
+      <div class="hooks-grid">
+        <div class="hook">
+          <span class="hook-icon">🔌</span>
+          <div class="hook-name">session-start</div>
+          <div class="hook-desc">Load context, branch, sprints khi mở session</div>
         </div>
-      </div>
-
-      <div class="skill-group">
-        <div class="sg-label">Review & Design</div>
-        <div class="tags">
-          <span class="tag blue">/code-review</span>
-          <span class="tag blue">/design-system</span>
-          <span class="tag blue">/api-design</span>
-          <span class="tag blue">/db-review</span>
-          <span class="tag blue">/mobile-review</span>
-          <span class="tag blue">/perf-profile</span>
-          <span class="tag blue">/tech-debt</span>
-          <span class="tag blue">/scope-check</span>
+        <div class="hook">
+          <span class="hook-icon">🔍</span>
+          <div class="hook-name">detect-gaps</div>
+          <div class="hook-desc">Phát hiện project mới, thiếu docs — gợi ý /start</div>
         </div>
-      </div>
-
-      <div class="skill-group">
-        <div class="sg-label">Team Orchestration</div>
-        <div class="tags">
-          <span class="tag purple">/team-feature</span>
-          <span class="tag purple">/team-backend</span>
-          <span class="tag purple">/team-frontend</span>
-          <span class="tag purple">/team-mobile</span>
-          <span class="tag purple">/team-ui</span>
-          <span class="tag purple">/team-release</span>
+        <div class="hook">
+          <span class="hook-icon">✅</span>
+          <div class="hook-name">validate-commit</div>
+          <div class="hook-desc">Chặn hardcoded values và sai format commit</div>
         </div>
-      </div>
-
-      <div class="skill-group">
-        <div class="sg-label">Sprint & Release</div>
-        <div class="tags">
-          <span class="tag green">/sprint-plan</span>
-          <span class="tag green">/milestone-review</span>
-          <span class="tag green">/estimate</span>
-          <span class="tag green">/retrospective</span>
-          <span class="tag green">/release-checklist</span>
-          <span class="tag green">/launch-checklist</span>
-          <span class="tag green">/changelog</span>
-          <span class="tag green">/hotfix</span>
+        <div class="hook">
+          <span class="hook-icon">🛡️</span>
+          <div class="hook-name">validate-push</div>
+          <div class="hook-desc">Cảnh báo push lên protected branches</div>
+        </div>
+        <div class="hook">
+          <span class="hook-icon">📁</span>
+          <div class="hook-name">validate-assets</div>
+          <div class="hook-desc">Kiểm tra naming conventions, JSON validity</div>
+        </div>
+        <div class="hook">
+          <span class="hook-icon">💾</span>
+          <div class="hook-name">pre-compact</div>
+          <div class="hook-desc">Dump session state trước khi context bị compact</div>
+        </div>
+        <div class="hook">
+          <span class="hook-icon">📊</span>
+          <div class="hook-name">session-stop</div>
+          <div class="hook-desc">Tóm tắt thành quả, ghi session log</div>
+        </div>
+        <div class="hook">
+          <span class="hook-icon">🔎</span>
+          <div class="hook-name">log-agent</div>
+          <div class="hook-desc">Audit trail mọi subagent với timestamp</div>
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- Hooks -->
-  <div class="hooks-section">
-    <div class="label">8 Automation Hooks</div>
-    <div class="hooks-grid">
-      <div class="hook">
-        <span class="hook-icon">🔌</span>
-        <div class="hook-name">session-start</div>
-        <div class="hook-desc">Load context, branch, sprints khi mở session</div>
-      </div>
-      <div class="hook">
-        <span class="hook-icon">🔍</span>
-        <div class="hook-name">detect-gaps</div>
-        <div class="hook-desc">Phát hiện project mới, thiếu docs — gợi ý /start</div>
-      </div>
-      <div class="hook">
-        <span class="hook-icon">✅</span>
-        <div class="hook-name">validate-commit</div>
-        <div class="hook-desc">Chặn hardcoded values và sai format commit</div>
-      </div>
-      <div class="hook">
-        <span class="hook-icon">🛡️</span>
-        <div class="hook-name">validate-push</div>
-        <div class="hook-desc">Cảnh báo push lên protected branches</div>
-      </div>
-      <div class="hook">
-        <span class="hook-icon">📁</span>
-        <div class="hook-name">validate-assets</div>
-        <div class="hook-desc">Kiểm tra naming conventions, JSON validity</div>
-      </div>
-      <div class="hook">
-        <span class="hook-icon">💾</span>
-        <div class="hook-name">pre-compact</div>
-        <div class="hook-desc">Dump session state trước khi context bị compact</div>
-      </div>
-      <div class="hook">
-        <span class="hook-icon">📊</span>
-        <div class="hook-name">session-stop</div>
-        <div class="hook-desc">Tóm tắt thành quả, ghi session log</div>
-      </div>
-      <div class="hook">
-        <span class="hook-icon">🔎</span>
-        <div class="hook-name">log-agent</div>
-        <div class="hook-desc">Audit trail mọi subagent với timestamp</div>
+    <!-- Rules -->
+    <div class="rules-section">
+      <div class="label">11 Path-Scoped Coding Rules</div>
+      <div class="rules-grid">
+        <div class="rule">
+          <span class="rule-icon">🔌</span>
+          <div class="rule-name">API Code</div>
+          <div class="rule-path">src/api/**</div>
+        </div>
+        <div class="rule">
+          <span class="rule-icon">🖼️</span>
+          <div class="rule-name">Frontend</div>
+          <div class="rule-path">src/frontend/**</div>
+        </div>
+        <div class="rule">
+          <span class="rule-icon">🧩</span>
+          <div class="rule-name">UI Code</div>
+          <div class="rule-path">src/ui/**</div>
+        </div>
+        <div class="rule">
+          <span class="rule-icon">🗄️</span>
+          <div class="rule-name">Database</div>
+          <div class="rule-path">src/db/**</div>
+        </div>
+        <div class="rule">
+          <span class="rule-icon">🤖</span>
+          <div class="rule-name">AI Code</div>
+          <div class="rule-path">src/ai/**</div>
+        </div>
+        <div class="rule">
+          <span class="rule-icon">🌐</span>
+          <div class="rule-name">Network</div>
+          <div class="rule-path">src/networking/**</div>
+        </div>
+        <div class="rule">
+          <span class="rule-icon">🧪</span>
+          <div class="rule-name">Test Standards</div>
+          <div class="rule-path">tests/**</div>
+        </div>
+        <div class="rule">
+          <span class="rule-icon">⚗️</span>
+          <div class="rule-name">Prototype</div>
+          <div class="rule-path">prototypes/**</div>
+        </div>
+        <div class="rule">
+          <span class="rule-icon">📄</span>
+          <div class="rule-name">Design Docs</div>
+          <div class="rule-path">design/**</div>
+        </div>
+        <div class="rule">
+          <span class="rule-icon">🔒</span>
+          <div class="rule-name">Secrets & Config</div>
+          <div class="rule-path">.env* / config/**</div>
+        </div>
       </div>
     </div>
-  </div>
 
-  <!-- Rules -->
-  <div class="rules-section">
-    <div class="label">10 Path-Scoped Coding Rules</div>
-    <div class="rules-grid">
-      <div class="rule">
-        <span class="rule-icon">🔌</span>
-        <div class="rule-name">API Code</div>
-        <div class="rule-path">src/api/**</div>
+    <!-- Footer -->
+    <div class="footer">
+      <div class="footer-text">
+        <strong>Claude Code Software Development Department</strong><br>
+        MIT License · 2026 ·
+        <a class="github-link" href="https://github.com/tranhieutt" target="_blank">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+            <path
+              d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.868-.013-1.703-2.782.604-3.369-1.342-3.369-1.342-.454-1.154-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0 1 12 6.836a9.59 9.59 0 0 1 2.504.337c1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.202 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.741 0 .267.18.579.688.481C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z" />
+          </svg>
+          tranhieutt
+        </a>
       </div>
-      <div class="rule">
-        <span class="rule-icon">🖼️</span>
-        <div class="rule-name">Frontend</div>
-        <div class="rule-path">src/frontend/**</div>
-      </div>
-      <div class="rule">
-        <span class="rule-icon">🧩</span>
-        <div class="rule-name">UI Code</div>
-        <div class="rule-path">src/ui/**</div>
-      </div>
-      <div class="rule">
-        <span class="rule-icon">🗄️</span>
-        <div class="rule-name">Database</div>
-        <div class="rule-path">src/db/**</div>
-      </div>
-      <div class="rule">
-        <span class="rule-icon">🤖</span>
-        <div class="rule-name">AI Code</div>
-        <div class="rule-path">src/ai/**</div>
-      </div>
-      <div class="rule">
-        <span class="rule-icon">🌐</span>
-        <div class="rule-name">Network</div>
-        <div class="rule-path">src/networking/**</div>
-      </div>
-      <div class="rule">
-        <span class="rule-icon">🧪</span>
-        <div class="rule-name">Test Standards</div>
-        <div class="rule-path">tests/**</div>
-      </div>
-      <div class="rule">
-        <span class="rule-icon">⚗️</span>
-        <div class="rule-name">Prototype</div>
-        <div class="rule-path">prototypes/**</div>
-      </div>
-      <div class="rule">
-        <span class="rule-icon">📄</span>
-        <div class="rule-name">Design Docs</div>
-        <div class="rule-path">design/**</div>
-      </div>
-      <div class="rule">
-        <span class="rule-icon">🔒</span>
-        <div class="rule-name">Secrets & Config</div>
-        <div class="rule-path">.env* / config/**</div>
-      </div>
+      <div class="version-badge">v1.5.0 — 2026-03-28</div>
     </div>
-  </div>
 
-  <!-- Footer -->
-  <div class="footer">
-    <div class="footer-text">
-      <strong>Claude Code Software Development Department</strong><br>
-      MIT License · 2026 ·
-      <a class="github-link" href="https://github.com/tranhieutt" target="_blank">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.868-.013-1.703-2.782.604-3.369-1.342-3.369-1.342-.454-1.154-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0 1 12 6.836a9.59 9.59 0 0 1 2.504.337c1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.202 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.741 0 .267.18.579.688.481C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
-        tranhieutt
-      </a>
-    </div>
-    <div class="version-badge">v1.5.0 — 2026-03-28</div>
   </div>
-
-</div>
 </body>
+
 </html>
