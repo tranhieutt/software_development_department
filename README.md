@@ -1,12 +1,12 @@
 # User Guide — Software Development Department
 
 > **Tác giả:** [tranhieutt](https://github.com/tranhieutt)
-> **Version:** 1.5.0 | **Cập nhật:** 2026-03-30
+> **Version:** 1.6.0 | **Cập nhật:** 2026-03-30
 
 <p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT License"></a>
   <a href=".claude/agents"><img src="https://img.shields.io/badge/agents-27-blueviolet" alt="27 Agents"></a>
-  <a href=".claude/skills"><img src="https://img.shields.io/badge/skills-37-green" alt="37 Skills"></a>
+  <a href=".claude/skills"><img src="https://img.shields.io/badge/skills-41-green" alt="41 Skills"></a>
   <a href=".claude/hooks"><img src="https://img.shields.io/badge/hooks-8-orange" alt="8 Hooks"></a>
   <a href=".claude/rules"><img src="https://img.shields.io/badge/rules-11-red" alt="11 Rules"></a>
   <a href="https://docs.anthropic.com/en/docs/claude-code"><img src="https://img.shields.io/badge/built%20for-Claude%20Code-f5f5f5?logo=anthropic" alt="Built for Claude Code"></a>
@@ -98,7 +98,7 @@ Bạn (User — người ra quyết định)
 Claude Code Session
         │
         ├── .claude/agents/     ← 27 AI agents chuyên biệt
-        ├── .claude/skills/     ← 37 slash commands (workflows)
+        ├── .claude/skills/     ← 41 slash commands (workflows)
         ├── .claude/hooks/      ←  8 automated validation scripts
         ├── .claude/rules/      ← 11 path-scoped coding standards
         └── .claude/docs/       ← Templates, references, guides
@@ -172,7 +172,7 @@ Tier 3 — Specialists (model: Sonnet / Haiku)
 
 ### 5.3 Skills (Slash Commands)
 
-37 workflows được đóng gói thành slash commands. Gõ `/` trong Claude Code để xem danh sách.
+41 workflows được đóng gói thành slash commands. Gõ `/` trong Claude Code để xem danh sách.
 
 ### 5.4 Rules
 
@@ -220,7 +220,9 @@ Phân tích tự động: bạn đang ở phase nào, còn thiếu gì, bước 
 | `/start` | Onboarding — xác định bạn đang ở đâu và định hướng tiếp theo |
 | `/project-stage-detect` | Phân tích project hiện tại, xác định phase |
 | `/gate-check` | Kiểm tra readiness để chuyển sang phase tiếp theo |
-| `/orchestrate` | Hướng dẫn orchestration theo sequential & tmux/worktree |
+| `/orchestrate` | Wave-based multi-agent execution — phân tích task, chạy agents theo thứ tự |
+| `/save-state` | Lưu working context vào `production/session-state/active.md` trước khi reset |
+| `/update-codemap` | Cập nhật `docs/technical/CODEMAP.md` sau khi merge feature lớn |
 
 ### Design & Planning
 

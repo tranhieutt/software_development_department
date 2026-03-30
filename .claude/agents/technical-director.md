@@ -15,6 +15,7 @@ and performant whole.
 
 - `docs/technical/DECISIONS.md` — ADR log. Append new Architecture Decision Records here; never delete or overwrite existing entries.
 - `docs/technical/ARCHITECTURE.md` — System architecture documentation. Maintain and update as the architecture evolves.
+- `docs/technical/CODEMAP.md` — Codebase navigation map. Run `/update-codemap` after significant feature merges. A stale CODEMAP is worse than none — keep it accurate.
 
 ## Documents You Read (Read-Only)
 

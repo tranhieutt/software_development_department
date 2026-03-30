@@ -3,14 +3,14 @@
   <p align="center">
     Turn a single Claude Code session into a full software development department.
     <br />
-    27 agents. 37 workflows. One coordinated AI team.
+    27 agents. 41 workflows. One coordinated AI team.
   </p>
 </p>
 
 <p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT License"></a>
   <a href=".claude/agents"><img src="https://img.shields.io/badge/agents-27-blueviolet" alt="27 Agents"></a>
-  <a href=".claude/skills"><img src="https://img.shields.io/badge/skills-37-green" alt="37 Skills"></a>
+  <a href=".claude/skills"><img src="https://img.shields.io/badge/skills-41-green" alt="41 Skills"></a>
   <a href=".claude/hooks"><img src="https://img.shields.io/badge/hooks-8-orange" alt="8 Hooks"></a>
   <a href=".claude/rules"><img src="https://img.shields.io/badge/rules-11-red" alt="11 Rules"></a>
   <a href="https://docs.anthropic.com/en/docs/claude-code"><img src="https://img.shields.io/badge/built%20for-Claude%20Code-f5f5f5?logo=anthropic" alt="Built for Claude Code"></a>
@@ -33,7 +33,7 @@ The result: you still make every decision, but now you have a team that asks the
 | Category | Count | Description |
 |----------|-------|-------------|
 | **Agents** | 27 | Specialized subagents across product, engineering, design, QA, data, and operations |
-| **Skills** | 37 | Slash commands for common workflows (`/start`, `/sprint-plan`, `/code-review`, `/team-feature`, etc.) |
+| **Skills** | 41 | Slash commands for common workflows (`/start`, `/sprint-plan`, `/code-review`, `/team-feature`, `/orchestrate`, etc.) |
 | **Hooks** | 8 | Automated validation on commits, pushes, asset changes, session lifecycle, pre-compact, and gap detection |
 | **Rules** | 11 | Path-scoped coding standards for API, frontend, backend, database, UI, network, AI, secrets, tests, and more |
 | **Templates** | 22+ | Document templates for PRDs, API designs, system architecture, user stories, ADRs, mobile, and more |
@@ -62,7 +62,7 @@ Tier 3 — Specialists (Sonnet/Haiku)
 
 ## Slash Commands
 
-Type `/` in Claude Code to access all 37 skills:
+Type `/` in Claude Code to access all 41 skills:
 
 **Reviews & Analysis**
 `/design-review` `/code-review` `/api-design` `/db-review` `/scope-check` `/perf-profile` `/tech-debt` `/mobile-review`
@@ -71,7 +71,7 @@ Type `/` in Claude Code to access all 37 skills:
 `/sprint-plan` `/milestone-review` `/estimate` `/retrospective` `/bug-report` `/architecture-decision`
 
 **Project Management**
-`/start` `/project-stage-detect` `/reverse-document` `/gate-check` `/map-systems` `/design-system` `/orchestrate`
+`/start` `/project-stage-detect` `/reverse-document` `/gate-check` `/map-systems` `/design-system` `/orchestrate` `/save-state` `/update-codemap`
 
 **Release**
 `/release-checklist` `/launch-checklist` `/changelog` `/patch-notes` `/hotfix` `/sync-template`
@@ -206,7 +206,7 @@ Tested on **Windows 10/11** with Git Bash. All hooks use POSIX-compatible patter
 
 ## Version
 
-**v1.5.0** — 2026-03-30
+**v1.6.0** — 2026-03-30
 
 See [`History_Update.md`](History_Update.md) for full changelog.
 

@@ -8,6 +8,42 @@ Tài liệu này ghi lại lịch sử cập nhật tài liệu và source code 
 
 ---
 
+### [v1.6.0] - 2026-03-30
+
+**Chủ đề:** Tích hợp orchestrated-project-template & tối ưu hóa harness
+
+**Phase 1–6 — Tích hợp từ [orchestrated-project-template](https://github.com/josipjelic/orchestrated-project-template):**
+
+- `PRD.md` — Template Product Requirements Document với FR-numbered requirements, WARNING banner, Approvals table (Product Manager, Technical Director, CTO)
+- `TODO.md` — Living backlog governed by `@producer`, hỗ trợ 14 area tags (mobile, security, analytics, network, ai, v.v.)
+- `.tasks/TASK_TEMPLATE.md` — Task detail file template với YAML frontmatter (id, status, area, agent, prd_refs, blocks, blocked_by)
+- `docs/technical/DECISIONS.md` — Compact ADR log, append-only, với Decision Index table
+- Tất cả 27 `.claude/agents/*.md` — Thêm ba sections ownership: `## Documents You Own`, `## Documents You Read (Read-Only)`, `## Documents You Never Modify`
+- `producer.md` — Thêm `## TODO.md Governance Protocol` với sync rules table
+- `.claude/skills/orchestrate/SKILL.md` — Wave-based multi-agent orchestration skill (8 phases, routing table cho 21 agents, adapted `@project-manager` → `@producer`)
+- `.claude/skills/sync-template/SKILL.md` — Sync `.claude/` từ upstream repo với diff/confirm flow
+- `.claude/docs/agent-coordination-map.md` — Thêm Pattern 0: Multi-Agent Orchestration
+- `.claude/skills/architecture-decision/SKILL.md` — Thêm cross-post ADR summary sang `docs/technical/DECISIONS.md`
+
+**4 tối ưu hóa (plan_optimization.md):**
+
+- `src/`, `tests/`, `infra/`, `scripts/`, `docs/user/` — Thêm `.gitkeep` để scaffolding thư mục dự án
+- `.env.example` — Template environment variables được nhóm theo concern (App, Database, Auth, Email, Storage, AI, Feature Flags)
+- `.claude/skills/save-state/SKILL.md` — Skill lưu working context vào `production/session-state/active.md`; tích hợp với `session-start.sh` và `pre-compact.sh`
+- `docs/technical/CODEMAP.md` + `.claude/skills/update-codemap/SKILL.md` — Navigation map cho AI agents + skill cập nhật sau mỗi feature merge
+
+**Cập nhật docs:**
+
+- `.claude/docs/skills-reference.md` — Thêm `/orchestrate`, `/sync-template`, `/save-state`, `/update-codemap`
+- `.claude/docs/directory-structure.md` — Thêm `PRD.md`, `TODO.md`, `.tasks/`, `docs/technical/`, `docs/user/`
+- `.claude/docs/quick-start.md` — Thêm `/orchestrate` vào slash commands, cập nhật onboarding paths A & B
+- `.claude/docs/agent-roster.md` — `tech-writer` Sonnet → Haiku
+- `.claude/rules/secrets-config.md` — Reference đến `.env.example` là canonical source
+- `design/README.md` — Hướng dẫn thư mục design với subfolders (wireframes, specs, research, flows)
+- `README.md` & `README_en.md` — Version 1.6.0, skills badge 37 → 41
+
+---
+
 ### [v1.5.1] - 2026-03-30
 
 **Chủ đề:** Đồng bộ README và bổ sung tài nguyên mới
@@ -92,6 +128,7 @@ Tài liệu này ghi lại lịch sử cập nhật tài liệu và source code 
 **Chủ đề:** Bổ sung Mobile Development & Collaborative Design Principle
 
 #### 📄 Tài liệu cập nhật
+
 - `docs/COLLABORATIVE-DESIGN-PRINCIPLE.md` — Bổ sung nguyên tắc thiết kế cộng tác cho phát triển phần mềm; cập nhật ví dụ từ game design sang software engineering (auth API, JWT, database schema)
 - `README.md` — Cập nhật nội dung hướng dẫn sử dụng template bằng tiếng Việt
 - `README_en.md` — Cập nhật nội dung hướng dẫn sử dụng template bằng tiếng Anh
@@ -99,6 +136,7 @@ Tài liệu này ghi lại lịch sử cập nhật tài liệu và source code 
 - `.claude/docs/quick-start.md` — Cập nhật hướng dẫn bắt đầu nhanh
 
 #### ✨ Tính năng mới
+
 - `feat(mobile)`: Thêm **mobile-developer** agent và các mobile skills
 - `.claude/docs/templates/app-store-submission-checklist.md` — Template checklist submit lên App Store
 - `.claude/docs/templates/mobile-architecture.md` — Template kiến trúc ứng dụng mobile
@@ -111,6 +149,7 @@ Tài liệu này ghi lại lịch sử cập nhật tài liệu và source code 
 **Chủ đề:** Cải thiện Skills — Feature Spec & Brainstorming
 
 #### 📄 Tài liệu cập nhật
+
 - `fix(feature-spec)`: Viết lại skill **design-system** để phù hợp với feature specification phần mềm
 - `fix(brainstorm)`: Viết lại skill **brainstorm** cho ngữ cảnh phát triển sản phẩm phần mềm
 
@@ -121,6 +160,7 @@ Tài liệu này ghi lại lịch sử cập nhật tài liệu và source code 
 **Chủ đề:** Hoàn thiện Documentation & Hướng dẫn người dùng
 
 #### 📄 Tài liệu cập nhật
+
 - `docs`: Đổi tên `README` → `README_en` và `user_guide` → `README`
   (Hướng dẫn tiếng Việt trở thành README chính)
 - `docs`: Thêm `user_guide.md` (README tiếng Việt) — hướng dẫn đầy đủ về cách sử dụng template
@@ -134,6 +174,7 @@ Tài liệu này ghi lại lịch sử cập nhật tài liệu và source code 
 **Chủ đề:** Ra mắt — Chuyển đổi từ Game Studio → Software Department
 
 #### 📄 Tài liệu khởi tạo
+
 - `init`: Khởi tạo **Claude Code Software Development Department** template
 - `cleanup`: Xóa toàn bộ tài liệu tham chiếu các game engine (Godot, Unity, Unreal Engine)
 - `chore`: Chuyển đổi template từ "Game Studio" sang "Software Department":
@@ -151,4 +192,4 @@ Tài liệu này ghi lại lịch sử cập nhật tài liệu và source code 
 
 ---
 
-Last Updated: 2026-03-30 — v1.5.1
+Last Updated: 2026-03-30 — v1.6.0

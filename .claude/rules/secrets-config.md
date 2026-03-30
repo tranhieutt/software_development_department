@@ -12,7 +12,7 @@ Applies to: `.env*`, `*.config.*`, `config/**`, `infra/**`, `scripts/**`, `src/c
 
 ## Environment Variables
 
-- Use a single source of truth for environment variable names (e.g., `.env.example` or a config schema file)
+- Use a single source of truth for environment variable names — see **`.env.example`** at the project root for the canonical list of required variables
 - Validate all required environment variables at application startup — fail fast with a clear error message
 - Group variables by concern: `DATABASE_*`, `AUTH_*`, `SMTP_*`, etc.
 - Use `NODE_ENV` / `APP_ENV` to control environment-specific behavior; default to the most restrictive setting

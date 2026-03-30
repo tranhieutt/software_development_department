@@ -3,6 +3,7 @@
 | Command | Purpose |
 |---------|---------|
 | `/start` | First-time onboarding — asks where you are, then guides you to the right workflow |
+| `/save-state` | Save current working context to `production/session-state/active.md` — run before `/clear`, context resets, or ending a session |
 | `/design-review` | Review a design document, PRD, or specification for completeness and consistency |
 | `/code-review` | Architectural code review for a file or changeset |
 | `/api-design` | Design and review REST/GraphQL API contracts, endpoint schemas, and error handling |
@@ -23,6 +24,7 @@
 | `/localize` | Localization workflow: scan for hardcoded strings, extract, validate translations |
 | `/perf-profile` | Structured performance profiling with bottleneck identification and recommendations |
 | `/project-stage-detect` | Automatically analyze project state, detect stage, identify gaps, and recommend next steps |
+| `/update-codemap` | Update `docs/technical/CODEMAP.md` by scanning codebase — run after feature merges or refactors |
 | `/reverse-document` | Generate design or architecture documents from existing implementation |
 | `/orchestrate` | Wave-based multi-agent execution — analyzes task dependencies, builds parallel/sequential wave plan, registers work in backlog via @producer, creates feature branch, executes agents wave by wave, synthesizes result |
 | `/team-feature` | Orchestrate feature team: backend-developer + frontend-developer + qa-tester |
