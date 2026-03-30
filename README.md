@@ -33,18 +33,17 @@
 
 ## 1. Tổng quan
 
-**Software Development Department** biến một session Claude Code đơn lẻ thành một **phòng ban phát triển phần mềm đầy đủ** với 27 AI agents chuyên biệt.
+**Software Development Department** biến một session Claude Code đơn lẻ thành một **phòng ban phát triển phần mềm đầy đủ** với 27 AI agents chuyên biệt và gần 100 chuyên môn Framework/Hệ thống (như AWS, Kubernetes, Next.js, FastAPI, v.v.).
 
-Thay vì một AI đa năng làm mọi thứ, bạn có:
+Thay vì một AI đa năng làm mọi thứ với kiến thức thông thường, bạn có:
 
-- **CTO** giữ tầm nhìn kiến trúc
-- **Product Manager** quản lý requirements
-- **Lead Programmer** giám sát chất lượng code
-- **QA Lead** đảm bảo chất lượng sản phẩm
-- **Security Engineer** bảo vệ hệ thống
-- ... và 22 specialists khác
+- **CTO** giữ tầm nhìn kiến trúc (kể cả Cloud/Hybrid-Cloud).
+- **Product Manager** quản lý requirements với các check-list chuẩn của PM quy mô lớn.
+- **Lead Programmer** giám sát chất lượng code (Clean Code, TDD).
+- **QA & Security** đảm bảo chất lượng và bảo vệ hệ thống khỏi OWASP vulnerabilities.
+- ... và 22 specialists khác được "vũ trang" các best-practices cập nhật nhất.
 
-Bạn vẫn là người ra quyết định cuối cùng. AI team cung cấp cấu trúc, chuyên môn và sự kiểm soát.
+Bạn vẫn là người ra quyết định cuối cùng. AI team cung cấp cấu trúc, chuyên môn và sự kiểm soát cực kỳ mạnh mẽ cho mọi tech-stack mong muốn.
 
 ---
 
