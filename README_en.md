@@ -98,7 +98,12 @@ Type `/` in Claude Code to access all 98 skills and frameworks:
    cd my-project
    ```
 
-2. **Open Claude Code** and start a session:
+2. **Open the Project via Antigravity or Claude Code**:
+
+   *Option A: Antigravity Platform (Recommended for deep multi-agent workflow)*
+   Open the directory in the Antigravity Agentic IDE/Environment. Antigravity will automatically load the `.claude` architecture and seamlessly adopt the 98 integrated workflows and frameworks. Just chat to assign tasks.
+
+   *Option B: Claude Code CLI*
    ```bash
    claude
    ```

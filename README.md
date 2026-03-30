@@ -74,8 +74,13 @@ npm install -g @anthropic-ai/claude-code
 npm install -g @anthropic-ai/claude-code
 ```
 
-**Bước 3 — Mở Claude Code:**
+**Bước 3 — Khởi động AI (Antigravity hoặc Claude Code):**
 
+*Option A: Nền tảng Antigravity (Khuyên dùng cho trải nghiệm đa tác vụ)*
+- Mở thư mục dự án bằng Antigravity Agentic IDE/Environment.
+- Antigravity sẽ tự động nhận diện toàn bộ thư mục `.claude` và kích hoạt ngay lập tức 98 workflows/frameworks chuyên biệt. Bạn chỉ cần chat tự nhiên để tương tác và giao việc.
+
+*Option B: Claude Code CLI*
 ```bash
 claude
 ```
