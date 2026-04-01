@@ -71,7 +71,7 @@ Type `/` in Claude Code to access all 98 skills and frameworks:
 `/sprint-plan` `/milestone-review` `/estimate` `/retrospective` `/bug-report` `/architecture-decision`
 
 **Project Management**
-`/start` `/project-stage-detect` `/reverse-document` `/gate-check` `/map-systems` `/design-system` `/orchestrate` `/save-state` `/update-codemap`
+`/start` `/project-stage-detect` `/reverse-document` `/gate-check` `/map-systems` `/design-system` `/orchestrate` `/save-state` `/update-codemap` `/dream`
 
 **Release**
 `/release-checklist` `/launch-checklist` `/changelog` `/patch-notes` `/hotfix` `/sync-template`
@@ -127,6 +127,7 @@ TODO.md                             # Living backlog
   skills/                           # 98 workflows & platform domains (subdirectory per skill)
   hooks/                            # 8 hook scripts (bash, cross-platform)
   rules/                            # 11 path-scoped coding standards
+  memory/                           # Custom 5-Layer Native Durable Memory System
   docs/
     quick-start.md                  # Detailed usage guide
     agent-roster.md                 # Full agent table with domains
@@ -211,7 +212,7 @@ Tested on **Windows 10/11** with Git Bash. All hooks use POSIX-compatible patter
 
 ## Version
 
-**v1.9.0** — 2026-04-01
+**v1.10.0** — 2026-04-01
 
 See [`History_Update.md`](History_Update.md) for full changelog.
 

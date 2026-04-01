@@ -8,6 +8,17 @@ Tài liệu này ghi lại lịch sử cập nhật tài liệu và source code 
 
 ---
 
+### [v1.10.0] - 2026-04-01
+
+**Chủ đề:** Tích hợp Claude Native 5-Layer Memory System & Skill `/dream`
+
+- **Tạo thư mục Project Memory định tuyến mới**: Thành lập không gian lưu trữ `.claude/memory/` chứa file chỉ mục (`MEMORY.md`) cùng 4 files skeleton (`user_role.md`, `feedback_rules.md`, `project_tech_decisions.md`, và `reference_links.md`) kèm theo YAML frontmatter chuẩn.
+- **Nâng cấp Skill `/save-state`**: Thêm step 2 thu thập (Extract) các "Durable Memory" (kinh nghiệm và thay đổi tech stack quan trọng) để lưu trữ vĩnh viễn thông qua các files topic chuẩn trước khi dọn dẹp các session files tạm thời.
+- **Bổ sung Skill tự động quy hoạch `/dream`**: Workflow skill phục vụ việc dọn dẹp, tối ưu, nối và nén các files memory bị trùng lặp. Đảm bảo hệ thống AI team luôn có không gian recall ngữ cảnh nhanh nhất.
+- **Bổ sung vào `CLAUDE.md` Master Root**: Inject Project Durable Memory framework vào master configuration. 
+
+---
+
 ### [v1.9.0] - 2026-04-01
 
 **Chủ đề:** SDD Upgrade dựa trên phân tích Claude Code source code

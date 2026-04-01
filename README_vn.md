@@ -1,7 +1,7 @@
 # User Guide — Software Development Department
 
 > **Author:** [tranhieutt](https://github.com/tranhieutt)
-> **Version:** 1.9.0 | **Updated:** 2026-04-01
+> **Version:** 1.10.0 | **Updated:** 2026-04-01
 
 <p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT License"></a>
@@ -116,6 +116,7 @@ my-project/
 ├── PRD.md                       # Product requirements document
 ├── TODO.md                      # Living backlog
 ├── .claude/                     # Cấu hình AI team, skills, rules
+├── .claude/memory/              # Hệ thống 5-layer Native Memory System
 ├── .tasks/                      # Task detail files (mỗi file một TODO)
 ├── src/                         # Source code ứng dụng
 ├── tests/                       # Test suites
@@ -227,6 +228,7 @@ Phân tích tự động: bạn đang ở phase nào, còn thiếu gì, bước 
 | `/orchestrate` | Wave-based multi-agent execution — phân tích task, chạy agents theo thứ tự |
 | `/save-state` | Lưu working context vào `production/session-state/active.md` trước khi reset |
 | `/update-codemap` | Cập nhật `docs/technical/CODEMAP.md` sau khi merge feature lớn |
+| `/dream` | Dọn dẹp & hợp nhất bộ nhớ (Consolidate Auto-Memory) |
 
 ### Design & Planning
 
