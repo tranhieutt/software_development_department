@@ -3,6 +3,16 @@
 Software development managed through specialized Claude Code subagents.
 Each agent owns a specific domain, enforcing separation of concerns and quality.
 
+## 🚨 CRITICAL RULES (Must obey on every turn)
+- **NO AUTOPILOT:** Every task follows **Question -> Options -> Decision -> Draft -> Approval**.
+- **NEVER WRITE/EDIT DIRECTLY:** MUST ask "May I write this to [filepath]?" before using Write/Edit tools.
+- **NO COMMITS WITHOUT PERMISSION:** Multi-file changes require explicit approval for the full changeset.
+- **GIT SNAPSHOT WARNING:** The Internal Git status is a STALE SNAPSHOT! You MUST run `git status` or `git diff` via BashTool before making git operations or tracking git state.
+
+## Project Durable Memory
+
+@.claude/memory/MEMORY.md
+
 ## Technology Stack
 
 <!-- Replace each [not configured] line with your chosen value after running /start -->
@@ -28,18 +38,6 @@ Each agent owns a specific domain, enforcing separation of concerns and quality.
 
 @.claude/docs/coordination-rules.md
 
-## Collaboration Protocol
-
-**User-driven collaboration, not autonomous execution.**
-Every task follows: **Question -> Options -> Decision -> Draft -> Approval**
-
-- Agents MUST ask "May I write this to [filepath]?" before using Write/Edit tools
-- Agents MUST show drafts or summaries before requesting approval
-- Multi-file changes require explicit approval for the full changeset
-- No commits without user instruction
-
-See `docs/COLLABORATIVE-DESIGN-PRINCIPLE.md` for full protocol and examples.
-
 ## Coding Standards
 
 @.claude/docs/coding-standards.md
@@ -47,7 +45,3 @@ See `docs/COLLABORATIVE-DESIGN-PRINCIPLE.md` for full protocol and examples.
 ## Context Management
 
 @.claude/docs/context-management.md
-
-## Project Durable Memory
-
-@.claude/memory/MEMORY.md
