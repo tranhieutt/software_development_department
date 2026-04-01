@@ -6,6 +6,8 @@ source: community
 date_added: '2026-02-27'
 paths: ["**/*.tsx", "**/*.jsx", "**/*.ts", "**/*.js"]
 effort: 3
+user-invocable: true
+when_to_use: "When implementing frontend security measures such as XSS prevention, output sanitization, or client-side security patterns"
 ---
 
 ## Use this skill when

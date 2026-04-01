@@ -6,6 +6,8 @@ source: community
 date_added: '2026-02-27'
 paths: ["**/terraform/**", "**/pulumi/**", "**/infra/**", "**/*.tf"]
 effort: 5
+user-invocable: true
+when_to_use: "When designing cloud infrastructure on AWS/Azure/GCP, creating IaC with Terraform/CDK, or optimizing cloud costs"
 ---
 
 ## Use this skill when

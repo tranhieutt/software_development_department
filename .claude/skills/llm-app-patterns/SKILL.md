@@ -6,6 +6,8 @@ source: community
 date_added: "2026-02-27"
 paths: ["**/*.py", "**/*.ts", "**/openai*", "**/anthropic*", "**/langchain*"]
 effort: 3
+user-invocable: true
+when_to_use: "When designing LLM applications, implementing RAG pipelines, building agent architectures, or setting up LLMOps monitoring"
 ---
 
 # 🤖 LLM Application Patterns

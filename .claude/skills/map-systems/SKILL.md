@@ -7,6 +7,7 @@ allowed-tools: Read, Glob, Grep, Write, Edit, AskUserQuestion, TodoWrite
 context: fork
 agent: technical-director
 effort: 3
+when_to_use: "When decomposing a product concept into individual systems, mapping dependencies, and prioritizing design order"
 ---
 
 When this skill is invoked:

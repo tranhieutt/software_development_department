@@ -5,6 +5,7 @@ argument-hint: "<feature-name> (e.g., 'user-authentication', 'payment-processing
 user-invocable: true
 allowed-tools: Read, Glob, Grep, Write, Edit, Task, AskUserQuestion, TodoWrite
 effort: 3
+when_to_use: "When authoring a feature specification document collaboratively, section by section"
 ---
 
 When this skill is invoked:

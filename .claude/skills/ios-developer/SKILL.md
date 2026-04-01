@@ -6,6 +6,8 @@ source: community
 date_added: '2026-02-27'
 paths: ["**/*.swift", "**/*.xib", "**/*.storyboard", "**/Info.plist"]
 effort: 3
+user-invocable: true
+when_to_use: "When developing native iOS applications with Swift/SwiftUI, UIKit integration, or App Store optimization"
 ---
 
 ## Use this skill when

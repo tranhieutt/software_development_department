@@ -6,6 +6,8 @@ source: community
 date_added: "2026-02-27"
 paths: ["**/mongo*", "**/dynamo*", "**/cassandra*", "**/*.json"]
 effort: 3
+user-invocable: true
+when_to_use: "When designing NoSQL database schemas with Cassandra or DynamoDB, applying query-first modeling or single-table design"
 ---
 
 # NoSQL Expert Patterns (Cassandra & DynamoDB)

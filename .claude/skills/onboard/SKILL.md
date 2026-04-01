@@ -5,6 +5,7 @@ argument-hint: "[role|area]"
 user-invocable: true
 allowed-tools: Read, Glob, Grep, Write
 effort: 3
+when_to_use: "When onboarding a new contributor or agent to the project for a specific role or area"
 ---
 
 When this skill is invoked:

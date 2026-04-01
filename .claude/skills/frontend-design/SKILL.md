@@ -6,6 +6,8 @@ source: community
 date_added: "2026-02-27"
 paths: ["**/*.tsx", "**/*.jsx", "**/*.css", "**/*.scss"]
 effort: 3
+user-invocable: true
+when_to_use: "When building or styling web UIs, components, dashboards, or pages with distinctive production-grade aesthetics"
 ---
 
 # Frontend Design (Distinctive, Production-Grade)

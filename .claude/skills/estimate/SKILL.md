@@ -5,6 +5,7 @@ argument-hint: "[task-description]"
 user-invocable: true
 allowed-tools: Read, Glob, Grep
 effort: 1
+when_to_use: "When estimating task effort, complexity, or duration for planning purposes"
 ---
 
 When this skill is invoked:

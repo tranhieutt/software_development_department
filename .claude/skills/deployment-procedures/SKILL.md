@@ -6,6 +6,8 @@ source: community
 date_added: "2026-02-27"
 paths: ["**/Dockerfile*", "**/deploy/**", "**/.github/workflows/**"]
 effort: 3
+user-invocable: true
+when_to_use: "When planning or executing production deployments, choosing rollback strategies, or verifying deployment readiness"
 ---
 
 # Deployment Procedures

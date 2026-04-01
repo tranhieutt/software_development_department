@@ -6,6 +6,8 @@ source: community
 date_added: '2026-02-27'
 paths: ["**/*.py", "**/Dockerfile", "**/requirements*.txt", "**/mlflow*", "**/*.yaml"]
 effort: 4
+user-invocable: true
+when_to_use: "When building ML pipelines, experiment tracking systems, or model registries with MLflow or Kubeflow"
 ---
 
 ## Use this skill when

@@ -6,6 +6,8 @@ source: community
 date_added: '2026-02-27'
 paths: ["**/*.py", "**/requirements*.txt", "**/pyproject.toml", "**/main.py"]
 effort: 3
+user-invocable: true
+when_to_use: "When building high-performance async APIs with FastAPI, SQLAlchemy 2.0, or Pydantic V2"
 ---
 
 ## Use this skill when

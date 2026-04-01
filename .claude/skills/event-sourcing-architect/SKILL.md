@@ -5,6 +5,8 @@ risk: unknown
 source: community
 date_added: "2026-02-27"
 effort: 4
+user-invocable: true
+when_to_use: "When designing event-sourced systems, CQRS patterns, event stores, or systems requiring full audit trail"
 ---
 
 # Event Sourcing Architect

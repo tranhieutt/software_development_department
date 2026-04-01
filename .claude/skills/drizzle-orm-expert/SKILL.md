@@ -6,6 +6,8 @@ source: community
 date_added: "2026-03-04"
 paths: ["**/drizzle.config.*", "**/db/**/*.ts", "**/db/**/*.js"]
 effort: 3
+user-invocable: true
+when_to_use: "When building type-safe database layers with Drizzle ORM for TypeScript projects"
 ---
 
 # Drizzle ORM Expert

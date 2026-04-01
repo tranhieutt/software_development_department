@@ -6,6 +6,8 @@ source: community
 date_added: '2026-02-27'
 paths: ["**/*.dart", "**/pubspec.yaml", "**/pubspec.lock"]
 effort: 3
+user-invocable: true
+when_to_use: "When developing Flutter applications with Dart 3, advanced widgets, or multi-platform deployment"
 ---
 
 ## Use this skill when

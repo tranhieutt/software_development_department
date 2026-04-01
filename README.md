@@ -214,7 +214,7 @@ Tested on **Windows 10/11** with Git Bash. All hooks use POSIX-compatible patter
 
 ## Version
 
-**v1.11.0** — 2026-04-01
+**v1.12.0** — 2026-04-01
 
 See [`History_Update.md`](History_Update.md) for full changelog.
 

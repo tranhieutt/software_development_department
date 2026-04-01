@@ -6,6 +6,8 @@ source: community
 date_added: "2026-02-27"
 paths: ["**/*.tsx", "**/*.jsx", "**/next.config.*", "**/app/**/*.ts"]
 effort: 3
+user-invocable: true
+when_to_use: "When building Next.js 14+ applications with App Router, Server Components, streaming, or advanced data fetching"
 ---
 
 # Next.js App Router Patterns

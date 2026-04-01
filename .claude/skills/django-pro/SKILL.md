@@ -6,6 +6,8 @@ source: community
 date_added: '2026-02-27'
 paths: ["**/*.py", "**/manage.py", "**/settings.py", "**/urls.py"]
 effort: 3
+user-invocable: true
+when_to_use: "When building Django 5.x applications with async views, DRF, Celery, or Django Channels"
 ---
 
 ## Use this skill when

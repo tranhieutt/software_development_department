@@ -6,6 +6,8 @@ source: community
 date_added: "2026-02-27"
 paths: ["**/package.json", "**/src/**/*.ts", "**/src/**/*.js", "**/server.ts", "**/server.js"]
 effort: 3
+user-invocable: true
+when_to_use: "When building production-ready Node.js backend services with Express/Fastify, middleware, authentication, or database integration"
 ---
 
 # Node.js Backend Patterns

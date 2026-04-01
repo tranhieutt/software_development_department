@@ -8,6 +8,7 @@ context: |
   !git log --oneline -30 2>/dev/null
   !git tag --list --sort=-v:refname 2>/dev/null | head -5
 effort: 1
+when_to_use: "When generating a changelog from git commits for a version or sprint release"
 ---
 
 When this skill is invoked:

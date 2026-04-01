@@ -5,6 +5,7 @@ argument-hint: "[bug-id or description]"
 user-invocable: true
 allowed-tools: Read, Glob, Grep, Write, Edit, Bash
 effort: 2
+when_to_use: "When an emergency production bug requires immediate fix bypassing normal sprint processes"
 ---
 When this skill is invoked:
 

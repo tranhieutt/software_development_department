@@ -6,6 +6,8 @@ source: community
 date_added: '2026-02-27'
 paths: ["**/src/**/*.ts", "**/src/**/*.js", "**/middlewares/**", "**/guards/**"]
 effort: 3
+user-invocable: true
+when_to_use: "When implementing backend security features such as input validation, authentication, or API authorization"
 ---
 
 ## Use this skill when

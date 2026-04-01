@@ -5,6 +5,7 @@ argument-hint: "[target-phase: systems-design | technical-setup | pre-production
 user-invocable: true
 allowed-tools: Read, Glob, Grep, Bash, Write
 effort: 3
+when_to_use: "When validating project readiness to advance to the next development phase"
 ---
 
 # Phase Gate Validation

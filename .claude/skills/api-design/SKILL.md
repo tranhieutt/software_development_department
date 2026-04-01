@@ -5,6 +5,7 @@ argument-hint: "[path-to-api-spec-or-route-files]"
 user-invocable: true
 allowed-tools: Read, Glob, Grep, WebSearch
 effort: 3
+when_to_use: "When designing or reviewing REST/GraphQL API contracts, endpoint naming, schemas, or versioning"
 ---
 
 When this skill is invoked:

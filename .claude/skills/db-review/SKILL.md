@@ -5,6 +5,7 @@ argument-hint: "[path-to-schema-migration-or-query-files]"
 user-invocable: true
 allowed-tools: Read, Glob, Grep
 effort: 2
+when_to_use: "When reviewing database schemas, migrations, or queries for correctness, performance, and data integrity"
 ---
 
 When this skill is invoked:

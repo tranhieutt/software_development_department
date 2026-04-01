@@ -4,6 +4,8 @@ description: Django architecture patterns, REST API design with DRF, ORM best pr
 origin: ECC
 paths: ["**/*.py", "**/manage.py", "**/models.py", "**/views.py"]
 effort: 3
+user-invocable: true
+when_to_use: "When building Django applications or REST APIs with DRF, implementing ORM patterns, caching, or middleware"
 ---
 
 # Django Development Patterns

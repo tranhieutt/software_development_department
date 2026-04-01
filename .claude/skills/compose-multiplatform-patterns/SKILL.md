@@ -4,6 +4,8 @@ description: Compose Multiplatform and Jetpack Compose patterns for KMP projects
 origin: ECC
 paths: ["**/*.kt", "**/build.gradle*", "**/gradle.properties"]
 effort: 3
+user-invocable: true
+when_to_use: "When building Compose Multiplatform or Jetpack Compose UI for Android, iOS, Desktop, or Web with Kotlin"
 ---
 
 # Compose Multiplatform Patterns

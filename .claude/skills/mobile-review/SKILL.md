@@ -5,6 +5,7 @@ argument-hint: "[path-to-mobile-file-or-directory]"
 user-invocable: true
 allowed-tools: Read, Glob, Grep, Bash
 effort: 3
+when_to_use: "When reviewing mobile code (React Native, Flutter, iOS, Android) with mobile-first criteria and platform standards"
 ---
 
 When this skill is invoked:

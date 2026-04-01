@@ -20,6 +20,8 @@ tools:
 - codex-cli
 paths: ["**/Dockerfile*", "**/k8s/**", "**/infra/**", "**/.github/workflows/**"]
 effort: 3
+user-invocable: true
+when_to_use: "When dockerizing applications, configuring CI/CD pipelines, deploying to AWS, or setting up infrastructure as code"
 ---
 
 # DEVOPS-DEPLOY — Da Ideia para Producao

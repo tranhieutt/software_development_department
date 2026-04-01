@@ -6,6 +6,8 @@ source: community
 date_added: "2026-02-27"
 paths: ["**/*.py", "**/*.ts", "**/chatbot*", "**/assistant*"]
 effort: 3
+user-invocable: true
+when_to_use: "When developing AI assistant or chatbot applications with natural language understanding and context management"
 ---
 
 # AI Assistant Development

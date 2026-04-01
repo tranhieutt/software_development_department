@@ -7,6 +7,8 @@ source: community
 date_added: "2026-02-27"
 paths: ["**/nest-cli.json", "**/src/**/*.ts", "**/*.module.ts", "**/*.controller.ts", "**/*.service.ts"]
 effort: 3
+user-invocable: true
+when_to_use: "When building NestJS applications with module architecture, dependency injection, guards, interceptors, or TypeORM"
 ---
 
 # Nest.js Expert

@@ -6,6 +6,8 @@ source: community
 date_added: '2026-02-27'
 paths: ["**/*.dart", "**/*.swift", "**/*.kt", "**/pubspec.yaml", "**/app.json"]
 effort: 4
+user-invocable: true
+when_to_use: "When developing React Native, Flutter, or native mobile apps with modern architecture patterns or offline sync"
 ---
 
 ## Use this skill when

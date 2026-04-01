@@ -6,6 +6,8 @@ source: community
 date_added: "2026-02-27"
 paths: ["**/.gitlab-ci.yml", "**/ci/**", "**/.gitlab/**"]
 effort: 3
+user-invocable: true
+when_to_use: "When implementing or optimizing GitLab CI/CD pipelines, multi-stage workflows, or distributed runners"
 ---
 
 # GitLab CI Patterns

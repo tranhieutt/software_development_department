@@ -5,6 +5,8 @@ risk: unknown
 source: community
 date_added: '2026-02-27'
 effort: 4
+user-invocable: true
+when_to_use: "When designing complex multi-cloud or hybrid cloud solutions across AWS, Azure, GCP, and private clouds"
 ---
 
 ## Use this skill when

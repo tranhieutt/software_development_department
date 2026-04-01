@@ -8,6 +8,17 @@ Tài liệu này ghi lại lịch sử cập nhật tài liệu và source code 
 
 ---
 
+### [v1.12.0] - 2026-04-01
+
+**Chủ đề:** Skill Routing Enhancement — Bổ sung `user-invocable` & `when_to_use` cho 59 skills
+
+- **Cập nhật YAML frontmatter cho 59 skill files:** Thêm thuộc tính `user-invocable: true` và/hoặc `when_to_use:` mô tả ngữ cảnh sử dụng chính xác.
+- **Mục đích:** Cải thiện khả năng routing của hệ thống — giúp AI agent tự động chọn đúng skill dựa trên mô tả `when_to_use` thay vì chỉ dựa vào tên skill.
+- **Phạm vi:** Bao gồm cả core workflow skills (`brainstorm`, `design-system`, `orchestrate`, `gate-check`...) và technology framework skills (`claude-api`, `fastapi-pro`, `kubernetes-architect`, `nextjs-best-practices`...).
+- **Tổng thay đổi:** 59 files, 101 insertions.
+
+---
+
 ### [v1.11.0] - 2026-04-01
 
 **Chủ đề:** Tối ưu Context Management — Tách Rules & Guide, giảm 75% token/API call
@@ -315,4 +326,4 @@ Kết quả: Gõ `/` khi làm Next.js project → ~20 skills thay vì 98.
 
 ---
 
-Last Updated: 2026-04-01 — v1.11.0
+Last Updated: 2026-04-01 — v1.12.0

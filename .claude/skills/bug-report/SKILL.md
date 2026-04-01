@@ -6,6 +6,7 @@ argument-hint: "[description]
 user-invocable: true
 allowed-tools: Read, Glob, Grep, Write
 effort: 1
+when_to_use: "When reporting a bug, creating a structured bug report, or analyzing code to identify potential defects"
 ---
 
 When invoked with a description:

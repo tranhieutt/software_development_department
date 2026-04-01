@@ -5,6 +5,7 @@ argument-hint: "[launch-date or 'dry-run']"
 user-invocable: true
 allowed-tools: Read, Glob, Grep, Write
 effort: 3
+when_to_use: "When preparing for a product or feature launch and needing to validate all departments are ready"
 ---
 
 When this skill is invoked:

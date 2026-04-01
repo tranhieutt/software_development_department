@@ -5,6 +5,7 @@ argument-hint: "[milestone-name|current]"
 user-invocable: true
 allowed-tools: Read, Glob, Grep, Write
 effort: 3
+when_to_use: "When reviewing milestone progress, assessing feature completeness, or making a go/no-go recommendation for a deadline"
 ---
 
 When this skill is invoked:

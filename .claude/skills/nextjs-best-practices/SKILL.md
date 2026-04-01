@@ -6,6 +6,8 @@ source: community
 date_added: "2026-02-27"
 paths: ["**/*.tsx", "**/*.jsx", "**/next.config.*"]
 effort: 3
+user-invocable: true
+when_to_use: "When applying Next.js App Router best practices for routing, data fetching, or Server Components"
 ---
 
 # Next.js Best Practices

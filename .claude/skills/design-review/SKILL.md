@@ -5,6 +5,7 @@ argument-hint: "[path-to-design-doc]"
 user-invocable: true
 allowed-tools: Read, Glob, Grep
 effort: 2
+when_to_use: "When reviewing a design or feature specification document for completeness, consistency, and implementability"
 ---
 
 When this skill is invoked:

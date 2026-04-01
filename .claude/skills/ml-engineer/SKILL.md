@@ -6,6 +6,8 @@ source: community
 date_added: '2026-02-27'
 paths: ["**/*.py", "**/*.ipynb", "**/requirements*.txt", "**/setup.py"]
 effort: 3
+user-invocable: true
+when_to_use: "When building production ML systems with PyTorch or TensorFlow, implementing model serving, or setting up A/B testing"
 ---
 
 ## Use this skill when

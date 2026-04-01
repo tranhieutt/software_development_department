@@ -6,6 +6,8 @@ source: community
 date_added: "2026-02-27"
 paths: ["**/*.tsx", "**/*.jsx", "**/*.css"]
 effort: 3
+user-invocable: true
+when_to_use: "When building dark-themed React dashboards or admin panels with Tailwind CSS, glassmorphism effects, or Framer Motion animations"
 ---
 
 # Frontend UI Dark Theme (TypeScript)

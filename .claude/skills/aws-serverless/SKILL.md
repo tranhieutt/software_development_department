@@ -6,6 +6,8 @@ source: "vibeship-spawner-skills (Apache 2.0)"
 date_added: "2026-02-27"
 paths: ["**/serverless.yml", "**/template.yaml", "**/cdk/**", "**/sam/**"]
 effort: 3
+user-invocable: true
+when_to_use: "When building or deploying serverless applications on AWS with Lambda, API Gateway, DynamoDB, or SAM/CDK"
 ---
 
 # AWS Serverless

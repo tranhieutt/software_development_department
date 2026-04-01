@@ -4,6 +4,8 @@ description: Backend architecture patterns, API design, database optimization, a
 origin: ECC
 paths: ["**/src/**/*.ts", "**/src/**/*.js", "**/routes/**", "**/controllers/**"]
 effort: 2
+user-invocable: true
+when_to_use: "When implementing backend API endpoints, service layers, database queries, or async processing patterns"
 ---
 
 # Backend Development Patterns

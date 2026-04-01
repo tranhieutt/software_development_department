@@ -4,6 +4,8 @@ description: Docker and Docker Compose patterns for local development, container
 origin: ECC
 paths: ["**/Dockerfile*", "**/docker-compose*", "**/.dockerignore"]
 effort: 2
+user-invocable: true
+when_to_use: "When setting up Docker or Docker Compose for containerized development, multi-service orchestration, or container security"
 ---
 
 # Docker Patterns

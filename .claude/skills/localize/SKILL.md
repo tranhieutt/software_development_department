@@ -5,6 +5,7 @@ argument-hint: "[scan|extract|validate|status]"
 user-invocable: true
 allowed-tools: Read, Glob, Grep, Write, Bash
 effort: 1
+when_to_use: "When scanning, extracting, or validating localization strings, or checking for hardcoded text in the codebase"
 ---
 When this skill is invoked:
 

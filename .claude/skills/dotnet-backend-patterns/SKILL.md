@@ -6,6 +6,8 @@ source: community
 date_added: "2026-02-27"
 paths: ["**/*.cs", "**/*.csproj", "**/*.sln", "**/appsettings*.json"]
 effort: 3
+user-invocable: true
+when_to_use: "When building C#/.NET backend APIs, MCP servers, or enterprise applications with Entity Framework or Dapper"
 ---
 
 # .NET Backend Development Patterns

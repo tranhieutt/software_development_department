@@ -6,6 +6,8 @@ source: self
 date_added: "2026-02-27"
 paths: ["**/*.ts", "**/*.html", "**/angular.json"]
 effort: 3
+user-invocable: true
+when_to_use: "When writing, reviewing, or refactoring Angular code for performance, bundle size, and rendering efficiency"
 ---
 
 # Angular Best Practices
