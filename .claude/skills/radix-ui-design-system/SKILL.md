@@ -4,6 +4,7 @@ description: "Build accessible design systems with Radix UI primitives. Headless
 risk: safe
 source: self
 date_added: "2026-02-27"
+paths: ["**/*.tsx", "**/*.jsx", "**/components.json"]
 ---
 
 # Radix UI Design System

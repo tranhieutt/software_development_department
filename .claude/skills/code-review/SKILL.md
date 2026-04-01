@@ -12,22 +12,22 @@ When this skill is invoked:
 
 2. **Read the CLAUDE.md** for project coding standards.
 
-3. **Identify the system category** (engine, gameplay, AI, networking, UI, tools)
+3. **Identify the system category** (api, service, repository, component, utility, infrastructure)
    and apply category-specific standards.
 
 4. **Evaluate against coding standards**:
    - [ ] Public methods and classes have doc comments
    - [ ] Cyclomatic complexity under 10 per method
    - [ ] No method exceeds 40 lines (excluding data declarations)
-   - [ ] Dependencies are injected (no static singletons for game state)
-   - [ ] Configuration values loaded from data files
+   - [ ] Dependencies are injected (no singletons for business state)
+   - [ ] Configuration values loaded from external config, not hardcoded
    - [ ] Systems expose interfaces (not concrete class dependencies)
 
 5. **Check architectural compliance**:
-   - [ ] Correct dependency direction (engine <- gameplay, not reverse)
+   - [ ] Correct dependency direction (infrastructure ← domain ← application)
    - [ ] No circular dependencies between modules
-   - [ ] Proper layer separation (UI does not own game state)
-   - [ ] Events/signals used for cross-system communication
+   - [ ] Proper layer separation (UI does not own business logic)
+   - [ ] Events/messages used for cross-service communication
    - [ ] Consistent with established patterns in the codebase
 
 6. **Check SOLID compliance**:
@@ -37,12 +37,14 @@ When this skill is invoked:
    - [ ] Interface Segregation: No fat interfaces
    - [ ] Dependency Inversion: Depends on abstractions, not concretions
 
-7. **Check for common game development issues**:
-   - [ ] Frame-rate independence (delta time usage)
-   - [ ] No allocations in hot paths (update loops)
-   - [ ] Proper null/empty state handling
-   - [ ] Thread safety where required
-   - [ ] Resource cleanup (no leaks)
+7. **Check for common web/software issues**:
+   - [ ] No N+1 query patterns (use eager loading or joins)
+   - [ ] Proper async/await usage (no unhandled promises, no floating async)
+   - [ ] Input validation at system boundaries (user input, external APIs)
+   - [ ] Proper error handling with meaningful, safe messages (no stack traces exposed)
+   - [ ] No secrets or sensitive data hardcoded (API keys, passwords, tokens)
+   - [ ] Resource cleanup (DB connections, streams, subscriptions, event listeners)
+   - [ ] Thread/concurrency safety where required
 
 8. **Output the review** in this format:
 
@@ -58,11 +60,11 @@ When this skill is invoked:
 ### SOLID: [COMPLIANT / ISSUES FOUND]
 [List specific violations]
 
-### Game-Specific Concerns
-[List game development specific issues]
+### Web/Software Concerns
+[List web and software-specific issues found]
 
 ### Positive Observations
-[What is done well -- always include this section]
+[What is done well — always include this section]
 
 ### Required Changes
 [Must-fix items before approval]

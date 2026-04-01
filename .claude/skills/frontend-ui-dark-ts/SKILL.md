@@ -4,6 +4,7 @@ description: "Build dark-themed React applications using Tailwind CSS with custo
 risk: unknown
 source: community
 date_added: "2026-02-27"
+paths: ["**/*.tsx", "**/*.jsx", "**/*.css"]
 ---
 
 # Frontend UI Dark Theme (TypeScript)

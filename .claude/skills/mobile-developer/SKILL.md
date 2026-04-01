@@ -4,6 +4,7 @@ description: Develop React Native, Flutter, or native mobile apps with modern ar
 risk: unknown
 source: community
 date_added: '2026-02-27'
+paths: ["**/*.dart", "**/*.swift", "**/*.kt", "**/pubspec.yaml", "**/app.json"]
 ---
 
 ## Use this skill when

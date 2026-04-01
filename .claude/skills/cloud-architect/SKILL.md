@@ -4,6 +4,7 @@ description: Expert cloud architect specializing in AWS/Azure/GCP multi-cloud in
 risk: unknown
 source: community
 date_added: '2026-02-27'
+paths: ["**/terraform/**", "**/pulumi/**", "**/infra/**", "**/*.tf"]
 ---
 
 ## Use this skill when

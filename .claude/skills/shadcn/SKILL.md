@@ -5,6 +5,7 @@ user-invocable: false
 risk: safe
 source: https://github.com/shadcn-ui/ui/tree/main/skills/shadcn
 date_added: "2026-03-07"
+paths: ["**/*.tsx", "**/*.jsx", "**/components.json"]
 ---
 
 # shadcn/ui

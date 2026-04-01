@@ -5,6 +5,7 @@ category: granular-workflow-bundle
 risk: safe
 source: personal
 date_added: "2026-02-27"
+paths: ["**/*.tsx", "**/*.jsx", "**/next.config.*", "**/tailwind.config.*"]
 ---
 
 # React/Next.js Development Workflow

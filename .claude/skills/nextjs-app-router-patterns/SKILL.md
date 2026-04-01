@@ -4,6 +4,7 @@ description: "Master Next.js 14+ App Router with Server Components, streaming, p
 risk: unknown
 source: community
 date_added: "2026-02-27"
+paths: ["**/*.tsx", "**/*.jsx", "**/next.config.*", "**/app/**/*.ts"]
 ---
 
 # Next.js App Router Patterns

@@ -4,6 +4,7 @@ description: "Production-ready patterns for building LLM applications. Covers RA
 risk: unknown
 source: community
 date_added: "2026-02-27"
+paths: ["**/*.py", "**/*.ts", "**/openai*", "**/anthropic*", "**/langchain*"]
 ---
 
 # 🤖 LLM Application Patterns

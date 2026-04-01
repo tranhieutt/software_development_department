@@ -4,6 +4,7 @@ description: "Angular performance optimization and best practices guide. Use whe
 risk: safe
 source: self
 date_added: "2026-02-27"
+paths: ["**/*.ts", "**/*.html", "**/angular.json"]
 ---
 
 # Angular Best Practices

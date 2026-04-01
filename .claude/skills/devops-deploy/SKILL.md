@@ -18,6 +18,7 @@ tools:
 - cursor
 - gemini-cli
 - codex-cli
+paths: ["**/Dockerfile*", "**/k8s/**", "**/infra/**", "**/.github/workflows/**"]
 ---
 
 # DEVOPS-DEPLOY — Da Ideia para Producao

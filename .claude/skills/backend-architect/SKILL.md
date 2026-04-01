@@ -4,6 +4,7 @@ description: Expert backend architect specializing in scalable API design, micro
 risk: unknown
 source: community
 date_added: '2026-02-27'
+paths: ["**/src/**/*.ts", "**/src/**/*.js", "**/package.json"]
 ---
 You are a backend system architect specializing in scalable, resilient, and maintainable backend systems and APIs.
 

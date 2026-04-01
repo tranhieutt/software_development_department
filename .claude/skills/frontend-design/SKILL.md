@@ -4,6 +4,7 @@ description: "Create distinctive, production-grade frontend interfaces with inte
 risk: unknown
 source: community
 date_added: "2026-02-27"
+paths: ["**/*.tsx", "**/*.jsx", "**/*.css", "**/*.scss"]
 ---
 
 # Frontend Design (Distinctive, Production-Grade)

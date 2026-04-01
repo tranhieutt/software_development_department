@@ -4,6 +4,7 @@ description: Build production ML systems with PyTorch 2.x, TensorFlow, and moder
 risk: unknown
 source: community
 date_added: '2026-02-27'
+paths: ["**/*.py", "**/*.ipynb", "**/requirements*.txt", "**/setup.py"]
 ---
 
 ## Use this skill when

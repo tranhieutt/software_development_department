@@ -4,6 +4,7 @@ description: "Prisma ORM expert for schema design, migrations, query optimizatio
 risk: unknown
 source: community
 date_added: "2026-02-27"
+paths: ["**/prisma/**", "**/*.prisma", "**/schema.prisma"]
 ---
 
 # Prisma Expert

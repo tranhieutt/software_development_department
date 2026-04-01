@@ -4,6 +4,7 @@ description: Expert in secure frontend coding practices specializing in XSS prev
 risk: unknown
 source: community
 date_added: '2026-02-27'
+paths: ["**/*.tsx", "**/*.jsx", "**/*.ts", "**/*.js"]
 ---
 
 ## Use this skill when

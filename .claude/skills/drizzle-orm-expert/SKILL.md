@@ -4,6 +4,7 @@ description: "Expert in Drizzle ORM for TypeScript — schema design, relational
 risk: safe
 source: community
 date_added: "2026-03-04"
+paths: ["**/drizzle.config.*", "**/db/**/*.ts", "**/db/**/*.js"]
 ---
 
 # Drizzle ORM Expert

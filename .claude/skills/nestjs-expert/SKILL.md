@@ -5,6 +5,7 @@ category: framework
 risk: unknown
 source: community
 date_added: "2026-02-27"
+paths: ["**/nest-cli.json", "**/src/**/*.ts", "**/*.module.ts", "**/*.controller.ts", "**/*.service.ts"]
 ---
 
 # Nest.js Expert

@@ -4,6 +4,7 @@ description: Expert in secure backend coding practices specializing in input val
 risk: unknown
 source: community
 date_added: '2026-02-27'
+paths: ["**/src/**/*.ts", "**/src/**/*.js", "**/middlewares/**", "**/guards/**"]
 ---
 
 ## Use this skill when

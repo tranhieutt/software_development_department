@@ -4,6 +4,7 @@ description: Frontend development skill for React, Next.js, TypeScript, and Tail
 risk: safe
 source: https://github.com/alirezarezvani/claude-skills
 date_added: "2026-03-07"
+paths: ["**/*.tsx", "**/*.jsx", "**/*.vue", "**/package.json"]
 ---
 
 # Senior Frontend

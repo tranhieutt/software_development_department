@@ -4,6 +4,7 @@ description: "You are an AI assistant development expert specializing in creatin
 risk: unknown
 source: community
 date_added: "2026-02-27"
+paths: ["**/*.py", "**/*.ts", "**/chatbot*", "**/assistant*"]
 ---
 
 # AI Assistant Development

@@ -4,6 +4,7 @@ description: "Production deployment principles and decision-making. Safe deploym
 risk: unknown
 source: community
 date_added: "2026-02-27"
+paths: ["**/Dockerfile*", "**/deploy/**", "**/.github/workflows/**"]
 ---
 
 # Deployment Procedures

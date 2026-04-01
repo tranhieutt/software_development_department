@@ -4,6 +4,7 @@ description: "Expert guidance for distributed NoSQL databases (Cassandra, Dynamo
 risk: unknown
 source: community
 date_added: "2026-02-27"
+paths: ["**/mongo*", "**/dynamo*", "**/cassandra*", "**/*.json"]
 ---
 
 # NoSQL Expert Patterns (Cassandra & DynamoDB)

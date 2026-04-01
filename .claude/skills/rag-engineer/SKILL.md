@@ -4,6 +4,7 @@ description: "Expert in building Retrieval-Augmented Generation systems. Masters
 risk: unknown
 source: "vibeship-spawner-skills (Apache 2.0)"
 date_added: "2026-02-27"
+paths: ["**/*.py", "**/requirements*.txt", "**/embeddings/**", "**/vector*"]
 ---
 
 # RAG Engineer

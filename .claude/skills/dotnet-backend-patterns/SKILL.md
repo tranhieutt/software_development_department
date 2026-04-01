@@ -4,6 +4,7 @@ description: "Master C#/.NET backend development patterns for building robust AP
 risk: unknown
 source: community
 date_added: "2026-02-27"
+paths: ["**/*.cs", "**/*.csproj", "**/*.sln", "**/appsettings*.json"]
 ---
 
 # .NET Backend Development Patterns
