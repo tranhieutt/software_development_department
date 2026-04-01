@@ -30,13 +30,13 @@ The result: you still make every decision, but now you have a team that asks the
 
 ## What's Included
 
-| Category | Count | Description |
-|----------|-------|-------------|
-| **Agents** | 27 | Specialized subagents across product, engineering, design, QA, data, and operations |
-| **Skills** | 98 | Core workflows and system frameworks (`/start`, `fastapi-pro`, `kubernetes-architect`, etc.) |
-| **Hooks** | 8 | Automated validation on commits, pushes, asset changes, session lifecycle, pre-compact, and gap detection |
-| **Rules** | 11 | Path-scoped coding standards for API, frontend, backend, database, UI, network, AI, secrets, tests, and more |
-| **Templates** | 22+ | Document templates for PRDs, API designs, system architecture, user stories, ADRs, mobile, and more |
+| Category      | Count | Description                                                                                                  |
+| ------------- | ----- | ------------------------------------------------------------------------------------------------------------ |
+| **Agents**    | 27    | Specialized subagents across product, engineering, design, QA, data, and operations                          |
+| **Skills**    | 98    | Core workflows and system frameworks (`/start`, `fastapi-pro`, `kubernetes-architect`, etc.)                 |
+| **Hooks**     | 8     | Automated validation on commits, pushes, asset changes, session lifecycle, pre-compact, and gap detection    |
+| **Rules**     | 11    | Path-scoped coding standards for API, frontend, backend, database, UI, network, AI, secrets, tests, and more |
+| **Templates** | 22+   | Document templates for PRDs, API designs, system architecture, user stories, ADRs, mobile, and more          |
 
 ## Department Hierarchy
 
@@ -144,13 +144,13 @@ production/                         # Sprint plans, milestones, release tracking
 
 ## Additional Resources
 
-| File | Description |
-|------|-------------|
-| [`plan_upgrade.md`](plan_upgrade.md) | Detailed upgrade roadmap comparing this template to competing frameworks |
+| File                                                                       | Description                                                               |
+| -------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
+| [`plan_upgrade.md`](plan_upgrade.md)                                       | Detailed upgrade roadmap comparing this template to competing frameworks  |
 | [`compare_department_orchestrated.md`](compare_department_orchestrated.md) | Side-by-side comparison: orchestrated multi-agent approach vs traditional |
-| [`infographic.html`](infographic.html) | Interactive visual overview of the department structure |
-| [`UPGRADING.md`](UPGRADING.md) | Guide for cherry-picking upstream improvements into your fork |
-| [`History_Update.md`](History_Update.md) | Full changelog of template evolution from v1.0.0 onwards |
+| [`infographic.html`](infographic.html)                                     | Interactive visual overview of the department structure                   |
+| [`UPGRADING.md`](UPGRADING.md)                                             | Guide for cherry-picking upstream improvements into your fork             |
+| [`History_Update.md`](History_Update.md)                                   | Full changelog of template evolution from v1.0.0 onwards                  |
 
 ## How It Works
 
@@ -180,18 +180,18 @@ You stay in control. The agents provide structure and expertise, not autonomy.
 
 Coding standards are automatically enforced based on file location:
 
-| Path | Enforces |
-|------|----------|
-| `src/api/**` | REST/GraphQL conventions, auth, error format |
-| `src/frontend/**` | Accessibility, design tokens, i18n, state management |
-| `src/**db**` | Migrations, parameterized queries, indexing |
-| `src/ui/**` | No business logic, localization-ready, accessibility |
-| `src/ai/**` | Performance budgets, debuggability, data-driven parameters |
-| `src/networking/**` | Real-time, WebSocket, event streaming standards |
-| `config/**` | No hardcoded secrets, schema validation |
-| `design/docs/**` | Required PRD sections, acceptance criteria |
-| `tests/**` | Test naming, coverage requirements, fixture patterns |
-| `prototypes/**` | Relaxed standards, README required, hypothesis documented |
+| Path                | Enforces                                                   |
+| ------------------- | ---------------------------------------------------------- |
+| `src/api/**`        | REST/GraphQL conventions, auth, error format               |
+| `src/frontend/**`   | Accessibility, design tokens, i18n, state management       |
+| `src/**db**`        | Migrations, parameterized queries, indexing                |
+| `src/ui/**`         | No business logic, localization-ready, accessibility       |
+| `src/ai/**`         | Performance budgets, debuggability, data-driven parameters |
+| `src/networking/**` | Real-time, WebSocket, event streaming standards            |
+| `config/**`         | No hardcoded secrets, schema validation                    |
+| `design/docs/**`    | Required PRD sections, acceptance criteria                 |
+| `tests/**`          | Test naming, coverage requirements, fixture patterns       |
+| `prototypes/**`     | Relaxed standards, README required, hypothesis documented  |
 
 ## Customization
 
@@ -214,6 +214,10 @@ Tested on **Windows 10/11** with Git Bash. All hooks use POSIX-compatible patter
 **v1.8.0** — 2026-03-30
 
 See [`History_Update.md`](History_Update.md) for full changelog.
+
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=tranhieutt/software_development_department&type=Date)](https://star-history.com/#tranhieutt/software_development_department&Date)
 
 ## License
 

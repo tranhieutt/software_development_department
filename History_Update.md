@@ -8,6 +8,48 @@ Tài liệu này ghi lại lịch sử cập nhật tài liệu và source code 
 
 ---
 
+### [v1.9.0] - 2026-04-01
+
+**Chủ đề:** SDD Upgrade dựa trên phân tích Claude Code source code
+
+Nguồn: Phân tích 512K lines source code Claude Code tại `D:\Claude Source Code Original`.
+Chi tiết: [upgrade_plan_based_claude_code_original.md](upgrade_plan_based_claude_code_original.md)
+
+**Phase 1 — Quick Wins:**
+
+- `.claude/skills/code-review/SKILL.md` — Fix toàn bộ game references còn sót:
+  - Category list: `engine, gameplay` → `api, service, repository, component, utility, infrastructure`
+  - Dependency rule: `engine ← gameplay` → `infrastructure ← domain ← application`
+  - Section 7: "Game development issues" → "Web/Software issues"
+  - Bỏ: frame-rate independence, hot path allocations
+  - Thêm: N+1 queries, async/await, input validation, secrets hardcoded, resource cleanup
+
+- Memory files — Tạo 3 skeleton files tại `~/.claude/projects/.../memory/`:
+  - `feedback_skill_patterns.md` — Skills & patterns hiệu quả trong SDD
+  - `feedback_code_review_findings.md` — Lỗi code hay lặp lại, cần check proactively
+  - `project_tech_decisions.md` — Stack đã approve theo loại project
+
+**Phase 2 — Conditional Skills (`paths:` frontmatter):**
+
+Thêm `paths:` vào **48 technology skills** — skills chỉ visible khi mở file phù hợp:
+
+| Nhóm | Skills | Ví dụ trigger |
+| --- | --- | --- |
+| Frontend / React / Next.js | 13 | `*.tsx`, `next.config.*`, `tailwind.config.*` |
+| Backend Node.js / NestJS | 7 | `*.module.ts`, `nest-cli.json`, `schema.prisma` |
+| Python | 6 | `*.py`, `manage.py`, `requirements.txt` |
+| Mobile (Flutter / iOS / KMP) | 4 | `*.dart`, `*.swift`, `pubspec.yaml` |
+| Database (SQL / NoSQL / Vector) | 4 | `*.sql`, `migrations/**`, `*.prisma` |
+| Infrastructure / DevOps | 7 | `Dockerfile*`, `k8s/**`, `*.tf`, `.gitlab-ci.yml` |
+| .NET / Java / PHP | 3 | `*.cs`, `*.java`, `*.php`, `pom.xml` |
+| AI / LLM | 4 | `*anthropic*`, `*langchain*`, `*gemini*` |
+
+Kết quả: Gõ `/` khi làm Next.js project → ~20 skills thay vì 98.
+
+**Còn lại (Phase 3–5):** `context: fork` cho heavy skills, `effort:` hints, tách CLAUDE.md domain rules.
+
+---
+
 ### [v1.8.0] - 2026-03-30
 
 **Chủ đề:** Nâng cấp Quy mô Skills — Tích hợp hệ thống phân tích, framework và công nghệ gốc từ Global System.
@@ -242,4 +284,4 @@ Tài liệu này ghi lại lịch sử cập nhật tài liệu và source code 
 
 ---
 
-Last Updated: 2026-03-30 — v1.8.0
+Last Updated: 2026-04-01 — v1.9.0
