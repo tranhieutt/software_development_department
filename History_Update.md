@@ -8,6 +8,20 @@ Tài liệu này ghi lại lịch sử cập nhật tài liệu và source code 
 
 ---
 
+### [v1.16.0] - 2026-04-02
+
+**Chủ đề:** Nâng cấp Memory Consolidation Protocol & Cập nhật `.gitignore`
+
+- **Tối ưu hóa Skill `/dream` (`.claude/skills/dream/SKILL.md`)**:
+  - Tái cấu trúc quy trình consolidate thành 4 Phase rõ ràng: Orient, Gather recent signal, Consolidate, Prune and index.
+  - Cải thiện cách tìm kiếm `MEMORY.md` và các session transcripts (`.jsonl`) để bắt thông tin chuẩn xác.
+  - Bổ sung quy trình kiểm tra và tự sửa lỗi thiếu YAML frontmatter.
+  - Thêm danh mục nhận diện tín hiệu rõ ràng (Signal categories) thay vì thu thập dữ liệu rác.
+- **Cập nhật `.gitignore`**:
+  - Thêm `.vercel` nhằm loại trừ file tạm của Vercel.
+
+---
+
 ### [v1.15.0] - 2026-04-01
 
 **Chủ đề:** Tool System Optimization — Least Privilege, Allow-list & Argument Hints
@@ -381,4 +395,4 @@ Kết quả: Gõ `/` khi làm Next.js project → ~20 skills thay vì 98.
 
 ---
 
-Last Updated: 2026-04-01 — v1.15.0
+Last Updated: 2026-04-02 — v1.16.0
