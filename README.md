@@ -149,6 +149,7 @@ production/                         # Sprint plans, milestones, release tracking
 
 | File                                                                       | Description                                                               |
 | -------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
+| [`report_new_capacity_sdd_with_gitnexus.md`](report_new_capacity_sdd_with_gitnexus.md)| Detailed capability report: SDD + GitNexus integration (Knowledge Graph)  |
 | [`plan_upgrade.md`](plan_upgrade.md)                                       | Detailed upgrade roadmap comparing this template to competing frameworks  |
 | [`compare_department_orchestrated.md`](compare_department_orchestrated.md) | Side-by-side comparison: orchestrated multi-agent approach vs traditional |
 | [`infographic.html`](infographic.html)                                     | Interactive visual overview of the department structure                   |
@@ -214,7 +215,7 @@ Tested on **Windows 10/11** with Git Bash. All hooks use POSIX-compatible patter
 
 ## Version
 
-**v1.15.0** — 2026-04-01
+**v1.17.0** — 2026-04-02
 
 See [`History_Update.md`](History_Update.md) for full changelog.
 

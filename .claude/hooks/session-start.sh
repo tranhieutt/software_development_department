@@ -73,3 +73,16 @@ fi
 
 echo "==================================="
 exit 0
+
+# --- GitNexus indexed repos ---
+if command -v npx >/dev/null 2>&1; then
+    GN_LIST=$(npx --no gitnexus list 2>/dev/null)
+    if [ -n "$GN_LIST" ]; then
+        echo ""
+        echo "GitNexus indexed repos:"
+        echo "$GN_LIST" | while IFS= read -r line; do
+            echo "  $line"
+        done
+        echo "  (run 'npx gitnexus status' to check freshness)"
+    fi
+fi

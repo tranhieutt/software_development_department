@@ -47,6 +47,9 @@ Ask yourself: "What role would handle this in a real software team?"
 | Test a technical idea quickly | `prototyper` |
 | Write user-facing release notes | `community-manager` |
 | Resolve a technical conflict | `technical-director` |
+| Understand what breaks if I change X | `lead-programmer` + `/gitnexus-impact-analysis` |
+| Review a PR for missed callers | `lead-programmer` + `/gitnexus-pr-review` |
+| Safely rename across many files | `lead-programmer` + `/gitnexus-refactoring` |
 
 ### 3. Use Slash Commands for Common Tasks
 
@@ -85,6 +88,11 @@ Ask yourself: "What role would handle this in a real software team?"
 | `/team-frontend` | Orchestrate frontend team pipeline |
 | `/team-ui` | Orchestrate UI implementation pipeline |
 | `/team-release` | Orchestrate full release pipeline |
+| `/gitnexus-impact-analysis` | Blast-radius check before editing a symbol |
+| `/gitnexus-pr-review` | Risk-assessed PR review with call graph |
+| `/gitnexus-refactoring` | Safe multi-file rename and extract via knowledge graph |
+| `/gitnexus-exploring` | Understand architecture and trace execution flows |
+| `/gitnexus-guide` | GitNexus concepts and tool reference |
 | `/orchestrate` | Wave-based multi-agent execution — analyzes dependencies, runs agents in parallel/sequential waves |
 
 ### 4. Use Templates for New Documents

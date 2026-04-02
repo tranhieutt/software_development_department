@@ -8,6 +8,16 @@ Tài liệu này ghi lại lịch sử cập nhật tài liệu và source code 
 
 ---
 
+### [v1.17.0] - 2026-04-02
+
+**Chủ đề:** Tích hợp Hệ thống GitNexus Knowledge Graph
+
+- **Đánh giá Năng lực**: Lập báo cáo `report_new_capacity_sdd_with_gitnexus.md` (tiếng Anh và tiếng Việt) về những khả năng mới khi cung cấp sơ đồ phân tích mã nguồn cho hệ thống SDD Agent.
+- **Cập nhật Tài liệu**: Bổ sung reference vào thư viện tài nguyên của `README.md` (EN) và `README_vn.md` (VN).
+- **Nâng cấp version**: Bump version toàn bộ framework lên 1.17.0.
+
+---
+
 ### [v1.16.0] - 2026-04-02
 
 **Chủ đề:** Nâng cấp Memory Consolidation Protocol & Cập nhật `.gitignore`
@@ -395,4 +405,4 @@ Kết quả: Gõ `/` khi làm Next.js project → ~20 skills thay vì 98.
 
 ---
 
-Last Updated: 2026-04-02 — v1.16.0
+Last Updated: 2026-04-02 — v1.17.0

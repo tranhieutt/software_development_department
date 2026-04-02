@@ -72,6 +72,27 @@ python3 --version      # Should show python version (optional)
 | **Python 3** | JSON data file validation in commit and asset hooks is skipped. Invalid JSON can be committed without warning. |
 | **Both** | All hooks still execute without error (exit 0) but provide no validation. You're flying without safety nets. |
 
+
+## Code Intelligence (Optional — GitNexus)
+
+| Tool | Purpose | Install |
+| ---- | ---- | ---- |
+| **Node.js 18+** | Required by `npx gitnexus` | [nodejs.org](https://nodejs.org/) |
+| **GitNexus** | Code knowledge graph for impact analysis, safe refactoring, and PR review | `npx gitnexus analyze` (auto-installs via npx) |
+
+GitNexus hooks and skills degrade gracefully when the index is absent — no errors,
+no warnings. To activate GitNexus for a project:
+
+```bash
+cd <your-project-root>
+npx gitnexus analyze
+```
+
+This creates a `.gitnexus/` directory with the knowledge graph. Run again after
+major merges to keep the index fresh.
+
+Check `.claude/memory/gitnexus-registry.md` to track which repos are indexed.
+
 ## Recommended IDE
 
 Claude Code works with any editor, but the template is optimized for:

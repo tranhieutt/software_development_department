@@ -39,3 +39,18 @@
 | `/gate-check` | Validate readiness to advance between development phases (PASS/CONCERNS/FAIL) |
 | `/map-systems` | Decompose a product concept into systems and dependencies |
 | `/design-system` | Guided, section-by-section design authoring for a single feature system |
+
+## GitNexus Code Intelligence
+
+> Requires a GitNexus index for the target repo. Run `npx gitnexus analyze` from the repo root first.
+> Check `.claude/memory/gitnexus-registry.md` for the list of currently indexed repos.
+
+| Command | Purpose |
+|---------|---------|
+| `/gitnexus-guide` | Learn GitNexus concepts, tools, and graph schema — start here if unfamiliar |
+| `/gitnexus-exploring` | Navigate and understand code architecture via the knowledge graph |
+| `/gitnexus-impact-analysis` | Blast radius: what callers break if you change symbol X |
+| `/gitnexus-pr-review` | Risk-assessed PR review — maps diff to affected flows, flags missing caller updates |
+| `/gitnexus-refactoring` | Safe rename, extract, move via call graph — never use find-and-replace for multi-file renames |
+| `/gitnexus-debugging` | Trace bugs and errors through execution flows |
+| `/gitnexus-cli` | CLI reference: analyze, status, clean, wiki, list commands |

@@ -27,7 +27,15 @@
       "Bash(npx tsc --noEmit*)",
       "Bash(python -m json.tool*)",
       "Bash(python -m pytest*)",
-      "Bash(py -m pytest*)"
+      "Bash(py -m pytest*)",
+      "mcp__gitnexus__query(*)",
+      "mcp__gitnexus__context(*)",
+      "mcp__gitnexus__impact(*)",
+      "mcp__gitnexus__detect_changes(*)",
+      "mcp__gitnexus__list_repos(*)",
+      "mcp__gitnexus__cypher(*)",
+      "mcp__gitnexus__rename(*)",
+      "Bash(npx gitnexus*)"
     ],
     "deny": [
       "Bash(rm -rf *)",
@@ -83,6 +91,16 @@
           {
             "type": "command",
             "command": "bash .claude/hooks/validate-push.sh",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/pre-refactor-impact.sh",
             "timeout": 10
           }
         ]

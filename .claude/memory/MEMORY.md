@@ -5,6 +5,8 @@
 - [Công nghệ & Server](project_tech_decisions.md) - Các config hạ tầng, server hoặc key architect decision
 - [Tài nguyên Ngoài](reference_links.md) - Token hoặc Links đến Slack/Trello/Database admin
 
+- [GitNexus Registry](gitnexus-registry.md) — Indexed repos, last analysis date, freshness policy for impact tools
+
 > **Chú ý cho Agents:**
 > 1. File này KHÔNG ĐƯỢC CHỨA frontmatter. Giữ danh sách dạng `- [Title](filename) - Description`.
 > 2. Tuyệt đối không để file này vượt quá 200 dòng (giới hạn context token).

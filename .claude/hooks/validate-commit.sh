@@ -99,3 +99,25 @@ if [ -n "$WARNINGS" ]; then
 fi
 
 exit 0
+
+# --- GitNexus: pre-commit blast-radius check ---
+if command -v npx >/dev/null 2>&1; then
+    GN_STATUS=$(npx --no gitnexus status 2>/dev/null | grep -iE "indexed|up.to.date" | head -1)
+    if [ -n "$GN_STATUS" ]; then
+        BLAST=$(npx --no gitnexus detect-changes --scope staged --format json 2>/dev/null)
+        if [ -n "$BLAST" ]; then
+            RISK=$(echo "$BLAST" | grep -oE '"risk"[[:space:]]*:[[:space:]]*"[^"]*"' | head -1 | sed 's/.*"risk"[[:space:]]*:[[:space:]]*"//;s/"$//')
+            PROCS=$(echo "$BLAST" | grep -oE '"affectedProcessCount"[[:space:]]*:[[:space:]]*[0-9]+' | head -1 | grep -oE '[0-9]+')
+            if [ -n "$RISK" ]; then
+                echo "" >&2
+                echo "=== GitNexus Blast Radius ===" >&2
+                echo "Risk level : $RISK" >&2
+                [ -n "$PROCS" ] && echo "Affected flows: $PROCS" >&2
+                if echo "$RISK" | grep -qiE "^(HIGH|CRITICAL)$"; then
+                    echo "WARNING: $RISK risk — run /gitnexus-impact-analysis before merging." >&2
+                fi
+                echo "=============================" >&2
+            fi
+        fi
+    fi
+fi

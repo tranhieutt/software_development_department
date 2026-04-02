@@ -40,3 +40,16 @@ func test1() -> void:  # VIOLATION: no descriptive name
     h.take_damage(25)  # VIOLATION: no arrange step, no clear assert
     assert_true(h.current_health < 100)  # VIOLATION: imprecise assertion
 ```
+
+
+## Coverage Mapping with GitNexus
+
+When writing tests for a changed symbol, use GitNexus to find gaps:
+
+```
+mcp__gitnexus__impact(target: "symbolName", direction: "upstream")
+```
+
+This returns all callers of the symbol. Write new tests to cover d=1 callers
+(direct callers) first — these are the ones that will break silently if the
+symbol's contract changes.

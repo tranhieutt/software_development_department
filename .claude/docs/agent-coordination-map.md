@@ -129,6 +129,7 @@ Phase 8  — Synthesis report with PR suggestion
 ```
 1. product-manager    -- Defines requirements and consumer needs
 2. lead-programmer    -- Runs /api-design to define endpoint contracts
+2b. lead-programmer   -- Runs /gitnexus-impact-analysis on existing symbols being changed
 3. backend-developer  -- Implements API
 4. qa-tester          -- Tests API endpoints
 5. tech-writer        -- Documents API in developer docs
@@ -176,7 +177,8 @@ Phase 8  — Synthesis report with PR suggestion
 ```
 1. producer             -- Declares release candidate, confirms milestone criteria met
 2. release-manager      -- Cuts release branch, generates /release-checklist
-3. qa-lead              -- Runs full regression, signs off on quality
+2b. lead-programmer     -- Runs /gitnexus-pr-review on release branch vs main, attaches risk report to QA request
+3. qa-lead              -- Runs full regression against affected flows, signs off on quality
 4. performance-analyst  -- Confirms performance benchmarks within targets
 5. security-engineer    -- Runs final security scan
 6. devops-engineer      -- Builds release artifacts, runs deployment pipeline

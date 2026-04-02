@@ -1,7 +1,7 @@
 # User Guide — Software Development Department
 
 > **Author:** [tranhieutt](https://github.com/tranhieutt)
-> **Version:** 1.15.0 | **Updated:** 2026-04-01
+> **Version:** 1.17.0 | **Updated:** 2026-04-02
 
 <p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT License"></a>
@@ -134,6 +134,7 @@ my-project/
 
 | File | Mô tả |
 |------|-------------|
+| [`report_new_capacity_sdd_with_gitnexus.md`](report_new_capacity_sdd_with_gitnexus.md) | Báo cáo đánh giá năng lực SDD khi kết hợp với GitNexus (Code Knowledge Graph) |
 | [`plan_upgrade.md`](plan_upgrade.md) | Roadmap nâng cấp chi tiết và so sánh với các frameworks khác |
 | [`compare_department_orchestrated.md`](compare_department_orchestrated.md) | So sánh: Cách tiếp cận multi-agent orchestration vs AI truyền thống |
 | [`infographic.html`](infographic.html) | Sơ đồ trực quan đồ họa tương tác mô tả cấu trúc phòng ban |
