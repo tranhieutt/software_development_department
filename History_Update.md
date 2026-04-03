@@ -8,6 +8,17 @@ Tài liệu này ghi lại lịch sử cập nhật tài liệu và source code 
 
 ---
 
+### [v1.19.0] - 2026-04-03
+
+**Chủ đề:** Tích hợp Safety Tiers & Utility Prompts UX
+
+- **Safety Tiers & Risk Assessment:** Bổ sung cơ chế đánh giá rủi ro (Low/Medium/High) trước khi thao tác code, ép buộc kế hoạch rollback hoặc xin phép user.
+- **Tool Constraints:** Bắt buộc AI đọc (view_file) trước khi viết đè hoặc sửa đổi để ngăn chặn lỗi "mù" context.
+- **Utility Prompts:** Tạo mới file `.claude/docs/utility-prompts.md` tối ưu UX giao tiếp (Tool Summary ngắn gọn, Next Action Suggestion, Away Recap).
+- **Nâng cấp version**: Bump version toàn bộ framework lên 1.19.0.
+
+---
+
 ### [v1.18.0] - 2026-04-03
 
 **Chủ đề:** Skill Validation & Consistency Enhancement
@@ -417,4 +428,4 @@ Kết quả: Gõ `/` khi làm Next.js project → ~20 skills thay vì 98.
 
 ---
 
-Last Updated: 2026-04-03 — v1.18.0
+Last Updated: 2026-04-03 — v1.19.0
