@@ -6,6 +6,15 @@ Tài liệu này ghi lại lịch sử cập nhật tài liệu và source code 
 
 ## 🗓️ Lịch sử cập nhật
 
+### [v1.20.0] - 2026-04-04
+
+**Chủ đề:** Chuẩn hóa định dạng Output cho các Skills quản trị
+
+- **Standardize Skill Outputs:** Bổ sung cấu trúc `## Output` kèm theo chỉ thị `Deliver exactly:` vào 9 skill phân tích và quản trị quan trọng (bao gồm `sprint-plan`, `project-stage-detect`, `tech-debt`, `security-audit`, `scope-check`, `retrospective`, `release-checklist`, `reverse-document`, `prototype`). Thay đổi này giúp ép buộc các tác tử AI sau khi phân tích xong phải trả rà kết quả theo đúng chuẩn định dạng, không trả lời thừa thãi.
+- **Nâng cấp version**: Bump version hệ thống lên 1.20.0.
+
+---
+
 ### [v1.19.1] - 2026-04-03
 
 **Chủ đề:** Loại bỏ hoàn toàn references Game Studio cũ
@@ -435,4 +444,4 @@ Kết quả: Gõ `/` khi làm Next.js project → ~20 skills thay vì 98.
 
 ---
 
-Last Updated: 2026-04-03 — v1.19.1
+Last Updated: 2026-04-04 — v1.20.0
