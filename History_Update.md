@@ -6,6 +6,16 @@ Tài liệu này ghi lại lịch sử cập nhật tài liệu và source code 
 
 ## 🗓️ Lịch sử cập nhật
 
+### [v1.21.0] - 2026-04-04
+
+**Chủ đề:** Tích hợp bộ kỹ năng Khởi nghiệp tinh gọn (The Minimalist Entrepreneur)
+
+- **Business & Strategy Skills:** Nhúng 10 kỹ năng tư duy kinh doanh và định hướng chiến lược từ framework *The Minimalist Entrepreneur* (Sahil Lavingia) vào hệ sinh thái SDD. Cấu trúc tại thư mục `.claude/skills/startup-business/`.
+- **Mở rộng năng lực vòng đời dự án:** SDD nay đã bao phủ trọn vẹn cả 4 giai đoạn: Sàng lọc ý tưởng (`/validate-idea`) ➜ Xây dựng phần mềm (SDD Agents) ➜ Bán hàng (`/first-customers`, `/pricing`) ➜ Tăng trưởng (`/marketing-plan`, `/grow-sustainably`).
+- **Nâng cấp version:** Nâng tổng số Skills của hệ thống lên **108 Skills**. Bump version lên 1.21.0.
+
+---
+
 ### [v1.20.0] - 2026-04-04
 
 **Chủ đề:** Chuẩn hóa định dạng Output cho các Skills quản trị
@@ -444,4 +454,4 @@ Kết quả: Gõ `/` khi làm Next.js project → ~20 skills thay vì 98.
 
 ---
 
-Last Updated: 2026-04-04 — v1.20.0
+Last Updated: 2026-04-04 — v1.21.0
