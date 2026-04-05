@@ -1,7 +1,7 @@
 # User Guide — Software Development Department
 
 > **Author:** [tranhieutt](https://github.com/tranhieutt)
-> **Version:** 1.21.1 | **Updated:** 2026-04-05
+> **Version:** 1.21.2 | **Updated:** 2026-04-05
 
 <p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT License"></a>

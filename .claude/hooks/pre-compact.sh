@@ -53,7 +53,7 @@ echo ""
 echo "## Design Docs — Work In Progress"
 
 WIP_FOUND=false
-for f in design/gdd/*.md; do
+for f in design/docs/*.md; do
     [ -f "$f" ] || continue
     INCOMPLETE=$(grep -n -E "TODO|WIP|PLACEHOLDER|\[TO BE|\[TBD\]" "$f" 2>/dev/null)
     if [ -n "$INCOMPLETE" ]; then

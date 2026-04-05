@@ -46,7 +46,7 @@
 ## Content Complete
 
 - [ ] All placeholder assets replaced with final versions
-- [ ] All player-facing text proofread
+- [ ] All user-facing text proofread
 - [ ] All text localization-ready (no hardcoded strings)
 - [ ] Localization complete for: [list locales]
 - [ ] Audio mix finalized and approved

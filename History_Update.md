@@ -6,6 +6,15 @@ Tài liệu này ghi lại lịch sử cập nhật tài liệu và source code 
 
 ## 🗓️ Lịch sử cập nhật
 
+### [v1.21.2] - 2026-04-05
+
+**Chủ đề:** Loại bỏ triệt để các tàn dư Game Studio trong Docs & Hooks
+
+- **Clean up Docs & Hooks:** Dọn dẹp hàng loạt các file template, rules và bash scripts trong `.claude/docs/` (11 files) và `.claude/hooks/` (4 files) bị sót tham chiếu Game Studio (như `game concept`, `player-facing`, `game-designer`, `no engine`).
+- **Xác thực toàn dự án:** Xác nhận độ sạch 100% ngữ cảnh Software Engineering trên toàn bộ thư mục `.claude/` và các thư mục cấu trúc (infra, src, design).
+
+---
+
 ### [v1.21.1] - 2026-04-05
 
 **Chủ đề:** Loại bỏ triệt để các tàn dư Game Studio trong Workflow Skills
@@ -463,4 +472,4 @@ Kết quả: Gõ `/` khi làm Next.js project → ~20 skills thay vì 98.
 
 ---
 
-Last Updated: 2026-04-05 — v1.21.1
+Last Updated: 2026-04-05 — v1.21.2

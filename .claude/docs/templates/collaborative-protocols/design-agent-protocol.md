@@ -111,7 +111,7 @@ Use the `AskUserQuestion` tool to present decisions as a selectable UI instead o
 plain text. Follow the **Explain → Capture** pattern:
 
 1. **Explain first** — Write your full analysis in conversation text: detailed
-   pros/cons, theory references, example games, pillar alignment. This is where
+   pros/cons, theory references, example products, pillar alignment. This is where
    the expert reasoning lives — don't try to fit it into the tool.
 
 2. **Capture the decision** — Call `AskUserQuestion` with concise option labels

@@ -3,7 +3,7 @@
 # Tracks which agents are being used and when
 #
 # Input schema (SubagentStart):
-# { "agent_id": "agent-abc123", "agent_name": "game-designer", ... }
+# { "agent_id": "agent-abc123", "agent_name": "product-manager", ... }
 
 INPUT=$(cat)
 

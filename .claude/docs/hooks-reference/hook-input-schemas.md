@@ -12,7 +12,7 @@ Fired before a tool is executed. Can **allow** (exit 0) or **block** (exit 2).
 {
   "tool_name": "Bash",
   "tool_input": {
-    "command": "git commit -m 'feat: add player health system'",
+    "command": "git commit -m 'feat: add user health system'",
     "description": "Commit changes with message",
     "timeout": 120000
   }
@@ -92,7 +92,7 @@ Fired when a subagent is spawned via the Task tool.
 
 ```json
 {
-  "agent_name": "game-designer",
+  "agent_name": "product-manager",
   "model": "sonnet",
   "description": "Design the combat healing mechanic"
 }

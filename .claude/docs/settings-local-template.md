@@ -25,7 +25,7 @@ be committed to version control. Add it to `.gitignore`.
 
 ## Permission Modes
 
-Claude Code supports different permission modes. Recommended for game dev:
+Claude Code supports different permission modes. Recommended for software dev:
 
 ### During Development (Default)
 Use **normal mode** — Claude asks before running most commands. This is safest

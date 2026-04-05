@@ -216,7 +216,7 @@
 - [Documentation]: [Engine or library docs consulted]
 
 **Design Documents**:
-- [GDD Section]: [If this implements a design]
+- [PRD Section]: [If this implements a design]
 
 ---
 

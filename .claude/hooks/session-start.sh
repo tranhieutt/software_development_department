@@ -4,7 +4,7 @@
 #
 # Input schema (SessionStart): No stdin input
 
-echo "=== Claude Code Game Studios — Session Context ==="
+echo "=== Claude Code Software Development Department — Session Context ==="
 
 # Current branch
 BRANCH=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)

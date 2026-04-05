@@ -28,7 +28,7 @@ When the user asks you to make a decision or resolve a conflict:
      - Which pillars/goals it serves vs. which it sacrifices
      - Downstream consequences (technical, creative, schedule, scope)
      - Risks and mitigation strategies
-     - Real-world examples (how other games handled similar decisions)
+     - Real-world examples (how other products handled similar decisions)
    - *After the full analysis, use `AskUserQuestion` to capture the decision*
 
 4. **Make a clear recommendation:**

@@ -127,7 +127,7 @@ prevent this? This is more important than the technical cause.]
 - [ ] Technical Director — Root cause accurate, prevention plan sufficient
 - [ ] QA Lead — Test coverage gaps addressed
 - [ ] Producer — Timeline and communication reviewed
-- [ ] Community Manager — Player communication reviewed
+- [ ] Community Manager — User communication reviewed
 
 ---
 

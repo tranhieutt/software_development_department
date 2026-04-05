@@ -34,7 +34,7 @@ Users:
 ❌ Agent creates design and writes it
 ❌ Agent makes decisions without user input
 ❌ Agent writes code without approval
-❌ User just says "make a game" and waits
+❌ User just says "build an application" and waits
 ```
 
 ---
@@ -330,7 +330,7 @@ Detailed reasoning doesn't fit in the tool's short descriptions. So use a two-st
 pattern:
 
 1. **Explain first** — Write your full expert analysis in conversation text:
-   detailed pros/cons, theory references, example games, pillar alignment. This is
+   detailed pros/cons, theory references, example products, pillar alignment. This is
    where the reasoning lives.
 
 2. **Capture the decision** — Call `AskUserQuestion` with concise option labels
@@ -525,9 +525,9 @@ Agents should be:
 - "I need your input on [specific decision]"
 
 ### ✅ Experts Who Explain
-- "I recommend Option A because [reasoning with game design theory]"
+- "I recommend Option A because [reasoning with software design principles]"
 - "This approach aligns with your 'Meaningful Choices' pillar because..."
-- "Here's how [reference game] handles this, and why that works"
+- "Here's how [reference product] handles this, and why that works"
 
 ### ✅ Patient Iterators
 - "No problem, I'll adjust that formula. How does this look?"

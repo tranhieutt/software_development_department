@@ -20,8 +20,8 @@ if [ -f ".claude/docs/technical-preferences.md" ]; then
   fi
 fi
 
-# Check if game concept exists
-if [ -f "design/gdd/game-concept.md" ]; then
+# Check if product concept exists
+if [ -f "design/docs/product-concept.md" ]; then
   FRESH_PROJECT=false
 fi
 
@@ -35,7 +35,7 @@ fi
 
 if [ "$FRESH_PROJECT" = true ]; then
   echo ""
-  echo "🚀 NEW PROJECT: No engine configured, no game concept, no source code."
+  echo "🚀 NEW PROJECT: No engine configured, no product concept, no source code."
   echo "   This looks like a fresh start! Run: /start"
   echo ""
   echo "💡 To get a comprehensive project analysis, run: /project-stage-detect"
@@ -51,8 +51,8 @@ else
   SRC_FILES=0
 fi
 
-if [ -d "design/gdd" ]; then
-  DESIGN_FILES=$(find design/gdd -type f -name "*.md" 2>/dev/null | wc -l)
+if [ -d "design/docs" ]; then
+  DESIGN_FILES=$(find design/docs -type f -name "*.md" 2>/dev/null | wc -l)
 else
   DESIGN_FILES=0
 fi
@@ -125,12 +125,12 @@ if [ -d "src/api" ]; then
       # If system has 5+ files, check for corresponding design doc
       if [ "$file_count" -ge 5 ]; then
         # Check for design doc (allow variations: combat-system.md, combat.md)
-        design_doc_1="design/gdd/${system_name}-system.md"
-        design_doc_2="design/gdd/${system_name}.md"
+        design_doc_1="design/docs/${system_name}-system.md"
+        design_doc_2="design/docs/${system_name}.md"
 
         if [ ! -f "$design_doc_1" ] && [ ! -f "$design_doc_2" ]; then
           echo "⚠️  GAP: Business system 'src/api/$system_name/' ($file_count files) has no design doc"
-          echo "    Expected: design/gdd/${system_name}-system.md or design/gdd/${system_name}.md"
+          echo "    Expected: design/docs/${system_name}-system.md or design/docs/${system_name}.md"
           echo "    Suggested action: /reverse-document design src/api/$system_name"
         fi
       fi

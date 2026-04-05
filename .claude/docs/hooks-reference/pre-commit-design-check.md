@@ -6,7 +6,7 @@ Runs before any commit that modifies files in `design/` or `assets/data/`.
 
 ## Purpose
 
-Ensures design documents and game data files maintain consistency and
+Ensures design documents and application data files maintain consistency and
 completeness before they enter version control. Catches missing sections,
 broken cross-references, and invalid data before they propagate.
 
@@ -14,7 +14,7 @@ broken cross-references, and invalid data before they propagate.
 
 ```bash
 #!/bin/bash
-# Pre-commit hook: Design document and game data validation
+# Pre-commit hook: Design document and application data validation
 # Place in .git/hooks/pre-commit or configure via your hook manager
 
 DESIGN_FILES=$(git diff --cached --name-only --diff-filter=ACM | grep -E '^design/')
@@ -26,8 +26,8 @@ EXIT_CODE=0
 if [ -n "$DESIGN_FILES" ]; then
     for file in $DESIGN_FILES; do
         if [[ "$file" == *.md ]]; then
-            # Check for required sections in GDD documents
-            if [[ "$file" == design/gdd/* ]]; then
+            # Check for required sections in PRD documents
+            if [[ "$file" == design/docs/* ]]; then
                 for section in "Overview" "Detailed" "Edge Cases" "Dependencies" "Acceptance Criteria"; do
                     if ! grep -qi "$section" "$file"; then
                         echo "ERROR: $file missing required section: $section"
@@ -65,6 +65,6 @@ exit $EXIT_CODE
 ## Agent Integration
 
 When this hook fails, the committer should:
-1. For missing design sections: invoke the `game-designer` agent to complete
+1. For missing design sections: invoke the `product-manager` agent to complete
    the document
 2. For invalid JSON: invoke the `tools-programmer` agent or fix manually
