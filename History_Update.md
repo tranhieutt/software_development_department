@@ -6,6 +6,16 @@ Tài liệu này ghi lại lịch sử cập nhật tài liệu và source code 
 
 ## 🗓️ Lịch sử cập nhật
 
+### [v1.22.0] - 2026-04-05
+
+**Chủ đề:** Nâng cấp hệ thống Validation Workflow & Bash Guard
+
+- **Bash Guard Hook:** Bổ sung script `.claude/hooks/bash-guard.sh` để chặn các lệnh bash nguy hiểm bề sâu cho Agent.
+- **Validation Workflow:** Cập nhật các hook script như `log-agent.sh`, `session-stop.sh`, `validate-commit.sh`, `validate-push.sh` và `settings.json` giúp nâng cấp quy trình kiểm duyệt an toàn, log tracking.
+- **Nâng cấp version:** Bump version toàn dự án lên 1.22.0.
+
+---
+
 ### [v1.21.2] - 2026-04-05
 
 **Chủ đề:** Loại bỏ triệt để các tàn dư Game Studio trong Docs & Hooks
