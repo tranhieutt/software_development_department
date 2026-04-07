@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SDD Core Architecture // Kỹ Thuật Đa Tác Tử</title>
+
+    <style>
+        /* =========================================================================
+       AESTHETIC: Industrial Utilitarian / Editorial Brutalism
+       UPDATED: Converted layout into a Data Carousel.
+       TYPOGRAPHY: Space Grotesk (Display) and JetBrains Mono.
+       ========================================================================= */
+
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&family=Space+Grotesk:wght@500;700&display=swap');
+
+        :root {
+            /* Palette */
+            --bg-color: #f4f4f0;
+            --text-main: #0a0a0a;
+            --text-muted: #555555;
+            --accent: #ff4500;
+            /* Safety Orange */
+
+            /* Typography */
+            --font-display: 'Space Grotesk', sans-serif;
+            --font-body: 'JetBrains Mono', monospace;
+
+            /* Rhythm */
+            --space-xs: 0.5rem;
+            --space-sm: 1rem;
+            --space-md: 2rem;
+            --space-lg: 4rem;
+            --space-xl: 6rem;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: var(--font-body);
+            line-height: 1.6;
+            padding: var(--space-md);
+
+            /* Blueprint Grid Background */
+            background-image:
+                linear-gradient(rgba(10, 10, 10, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(10, 10, 10, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+            background-attachment: fixed;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        /* Industrial Tape Divider */
+        .industrial-tape {
+            background: repeating-linear-gradient(-45deg,
+                    var(--accent),
+                    var(--accent) 20px,
+                    var(--text-main) 20px,
+                    var(--text-main) 40px);
+            height: 16px;
+            width: 100%;
+            margin-bottom: var(--space-lg);
+        }
+
+        /* HEADER */
+        header {
+            margin-bottom: var(--space-xl);
+            border-bottom: 4px solid var(--text-main);
+            padding-bottom: var(--space-md);
+        }
+
+        .meta-tag {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            background: var(--text-main);
+            color: var(--bg-color);
+            display: inline-block;
+            padding: 0.2rem 0.5rem;
+            margin-bottom: var(--space-sm);
+        }
+
+        h1 {
+            font-family: var(--font-display);
+            font-size: clamp(3rem, 8vw, 7rem);
+            text-transform: uppercase;
+            line-height: 0.9;
+            letter-spacing: -0.03em;
+            margin-bottom: var(--space-md);
+            color: var(--text-main);
+        }
+
+        h1 span {
+            color: var(--accent);
+        }
+
+        .header-info {
+            display: flex;
+            justify-content: space-between;
+            border-top: 1px solid var(--text-main);
+            padding-top: var(--space-xs);
+            font-size: 0.9rem;
+            font-weight: 700;
+        }
+
+        /* OVERVIEW GRID */
+        .overview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: var(--space-md);
+            margin-bottom: var(--space-lg);
+        }
+
+        .overview-card {
+            background: var(--bg-color);
+            border: 2px solid var(--text-main);
+            padding: var(--space-md);
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .overview-card:hover {
+            transform: translate(-6px, -6px);
+            box-shadow: 6px 6px 0 var(--accent);
+        }
+
+        .overview-card::after {
+            content: 'VIEW //';
+            position: absolute;
+            bottom: var(--space-md);
+            right: var(--space-md);
+            font-family: var(--font-display);
+            font-size: 0.8rem;
+            color: var(--accent);
+            font-weight: bold;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .overview-card:hover::after {
+            opacity: 1;
+        }
+
+        .card-num {
+            position: absolute;
+            top: -1.2rem;
+            right: -0.5rem;
+            background: var(--text-main);
+            color: var(--bg-color);
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            padding: 0.2rem 0.8rem;
+            border: 2px solid var(--text-main);
+        }
+
+        .card-title {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            color: var(--accent);
+        }
+
+        .card-scale {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            border-bottom: 1px dashed var(--text-muted);
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        /* CAROUSEL */
+        .carousel-section-anchor {
+            font-family: var(--font-display);
+            font-size: 3rem;
+            text-transform: uppercase;
+            margin-bottom: var(--space-sm);
+            color: var(--text-main);
+        }
+
+        .carousel-wrapper {
+            margin-bottom: var(--space-xl);
+        }
+
+        .carousel-viewport {
+            overflow: hidden;
+            border: 2px solid var(--text-main);
+            background: #fff;
+        }
+
+        .slides-container {
+            display: flex;
+            align-items: stretch;
+            transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+            will-change: transform;
+        }
+
+        /* DETAILED SECTIONS / SLIDES */
+        .part-section {
+            min-width: 100%;
+            border-right: 2px solid var(--text-main);
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            background: #fff;
+        }
+
+        .part-section:last-child {
+            border-right: none;
+        }
+
+        .part-header {
+            background: var(--text-main);
+            color: var(--bg-color);
+            padding: var(--space-lg) var(--space-md);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+
+        .part-header h2 {
+            font-family: var(--font-display);
+            font-size: 2.2rem;
+            line-height: 1.3;
+            letter-spacing: -0.02em;
+            margin-bottom: var(--space-sm);
+        }
+
+        .part-header .part-index {
+            font-size: 1.2rem;
+            color: var(--accent);
+            margin-bottom: var(--space-xs);
+        }
+
+        .part-content {
+            padding: var(--space-md) var(--space-lg);
+            border-left: 2px solid var(--text-main);
+        }
+
+        /* CAROUSEL CONTROLS */
+        .carousel-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--text-main);
+            padding: 1.5rem 2rem;
+            border: 2px solid var(--text-main);
+            border-top: none;
+            color: var(--bg-color);
+        }
+
+        .btn-nav {
+            background: var(--bg-color);
+            color: var(--text-main);
+            border: 2px solid var(--text-main);
+            padding: 0.8rem 2.5rem;
+            font-family: var(--font-display);
+            font-size: 1.2rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-nav:hover:not(:disabled) {
+            background: var(--accent);
+            color: #fff;
+            transform: translate(-4px, -4px);
+            box-shadow: 4px 4px 0 var(--text-muted);
+        }
+
+        .btn-nav:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            border-color: var(--text-muted);
+            color: var(--text-muted);
+            transform: none;
+            box-shadow: none;
+        }
+
+        .slide-indicator {
+            font-family: var(--font-display);
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--accent);
+            letter-spacing: 4px;
+        }
+
+        /* TYPOGRAPHY & TABLES INSIDE SLIDES */
+        .quote {
+            font-style: italic;
+            color: var(--text-muted);
+            border-left: 4px solid var(--accent);
+            padding-left: 1.5rem;
+            margin-bottom: 2rem;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        h3 {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            margin: 2rem 0 1rem;
+            text-transform: uppercase;
+            border-bottom: 2px solid var(--text-main);
+            padding-bottom: 0.5rem;
+            display: inline-block;
+        }
+
+        pre {
+            background: rgba(10, 10, 10, 0.05);
+            border: 1px solid var(--text-main);
+            padding: 1.5rem;
+            overflow-x: auto;
+            font-size: 0.9rem;
+            margin: 1.5rem 0;
+            color: var(--text-main);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+        }
+
+        th,
+        td {
+            border: 1px solid var(--text-main);
+            padding: 0.75rem 1rem;
+            text-align: left;
+            font-size: 0.95rem;
+        }
+
+        th {
+            background: var(--text-main);
+            color: var(--bg-color);
+            font-family: var(--font-display);
+            text-transform: uppercase;
+        }
+
+        p {
+            margin-bottom: 1rem;
+        }
+
+        ul,
+        ol {
+            margin-left: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 900px) {
+            .part-section {
+                grid-template-columns: 1fr;
+            }
+
+            .part-content {
+                border-left: none;
+                border-top: 2px solid var(--text-main);
+                padding: var(--space-md);
+            }
+
+            .part-header {
+                padding: var(--space-md);
+            }
+
+            .carousel-controls {
+                padding: 1rem;
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .slide-indicator {
+                order: -1;
+            }
+
+            .nav-buttons {
+                width: 100%;
+                display: flex;
+                justify-content: space-between;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="industrial-tape"></div>
+
+    <div class="container">
+        <header>
+            <div class="meta-tag">Hồ Sơ Kiến Trúc // SDD v1.22.0</div>
+            <h1>Cấu Trúc Hệ Thống<br><span>Agentic Harness</span></h1>
+            <div class="header-info">
+                <div>Mô hình: Kiến trúc đa tác tử (Multi-Agent Architecture)</div>
+                <div>Bảo lưu quyền: Kỹ Sư Trưởng (User)</div>
+            </div>
+        </header>
+
+        <!-- Tóm tắt các phần -->
+        <div class="overview-grid">
+            <div class="overview-card" onclick="goToSlide(0)">
+                <div class="card-num">01</div>
+                <div class="card-title">CLAUDE.md</div>
+                <span class="card-scale">1 File | Core Config</span>
+                <p>Cấu hình trung tâm, khởi tạo bối cảnh cho toàn bộ session.</p>
+            </div>
+            <div class="overview-card" onclick="goToSlide(1)">
+                <div class="card-num">02</div>
+                <div class="card-title">27 Agents</div>
+                <span class="card-scale">3 Tiers | Agent Tiering</span>
+                <p>Các tác tử AI chuyên trách được phân bổ theo 3 cấp độ vận hành.</p>
+            </div>
+            <div class="overview-card" onclick="goToSlide(2)">
+                <div class="card-num">03</div>
+                <div class="card-title">109 Skills</div>
+                <span class="card-scale">109 Dirs | Workflows</span>
+                <p>Các thủ tục và quy trình chuyên môn được chuẩn hóa sẵn.</p>
+            </div>
+            <div class="overview-card" onclick="goToSlide(3)">
+                <div class="card-num">04</div>
+                <div class="card-title">Orchestration</div>
+                <span class="card-scale">Pipeline | Handoff</span>
+                <p>Cơ chế điều phối và chuyển giao tác vụ giữa các Agents.</p>
+            </div>
+            <div class="overview-card" onclick="goToSlide(4)">
+                <div class="card-num">05</div>
+                <div class="card-title">13 Rules</div>
+                <span class="card-scale">13 Files | Coding Standards</span>
+                <p>Ràng buộc tiêu chuẩn mã nguồn theo vị trí thư mục định tuyến.</p>
+            </div>
+            <div class="overview-card" onclick="goToSlide(5)">
+                <div class="card-num">06</div>
+                <div class="card-title">12 Hooks</div>
+                <span class="card-scale">12 Scripts | CI/CD</span>
+                <p>Điểm kiểm duyệt (Checkpoints) tại các trạng thái sự kiện mã nguồn.</p>
+            </div>
+            <div class="overview-card" onclick="goToSlide(6)">
+                <div class="card-num">07</div>
+                <div class="card-title">Memory</div>
+                <span class="card-scale">State Management</span>
+                <p>Quản trị lưu trữ ngữ cảnh liên phiên tích lũy bề dày dự án.</p>
+            </div>
+            <div class="overview-card" onclick="goToSlide(7)">
+                <div class="card-num">08</div>
+                <div class="card-title">Fork-Join</div>
+                <span class="card-scale">Parallel Execution</span>
+                <p>Cơ chế xử lý đồng thời qua Git Worktrees chống thắt cổ chai I/O.</p>
+            </div>
+            <div class="overview-card" onclick="goToSlide(8)">
+                <div class="card-num">09</div>
+                <div class="card-title">Auto-Dream</div>
+                <span class="card-scale">Data Consolidation</span>
+                <p>Trình nền định kỳ tối ưu, hợp nhất dữ liệu bộ đệm (Tokens).</p>
+            </div>
+            <div class="overview-card" onclick="goToSlide(9)">
+                <div class="card-num">10</div>
+                <div class="card-title">Governance</div>
+                <span class="card-scale">Collaborative Protocol</span>
+                <p>Giao thức bảo vệ quyền kiểm soát vòng lặp của Kỹ sư trưởng.</p>
+            </div>
+        </div>
+
+        <div class="industrial-tape"></div>
+
+        <!-- CAROUSEL SECTION -->
+        <h2 class="carousel-section-anchor" id="carousel-anchor">Phân Tích Chi Tiết</h2>
+
+        <div class="carousel-wrapper">
+            <div class="carousel-viewport">
+                <div class="slides-container" id="slider">
+
+                    <!-- SLIDE 01 -->
+                    <article class="part-section">
+                        <div class="part-header">
+                            <div>
+                                <div class="part-index">PART 01</div>
+                                <h2>CLAUDE.md<br>Cấu Hình Nền Tảng</h2>
+                            </div>
+                            <div>CORE CONFIGURATION</div>
+                        </div>
+                        <div class="part-content">
+                            <p class="quote">"Nguồn chân lý (Source of Truth) — chỉ định môi trường thực thi của toàn bộ
+                                vòng đời Agent."</p>
+                            <p>Tệp cấu trúc cơ sở tiên quyết được phân phối vào bộ nhớ khung ngay khi khởi động Project.
+                                Nó định danh công nghệ kỹ thuật lõi mà toàn bộ hệ thống phải bám theo.</p>
+                            <h3>6 Ràng Buộc Tương Tác Bất Khả Xâm Phạm</h3>
+                            <ul>
+                                <li><strong>NO AUTOPILOT:</strong> Làm rõ → Tùy chọn → Quyết → Nháp → Cấp phép.</li>
+                                <li><strong>NEVER WRITE DIRECTLY:</strong> Yêu cầu quyền Explicit access trước khi thao
+                                    tác file I/O.</li>
+                                <li><strong>NO COMMITS:</strong> Buộc Batch-approval khi sửa đổi Multi-file changeset.
+                                </li>
+                                <li><strong>GIT SNAPSHOT:</strong> Bắt buộc chạy <code>git status</code> thực tế để quét
+                                    thay đổi.</li>
+                                <li><strong>SAFETY TIERS:</strong> Định danh chỉ số Rủi ro (Low/Medium/High) trước lệnh
+                                    Terminal.</li>
+                                <li><strong>ANNOTATION PROTOCOL:</strong> Ghi log sự cố ngầm vào
+                                    <code>annotations.md</code> duy trì bối cảnh liên phiên.</li>
+                            </ul>
+                        </div>
+                    </article>
+
+                    <!-- SLIDE 02 -->
+                    <article class="part-section">
+                        <div class="part-header">
+                            <div>
+                                <div class="part-index">PART 02</div>
+                                <h2>27 Agents<br>Phân Cấp Tác Tử</h2>
+                            </div>
+                            <div>AGENT TIERING</div>
+                        </div>
+                        <div class="part-content">
+                            <p class="quote">"Hệ thống điều phối chức năng chuyên trách, giảm thiểu rủi ro thiếu chính
+                                xác (Hallucination) từ mô hình chung."</p>
+                            <pre>
+TIER 1 (Leadership / Strategic Level)
+CTO · Tech Director · Producer
+>> Hoạch định kiến trúc, Chiến lược nền tảng
+
+TIER 2 (Leads / Process Level)
+Product Manager · Lead Programmer · QA Lead
+>> Phân tích nguyên tắc PRD, Kiểm soát cổng (Quality Gates)
+
+TIER 3 (Specialists / Implementation)
+Frontend · Backend · Security · DevOps...
+>> Cài đặt chi tiết mã nguồn, CI/CD Pipeline</pre>
+                            <p>Áp dụng <strong>Ma trận Leo thang (Escalation Matrix)</strong>: Mọi rò rỉ hay lỗi tầng vi
+                                mô sẽ báo cáo lên cấp Lead, loại bỏ nguy cơ tác tử cấp thấp tự đưa phán quyết sai kiến
+                                trúc.</p>
+                        </div>
+                    </article>
+
+                    <!-- SLIDE 03 -->
+                    <article class="part-section">
+                        <div class="part-header">
+                            <div>
+                                <div class="part-index">PART 03</div>
+                                <h2>109 Skills<br>Khối Lệnh Kịch Bản</h2>
+                            </div>
+                            <div>AUTOMATED WORKFLOWS</div>
+                        </div>
+                        <div class="part-content">
+                            <p class="quote">"Tích hợp sẵn các quy trình chuẩn công nghiệp, triệt tiêu prompt thủ công
+                                dài dòng."</p>
+                            <table>
+                                <tr>
+                                    <th>Phân Lớp Hoạt Động (Layer)</th>
+                                    <th>Ví Dụ Command (Pipeline)</th>
+                                </tr>
+                                <tr>
+                                    <td>Phân tích Vòng đời / Analysis</td>
+                                    <td><code>/start</code>, <code>/project-stage-detect</code>,
+                                        <code>/gate-check</code></td>
+                                </tr>
+                                <tr>
+                                    <td>Nghiệp vụ Thiết kế / Planning</td>
+                                    <td><code>/brainstorm</code>, <code>/design-system</code>, <code>/prototype</code>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Soát lỗi Mã nguồn / Review</td>
+                                    <td><code>/code-review</code>, <code>/security-audit</code>,
+                                        <code>/api-design</code></td>
+                                </tr>
+                                <tr>
+                                    <td>Quản trị Sprint & Deployment</td>
+                                    <td><code>/sprint-plan</code>, <code>/release-checklist</code>, <code>/hotfix</code>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Kiến trúc Tiên tiến (Tech Stack)</td>
+                                    <td><code>aws-serverless</code>, <code>rag-engineer</code>,
+                                        <code>postgres-patterns</code></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </article>
+
+                    <!-- SLIDE 04 -->
+                    <article class="part-section">
+                        <div class="part-header">
+                            <div>
+                                <div class="part-index">PART 04</div>
+                                <h2>Orchestration<br>Điều Phối Đa Nhiệm</h2>
+                            </div>
+                            <div>MULTI-AGENT RELEGATION</div>
+                        </div>
+                        <div class="part-content">
+                            <p class="quote">"Khởi tạo giao thức chuyền gậy (Baton-passing) triệt tiêu tình trạng độc
+                                quyền phân tích mã đa diện."</p>
+                            <p>Luồng thực thi tiêu biểu qua lệnh <code>/team-feature authentication</code>:</p>
+                            <pre>
+1. [Product Manager] Dịch nghĩa từ Requirement → Phân tích lập mốc PRD.
+2. [UX Designer] Hoàn thiện bản đồ luồng User Flow / Wireframes.
+3. [Technical Director] Đưa ra quyết nghị Kiến trúc (ADR) (Ví dụ: OAuth 2.0).
+4. [Backend Dev] &amp; [Frontend Dev] Khởi chạy song song mã nguồn gốc.
+5. [Security Engineer] Đánh giá mã nguồn theo tiêu chuẩn mã độc (OWASP).
+6. [QA Lead] Trích xuất Kiểm thử kịch bản Test Matrix.
+(User giữ quyền quản trị và xác nhận tại mọi chốt chặn - Stage Gate)</pre>
+                        </div>
+                    </article>
+
+                    <!-- SLIDE 05 -->
+                    <article class="part-section">
+                        <div class="part-header">
+                            <div>
+                                <div class="part-index">PART 05</div>
+                                <h2>13 Rules<br>Ràng Buộc Tiêu Chuẩn</h2>
+                            </div>
+                            <div>PATH-SCOPED CODING STANDARDS</div>
+                        </div>
+                        <div class="part-content">
+                            <p class="quote">"Phần mềm nhúng (inject) các ràng buộc kỹ thuật tự động tùy thuộc vào vị
+                                trí thư mục hiện hành trong kho mã."</p>
+                            <table>
+                                <tr>
+                                    <th>Luồng cấu trúc định tuyến</th>
+                                    <th>Biên dịch Tiêu chuẩn Kỹ thuật</th>
+                                </tr>
+                                <tr>
+                                    <td><code>src/api/**</code></td>
+                                    <td>Hệ quy chiếu REST/GraphQL nội bộ, Authentication logic.</td>
+                                </tr>
+                                <tr>
+                                    <td><code>src/frontend/**</code></td>
+                                    <td>Server-state sync, Quản lý chuẩn A11y (WCAG).</td>
+                                </tr>
+                                <tr>
+                                    <td><code>config/**</code></td>
+                                    <td>Ngăn lỗi lộ Hardcoded Secrets, Schema Validator.</td>
+                                </tr>
+                                <tr>
+                                    <td><code>tests/**</code></td>
+                                    <td>Giới hạn Mocking boundaries, Anti-flaky test automation.</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </article>
+
+                    <!-- SLIDE 06 -->
+                    <article class="part-section">
+                        <div class="part-header">
+                            <div>
+                                <div class="part-index">PART 06</div>
+                                <h2>12 Điểm Kiểm Soát<br>Chốt Chặn CI/CD</h2>
+                            </div>
+                            <div>EXECUTION CHECKPOINTS (HOOKS)</div>
+                        </div>
+                        <div class="part-content">
+                            <p class="quote">"Tích hợp hệ thống kiểm duyệt tĩnh (Continuous Inspection) trực tiếp tại
+                                vòng lặp của mô hình AI."</p>
+                            <p>Các rào chắn kiểm thử chạy ngầm liên tục giám sát hệ sinh thái mã nguồn:</p>
+                            <ul>
+                                <li><code>validate-commit.sh</code>: Rà soát Hardcoded Secrets, định danh Syntax TODO
+                                    bắt buộc.</li>
+                                <li><code>validate-push.sh</code>: Xác minh thông qua Unit Test Runner trước khi gửi dữ
+                                    liệu lên Remote.</li>
+                                <li><code>bash-guard.sh</code>: Phân cấp rủi ro trước câu lệnh nguy hiểm (System
+                                    removal, Network mapping).</li>
+                                <li><code>detect-gaps.sh</code>: Máy quét đo lường sai lệch chức năng giữa Codebase gốc
+                                    và PRD thực tế.</li>
+                                <li><code>pre-compact.sh</code>: Backup nhanh Sandbox trước khi nén hay giải nén Context
+                                    nội bộ.</li>
+                            </ul>
+                        </div>
+                    </article>
+
+                    <!-- SLIDE 07 -->
+                    <article class="part-section">
+                        <div class="part-header">
+                            <div>
+                                <div class="part-index">PART 07</div>
+                                <h2>5-Layer Memory<br>Quản Trị Ngữ Cảnh</h2>
+                            </div>
+                            <div>PERSISTENT STATE MANAGEMENT</div>
+                        </div>
+                        <div class="part-content">
+                            <p class="quote">"Thực thể lưu trữ, duy trì thông tin vòng đời dự án chống tràn cấu trúc bộ
+                                đệm (Token Limit Exhaustion)."</p>
+                            <pre>
+.claude/memory/
+ ├─ MEMORY.md               (Lớp 1 - Điểm neo Index tham chiếu cốt lõi)
+ ├─ annotations.md          (Lớp 2 - Cơ sở dữ liệu Workarounds & sự cố)
+ ├─ project_tech_decisions  (Lớp 3 - Hồ sơ biên niên sử Kiến trúc - ADRs)
+ ├─ user_role.md            (Lớp 4 - Đặc thù thông tin Quản trị viên)
+ ├─ feedback_rules.md       (Lớp 5 - Rules quy nạp tự động qua Feedback)
+ └─ archive/dreams/         (Ổ đĩa phục vụ Phân mảnh Thu thập rác - GC)</pre>
+                        </div>
+                    </article>
+
+                    <!-- SLIDE 08 -->
+                    <article class="part-section">
+                        <div class="part-header">
+                            <div>
+                                <div class="part-index">PART 08</div>
+                                <h2>Fork-Join<br>Thực Thi Đồng Thời</h2>
+                            </div>
+                            <div>PARALLEL EXECUTION</div>
+                        </div>
+                        <div class="part-content">
+                            <p class="quote">"Tạo môi trường ảo hóa đóng thùng (Containerized-like Environments) cho các
+                                nhánh AI Tác tử làm việc qua Git Worktrees."</p>
+                            <p>Giải quyết triệt để nút thắt I/O cổ chai khi thao tác song song.<br>
+                                <strong>Process Flow:</strong> Agent lập trình cấu thành nhánh riêng, cách ly
+                                <code>FORK</code> làm việc độc lập → Trả về <code>STATUS</code>. Nhờ người thụ lệnh
+                                (User) ấn nút dung hợp mã với chiến lược <code>JOIN (merge --no-ff)</code> và thanh tẩy
+                                không gian ảo.
+                            </p>
+                        </div>
+                    </article>
+
+                    <!-- SLIDE 09 -->
+                    <article class="part-section">
+                        <div class="part-header">
+                            <div>
+                                <div class="part-index">PART 09</div>
+                                <h2>Auto-Dream<br>Tối Ưu Hóa Bộ Nhớ</h2>
+                            </div>
+                            <div>DATA CONSOLIDATION</div>
+                        </div>
+                        <div class="part-content">
+                            <p class="quote">"Tiến trình dọn dẹp trình nền định kỳ khi kết thúc phiên, hạn chế lãng phí
+                                tài nguyên (Token Load)."</p>
+                            <p>Kích hoạt ngầm bởi <code>session-stop.sh</code>. Quy trình chia tách thành 5 giai đoạn:
+                            </p>
+                            <ol>
+                                <li><strong>ORIENT:</strong> Đo đếm chỉ số Bytes, mốc dữ kiện Memory được đưa vào.</li>
+                                <li><strong>DETECT:</strong> Soi chiếu các Logs thừa (>30 ngày / Cồng kềnh).</li>
+                                <li><strong>ARCHIVE:</strong> Giáng cấp lưu trữ dư thừa vào Archive/Dreams.</li>
+                                <li><strong>PRUNE:</strong> Bứng bỏ các liên kết Broken Markdown references khỏi mảng
+                                    Index.</li>
+                                <li><strong>LOG:</strong> Nắm bắt vào bản tin Trạng Thái phục vụ tra vết.</li>
+                            </ol>
+                        </div>
+                    </article>
+
+                    <!-- SLIDE 10 -->
+                    <article class="part-section">
+                        <div class="part-header">
+                            <div>
+                                <div class="part-index">PART 10</div>
+                                <h2>Collaborative Protocol<br>Giao Thức Quản Trị</h2>
+                            </div>
+                            <div>GOVERNANCE PROTOCOL</div>
+                        </div>
+                        <div class="part-content">
+                            <p class="quote">"User là người chủ động nắm quyền toàn phần trong Pipeline - AI là nhân sự
+                                đáp lại hiệu lệnh."</p>
+                            <p>Quy chuẩn tương tác và bảo hành vòng lặp bất biến (Immutable State):</p>
+                            <pre>LÀM RÕ (Clarify) → HỎI ĐÁP ĐỊNH HƯỚNG (Options) → KỸ SƯ QUYẾT ĐỊNH (Decide)
+→ NẠP BẢN NHÁP (Draft Proposal) → CẤP QUYỀN GHI NHẬN I/O (Approve &amp; Write)</pre>
+                            <p><em>Rủi ro không bảo chứng nếu bỏ lỡ: Nếu Protocol thất lạc, mã nguồn đi kèm rủi ro Đè
+                                    nén âm thầm (Silent Overwriting) gây hủy diệt hệ thống Architecture và rình rập tàn
+                                    phát Database.</em></p>
+                        </div>
+                    </article>
+
+                </div>
+            </div>
+
+            <!-- CONTROLS -->
+            <div class="carousel-controls">
+                <div class="nav-buttons">
+                    <button id="btn-prev" class="btn-nav" disabled>← PREV</button>
+                </div>
+                <div class="slide-indicator" id="slide-indicator">01 / 10</div>
+                <div class="nav-buttons">
+                    <button id="btn-next" class="btn-nav">NEXT →</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slideCount = 10;
+        const slider = document.getElementById('slider');
+        const indicator = document.getElementById('slide-indicator');
+        const btnPrev = document.getElementById('btn-prev');
+        const btnNext = document.getElementById('btn-next');
+
+        function updateCarousel() {
+            slider.style.transform = `translateX(-${currentSlide * 100}%)`;
+
+            // Convert current slide to 01, 02 format
+            const displayNum = String(currentSlide + 1).padStart(2, '0');
+            indicator.textContent = `${displayNum} / 10`;
+
+            // Toggle button state
+            btnPrev.disabled = currentSlide === 0;
+            btnNext.disabled = currentSlide === slideCount - 1;
+        }
+
+        btnPrev.addEventListener('click', () => {
+            if (currentSlide > 0) {
+                currentSlide--;
+                updateCarousel();
+            }
+        });
+
+        btnNext.addEventListener('click', () => {
+            if (currentSlide < slideCount - 1) {
+                currentSlide++;
+                updateCarousel();
+            }
+        });
+
+        // Global function for the cards to call
+        window.goToSlide = function (index) {
+            currentSlide = index;
+            updateCarousel();
+            document.getElementById('carousel-anchor').scrollIntoView({ behavior: 'smooth' });
+        };
+
+        // Keyboard navigation support
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft' && !btnPrev.disabled) {
+                currentSlide--;
+                updateCarousel();
+            } else if (e.key === 'ArrowRight' && !btnNext.disabled) {
+                currentSlide++;
+                updateCarousel();
+            }
+        });
+
+        // Initialize
+        updateCarousel();
+    </script>
+
+</body>
+
+</html>
