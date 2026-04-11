@@ -1,4 +1,4 @@
-﻿---
+---
 name: architecture-decision
 description: "Documents architectural and technology decisions as Architecture Decision Records (ADRs). Use when a significant tech-stack choice, design pattern, or infrastructure decision needs to be recorded with context and rationale."
 argument-hint: "[title]"
@@ -7,7 +7,7 @@ allowed-tools: Read, Glob, Grep, Write
 context: fork
 agent: cto
 effort: 4
-when_to_use: "Khi cần ra quyết định công nghệ, ghi lại reasoning"
+when_to_use: "When needing to make a technology decision and record the underlying reasoning"
 ---
 
 When this skill is invoked:

@@ -7,6 +7,7 @@ allowed-tools: Read, Glob, Grep
 context: |
   !git diff --stat HEAD~20 2>/dev/null
 effort: 3
+when_to_use: "Use when a sprint or feature feels bloated, when scope has grown beyond the original plan, or when the user mentions scope creep, feature bloat, or scope check."
 ---
 When this skill is invoked:
 

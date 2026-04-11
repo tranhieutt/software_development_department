@@ -5,6 +5,7 @@ argument-hint: "[optional: specific module or area to update]"
 user-invocable: true
 allowed-tools: Read, Write, Edit, Glob, Grep, Bash
 effort: 3
+when_to_use: "Use after a significant feature merge, refactor, or directory restructure to keep CODEMAP.md accurate, or when the user says the codemap feels stale."
 ---
 
 Update `docs/technical/CODEMAP.md` to accurately reflect the current state of the codebase.

@@ -1,4 +1,4 @@
-﻿---
+---
 name: unfreeze
 description: "Unlocks the codebase after a release freeze or incident freeze period to resume normal development. Use when a freeze period ends or when the user mentions unfreezing or lifting the code freeze."
 argument-hint: "[no arguments]"
@@ -6,44 +6,44 @@ user-invocable: true
 allowed-tools: Read, Write, Bash, Edit
 effort: 1
 agent: release-manager
-when_to_use: "Sau khi release thành công hoặc khi muốn tiếp tục development bình thường"
+when_to_use: "After a successful release or when normal development operations can resume"
 ---
 
 # Code Unfreeze
 
-Gỡ bỏ code freeze, cho phép merge và development tiếp tục.
+Remove the code freeze, allowing merges and development to continue.
 
 ## Workflow
 
-### 1. Kiểm tra trạng thái
+### 1. Check Status
 
-Đọc `.freeze`. Nếu không tồn tại, thông báo và dừng:
-> "✅ Codebase hiện không bị freeze. Không cần unfreeze."
+Read `.freeze`. If it does not exist, notify and stop:
+> "✅ Codebase is not currently frozen. Unfreeze is not needed."
 
-### 2. Hiển thị thông tin freeze hiện tại
+### 2. Display Current Freeze Information
 
 ```
-🔒 Freeze hiện tại:
-Reason     : [REASON từ .freeze]
+🔒 Current Freeze:
+Reason     : [REASON from .freeze]
 Frozen at  : [FROZEN_AT]
 Branch     : [BRANCH]
-Duration   : [tính từ FROZEN_AT đến thời điểm hiện tại]
+Duration   : [calculated from FROZEN_AT to current time]
 ```
 
-### 3. Xác nhận
+### 3. Confirmation
 
-Hỏi:
-> "Bạn có chắc muốn unfreeze? Release/deployment đã hoàn thành chưa? (yes/no)"
+Ask:
+> "Are you sure you want to unfreeze? Is the release/deployment complete? (yes/no)"
 
-Nếu "no", dừng lại.
+If "no", stop.
 
-### 4. Xóa `.freeze`
+### 4. Remove `.freeze`
 
-Dùng Bash để xóa file: `rm .freeze`
+Use Bash to delete the file: `rm .freeze`
 
-### 5. Log vào session state
+### 5. Log to Session State
 
-Append vào `production/session-state/active.md` (nếu tồn tại):
+Append to `production/session-state/active.md` (if it exists):
 
 ```markdown
 ## Unfreeze Log — [timestamp]
@@ -52,21 +52,21 @@ Append vào `production/session-state/active.md` (nếu tồn tại):
 - Reason was: [reason]
 ```
 
-### 6. Thông báo
+### 6. Notification
 
 ```
 ✅ CODEBASE UNFROZEN
-Development có thể tiếp tục bình thường.
-Tất cả merges và deployments đã được cho phép.
+Development can resume normally.
+All merges and deployments are now permitted.
 ```
 
 ## Edge Cases
 
-- **Không có freeze**: Thông báo rõ ràng, không làm gì thêm
-- **active.md không tồn tại**: Bỏ qua bước log, không báo lỗi
+- **No freeze exists**: Notify clearly, take no further action.
+- **active.md does not exist**: Skip the logging step, do not throw an error.
 
 ## Related Skills
 
-- `/freeze` — Lock codebase lại
-- `/guard` — Kiểm tra trạng thái hiện tại
-- `/release-checklist` — Workflow release đầy đủ
+- `/freeze` — Lock the codebase
+- `/guard` — Check the current status
+- `/release-checklist` — Full release workflow

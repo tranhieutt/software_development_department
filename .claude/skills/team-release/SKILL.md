@@ -5,6 +5,7 @@ argument-hint: "[version number or 'next']"
 user-invocable: true
 allowed-tools: Read, Glob, Grep, Write, Edit, Bash, Task, AskUserQuestion, TodoWrite
 effort: 3
+when_to_use: "Use when coordinating a release across QA sign-off, DevOps build pipeline, and release management to ship a version to production."
 ---
 When this skill is invoked, orchestrate the release team through a structured pipeline.
 

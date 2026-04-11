@@ -5,6 +5,7 @@ argument-hint: "[feature description or user story]"
 user-invocable: true
 allowed-tools: Read, Glob, Grep, Write, Edit, Bash, Task, AskUserQuestion, TodoWrite
 effort: 3
+when_to_use: "Use when a feature requires full-stack coordinated delivery spanning product requirements, UX design, frontend, backend, and QA testing."
 ---
 
 When this skill is invoked, orchestrate the feature team through a structured delivery pipeline.

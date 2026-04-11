@@ -5,6 +5,7 @@ argument-hint: "[UI feature or screen description]"
 user-invocable: true
 allowed-tools: Read, Glob, Grep, Write, Edit, Bash, Task, AskUserQuestion, TodoWrite
 effort: 3
+when_to_use: "Use when a UI feature needs coordinated delivery across UX research, interaction design, component implementation, and accessibility audit."
 ---
 
 When this skill is invoked, orchestrate the frontend team through a structured delivery pipeline.

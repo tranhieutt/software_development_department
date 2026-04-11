@@ -5,6 +5,7 @@ argument-hint: "[no arguments]"
 user-invocable: true
 allowed-tools: Read, Glob, Grep, AskUserQuestion
 effort: 3
+when_to_use: "Use at the very beginning of a new project or first session to route the user to the appropriate workflow based on their current project stage."
 ---
 
 # Guided Onboarding

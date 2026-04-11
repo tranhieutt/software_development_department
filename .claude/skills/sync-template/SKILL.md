@@ -5,6 +5,7 @@ argument-hint: "[upstream-repo-url]"
 user-invocable: true
 allowed-tools: Read, Bash, Glob
 effort: 3
+when_to_use: "Use when updating the .claude/ directory from an upstream SDD template repository, or when the user mentions template sync or upstream update."
 ---
 
 Sync the `.claude/` directory from an upstream template repository into this project.

@@ -1,4 +1,4 @@
-﻿---
+---
 name: guard
 description: "Enforces project safety constraints by blocking risky operations outside their approved scope during active development. Use when activating a safety guard or constraint for the current session."
 argument-hint: "[no arguments]"
@@ -6,71 +6,71 @@ user-invocable: true
 allowed-tools: Read, Bash
 effort: 1
 agent: release-manager
-when_to_use: "Trước khi merge PR, deploy, hoặc push lên main/develop khi không chắc có freeze không"
+when_to_use: "Before merging PR, deploying, or pushing to main/develop when unsure if a freeze is active"
 ---
 
 # Guard Check
 
-Kiểm tra trạng thái freeze của codebase. Dùng như một gate check trước bất kỳ thao tác nào lên branch chính.
+Check the freeze status of the codebase. Use as a gate check before any operations on the main branch.
 
 ## Workflow
 
-### 1. Đọc `.freeze`
+### 1. Read `.freeze`
 
-**Nếu không tồn tại:**
+**If it does not exist:**
 
 ```
-✅ CLEAR — Không có freeze đang hoạt động.
-Development và merge bình thường.
+✅ CLEAR — No active freeze.
+Development and merging can proceed normally.
 ```
 
-Dừng lại ở đây.
+Stop here.
 
-**Nếu tồn tại**, tiếp tục bước 2.
+**If it exists**, proceed to step 2.
 
-### 2. Hiển thị freeze warning
+### 2. Display Freeze Warning
 
 ```
 🔒 CODEBASE IS FROZEN
 
-Reason  : [REASON từ .freeze]
+Reason  : [REASON from .freeze]
 Since   : [FROZEN_AT]
 Branch  : [BRANCH]
-Duration: [tính từ FROZEN_AT đến thời điểm hiện tại]
+Duration: [calculated from FROZEN_AT to current time]
 
-⚠️  Non-critical merges bị chặn trong freeze period.
+⚠️  Non-critical merges are blocked during a freeze period.
 ```
 
-### 3. Phân loại yêu cầu
+### 3. Categorize the Request
 
-Hỏi:
-> "Thao tác của bạn thuộc loại nào?"
+Ask:
+> "What type of operation is this?"
 >
-> **A) Hotfix khẩn cấp** — bug production, security patch
-> **B) Release artifact** — changelog, version bump, release notes
-> **C) Non-critical** — feature, refactor, chore, docs thường
+> **A) Urgent Hotfix** — production bug, security patch
+> **B) Release Artifact** — changelog, version bump, release notes
+> **C) Non-critical** — feature, refactor, chore, normal docs
 
-**Nếu A hoặc B:** Cho phép tiếp tục với note:
-> "⚠️ Được phép tiếp tục. Lưu ý đây là freeze period — chỉ thao tác cần thiết."
+**If A or B:** Allow to proceed with a note:
+> "⚠️ Permitted to proceed. Note that this is a freeze period — execute only necessary operations."
 
-**Nếu C:** Chặn và hướng dẫn:
-> "🚫 Non-critical changes phải đợi đến sau khi `/unfreeze`.
-> Lưu work lại và tiếp tục sau khi release hoàn thành."
+**If C:** Block and instruct:
+> "🚫 Non-critical changes must wait until after `/unfreeze`.
+> Save your work and continue after the release is complete."
 
-### 4. Gợi ý
+### 4. Suggestions
 
-- `/unfreeze` — Nếu release đã xong
-- `/release-checklist` — Nếu đang trong quá trình release
-- `/hotfix` — Nếu cần deploy fix khẩn cấp
+- `/unfreeze` — If the release is finished
+- `/release-checklist` — If currently in the release process
+- `/hotfix` — If an urgent fix deployment is needed
 
 ## Edge Cases
 
-- **Không có .freeze**: Chỉ báo CLEAR, không hỏi thêm
-- **User không chắc loại thao tác**: Hỏi thêm để phân loại đúng trước khi quyết định
+- **No .freeze**: Just report CLEAR, ask no further questions.
+- **User unsure of operation type**: Ask for more details to categorize correctly before deciding.
 
 ## Related Skills
 
 - `/freeze` — Lock codebase
-- `/unfreeze` — Gỡ bỏ freeze
-- `/hotfix` — Deploy khẩn cấp khi đang freeze
-- `/release-checklist` — Workflow release đầy đủ
+- `/unfreeze` — Remove freeze
+- `/hotfix` — Urgent deployment during freeze
+- `/release-checklist` — Full release workflow

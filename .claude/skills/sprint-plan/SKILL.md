@@ -8,6 +8,7 @@ allowed-tools: Read, Glob, Grep, Write, Edit
 context: |
   !ls production/sprints/ 2>/dev/null
 effort: 3
+when_to_use: "Use when starting a new sprint, updating sprint progress mid-sprint, or checking current sprint status against milestone goals."
 ---
 
 When this skill is invoked:

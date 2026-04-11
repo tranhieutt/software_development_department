@@ -5,6 +5,7 @@ argument-hint: "[mobile feature or screen description]"
 user-invocable: true
 allowed-tools: Read, Glob, Grep, Write, Edit, Bash, Task, AskUserQuestion, TodoWrite
 effort: 3
+when_to_use: "Use when a mobile feature needs full-team delivery from UX design through native implementation, accessibility audit, device QA, and app store release."
 ---
 
 When this skill is invoked, orchestrate the mobile team through a structured delivery pipeline.

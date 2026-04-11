@@ -6,7 +6,14 @@ Tài liệu này ghi lại lịch sử cập nhật tài liệu và source code 
 
 ## 🗓️ Lịch sử cập nhật
 
-### [v1.25.0] - 2026-04-11
+### [v1.25.1] - 2026-04-11
+
+**Chủ đề:** Dịch toàn bộ tiếng Việt còn sót lại trong Skills sang Tiếng Anh
+
+- **Sửa lỗi định tuyến (Routing):** Dịch toàn bộ các trường `description` và `when_to_use` đang dùng tiếng Việt sang tiếng Anh trên 7 files (`architecture-decision`, `architecture-decision-records`, `code-review`, `code-review-checklist`, `freeze`, `guard`, `unfreeze`) để giúp AI routing chính xác hơn.
+- **Tiêu chuẩn hóa Workflow Body:** Dịch toàn bộ nội dung hướng dẫn, prompts, Edge Cases và Related Skills của cụm file workflow (`freeze`, `guard`, `unfreeze`) sang 100% tiếng Anh. Đảm bảo toàn bộ repo SDD đồng nhất về một ngôn ngữ.
+
+---
 
 **Chủ đề:** Progressive Disclosure Refactoring — Rút gọn 11 skills lớn, giảm ~2.200 dòng context waste
 

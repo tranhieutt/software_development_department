@@ -3,6 +3,7 @@ name: learner
 description: "Extracts reusable patterns, preferences, and lessons from the current session and saves them to .claude/memory/ for future use. Use at the end of a session or when the user wants to save patterns for future sessions."
 level: 7
 effort: 3
+when_to_use: "Use at the end of a session when complex problems were solved or novel patterns discovered, to persist reusable heuristics to .claude/memory/ for future sessions."
 ---
 
 # Learner Skill

@@ -5,6 +5,7 @@ argument-hint: "<type> <path> (e.g., 'design src/api/auth' or 'architecture src/
 user-invocable: true
 allowed-tools: Read, Glob, Grep, Write, Edit, Bash
 effort: 3
+when_to_use: "Use when documentation is missing for existing code, a feature was built without a design doc, or the user needs to formalize an existing implementation into design or architecture documentation."
 ---
 
 # Reverse Documentation

@@ -5,6 +5,7 @@ argument-hint: "[UI feature description]"
 user-invocable: true
 allowed-tools: Read, Glob, Grep, Write, Edit, Bash, Task, AskUserQuestion, TodoWrite
 effort: 3
+when_to_use: "Use when a UI component or page needs both UX design and engineering coordination, delivering from wireframe through final polished implementation."
 ---
 When this skill is invoked, orchestrate the UI team through a structured pipeline.
 

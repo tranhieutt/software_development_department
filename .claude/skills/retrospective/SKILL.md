@@ -7,6 +7,7 @@ allowed-tools: Read, Glob, Grep, Write
 context: |
   !git log --oneline --since="2 weeks ago" 2>/dev/null
 effort: 3
+when_to_use: "Use when ending a sprint or milestone to analyze completed work, velocity, and blockers, or when the user mentions retrospective, retro, or sprint review."
 ---
 
 When this skill is invoked:

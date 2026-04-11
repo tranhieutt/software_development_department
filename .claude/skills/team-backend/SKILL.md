@@ -5,6 +5,7 @@ argument-hint: "[backend feature or system description]"
 user-invocable: true
 allowed-tools: Read, Glob, Grep, Write, Edit, Bash, Task, AskUserQuestion, TodoWrite
 effort: 3
+when_to_use: "Use when a backend feature requires coordinated multi-specialist delivery across architecture, API, database schema, and security domains."
 ---
 
 When this skill is invoked, orchestrate the backend team through a structured delivery pipeline.

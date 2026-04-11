@@ -7,7 +7,7 @@ allowed-tools: Read, Glob, Grep, Write, Bash
 argument-hint: "[decision topic or question]"
 user-invocable: true
 effort: 4
-when_to_use: "Khi cần tạo formal ADR document với full context và alternatives"
+when_to_use: "When needing to create a formal ADR document with full context and alternatives"
 ---
 
 # Architecture Decision Records

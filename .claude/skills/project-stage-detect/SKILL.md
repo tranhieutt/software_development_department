@@ -5,6 +5,7 @@ argument-hint: "[optional: role filter like 'programmer' or 'designer']"
 user-invocable: true
 allowed-tools: Read, Glob, Grep, Bash
 effort: 3
+when_to_use: "Use when starting a session on an existing project, onboarding to a codebase, or checking what documentation gaps exist before a milestone."
 ---
 
 # Project Stage Detection

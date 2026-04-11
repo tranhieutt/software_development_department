@@ -5,6 +5,7 @@ argument-hint: "[optional note]"
 user-invocable: true
 allowed-tools: Read, Write, Glob, Bash
 effort: 3
+when_to_use: "Use before any major context reset, when context usage exceeds 60%, or when ending a session to preserve working context across compaction or restart."
 ---
 
 Dump the current working context into `production/session-state/active.md` as a structured checkpoint.

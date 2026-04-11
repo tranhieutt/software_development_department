@@ -5,6 +5,7 @@ argument-hint: "[concept-description]"
 user-invocable: true
 allowed-tools: Read, Glob, Grep, Write, Edit, Bash
 effort: 3
+when_to_use: "Use when the user wants to quickly validate a product concept or core mechanic before committing to full implementation, or mentions prototyping, proof of concept, or MVP spike."
 ---
 
 When this skill is invoked:

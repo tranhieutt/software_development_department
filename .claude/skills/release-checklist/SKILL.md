@@ -5,6 +5,7 @@ argument-hint: "[platform: pc|console|mobile|all]"
 user-invocable: true
 allowed-tools: Read, Glob, Grep, Write
 effort: 3
+when_to_use: "Use before releasing a product version to validate build completeness, store metadata, and launch readiness across target platforms."
 ---
 
 When this skill is invoked:

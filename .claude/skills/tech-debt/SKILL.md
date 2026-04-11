@@ -7,6 +7,7 @@ allowed-tools: Read, Glob, Grep, Write
 context: fork
 agent: technical-director
 effort: 3
+when_to_use: "Use when assessing codebase health, planning a refactoring sprint, or when the user mentions technical debt, code quality, cleanup, or wants to prioritize remediation work."
 ---
 When this skill is invoked:
 

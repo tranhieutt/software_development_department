@@ -7,6 +7,7 @@ allowed-tools: Read, Glob, Grep, Bash
 context: fork
 agent: performance-analyst
 effort: 3
+when_to_use: "Use when investigating slow performance, identifying bottlenecks, or when the user mentions performance issues, profiling, latency, or optimization targets."
 ---
 When this skill is invoked:
 

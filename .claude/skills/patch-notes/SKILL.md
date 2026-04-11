@@ -5,6 +5,7 @@ argument-hint: "[version] [--style brief|detailed|full]"
 user-invocable: true
 allowed-tools: Read, Glob, Grep, Write, Bash
 effort: 1
+when_to_use: "Use when preparing user-facing patch notes for a release version, or when the user mentions patch notes, version notes, or user-facing changelog."
 ---
 
 When this skill is invoked:

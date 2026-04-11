@@ -5,7 +5,7 @@ allowed-tools: Read, Glob, Grep, Bash
 argument-hint: "[file path or PR number]"
 user-invocable: true
 effort: 3
-when_to_use: "Quick self-check trước khi commit, không cần full review"
+when_to_use: "Quick self-check before committing, when a full review is not needed"
 ---
 
 # Code Review Checklist
