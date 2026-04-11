@@ -3,7 +3,7 @@
   <p align="center">
     Turn a single Claude Code session into a full software development department.
     <br />
-    27 agents. 108 workflows and technical frameworks. One coordinated AI ecosystem.
+    27 agents. 108 skills and technical frameworks — context-optimized for efficient AI routing. One coordinated AI ecosystem.
   </p>
 </p>
 
@@ -22,7 +22,7 @@
 
 Building software solo with AI is powerful — but a single chat session has no structure. No one stops you from skipping design docs, writing inconsistent APIs, failing security reviews, or accumulating untracked technical debt. There's no peer review, no architecture oversight, no QA pass.
 
-**Claude Code Software Development Department** solves this by giving your AI session the structure of a real department. Instead of one general-purpose assistant, you get 27 specialized agents organized into a department hierarchy, supercharged with almost 100 global technical frameworks (like Next.js, Django, Kubernetes, AWS, MLOps, etc.) to ensure enterprise-grade execution. You get a CTO who guards technical vision, department leads who own their domains, and specialists who do the hands-on work with deep framework-specific intelligence.
+**Claude Code Software Development Department** solves this by giving your AI session the structure of a real department. Instead of one general-purpose assistant, you get 27 specialized agents organized into a department hierarchy, supercharged with 108 context-optimized skills (Next.js, Django, Kubernetes, AWS, MLOps, etc.) to ensure enterprise-grade execution. You get a CTO who guards technical vision, department leads who own their domains, and specialists who do the hands-on work with deep framework-specific intelligence.
 
 The result: you still make every decision, but now you have a team that asks the right questions, catches mistakes early, and keeps your project organized from first spec to launch.
 
@@ -215,7 +215,7 @@ Tested on **Windows 10/11** with Git Bash. All hooks use POSIX-compatible patter
 
 ## Version
 
-**v1.22.0** — 2026-04-05
+**v1.25.0** — 2026-04-11
 
 See [`History_Update.md`](History_Update.md) for full changelog.
 

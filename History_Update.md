@@ -6,6 +6,40 @@ Tài liệu này ghi lại lịch sử cập nhật tài liệu và source code 
 
 ## 🗓️ Lịch sử cập nhật
 
+### [v1.25.0] - 2026-04-11
+
+**Chủ đề:** Progressive Disclosure Refactoring — Rút gọn 11 skills lớn, giảm ~2.200 dòng context waste
+
+Dựa trên phân tích so sánh bộ skill SDD với bộ chuẩn Claude Managed Agents (CMA), xác định 2 vấn đề chính cần xử lý: (1) mô tả skill thiếu trigger words → AI định tuyến sai, (2) body skill quá dài do marketing copy và capability bullet list vô dụng.
+
+**Vấn đề 1 — Cải thiện Descriptions & Trigger Words:**
+- Rà soát và viết lại `description:` + `when_to_use:` cho toàn bộ skills có mô tả yếu
+- Bổ sung trigger keywords cụ thể vào frontmatter để cải thiện độ chính xác routing của agent
+
+**Vấn đề 2 — Progressive Disclosure (4 batches, 11 skills):**
+
+| Skills | Trước | Sau | Ghi chú |
+|---|---|---|---|
+| `senior-frontend` | 495 | ~149 | Bỏ scaffolding scripts, giữ actionable patterns |
+| `code-review-checklist` | 466 | ~94 | Bỏ explanations thừa, giữ checklist items |
+| `architecture-decision-records` | 452 | ~127 | Bỏ verbose templates, giữ 1 MADR template |
+| `postmortem-writing` | 413 | ~132 | Bỏ ví dụ dài, giữ templates + core concepts |
+| `prisma-expert` | 365 | ~148 | Bỏ diagnostic scripts, giữ critical rules |
+| `backend-architect` | 337 | ~95 | Bỏ 200-line capability list, thêm decision matrix |
+| `aws-serverless` | 332 | ~168 | Fix truncated code snippets, remove broken tables |
+| `devops-deploy` | 295 | ~197 | Fix broken YAML frontmatter, remove boilerplate |
+| `database-architect` | 270 | ~120 | Bỏ bullet list, thêm SQL patterns + decision matrix |
+| `frontend-design` | 281 | ~90 | Rút gọn DFI framework, thêm operator checklist |
+| `mlops-engineer` | 225 | ~177 | Bỏ 150-line capability list, thêm tool matrix + 5 code patterns |
+
+**Skills đánh giá nhưng KHÔNG rút gọn (code-dense / justified):**
+- `deep-interview` (651), `laravel-patterns` (421), `docker-patterns` (370), `drizzle-orm-expert` (366), `claude-api` (343), `springboot-patterns` (320), `map-systems` / `orchestrate` (307–313): toàn code thực tế, không có padding
+- `shadcn` (252), `brainstorm` (236), `launch-checklist` (239), `deployment-procedures` (249): checklist + execution workflows — mỗi dòng đều cần thiết
+
+**Tổng kết:** Giảm ~2.200 dòng, ~60% context waste từ các skills bị ảnh hưởng. Skills đã đạt mật độ thông tin tối ưu: mỗi dòng là rule, pattern, hoặc code thực thi.
+
+---
+
 ### [v1.24.0] - 2026-04-07
 
 **Chủ đề:** Tích hợp 2 patterns từ Context Hub (Andrew Ng)
@@ -533,4 +567,4 @@ Kết quả: Gõ `/` khi làm Next.js project → ~20 skills thay vì 98.
 
 ---
 
-Last Updated: 2026-04-07 — v1.24.0
+Last Updated: 2026-04-11 — v1.25.0
