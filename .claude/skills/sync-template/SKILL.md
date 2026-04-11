@@ -15,7 +15,8 @@ Sync the `.claude/` directory from an upstream template repository into this pro
 If `$ARGUMENTS` is provided, use it as the upstream repository URL.
 
 If `$ARGUMENTS` is empty, check `CLAUDE.md` for a line like:
-```
+
+```text
 **Template upstream**: <url>
 ```
 
@@ -65,6 +66,7 @@ cp -r "$SYNC_TMP/.claude/." .claude/
 ```
 
 This will:
+
 - **Overwrite** files that exist in both upstream and locally
 - **Add** new files from upstream
 - **Preserve** all local-only files (project-specific agents, skills, rules, hooks)
@@ -72,6 +74,7 @@ This will:
 ### 5. Report
 
 List each file that was added or updated, grouped by type:
+
 - Added: `[file list]`
 - Updated: `[file list]`
 

@@ -12,6 +12,7 @@ when_to_use: "Use when documentation is missing for existing code, a feature was
 
 This skill analyzes existing implementation (code, prototypes, systems) and generates
 appropriate design or architecture documentation. Use this when:
+
 - You built a feature without writing a design doc first
 - You inherited a codebase without documentation
 - You prototyped a mechanic and need to formalize it
@@ -94,7 +95,7 @@ appropriate design or architecture documentation. Use this when:
 
 Before drafting, show what you discovered:
 
-```
+```text
 I've analyzed src/api/auth/. Here's what I found:
 
 MECHANICS IMPLEMENTED:
@@ -137,7 +138,8 @@ Based on type, use appropriate template:
 ### 6. Show Draft and Request Approval
 
 **Collaborative protocol**:
-```
+
+```text
 I've drafted the combat system design doc based on your code and clarifications.
 
 [Show key sections: Overview, Mechanics, Formulas, Design Intent]
@@ -180,7 +182,7 @@ verified-by: [User name]
 
 After writing, suggest next steps:
 
-```
+```text
 ✅ Written to design/docs/combat-system.md
 
 FOLLOW-UP RECOMMENDED:
@@ -210,7 +212,7 @@ Would you like me to tackle any of these now?
 
 ## Example Session: Reverse-Document Combat Code
 
-```
+```text
 User: /reverse-document design src/api/auth
 
 Agent: I'll analyze your combat implementation to create a design doc.

@@ -40,6 +40,7 @@ When this skill is invoked:
 5. **Generate the patch notes** using the appropriate style:
 
 ### Brief Style
+
 ```markdown
 # Patch [Version] — [Title]
 
@@ -59,6 +60,7 @@ When this skill is invoked:
 ```
 
 ### Detailed Style
+
 ```markdown
 # Patch [Version] — [Title]
 *[Date]*
@@ -100,7 +102,9 @@ When this skill is invoked:
 ```
 
 ### Full Style
+
 Includes everything from Detailed, plus:
+
 ```markdown
 ## Developer Commentary
 ### [Topic]

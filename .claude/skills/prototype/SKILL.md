@@ -27,7 +27,8 @@ When this skill is invoked:
 
 5. **Implement the prototype** in the isolated directory. Every file must begin
    with:
-   ```
+
+   ```js
    // PROTOTYPE - NOT FOR PRODUCTION
    // Question: [Core question being tested]
    // Date: [Current date]

@@ -1,4 +1,4 @@
-﻿---
+---
 name: brainstorm
 description: "Facilitates structured product ideation to define user needs, core value, and product direction. Use when the user wants to explore a new product idea, has a vague concept to develop, or mentions brainstorming or ideation."
 argument-hint: "[product type or problem hint, or 'open' for fully open brainstorm]"
@@ -186,6 +186,18 @@ Ground the concept in reality:
   - **MVP** (weeks): Validates core hypothesis with minimum code
   - **v1** (months): Shippable, complete product for early adopters
   - **Full vision** (beyond): What it becomes if successful
+---
+
+### Phase 7: Architectural Pre-flight (The 21 Questions)
+
+Before finalizing, challenge the concept using this 6-dimension framework. Identify the top 3-5 critical blind spots the team must resolve before coding. *(If you don't understand the business, you're just a diagram maker.)*
+
+- **A. Business:** What problem are we solving? Who are the real users? What does success look like? What are the hard constraints (budget, timeline, regulation)?
+- **B. Functional:** Core features? Critical user journeys? External system plug-ins? Key background workflows? *(Clarity here is cheap. Rework later is expensive.)*
+- **C. Non-Functional:** Availability/uptime? Performance/latency targets? Security/compliance? Growth capacity? *(Systems fail when NFRs are treated as footnotes.)*
+- **D. Integration:** Number of systems in ecosystem? Communication (real-time, event-driven, batch)? Existing APIs vs. build from scratch? *(Integration complexity is always underestimated.)*
+- **E. Data:** Data kind/type? Volume and growth rate? Privacy/regulatory concerns (PII/GDPR)? *(Data decisions are hardest to reverse.)*
+- **F. Operational:** Monitoring and logging strategy? Deployment and release strategy? Who owns support/maintenance? *(A system no one can operate is a system waiting to collapse.)*
 
 ---
 

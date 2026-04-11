@@ -12,6 +12,7 @@ when_to_use: "Use when starting a session on an existing project, onboarding to 
 
 This skill scans your project to determine its current development stage, completeness
 of artifacts, and gaps that need attention. It's especially useful when:
+
 - Starting with an existing project
 - Onboarding to a codebase
 - Checking what's missing before a milestone
@@ -26,6 +27,7 @@ of artifacts, and gaps that need attention. It's especially useful when:
 Analyze project structure and content:
 
 **Design Documentation** (`design/`):
+
 - Count PRD files in `design/docs/*.md`
 - Check for product-concept.md, product-pillars.md, systems-index.md
 - If systems-index.md exists, count total systems vs. designed systems
@@ -34,26 +36,31 @@ Analyze project structure and content:
 - Count level designs in `design/specs/`
 
 **Source Code** (`src/`):
+
 - Count source files (language-agnostic)
 - Identify major systems (directories with 5+ files)
 - Check for core/, business/, ai/, networking/, ui/ directories
 - Estimate lines of code (rough scale)
 
 **Production Artifacts** (`production/`):
+
 - Check for active sprint plans
 - Look for milestone definitions
 - Find roadmap documents
 
 **Prototypes** (`prototypes/`):
+
 - Count prototype directories
 - Check for READMEs (documented vs undocumented)
 - Assess if prototypes are archived or active
 
 **Architecture Docs** (`docs/architecture/`):
+
 - Count ADRs (Architecture Decision Records)
 - Check for overview/index documents
 
 **Tests** (`tests/`):
+
 - Count test files
 - Estimate test coverage (rough heuristic)
 
@@ -64,7 +71,7 @@ if it exists, use its value (explicit override from `/gate-check`). Otherwise,
 auto-detect using these heuristics (check from most-advanced backward):
 
 | Stage | Indicators |
-|-------|-----------|
+| ----- | ---------- |
 | **Concept** | No product concept doc, brainstorming phase |
 | **Systems Design** | Product concept exists, systems index missing or incomplete |
 | **Technical Setup** | Systems index exists, engine not configured |
@@ -88,6 +95,7 @@ auto-detect using these heuristics (check from most-advanced backward):
 Use template: `.claude/docs/templates/project-stage-report.md`
 
 **Report structure**:
+
 ```markdown
 # Project Stage Analysis
 
@@ -114,25 +122,30 @@ Use template: `.claude/docs/templates/project-stage-report.md`
 If user provided a role argument (e.g., `/project-stage-detect programmer`):
 
 **Programmer**:
+
 - Focus on architecture docs, test coverage, missing ADRs
 - Code-to-docs gaps
 
 **Designer**:
+
 - Focus on PRD completeness, missing design sections
 - Prototype documentation
 
 **Producer**:
+
 - Focus on sprint plans, milestone tracking, roadmap
 - Cross-team coordination docs
 
 **General** (no role):
+
 - Holistic view of all gaps
 - Highest-priority items across domains
 
 ### 6. Request Approval Before Writing
 
 **Collaborative protocol**:
-```
+
+```text
 I've analyzed your project. Here's what I found:
 
 [Show summary]

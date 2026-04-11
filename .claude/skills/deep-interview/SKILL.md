@@ -7,6 +7,7 @@ next-skill: omc-plan
 next-skill-args: --consensus --direct
 handoff: .omc/specs/deep-interview-{slug}.md
 level: 3
+allowed-tools: Read, Glob, Grep, Write, AskUserQuestion
 effort: 3
 when_to_use: "Use when the user has a vague idea and wants structured requirements gathering before implementation, or says 'interview me', 'ask me everything', 'don't assume', or 'ouroboros'."
 ---

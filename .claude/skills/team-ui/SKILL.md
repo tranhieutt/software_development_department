@@ -7,6 +7,7 @@ allowed-tools: Read, Glob, Grep, Write, Edit, Bash, Task, AskUserQuestion, TodoW
 effort: 3
 when_to_use: "Use when a UI component or page needs both UX design and engineering coordination, delivering from wireframe through final polished implementation."
 ---
+
 When this skill is invoked, orchestrate the UI team through a structured pipeline.
 
 **Decision Points:** At each phase transition, use `AskUserQuestion` to present
@@ -15,12 +16,14 @@ full analysis in conversation, then capture the decision with concise labels.
 The user must approve before moving to the next phase.
 
 ## Team Composition
+
 - **ux-designer** — User flows, wireframes, accessibility, interaction patterns
 - **ui-programmer** — UI framework, screens, components, data binding, implementation
 
 ## How to Delegate
 
 Use the Task tool to spawn each team member as a subagent:
+
 - `subagent_type: ux-designer` — User flows, wireframes, accessibility, interaction patterns
 - `subagent_type: ui-programmer` — UI framework, screens, components, data binding
 
@@ -29,7 +32,9 @@ Always provide full context in each agent's prompt (feature requirements, existi
 ## Pipeline
 
 ### Phase 1: UX Design
+
 Delegate to **ux-designer**:
+
 - Define the user flow for this feature (entry points, states, exit points)
 - Create wireframes for each screen/state
 - Specify interaction patterns: how does keyboard/mouse AND gamepad navigate this?
@@ -38,7 +43,9 @@ Delegate to **ux-designer**:
 - Output: UX spec with wireframes and interaction map
 
 ### Phase 2: Visual Design
+
 Delegate to **ui-programmer** (styling phase):
+
 - Review wireframes and translate to design tokens (colors, typography, spacing)
 - Define visual treatment following the product design system
 - Specify any assets needed (icons, illustrations)
@@ -46,7 +53,9 @@ Delegate to **ui-programmer** (styling phase):
 - Output: visual design spec with style notes
 
 ### Phase 3: Implementation
+
 Delegate to **ui-programmer**:
+
 - Implement the UI following the UX spec and visual design
 - Ensure UI NEVER owns or modifies application state — display only, events for actions
 - All text through i18n/localization system — no hardcoded strings

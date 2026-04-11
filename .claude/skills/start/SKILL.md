@@ -10,8 +10,8 @@ when_to_use: "Use at the very beginning of a new project or first session to rou
 
 # Guided Onboarding
 
-This skill is the entry point for new users. It does NOT assume you have a 
-project idea, a framework preference, or any prior architecture. It asks first, 
+This skill is the entry point for new users. It does NOT assume you have a
+project idea, a framework preference, or any prior architecture. It asks first,
 then routes you to the right software engineering workflow.
 
 ---
@@ -45,16 +45,16 @@ This is the first thing the user sees. Present these 4 options clearly:
 > Before I suggest anything, I'd like to understand where you're starting from.
 > Where are you at with your software project right now?
 >
-> **A) No idea yet** — I don't have a project concept at all. I want to explore 
+> **A) No idea yet** — I don't have a project concept at all. I want to explore
 > and figure out what to build.
 >
-> **B) Vague idea** — I have a rough problem to solve or a general app idea 
+> **B) Vague idea** — I have a rough problem to solve or a general app idea
 > (e.g., "a SaaS for HR" or "an internal dashboard") but nothing concrete.
 >
-> **C) Clear concept** — I know the core idea — target users, basic features, 
+> **C) Clear concept** — I know the core idea — target users, basic features,
 > maybe a pitch sentence — but haven't formalized the architecture yet.
 >
-> **D) Existing work** — I already have design docs, prototypes, code, or 
+> **D) Existing work** — I already have design docs, prototypes, code, or
 > significant planning done. I want to organize, refactor, or continue the work.
 
 Wait for the user's answer. Do not proceed until they respond.

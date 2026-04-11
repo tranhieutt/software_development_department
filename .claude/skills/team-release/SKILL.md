@@ -7,6 +7,7 @@ allowed-tools: Read, Glob, Grep, Write, Edit, Bash, Task, AskUserQuestion, TodoW
 effort: 3
 when_to_use: "Use when coordinating a release across QA sign-off, DevOps build pipeline, and release management to ship a version to production."
 ---
+
 When this skill is invoked, orchestrate the release team through a structured pipeline.
 
 **Decision Points:** At each phase transition, use `AskUserQuestion` to present
