@@ -1,49 +1,29 @@
-﻿---
+---
 name: devops-deploy
-description: "Executes infrastructure deployment operations including provisioning, configuration management, and service orchestration. Use when deploying infrastructure or when the user mentions DevOps, deployment, or infrastructure provisioning."
-- devops
-- docker
-- ci-cd
-- aws
-- terraform
-- github-actions
-allowed-tools:
-- claude-code
-- antigravity
-- cursor
-- gemini-cli
-- codex-cli
-paths: ["**/Dockerfile*", "**/k8s/**", "**/infra/**", "**/.github/workflows/**"]
+description: "Executes infrastructure deployment operations including Docker, CI/CD, AWS Lambda, SAM, Terraform, and GitHub Actions. Use when dockerizing applications, configuring CI/CD pipelines, or deploying to cloud infrastructure."
+paths: ["**/Dockerfile*", "**/k8s/**", "**/infra/**", "**/.github/workflows/**", "**/template.yaml"]
 effort: 3
-argument-hint: "[target: docker|lambda|k8s|terraform]"
+argument-hint: "[target: docker|lambda|k8s|terraform|github-actions]"
 user-invocable: true
 when_to_use: "When dockerizing applications, configuring CI/CD pipelines, deploying to AWS, or setting up infrastructure as code"
+allowed-tools: Read, Glob, Grep, Write, Edit, Bash
 ---
 
-# DEVOPS-DEPLOY — Da Ideia para Producao
+# DevOps Deploy
 
-## Overview
+## Production checklist (always verify)
 
-DevOps e deploy de aplicacoes — Docker, CI/CD com GitHub Actions, AWS Lambda, SAM, Terraform, infraestrutura como codigo e monitoramento. Ativar para: dockerizar aplicacao, configurar pipeline CI/CD, deploy na AWS, Lambda, ECS, configurar GitHub Actions, Terraform, rollback, blue-green deploy, health checks, alertas.
+- [ ] Env vars via Secrets Manager — never hardcoded
+- [ ] Health check endpoint responding
+- [ ] Structured JSON logs with `request_id`
+- [ ] Rate limiting configured
+- [ ] CORS restricted to authorized domains
+- [ ] Lambda timeout appropriate (10–30s)
+- [ ] CloudWatch alarms for errors and latency
+- [ ] Rollback plan documented
+- [ ] Load test before launch
 
-## When to Use This Skill
-
-- When you need specialized assistance with this domain
-
-## Do Not Use This Skill When
-
-- The task is unrelated to devops deploy
-- A simpler, more specific tool can handle the request
-- The user needs general-purpose assistance without domain expertise
-
-## How It Works
-
-> "Move fast and don't break things." — Engenharia de elite nao e lenta.
-> E rapida e confiavel ao mesmo tempo.
-
----
-
-## Dockerfile Otimizado (Python)
+## Docker: multi-stage Python
 
 ```dockerfile
 FROM python:3.11-slim AS builder
@@ -62,10 +42,9 @@ HEALTHCHECK --interval=30s --timeout=3s CMD curl -f http://localhost:8000/health
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
 ```
 
-## Docker Compose (Dev Local)
+## Docker Compose (local dev)
 
 ```yaml
-version: "3.9"
 services:
   app:
     build: .
@@ -78,8 +57,8 @@ services:
   db:
     image: postgres:15
     environment:
-      POSTGRES_DB: auri
-      POSTGRES_USER: auri
+      POSTGRES_DB: app
+      POSTGRES_USER: app
       POSTGRES_PASSWORD: ${DB_PASSWORD}
     volumes:
       - pgdata:/var/lib/postgresql/data
@@ -89,14 +68,9 @@ volumes:
   pgdata:
 ```
 
----
-
-## Sam Template (Serverless)
+## SAM template (Lambda + DynamoDB)
 
 ```yaml
-
-## Template.Yaml
-
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 
@@ -106,11 +80,10 @@ Globals:
     Runtime: python3.11
     Environment:
       Variables:
-        ANTHROPIC_API_KEY: !Ref AnthropicApiKey
-        DYNAMODB_TABLE: !Ref AuriTable
+        DYNAMODB_TABLE: !Ref AppTable
 
 Resources:
-  AuriFunction:
+  AppFunction:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: src/
@@ -118,12 +91,11 @@ Resources:
       MemorySize: 512
       Policies:
         - DynamoDBCrudPolicy:
-            TableName: !Ref AuriTable
+            TableName: !Ref AppTable
 
-  AuriTable:
+  AppTable:
     Type: AWS::DynamoDB::Table
     Properties:
-      TableName: auri-users
       BillingMode: PAY_PER_REQUEST
       AttributeDefinitions:
         - AttributeName: userId
@@ -136,39 +108,21 @@ Resources:
         Enabled: true
 ```
 
-## Deploy Commands
-
 ```bash
-
-## Build E Deploy
-
+# SAM commands
 sam build
-sam deploy --guided  # primeira vez
-sam deploy           # deploys seguintes
-
-## Deploy Rapido (Sem Confirmacao)
-
+sam deploy --guided          # first time (creates samconfig.toml)
+sam deploy                   # subsequent
 sam deploy --no-confirm-changeset --no-fail-on-empty-changeset
-
-## Ver Logs Em Tempo Real
-
-sam logs -n AuriFunction --tail
-
-## Deletar Stack
-
-sam delete
+sam logs -n AppFunction --tail
 ```
 
----
+## GitHub Actions: test + security + deploy
 
-## .Github/Workflows/Deploy.Yml
-
-name: Deploy Auri
-
+```yaml
+name: Deploy
 on:
   push:
-    branches: [main]
-  pull_request:
     branches: [main]
 
 jobs:
@@ -180,7 +134,6 @@ jobs:
         with: { python-version: "3.11" }
       - run: pip install -r requirements.txt
       - run: pytest tests/ -v --cov=src --cov-report=xml
-      - uses: codecov/codecov-action@v4
 
   security:
     runs-on: ubuntu-latest
@@ -204,20 +157,13 @@ jobs:
           aws-region: us-east-1
       - run: sam build
       - run: sam deploy --no-confirm-changeset
-      - name: Notify Telegram on Success
-        run: |
-          curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
-            -d "chat_id=${{ secrets.TELEGRAM_CHAT_ID }}" \
-            -d "text=Auri deployed successfully! Commit: ${{ github.sha }}"
 ```
 
----
-
-## Health Check Endpoint
+## Health check endpoint (FastAPI)
 
 ```python
-from fastapi import FastAPI
 import time, os
+from fastapi import FastAPI
 
 app = FastAPI()
 START_TIME = time.time()
@@ -228,11 +174,10 @@ async def health():
         "status": "healthy",
         "uptime_seconds": time.time() - START_TIME,
         "version": os.environ.get("APP_VERSION", "unknown"),
-        "environment": os.environ.get("ENV", "production")
     }
 ```
 
-## Alertas Cloudwatch
+## CloudWatch alarm (Python)
 
 ```python
 import boto3
@@ -244,51 +189,9 @@ def create_error_alarm(function_name: str, sns_topic_arn: str):
         MetricName="Errors",
         Namespace="AWS/Lambda",
         Dimensions=[{"Name": "FunctionName", "Value": function_name}],
-        Period=300,
-        EvaluationPeriods=1,
-        Threshold=5,
+        Period=300, EvaluationPeriods=1, Threshold=5,
         ComparisonOperator="GreaterThanThreshold",
         AlarmActions=[sns_topic_arn],
-        TreatMissingData="notBreaching"
+        TreatMissingData="notBreaching",
     )
 ```
-
----
-
-## 5. Checklist De Producao
-
-- [ ] Variaveis de ambiente via Secrets Manager (nunca hardcoded)
-- [ ] Health check endpoint respondendo
-- [ ] Logs estruturados (JSON) com request_id
-- [ ] Rate limiting configurado
-- [ ] CORS restrito a dominios autorizados
-- [ ] DynamoDB com backup automatico ativado
-- [ ] Lambda com timeout adequado (10-30s)
-- [ ] CloudWatch alarmes para erros e latencia
-- [ ] Rollback plan documentado
-- [ ] Load test antes do lancamento
-
----
-
-## 6. Comandos
-
-| Comando | Acao |
-|---------|------|
-| `/docker-setup` | Dockeriza a aplicacao |
-| `/sam-deploy` | Deploy completo na AWS Lambda |
-| `/ci-cd-setup` | Configura GitHub Actions pipeline |
-| `/monitoring-setup` | Configura CloudWatch e alertas |
-| `/production-checklist` | Roda checklist pre-lancamento |
-| `/rollback` | Plano de rollback para versao anterior |
-
-## Best Practices
-
-- Provide clear, specific context about your project and requirements
-- Review all suggestions before applying them to production code
-- Combine with other complementary skills for comprehensive analysis
-
-## Common Pitfalls
-
-- Using this skill for tasks outside its domain expertise
-- Applying recommendations without understanding your specific context
-- Not providing enough project context for accurate analysis

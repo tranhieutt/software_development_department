@@ -1,4 +1,4 @@
-﻿---
+---
 name: aws-serverless
 type: reference
 description: "Provides AWS serverless architecture patterns for Lambda, API Gateway, DynamoDB, SQS, and SAM/CDK. Use when working with AWS serverless files (serverless.yml, CDK stacks) or when the user mentions Lambda, API Gateway, serverless, or AWS SAM."
@@ -11,108 +11,44 @@ when_to_use: "When building or deploying serverless applications on AWS with Lam
 
 # AWS Serverless
 
-## Patterns
+## Critical rules (non-obvious)
 
-### Lambda Handler Pattern
+- **Initialize clients OUTSIDE handler** — Lambda reuses execution environments across invocations; creating clients inside costs 100-500ms per cold start
+- **`context.callbackWaitsForEmptyEventLoop = false`** — prevents Node.js from hanging on open async handles (DB connections, etc.)
+- **SQS `VisibilityTimeout` = 6× Lambda timeout** — if Lambda takes 30s, set 180s; otherwise messages return to queue mid-processing
+- **`FunctionResponseTypes: [ReportBatchItemFailures]`** — partial batch failure; without this, any single failure retries the entire batch
+- **Never use `*` in `Access-Control-Allow-Origin` with `credentials: true`** — browsers block it; use explicit origin
 
-Proper Lambda function structure with error handling
+## Lambda handler pattern
 
-**When to use**: ['Any Lambda function implementation', 'API handlers, event processors, scheduled tasks']
-
-```python
 ```javascript
-// Node.js Lambda Handler
-// handler.js
+// Initialize once (reused across invocations = faster after cold start)
+const { DynamoDBClient } = require("@aws-sdk/client-dynamodb");
+const { DynamoDBDocumentClient, GetCommand } = require("@aws-sdk/lib-dynamodb");
 
-// Initialize outside handler (reused across invocations)
-const { DynamoDBClient } = require('@aws-sdk/client-dynamodb');
-const { DynamoDBDocumentClient, GetCommand } = require('@aws-sdk/lib-dynamodb');
+const docClient = DynamoDBDocumentClient.from(new DynamoDBClient({}));
 
-const client = new DynamoDBClient({});
-const docClient = DynamoDBDocumentClient.from(client);
-
-// Handler function
 exports.handler = async (event, context) => {
-  // Optional: Don't wait for event loop to clear (Node.js)
-  context.callbackWaitsForEmptyEventLoop = false;
-
+  context.callbackWaitsForEmptyEventLoop = false;  // don't hang on open handles
   try {
-    // Parse input based on event source
-    const body = typeof event.body === 'string'
-      ? JSON.parse(event.body)
-      : event.body;
-
-    // Business logic
-    const result = await processRequest(body);
-
-    // Return API Gateway compatible response
-    return {
-      statusCode: 200,
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
-      },
-      body: JSON.stringify(result)
-    };
-  } catch (error) {
-    console.error('Error:', JSON.stringify({
-      error: error.message,
-      stack: error.stack,
-      requestId: context.awsRequestId
+    const body = typeof event.body === "string" ? JSON.parse(event.body) : event.body;
+    const result = await docClient.send(new GetCommand({
+      TableName: process.env.TABLE_NAME,
+      Key: { id: body.id },
     }));
-
-    return {
-      statusCode: error.statusCode || 500,
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        error: error.message || 'Internal server error'
-      })
-    };
+    return { statusCode: 200, headers: { "Content-Type": "application/json" }, body: JSON.stringify(result.Item) };
+  } catch (err) {
+    console.error(JSON.stringify({ error: err.message, requestId: context.awsRequestId }));
+    return { statusCode: err.statusCode ?? 500, body: JSON.stringify({ error: err.message }) };
   }
 };
-
-async function processRequest(data) {
-  // Your business logic here
-  const result = await docClient.send(new GetCommand({
-    TableName: process.env.TABLE_NAME,
-    Key: { id: data.id }
-  }));
-  return result.Item;
-}
 ```
 
-```python
-# Python Lambda Handler
-# handler.py
+## SAM template: HTTP API + DynamoDB
 
-import json
-import os
-import logging
-import boto3
-from botocore.exceptions import ClientError
-
-# Initialize outside handler (reused across invocations)
-logger = logging.getLogger()
-logger.setLevel(logging.INFO)
-
-dynamodb = boto3.resource('dynamodb')
-table = dynamodb.Table(os.environ['TABLE_NAME'])
-
-def handler(event, context):
-    try:
-        # Parse i
-```
-
-### API Gateway Integration Pattern
-
-REST API and HTTP API integration with Lambda
-
-**When to use**: ['Building REST APIs backed by Lambda', 'Need HTTP endpoints for functions']
-
-```javascript
 ```yaml
-# template.yaml (SAM)
-AWSTemplateFormatVersion: '2010-09-09'
+# template.yaml
+AWSTemplateFormatVersion: "2010-09-09"
 Transform: AWS::Serverless-2016-10-31
 
 Globals:
@@ -125,22 +61,14 @@ Globals:
         TABLE_NAME: !Ref ItemsTable
 
 Resources:
-  # HTTP API (recommended for simple use cases)
   HttpApi:
     Type: AWS::Serverless::HttpApi
     Properties:
-      StageName: prod
       CorsConfiguration:
-        AllowOrigins:
-          - "*"
-        AllowMethods:
-          - GET
-          - POST
-          - DELETE
-        AllowHeaders:
-          - "*"
+        AllowOrigins: ["https://yourdomain.com"]  # never * with credentials
+        AllowMethods: [GET, POST, DELETE]
+        AllowHeaders: ["*"]
 
-  # Lambda Functions
   GetItemFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -156,22 +84,6 @@ Resources:
         - DynamoDBReadPolicy:
             TableName: !Ref ItemsTable
 
-  CreateItemFunction:
-    Type: AWS::Serverless::Function
-    Properties:
-      Handler: src/handlers/create.handler
-      Events:
-        CreateItem:
-          Type: HttpApi
-          Properties:
-            ApiId: !Ref HttpApi
-            Path: /items
-            Method: POST
-      Policies:
-        - DynamoDBCrudPolicy:
-            TableName: !Ref ItemsTable
-
-  # DynamoDB Table
   ItemsTable:
     Type: AWS::DynamoDB::Table
     Properties:
@@ -185,147 +97,72 @@ Resources:
 
 Outputs:
   ApiUrl:
-    Value: !Sub "https://${HttpApi}.execute-api.${AWS::Region}.amazonaws.com/prod"
+    Value: !Sub "https://${HttpApi}.execute-api.${AWS::Region}.amazonaws.com"
 ```
 
-```javascript
-// src/handlers/get.js
-const { getItem } = require('../lib/dynamodb');
+## SQS async processing with partial batch failure
 
-exports.handler = async (event) => {
-  const id = event.pathParameters?.id;
-
-  if (!id) {
-    return {
-      statusCode: 400,
-      body: JSON.stringify({ error: 'Missing id parameter' })
-    };
-  }
-
-  const item =
-```
-
-### Event-Driven SQS Pattern
-
-Lambda triggered by SQS for reliable async processing
-
-**When to use**: ['Decoupled, asynchronous processing', 'Need retry logic and DLQ', 'Processing messages in batches']
-
-```python
 ```yaml
-# template.yaml
-Resources:
-  ProcessorFunction:
-    Type: AWS::Serverless::Function
-    Properties:
-      Handler: src/handlers/processor.handler
-      Events:
-        SQSEvent:
-          Type: SQS
-          Properties:
-            Queue: !GetAtt ProcessingQueue.Arn
-            BatchSize: 10
-            FunctionResponseTypes:
-              - ReportBatchItemFailures  # Partial batch failure handling
+# In template.yaml
+ProcessorFunction:
+  Type: AWS::Serverless::Function
+  Properties:
+    Events:
+      SQSEvent:
+        Type: SQS
+        Properties:
+          Queue: !GetAtt ProcessingQueue.Arn
+          BatchSize: 10
+          FunctionResponseTypes:
+            - ReportBatchItemFailures  # critical: retry only failed items
 
-  ProcessingQueue:
-    Type: AWS::SQS::Queue
-    Properties:
-      VisibilityTimeout: 180  # 6x Lambda timeout
-      RedrivePolicy:
-        deadLetterTargetArn: !GetAtt DeadLetterQueue.Arn
-        maxReceiveCount: 3
+ProcessingQueue:
+  Type: AWS::SQS::Queue
+  Properties:
+    VisibilityTimeout: 180  # 6x Lambda timeout (30s)
+    RedrivePolicy:
+      deadLetterTargetArn: !GetAtt DeadLetterQueue.Arn
+      maxReceiveCount: 3
 
-  DeadLetterQueue:
-    Type: AWS::SQS::Queue
-    Properties:
-      MessageRetentionPeriod: 1209600  # 14 days
+DeadLetterQueue:
+  Type: AWS::SQS::Queue
+  Properties:
+    MessageRetentionPeriod: 1209600  # 14 days
 ```
 
 ```javascript
-// src/handlers/processor.js
+// Handler with partial batch failure reporting
 exports.handler = async (event) => {
   const batchItemFailures = [];
-
   for (const record of event.Records) {
     try {
-      const body = JSON.parse(record.body);
-      await processMessage(body);
-    } catch (error) {
-      console.error(`Failed to process message ${record.messageId}:`, error);
-      // Report this item as failed (will be retried)
-      batchItemFailures.push({
-        itemIdentifier: record.messageId
-      });
+      await processMessage(JSON.parse(record.body));
+    } catch (err) {
+      console.error(`Failed ${record.messageId}:`, err.message);
+      batchItemFailures.push({ itemIdentifier: record.messageId });
     }
   }
-
-  // Return failed items for retry
-  return { batchItemFailures };
+  return { batchItemFailures };  // only failed items are retried
 };
-
-async function processMessage(message) {
-  // Your processing logic
-  console.log('Processing:', message);
-
-  // Simulate work
-  await saveToDatabase(message);
-}
 ```
 
-```python
-# Python version
-import json
-import logging
+## Sharp edges
 
-logger = logging.getLogger()
+| Issue | Severity | Fix |
+|---|---|---|
+| Cold start > 1s | High | Move SDK init outside handler; use `--no-install-suggests` in Docker layers |
+| Timeout without response | High | Always set explicit timeout < Lambda timeout in downstream calls |
+| Memory = CPU allocation | High | 1792MB = 1 full vCPU; increase memory for CPU-bound tasks |
+| VPC cold start adds 1-10s | Medium | Use VPC Endpoints instead of public NAT to reduce ENI setup |
+| Infinite Lambda→SQS loop | High | Never write to same SQS queue that triggers Lambda without a dead-letter |
+| S3 trigger infinite loop | High | Use separate source/destination buckets or prefix filters |
 
-def handler(event, context):
-    batch_item_failures = []
+## Commands
 
-    for record in event['Records']:
-        try:
-            body = json.loads(record['body'])
-            process_message(body)
-        except Exception as e:
-            logger.error(f"Failed to process {record['messageId']}: {e}")
-            batch_item_failures.append({
-                'itemIdentifier': record['messageId']
-            })
-
-    return {'batchItemFailures': batch_ite
+```bash
+sam build
+sam local invoke GetItemFunction --event events/get-item.json
+sam local start-api    # local API Gateway emulation
+sam deploy --guided    # first deploy (creates samconfig.toml)
+sam deploy             # subsequent deploys
 ```
-
-## Anti-Patterns
-
-### ❌ Monolithic Lambda
-
-**Why bad**: Large deployment packages cause slow cold starts.
-Hard to scale individual operations.
-Updates affect entire system.
-
-### ❌ Large Dependencies
-
-**Why bad**: Increases deployment package size.
-Slows down cold starts significantly.
-Most of SDK/library may be unused.
-
-### ❌ Synchronous Calls in VPC
-
-**Why bad**: VPC-attached Lambdas have ENI setup overhead.
-Blocking DNS lookups or connections worsen cold starts.
-
-## ⚠️ Sharp Edges
-
-| Issue | Severity | Solution |
-|-------|----------|----------|
-| Issue | high | ## Measure your INIT phase |
-| Issue | high | ## Set appropriate timeout |
-| Issue | high | ## Increase memory allocation |
-| Issue | medium | ## Verify VPC configuration |
-| Issue | medium | ## Tell Lambda not to wait for event loop |
-| Issue | medium | ## For large file uploads |
-| Issue | high | ## Use different buckets/prefixes |
-
-## When to Use
-This skill is applicable to execute the workflow or actions described in the overview.
