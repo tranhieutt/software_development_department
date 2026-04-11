@@ -6,7 +6,14 @@ Tài liệu này ghi lại lịch sử cập nhật tài liệu và source code 
 
 ## 🗓️ Lịch sử cập nhật
 
-### [v1.25.1] - 2026-04-11
+### [v1.25.2] - 2026-04-11
+
+**Chủ đề:** Tích hợp 21 câu hỏi "Architectural Pre-flight" vào `brainstorm` skill
+
+- Bổ sung Phase 7 (Architectural Pre-flight) vào workflow của `brainstorm` skill.
+- Đưa vào 6 phương diện (Business, Functional, Non-Functional, Integration, Data, Operational) cùng các "non-obvious gotchas" để AI challenge project scope trước khi đưa ra quyết định chốt thiết kế.
+
+---
 
 **Chủ đề:** Dịch toàn bộ tiếng Việt còn sót lại trong Skills sang Tiếng Anh
 
