@@ -6,6 +6,31 @@ Tài liệu này ghi lại lịch sử cập nhật tài liệu và source code 
 
 ## 🗓️ Lịch sử cập nhật
 
+### [v1.25.3] - 2026-04-13
+
+**Chủ đề:** Tích hợp Andrej Karpathy LLM Coding Behavior principles vào SDD
+
+Dựa trên phân tích so sánh dự án `andrej-karpathy-skill` với SDD, xác định 3 gaps chính về hành vi vi mô của AI khi viết code (chưa được SDD giải quyết ở cấp governance).
+
+**Upgrade #1 — LLM Coding Behavior (`@include` pattern):**
+
+- Tạo file mới `.claude/docs/llm-coding-behavior.md` với 4 nguyên tắc: Think Before Coding, Simplicity First, Surgical Changes, Goal-Driven Execution.
+- Thêm section `## LLM Coding Behavior` vào `CLAUDE.md` với `@include` reference — nhất quán với kiến trúc docs hiện tại của SDD.
+
+**Upgrade #2 — Surgical Changes rule (path-scoped):**
+
+- Thêm section `## Surgical Changes` vào `.claude/rules/src-code.md`.
+- Quy tắc: mỗi dòng thay đổi phải trace trực tiếp về yêu cầu của user; không refactor code kề bên, không xóa dead code "tiện thể", không thêm comments/docstrings vào code không được chỉnh sửa.
+- Enforcement tự động bởi Claude Code khi edit bất kỳ file nào trong `src/**`.
+
+**Upgrade #3 — Verifiable Plan Format (Rule 12):**
+
+- Thêm Rule 12 vào `.claude/docs/coordination-rules.md`.
+- Yêu cầu mọi multi-step task phải trình bày plan dạng `[Step] → verify: [check]` trước khi implement.
+- Tiêu chí verify phải cụ thể và testable ("tests pass", "endpoint returns 201") — không chấp nhận tiêu chí mờ ("looks good", "should be fine").
+
+---
+
 ### [v1.25.2] - 2026-04-11
 
 **Chủ đề:** Tích hợp 21 câu hỏi "Architectural Pre-flight" vào `brainstorm` skill

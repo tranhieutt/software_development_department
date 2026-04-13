@@ -50,3 +50,17 @@
       whitelist specified explicitly
     Never use `bypassPermissions` interactively. Prefer `plan` mode for all
     read-only research tasks to prevent accidental writes.
+12. **Verifiable Plan Format**: For any multi-step task, present a plan before
+    implementing. Each step must include an inline verification criterion:
+
+    ```text
+    1. [Step] → verify: [check]
+    2. [Step] → verify: [check]
+    3. [Step] → verify: [check]
+    ```
+
+    - The verification criterion must be concrete and testable — not "make sure it works"
+    - Examples of strong criteria: "tests pass", "endpoint returns 201", "no TS errors"
+    - Examples of weak criteria: "looks good", "should be fine", "works as expected"
+    - Do not begin implementation until the plan has been presented and approved
+    - Single-step tasks with obvious success criteria are exempt

@@ -56,3 +56,7 @@ Each agent owns a specific domain, enforcing separation of concerns and quality.
 
 <!-- Deep-dive examples, misconceptions table, and startup order diagram:
      .claude/docs/context-management-guide.md (NOT injected — reference only) -->
+
+## LLM Coding Behavior
+
+@.claude/docs/llm-coding-behavior.md
