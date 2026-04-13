@@ -6,6 +6,28 @@ Tài liệu này ghi lại lịch sử cập nhật tài liệu và source code 
 
 ## 🗓️ Lịch sử cập nhật
 
+### [v1.26.0] - 2026-04-13
+
+**Chủ đề:** Tích hợp MCP Supermemory & Kỹ năng Kỷ luật thép (Anti-Rationalization)
+
+Dựa trên phân tích repo `addyosmani/agent-skills` và framework Semantic Memory, SDD đã được nâng cấp chiến lược về lưu trữ kiến thức dài hạn và gò AI vào quy trình tác vụ cực đoan.
+
+**Upgrade #1 — Tích hợp MCP Supermemory (Hybrid Memory State):**
+- Cập nhật `.claude/docs/context-management.md`: Quy định Agent phải dùng `mcp_supermemory_recall` thay cho search cục bộ thuần túy và `mcp_supermemory_memory` để lưu lessons learned.
+- Chỉnh sửa script `.claude/hooks/auto-dream.sh`: Tự động in ra cảnh báo/khuyên dùng Supermemory khi thực hiện gom nhóm (consolidation) các file cục bộ bị tràn (overflow).
+
+**Upgrade #2 — Bổ sung 3 Kỹ năng Process Core (Chống lười & Ảo giác):**
+- Chuẩn hóa module `SKILL.md.tmpl` nâng cấp, bổ sung section **Anti-Rationalizations** (Bẻ lý lẽ ngụy biện phổ biến của AI) và **Verification Gates** (Buộc trình bằng chứng).
+- Triển khai 3 skill nền tảng (bằng Tiếng Anh chuẩn form SDD):
+  - `spec-driven-development/SKILL.md`: Ép vẽ Blueprint và xin phép trước khi tạo file thực thi.
+  - `planning-and-task-breakdown/SKILL.md`: Ép chia nhỏ siêu dự án thành atomic Tasks Checklist.
+  - `test-driven-development/SKILL.md`: Ép thực hiện test chuẩn TDD (Red-Green-Refactor) đính kèm Terminal Log thực tế.
+
+**Upgrade #3 — Móc nối Implicit Workflow Commands:**
+- Cập nhật `CLAUDE.md`: Tiêm `🧭 Implicit Workflow Commands (Process Shields)` để biến các mệnh lệnh `/plan`, `/spec`, `/tdd` thành chỉ thị bắt buộc.
+
+---
+
 ### [v1.25.3] - 2026-04-13
 
 **Chủ đề:** Tích hợp Andrej Karpathy LLM Coding Behavior principles vào SDD
@@ -606,4 +628,4 @@ Kết quả: Gõ `/` khi làm Next.js project → ~20 skills thay vì 98.
 
 ---
 
-Last Updated: 2026-04-11 — v1.25.0
+Last Updated: 2026-04-13 — v1.26.0

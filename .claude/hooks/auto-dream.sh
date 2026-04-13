@@ -97,15 +97,16 @@ fi
     echo ""
     echo "## Memory State After"
     echo "- Index: $(wc -l < "$MEMORY_INDEX" 2>/dev/null | tr -d ' ') lines"
-    [ "$LARGE_COUNT" -gt 0 ] && echo "- ⚠️ $LARGE_COUNT large files still need manual /dream"
+    [ "$LARGE_COUNT" -gt 0 ] && echo "- ⚠️ $LARGE_COUNT large files still need manual /dream (Consider storing deeply in MCP Supermemory)"
 } > "$ARCHIVE_DREAMS/${TIMESTAMP}_dream.md" 2>/dev/null
 
 # ─── Summary output ───────────────────────────────────────────────────────────
 echo ""
 echo "✅ Auto-Dream complete:"
 echo "   Archived: $ARCHIVED files | Pruned: $PRUNED broken links"
+echo "   🌐 Tip: For deep historical knowledge, use the mcp_supermemory_memory tool to save space!"
 [ "$LARGE_COUNT" -gt 0 ] && \
-    echo "   ⚠️  $LARGE_COUNT file(s) too large — run /dream to deep consolidate"
+    echo "   ⚠️  $LARGE_COUNT file(s) too large — run /dream to deep consolidate or save to MCP Supermemory"
 [ "$ARCHIVED" -eq 0 ] && [ "$PRUNED" -eq 0 ] && \
     echo "   Memory is healthy — nothing to consolidate"
 

@@ -112,6 +112,13 @@ decisions), use Claude's native memory in `.claude/memory/`.
   Save insights only. If unsure — skip it.
 - If `MEMORY.md` gets too long, trigger `/dream` to auto-consolidate.
 
+### 🌐 MCP Supermemory Integration (Cloud/Semantic Memory)
+SDD integrates with the `supermemory` MCP Server to offload deep, historical knowledge without cluttering the local file system. 
+
+**RULES for using Supermemory:**
+1. **Recall (Read):** Before planning a refactor, solving an obscure bug, or reviewing deep architecture, YOU MUST call `mcp_supermemory_recall` to pull related long-term contexts or past lessons learned. Do this instead of excessively grepping old archives.
+2. **Memory (Write):** Upon completing a major feature or resolving a difficult bug, YOU MUST call `mcp_supermemory_memory` with `action="save"` to store a summary of the lesson/solution. Use an appropriate `containerTag` (e.g., `sdd-core`).
+
 ## Incremental File Writing
 
 When creating multi-section documents:

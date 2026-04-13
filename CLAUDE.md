@@ -12,6 +12,11 @@ Each agent owns a specific domain, enforcing separation of concerns and quality.
 - **TOOL CONSTRAINTS (READ BEFORE WRITE/EDIT):** You MUST read a file's contents before writing to or editing it. For edits, strictly adhere to string replacement uniqueness constraints.
 - **ANNOTATION PROTOCOL:** When you discover unexpected API behavior, undocumented caveats, version bugs, or non-obvious workarounds — **immediately** add a dated entry to `.claude/memory/annotations.md` via `/annotate`. Do NOT wait to be asked. Knowledge that is not persisted is lost.
 
+## 🧭 Implicit Workflow Commands (Process Shields)
+If the user invokes these short commands, or if the task context implies them, YOU MUST trigger the corresponding skill:
+- **`/plan`**: ALWAYS trigger the `planning-and-task-breakdown` skill first for complex epics. Output an atomic markdown task checklist. **Do NOT write code yet.**
+- **`/spec`**: ALWAYS trigger the `spec-driven-development` skill before writing logic for a task. Secure explicit blueprint/architecture approval from the user.
+- **`/tdd`**: ALWAYS trigger the `test-driven-development` skill when writing the source. Write failing tests, check CMD outputs (🔴 RED), implement, and pass (🟢 GREEN). **Never claim success without terminal test logs.**
 
 ## Project Durable Memory
 
