@@ -1,9 +1,10 @@
 <p align="center">
   <h1 align="center">Claude Code Software Development Department</h1>
   <p align="center">
-    Turn a single Claude Code session into a full software development department.
-    <br />
-    27 agents. 108 skills and technical frameworks — context-optimized for efficient AI routing. One coordinated AI ecosystem.
+    A structured agentic system that transforms a single Claude Code session<br />
+    into a coordinated software engineering organization.
+    <br /><br />
+    27 agents · 108 context-optimized skills · 10/12 agentic harness patterns · Steel-discipline enforcement
   </p>
 </p>
 
@@ -18,217 +19,327 @@
 
 ---
 
-## Why This Exists
+## The Problem
 
-Building software solo with AI is powerful — but a single chat session has no structure. No one stops you from skipping design docs, writing inconsistent APIs, failing security reviews, or accumulating untracked technical debt. There's no peer review, no architecture oversight, no QA pass.
+An AI session without structure behaves like a junior engineer without oversight: it ships, but it skips the design doc, ignores edge cases, accumulates silent technical debt, and has no one to push back when the scope creeps.
 
-**Claude Code Software Development Department** solves this by giving your AI session the structure of a real department. Instead of one general-purpose assistant, you get 27 specialized agents organized into a department hierarchy, supercharged with 108 context-optimized skills (Next.js, Django, Kubernetes, AWS, MLOps, etc.) to ensure enterprise-grade execution. You get a CTO who guards technical vision, department leads who own their domains, and specialists who do the hands-on work with deep framework-specific intelligence.
+The fundamental constraint is not model capability — it's organizational entropy. A single-session AI has no department boundaries, no escalation path, no domain authority, no memory across concerns. It answers every question but owns nothing.
 
-The result: you still make every decision, but now you have a team that asks the right questions, catches mistakes early, and keeps your project organized from first spec to launch.
+**Claude Code Software Development Department** is an architectural solution to that problem.
+
+---
+
+## What This System Is
+
+SDD is a **governed multi-agent harness** built natively on Claude Code's agentic primitives. It is not a wrapper. It is not a prompt library. It is an organizational structure that imposes the coordination patterns of a real engineering department on top of a Claude Code session.
+
+The result is a system where:
+
+- **Authority is scoped**: agents own domains and don't cross boundaries without explicit delegation
+- **Process is enforced**: spec before implementation, plan before code, tests before merge — enforced via hooks and verification gates, not suggestions
+- **Memory persists**: a 5-layer durable memory architecture (Tier 1 index → Tier 2 topic files → Tier 3 cold archive → MCP Supermemory semantic store) survives across sessions
+- **Context is surgical**: incremental loading with a 3-Question Relevance Gate prevents context stuffing; max 3 Tier 2 files per session
+- **Routing is precise**: 108 skills with `paths:` triggers, `when_to_use:` semantics, and `effort:` scores let the AI self-route without human navigation
+
+---
+
+## Architecture
+
+### Department Hierarchy
+
+Three tiers. Clear escalation paths. No ambiguous authority.
+
+```
+Tier 1 — Executive (Opus)
+  cto                 technical-director    producer
+
+Tier 2 — Leads (Sonnet)
+  product-manager     lead-programmer       ux-designer
+  qa-lead             release-manager
+
+Tier 3 — Specialists (Sonnet / Haiku)
+  frontend-developer  backend-developer     fullstack-developer
+  mobile-developer    ai-programmer         network-programmer
+  tools-programmer    ui-programmer         data-engineer
+  analytics-engineer  ux-researcher         tech-writer
+  prototyper          performance-analyst   devops-engineer
+  security-engineer   qa-tester             accessibility-specialist
+  community-manager
+```
+
+### Coordination Model
+
+| Pattern | Behavior |
+|---|---|
+| Vertical delegation | CTO → leads → specialists. Decisions flow down; blockers escalate up. |
+| Horizontal consultation | Same-tier agents advise but cannot make binding cross-domain decisions. |
+| Conflict resolution | Strategic conflicts → `cto`. Technical conflicts → `technical-director`. |
+| Cross-department changes | Coordinated exclusively by `producer`. |
+| Domain isolation | Agents cannot modify files outside their domain without explicit delegation. |
+
+### Agentic Harness Coverage
+
+SDD implements **10 of 12** patterns from Claude Code's internal agentic harness architecture:
+
+| Pattern | Status | Implementation |
+|---|---|---|
+| #1 Structured Agent Definitions | ✅ | 27 agents with YAML frontmatter + domain ownership |
+| #2 Path-Scoped Rules | ✅ | 12 rules auto-enforced by file path |
+| #3 Tiered Memory | ✅ | 5-layer: MEMORY.md → topic files → archive → Supermemory |
+| #4 Dream Consolidation | ✅ | `auto-dream.sh` — 5-phase automated consolidation |
+| #6 Context: Fork | ✅ | 10 heavy analysis skills run in isolated subagent context |
+| #7 Skill Routing | ✅ | 108 skills with `paths:`, `when_to_use:`, `effort:` metadata |
+| #8 Fork-Join Parallelism | ✅ | `fork-join.sh` — git worktree lifecycle manager |
+| #10 Least Privilege Tools | ✅ | `allowed-tools:` per skill + 22-entry permission allow-list |
+| #11 Bash Guard | ✅ | `bash-guard.sh` blocks RCE patterns, destructive commands |
+| #12 Annotation System | ✅ | `/annotate` skill + `annotations.md` persistent gotcha store |
+| #5 Multi-Stage Context Compaction | ⚠️ | Requires platform-level conversation control (HISTORY_SNIP, Microcompact, CONTEXT_COLLAPSE, Autocompact) — not accessible from project scope |
+| #9 Progressive Tool Expansion | ⚠️ | Requires harness-level tool activation logic — the default tool set is determined by the Claude Code platform, not configurable per-project |
+
+---
+
+## Process Enforcement (v1.26.0)
+
+The most recent architecture cycle introduced **Steel Discipline** — a set of process shields that prevent the four most common AI failure modes.
+
+### Anti-Rationalization Gates
+
+Every skill template now includes an `## Anti-Rationalizations` section that explicitly names and blocks the excuses an AI uses to skip process:
+
+> *"I'll write the test after to save time."* → Blocked. TDD is not optional.  
+> *"The spec is clear enough from context."* → Blocked. Blueprint required before file creation.  
+> *"I'll refactor this while I'm here."* → Blocked. Surgical changes only.
+
+### Verification Gates
+
+Multi-step tasks must declare a verifiable check before execution:
+
+```
+[Step] → verify: [specific, testable criterion]
+```
+
+`"looks good"` and `"should work"` are not accepted criteria.
+
+### Implicit Workflow Commands
+
+Four commands in `CLAUDE.md` are now injected as mandatory process checkpoints:
+
+| Command | Gate enforced |
+|---|---|
+| `/spec` | Blueprint + approval before any file is created |
+| `/plan` | Atomic task breakdown before implementation begins |
+| `/tdd` | Red → Green → Refactor cycle with terminal log required |
+| `/context` | Diagnose context state; recall from Supermemory before any research |
+
+### Surgical Changes Rule (src-code.md)
+
+Every line of code modified must trace directly to a user requirement. No opportunistic refactoring, no dead code removal "while you're at it", no docstrings added to untouched code. Enforced for all files matching `src/**`.
+
+---
+
+## Memory Architecture
+
+```
+Tier 1  MEMORY.md                    — 50-line index, keyword triggers, session pointers
+Tier 2  .claude/memory/*.md          — Topic files: annotations, tech decisions, role context
+Tier 3  .claude/memory/archive/      — Cold storage: sessions, decisions, dreams
+Tier 4  MCP Supermemory              — Semantic recall across all sessions (external)
+Tier 5  CLAUDE.md @include chain     — Static universal context, always in prompt
+```
+
+**Incremental Loading Protocol**: Before loading any Tier 2 file, the agent passes a 3-Question Relevance Gate (actual need / timing / subset sufficiency). Hard limits: max 3 files per session, stop loading if context < 30%.
+
+---
+
+## Skill System
+
+### 108 Skills Across 7 Domains
+
+| Domain | Representative Skills |
+|---|---|
+| Core Workflow | `/start` `/brainstorm` `/orchestrate` `/dream` `/save-state` `/gate-check` |
+| Engineering Reviews | `/code-review` `/design-review` `/api-design` `/db-review` `/security-audit` |
+| Process | `/sprint-plan` `/retrospective` `/milestone-review` `/estimate` `/tech-debt` |
+| Release | `/release-checklist` `/launch-checklist` `/changelog` `/hotfix` `/patch-notes` |
+| Process Shields | `/spec` `/plan` `/tdd` `/context` `/annotate` `/fork-join` |
+| Team Orchestration | `/team-feature` `/team-backend` `/team-frontend` `/team-ui` `/team-release` |
+| Technology Frameworks | `fastapi-pro` `kubernetes-architect` `nextjs-app-router-patterns` `prisma-expert` `rag-engineer` `aws-serverless` + 60 more |
+
+### Context-Aware Routing
+
+Skills activate conditionally based on the files you have open:
+
+```
+Editing *.tsx, next.config.*  → ~20 Next.js / React / Tailwind skills available
+Editing *.py, manage.py       → Django, FastAPI, ML skills surface
+Editing Dockerfile, *.tf      → DevOps, Kubernetes, AWS skills activate
+```
+
+Type `/` in Claude Code — you see what's relevant, not all 108.
 
 ---
 
 ## What's Included
 
-| Category      | Count | Description                                                                                                  |
-| ------------- | ----- | ------------------------------------------------------------------------------------------------------------ |
-| **Agents**    | 27    | Specialized subagents across product, engineering, design, QA, data, and operations                          |
-| **Skills**    | 108   | Core workflows and system frameworks (`/start`, `fastapi-pro`, `kubernetes-architect`, etc.)                 |
-| **Hooks**     | 8     | Automated validation on commits, pushes, asset changes, session lifecycle, pre-compact, and gap detection    |
-| **Rules**     | 12    | Path-scoped coding standards for API, frontend, backend, database, UI, network, AI, secrets, tests, and more |
-| **Templates** | 22+   | Document templates for PRDs, API designs, system architecture, user stories, ADRs, mobile, and more          |
+| Category | Count | Description |
+|---|---|---|
+| **Agents** | 27 | Specialized subagents across product, engineering, design, QA, data, and operations |
+| **Skills** | 108 | Core workflows and technology frameworks with context-aware routing |
+| **Hooks** | 8 | Automated validation: commits, pushes, asset changes, session lifecycle, pre-compact, gap detection, bash guard, fork-join |
+| **Rules** | 12 | Path-scoped coding standards enforced automatically by file location |
+| **Templates** | 22+ | PRDs, API designs, system architecture, ADRs, mobile, incident response, postmortem |
 
-## Department Hierarchy
-
-Agents are organized into three tiers:
-
-```
-Tier 1 — Leadership (Opus)
-  cto              technical-director    producer
-
-Tier 2 — Department Leads (Sonnet)
-  product-manager  lead-programmer       ux-designer
-  qa-lead          release-manager
-
-Tier 3 — Specialists (Sonnet/Haiku)
-  frontend-developer  backend-developer    fullstack-developer
-  mobile-developer    ai-programmer        network-programmer
-  tools-programmer    ui-programmer        data-engineer
-  analytics-engineer  ux-researcher        tech-writer
-  prototyper          performance-analyst  devops-engineer
-  security-engineer   qa-tester            accessibility-specialist
-  community-manager
-```
-
-## Slash Commands & Frameworks
-
-Type `/` in Claude Code to access all 108 skills and frameworks:
-
-**Reviews & Analysis**
-`/design-review` `/code-review` `/api-design` `/db-review` `/scope-check` `/perf-profile` `/tech-debt` `/mobile-review`
-
-**Production**
-`/sprint-plan` `/milestone-review` `/estimate` `/retrospective` `/bug-report` `/architecture-decision`
-
-**Project Management**
-`/start` `/project-stage-detect` `/reverse-document` `/gate-check` `/map-systems` `/design-system` `/orchestrate` `/save-state` `/update-codemap` `/dream`
-
-**Release**
-`/release-checklist` `/launch-checklist` `/changelog` `/patch-notes` `/hotfix` `/sync-template`
-
-**Creative & Research**
-`/brainstorm` `/prototype` `/onboard` `/localize`
-
-**Team Orchestration** (coordinate multiple agents on a single feature)
-`/team-feature` `/team-backend` `/team-frontend` `/team-ui` `/team-release` `/team-mobile`
+---
 
 ## Getting Started
 
 ### Prerequisites
 
+- [Claude Code](https://docs.anthropic.com/en/docs/claude-code) — `npm install -g @anthropic-ai/claude-code`
 - [Git](https://git-scm.com/)
-- [Claude Code](https://docs.anthropic.com/en/docs/claude-code) (`npm install -g @anthropic-ai/claude-code`)
-- **Recommended**: [jq](https://jqlang.github.io/jq/) (for hook validation) and Python 3 (for JSON validation)
+- [jq](https://jqlang.github.io/jq/) *(recommended — used by validation hooks)*
+- Python 3 *(recommended — used by skill evaluation scripts)*
 
 ### Setup
 
-1. **Clone or use as template**:
-   ```bash
-   git clone https://github.com/tranhieutt/software_development_department.git my-project
-   cd my-project
-   ```
+```bash
+git clone https://github.com/tranhieutt/software_development_department.git my-project
+cd my-project
+claude
+```
 
-2. **Open the Project via Antigravity or Claude Code**:
+Run `/start` — the system asks where you are (new concept, existing codebase, or specific task) and guides you from there.
 
-   *Option A: Antigravity Platform (Recommended for deep multi-agent workflow)*
-   Open the directory in the Antigravity Agentic IDE/Environment. Antigravity will automatically load the `.claude` architecture and seamlessly adopt the 98 integrated workflows and frameworks. Just chat to assign tasks.
+**Antigravity Platform**: Open the directory in Antigravity. The `.claude/` architecture loads automatically. All 108 workflows are available immediately — just assign tasks.
 
-   *Option B: Claude Code CLI*
-   ```bash
-   claude
-   ```
+### Entry Points
 
-3. **Run `/start`** — the system asks where you are (new idea, existing project, or specific task) and guides you from there.
+| Situation | Command |
+|---|---|
+| Starting from an idea | `/brainstorm` |
+| Joining an existing project | `/project-stage-detect` |
+| Planning work from a backlog | `/sprint-plan` |
+| Coordinating multiple agents on a feature | `/orchestrate` |
+| Unsure where to begin | `/start` |
 
-   Or jump directly to a specific skill:
-   - `/brainstorm` — explore product ideas from scratch
-   - `/project-stage-detect` — analyze an existing project
-   - `/sprint-plan` — plan a sprint if you already have a backlog
+---
 
 ## Project Structure
 
 ```
-CLAUDE.md                           # Master configuration
+CLAUDE.md                           # Master configuration + @include chain
 PRD.md                              # Product requirements document
-TODO.md                             # Living backlog
+TODO.md                             # Living backlog (governed by @producer)
 .claude/
-  settings.json                     # Hooks, permissions, safety rules
-  agents/                           # 27 agent definitions (markdown + YAML frontmatter)
-  skills/                           # 98 workflows & platform domains (subdirectory per skill)
-  hooks/                            # 8 hook scripts (bash, cross-platform)
+  settings.json                     # Permissions, deny rules, hook registration
+  agents/                           # 27 agent definitions with domain ownership
+  skills/                           # 108 skills (one subdirectory each)
+  hooks/                            # 8 hook scripts
   rules/                            # 12 path-scoped coding standards
-  memory/                           # Custom 5-Layer Native Durable Memory System
+  memory/                           # 5-layer durable memory system
   docs/
-    quick-start.md                  # Detailed usage guide
-    agent-roster.md                 # Full agent table with domains
-    context-management.md           # Context rules (injected into system prompt)
-    context-management-guide.md     # Deep-dive examples & patterns (reference only)
-    agent-coordination-map.md       # Delegation and escalation paths
+    quick-start.md
+    agent-roster.md
+    context-management.md           # Rules file — injected into system prompt
+    context-management-guide.md     # Reference only — NOT injected
+    agent-coordination-map.md
+    llm-coding-behavior.md          # Karpathy principles: surgical, goal-driven
+    utility-prompts.md
     templates/                      # 22+ document templates
-.tasks/                             # Task detail files (one per TODO item)
+.tasks/                             # Task detail files (one per backlog item)
 src/                                # Application source code
-docs/                               # Technical documentation and ADRs
 tests/                              # Test suites
 infra/                              # Infrastructure as code
 scripts/                            # Build and utility scripts
-design/                             # Wireframes, design specs, research docs
+docs/                               # Technical documentation and ADRs
+design/                             # Wireframes, specs, research
 production/                         # Sprint plans, milestones, release tracking
 ```
 
-## Additional Resources
+---
 
-| File                                                                       | Description                                                               |
-| -------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
-| [`report_new_capacity_sdd_with_gitnexus.md`](report_new_capacity_sdd_with_gitnexus.md)| Detailed capability report: SDD + GitNexus integration (Knowledge Graph)  |
-| [`plan_upgrade.md`](plan_upgrade.md)                                       | Detailed upgrade roadmap comparing this template to competing frameworks  |
-| [`compare_department_orchestrated.md`](compare_department_orchestrated.md) | Side-by-side comparison: orchestrated multi-agent approach vs traditional |
-| [`infographic.html`](infographic.html)                                     | Interactive visual overview of the department structure                   |
-| [`UPGRADING.md`](UPGRADING.md)                                             | Guide for cherry-picking upstream improvements into your fork             |
-| [`History_Update.md`](History_Update.md)                                   | Full changelog of template evolution from v1.0.0 onwards                  |
+## Path-Scoped Rules
 
-## How It Works
+Coding standards are enforced automatically based on file path — no manual invocation required.
 
-### Agent Coordination
+| Path | Standard enforced |
+|---|---|
+| `src/api/**` | REST/GraphQL conventions, auth patterns, error format |
+| `src/frontend/**` | Accessibility, design tokens, i18n, state management |
+| `src/**db**` | Migrations, parameterized queries, indexing strategy |
+| `src/ui/**` | No business logic, localization-ready, accessibility |
+| `src/ai/**` | Performance budgets, debuggability, data-driven parameters |
+| `src/networking/**` | WebSocket, event streaming, real-time standards |
+| `config/**` | No hardcoded secrets, schema validation required |
+| `design/docs/**` | PRD sections required, acceptance criteria mandatory |
+| `tests/**` | Naming conventions, coverage floors, fixture patterns |
+| `src/**` | Surgical changes — every edit traces to a user requirement |
 
-Agents follow a structured delegation model:
+---
 
-1. **Vertical delegation** — CTO delegates to leads, leads delegate to specialists
-2. **Horizontal consultation** — same-tier agents consult each other but can't make binding cross-domain decisions
-3. **Conflict resolution** — disagreements escalate to the shared parent (`cto` for strategic, `technical-director` for technical)
-4. **Change propagation** — cross-department changes are coordinated by `producer`
-5. **Domain boundaries** — agents don't modify files outside their domain without explicit delegation
+## Collaborative, Not Autonomous
 
-### Collaborative, Not Autonomous
+This system does not take actions without your approval. Every agent follows a five-step collaboration protocol:
 
-This is **not** an auto-pilot system. Every agent follows a strict collaboration protocol:
+1. **Ask** — clarify intent before proposing solutions
+2. **Options** — present 2–4 alternatives with trade-offs
+3. **Decide** — you make the call
+4. **Draft** — agent shows the work before committing
+5. **Approve** — nothing is written without explicit sign-off
 
-1. **Ask** — agents ask questions before proposing solutions
-2. **Present options** — agents show 2-4 options with pros/cons
-3. **You decide** — the user always makes the call
-4. **Draft** — agents show work before finalizing
-5. **Approve** — nothing gets written without your sign-off
+You remain the decision-maker. The agents provide structure, domain expertise, and process enforcement — not autonomy.
 
-You stay in control. The agents provide structure and expertise, not autonomy.
-
-### Path-Scoped Rules
-
-Coding standards are automatically enforced based on file location:
-
-| Path                | Enforces                                                   |
-| ------------------- | ---------------------------------------------------------- |
-| `src/api/**`        | REST/GraphQL conventions, auth, error format               |
-| `src/frontend/**`   | Accessibility, design tokens, i18n, state management       |
-| `src/**db**`        | Migrations, parameterized queries, indexing                |
-| `src/ui/**`         | No business logic, localization-ready, accessibility       |
-| `src/ai/**`         | Performance budgets, debuggability, data-driven parameters |
-| `src/networking/**` | Real-time, WebSocket, event streaming standards            |
-| `config/**`         | No hardcoded secrets, schema validation                    |
-| `design/docs/**`    | Required PRD sections, acceptance criteria                 |
-| `tests/**`          | Test naming, coverage requirements, fixture patterns       |
-| `prototypes/**`     | Relaxed standards, README required, hypothesis documented  |
+---
 
 ## Customization
 
-This is a **template**, not a locked framework. Everything is meant to be customized:
+This is a template, not a locked framework. Customize freely:
 
-- **Add/remove agents** — delete agent files you don't need, add new ones for your stack
-- **Edit agent prompts** — tune agent behavior, add project-specific knowledge
+- **Add or remove agents** — delete what you don't need, add role-specific agents for your stack
+- **Edit agent prompts** — tune behavior, inject project-specific context
 - **Modify skills** — adjust workflows to match your team's process
-- **Add rules** — create new path-scoped rules for your directory structure
-- **Tune hooks** — adjust validation strictness, add new checks
+- **Add rules** — create new path-scoped standards for your directory layout
+- **Tune hooks** — adjust validation strictness, add new automated checks
 
-See [`UPGRADING.md`](UPGRADING.md) for guidance on pulling upstream improvements without overwriting your customizations.
+See [`UPGRADING.md`](UPGRADING.md) for pulling upstream changes without overwriting your customizations.
 
-## Platform Support
+---
 
-Tested on **Windows 10/11** with Git Bash. All hooks use POSIX-compatible patterns and include fallbacks for missing tools. Works on macOS and Linux without modification.
+## Additional Resources
+
+| Resource | Purpose |
+|---|---|
+| [`History_Update.md`](History_Update.md) | Full architecture changelog from v1.0.0 — the source of truth for what changed and why |
+| [`report_new_capacity_sdd_with_gitnexus.md`](report_new_capacity_sdd_with_gitnexus.md) | SDD + GitNexus Knowledge Graph integration capabilities |
+| [`plan_upgrade.md`](plan_upgrade.md) | Upgrade roadmap comparing SDD to competing frameworks |
+| [`compare_department_orchestrated.md`](compare_department_orchestrated.md) | Side-by-side: orchestrated multi-agent vs traditional single-session |
+| [`infographic.html`](infographic.html) | Interactive visual overview of the department structure |
+| [`UPGRADING.md`](UPGRADING.md) | Cherry-picking upstream improvements into your fork |
+
+---
+
+## Platform
+
+Tested on **Windows 10/11** with Git Bash. All hooks use POSIX-compatible patterns with fallbacks for missing tools. Works on macOS and Linux without modification.
+
+---
 
 ## Version
 
-**v1.25.3** — 2026-04-13
+**v1.26.0** — 2026-04-13
 
 See [`History_Update.md`](History_Update.md) for full changelog.
 
-## Star History
+---
 
 [![Star History Chart](https://api.star-history.com/svg?repos=tranhieutt/software_development_department&type=Date)](https://star-history.com/#tranhieutt/software_development_department&Date)
 
 ## License
 
-MIT License. See [LICENSE](LICENSE) for details.
+MIT. See [LICENSE](LICENSE).
 
 ---
 
-*Based on [Claude Code Game Studios](https://github.com/Donchitos/Claude-Code-Game-Studios) by Donchitos — adapted for software development teams.*
+*Based on [Claude Code Game Studios](https://github.com/Donchitos/Claude-Code-Game-Studios) by Donchitos — adapted for software engineering organizations.*
 
 *Author: [tranhieutt](https://github.com/tranhieutt)*

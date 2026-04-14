@@ -458,7 +458,7 @@ Kết quả: Gõ `/` khi làm Next.js project → ~20 skills thay vì 98.
 - Tất cả 27 `.claude/agents/*.md` — Thêm ba sections ownership: `## Documents You Own`, `## Documents You Read (Read-Only)`, `## Documents You Never Modify`
 - `producer.md` — Thêm `## TODO.md Governance Protocol` với sync rules table
 - `.claude/skills/orchestrate/SKILL.md` — Wave-based multi-agent orchestration skill (8 phases, routing table cho 21 agents, adapted `@project-manager` → `@producer`)
-- `.claude/skills/sync-template/SKILL.md` — Sync `.claude/` từ upstream repo với diff/confirm flow
+- `.claude/skills/sync-template/SKILL.md` — Sync `.claude/` từ upstream repo with diff/confirm flow
 - `.claude/docs/agent-coordination-map.md` — Thêm Pattern 0: Multi-Agent Orchestration
 - `.claude/skills/architecture-decision/SKILL.md` — Thêm cross-post ADR summary sang `docs/technical/DECISIONS.md`
 
@@ -511,10 +511,10 @@ Kết quả: Gõ `/` khi làm Next.js project → ~20 skills thay vì 98.
 **Dọn game references — MODERATE (5 agents):**
 
 - `.claude/agents/producer.md` — "how other games handled" → "how other products handled"; "game design changes" → "product design changes"
-- `.claude/agents/technical-director.md` — "how other games handled" → "how other products handled"
-- `.claude/agents/qa-lead.md` — "Playtest Coordination" → "User Testing Coordination"; "gameplay impact" → "user impact"
-- `.claude/agents/release-manager.md` — "player-facing messaging" → "user-facing messaging"
-- `.claude/agents/security-engineer.md` — "multiplayer security" → "real-time and distributed system security"
+- `.claude/agents/technical-director.md" — "how other games handled" → "how other products handled"
+- `.claude/agents/qa-lead.md" — "Playtest Coordination" → "User Testing Coordination"; "gameplay impact" → "user impact"
+- `.claude/agents/release-manager.md" — "player-facing messaging" → "user-facing messaging"
+- `.claude/agents/security-engineer.md" — "multiplayer security" → "real-time and distributed system security"
 
 ---
 
