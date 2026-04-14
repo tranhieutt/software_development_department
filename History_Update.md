@@ -6,6 +6,26 @@ Tài liệu này ghi lại lịch sử cập nhật tài liệu và source code 
 
 ## 🗓️ Lịch sử cập nhật
 
+### [v1.27.0] - 2026-04-14
+
+**Chủ đề:** Tích hợp Kỹ năng Visual Engineering & Chuẩn hóa Tài liệu Kiến trúc
+
+SDD được nâng cấp với khả năng tự động hóa việc vẽ sơ đồ kỹ thuật (SVG/PNG) chất lượng sản xuất, trực quan hóa toàn bộ hệ thống Agentic Harness.
+
+**Upgrade #1 — Kỹ năng Visual Engineer (Documentation-as-Visual-Code):**
+- Tích hợp skill `visual-engineer/SKILL.md`: Cho phép Agent tự động tạo sơ đồ kiến trúc, sequence flow, và component maps theo ngôn ngữ tự nhiên. Chết độ mặc định: **Style 6 (Claude Official)**.
+- Triển khai Semantic Shapes cho SDD: Hexagons (Agents), Diamonds (Phase Gates), Cylinders (Storage), Folded-rects (Code).
+
+**Upgrade #2 — Visual Standards Library:**
+- Thiết lập `docs/visual-standards/`: Thư viện tokens, icons, và phong cách trực quan cho toàn bộ dự án SDD.
+- Tạo sơ đồ kiến trúc lõi: `docs/visual-standards/sdd-architecture.png` minh họa cấu trúc 3 tầng (Interface, Core Harness, Knowledge Foundation).
+
+**Upgrade #3 — Mở rộng Hệ thống Lệnh (122 Skills):**
+- Tối ưu hóa `list-commands.py` sử dụng PyYAML: Khắc phục lỗi parsing, đảm bảo 122 kỹ năng chuyên biệt đều được đăng ký chính xác trong `DANH_SACH_LENH.md`.
+- Cập nhật Project Initializer: `init-sdd.ps1` hỗ trợ khởi tạo folder `docs/visual-standards` mặc định.
+
+---
+
 ### [v1.26.0] - 2026-04-13
 
 **Chủ đề:** Tích hợp MCP Supermemory & Kỹ năng Kỷ luật thép (Anti-Rationalization)

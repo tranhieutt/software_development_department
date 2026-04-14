@@ -6,6 +6,15 @@ Chào mừng bạn đã sở hữu **Software Development Department (SDD)**. Đ
 
 ---
 
+## 🛠️ Bước 0: Chuẩn bị "Bộ não" (Khuyên dùng)
+SDD sử dụng **MCP Supermemory** để giúp Agent ghi nhớ kiến thức vĩnh viễn (tránh ảo giác khi chat quá dài).
+1.  Truy cập [supermemory.ai](https://supermemory.ai/) và tạo tài khoản miễn phí.
+2.  Cài đặt MCP Supermemory vào Claude Desktop hoặc VS Code của bạn.
+3.  Xác thực (Login) theo hướng dẫn trên web của họ.
+*Nếu bỏ qua bước này, SDD vẫn chạy được nhưng tính năng "Memory" sẽ bị hạn chế.*
+
+---
+
 ## 1. Cách bắt đầu một Dự án mới
 Bạn có thể chọn một trong hai cách sau để khởi tạo môi trường SDD cho dự án của mình:
 
@@ -29,6 +38,11 @@ Nếu bạn muốn tự kiểm soát các file được copy:
     *   `.tasks/` (Folder chứa chi tiết task)
 3.  **Mở dự án mới** và chạy Claude Code.
 4.  **Gõ lệnh:** `/start`.
+
+### 4. 🎨 Tài liệu Trực quan (Diagrams)
+SDD hiện hỗ trợ vẽ sơ đồ kiến trúc tự động với chất lượng premium:
+- Xem sơ đồ kiến trúc mẫu của hệ thống: `E:\SDD\docs\visual-standards\sdd-architecture.png`.
+- Tự vẽ sơ đồ cho tính năng mới bằng lệnh: `/visualize [mô tả sơ đồ]`.
 
 ---
 

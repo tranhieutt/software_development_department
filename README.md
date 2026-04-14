@@ -4,16 +4,16 @@
     A structured agentic system that transforms a single Claude Code session<br />
     into a coordinated software engineering organization.
     <br /><br />
-    27 agents · 108 context-optimized skills · 10/12 agentic harness patterns · Steel-discipline enforcement
+    27 agents · 122 context-optimized skills · 10/12 agentic harness patterns · Steel-discipline enforcement · Visual Engineering
   </p>
 </p>
 
 <p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT License"></a>
-  <a href=".claude/agents"><img src="https://img.shields.io/badge/agents-27-blueviolet" alt="27 Agents"></a>
-  <a href=".claude/skills"><img src="https://img.shields.io/badge/skills-108-green" alt="108 Skills"></a>
-  <a href=".claude/hooks"><img src="https://img.shields.io/badge/hooks-8-orange" alt="8 Hooks"></a>
-  <a href=".claude/rules"><img src="https://img.shields.io/badge/rules-12-red" alt="12 Rules"></a>
+  <img src="https://img.shields.io/badge/agents-27-blueviolet" alt="27 Agents">
+  <img src="https://img.shields.io/badge/skills-122-green" alt="122 Skills">
+  <img src="https://img.shields.io/badge/hooks-8-orange" alt="8 Hooks">
+  <img src="https://img.shields.io/badge/rules-12-red" alt="12 Rules">
   <a href="https://docs.anthropic.com/en/docs/claude-code"><img src="https://img.shields.io/badge/built%20for-Claude%20Code-f5f5f5?logo=anthropic" alt="Built for Claude Code"></a>
 </p>
 
@@ -37,9 +37,10 @@ The result is a system where:
 
 - **Authority is scoped**: agents own domains and don't cross boundaries without explicit delegation
 - **Process is enforced**: spec before implementation, plan before code, tests before merge — enforced via hooks and verification gates, not suggestions
-- **Memory persists**: a 5-layer durable memory architecture (Tier 1 index → Tier 2 topic files → Tier 3 cold archive → MCP Supermemory semantic store) survives across sessions
+- **Memory persists**: a 5-layer durable memory architecture (Tier 1 index → Tier 2 topic files → Tier 3 cold archive → MCP Supermemory semantic store) survives across sessions (**Privacy-first: Bring Your Own Brain**)
 - **Context is surgical**: incremental loading with a 3-Question Relevance Gate prevents context stuffing; max 3 Tier 2 files per session
-- **Routing is precise**: 108 skills with `paths:` triggers, `when_to_use:` semantics, and `effort:` scores let the AI self-route without human navigation
+- **Routing is precise**: 122 skills with `paths:` triggers, `when_to_use:` semantics, and `effort:` scores let the AI self-route without human navigation
+- **Visual Intelligence**: Automated Technical Diagramming (SVG/PNG) for architectures, sequence flows, and process models via `/visualize`. 
 
 ---
 
@@ -98,9 +99,9 @@ SDD implements **10 of 12** patterns from Claude Code's internal agentic harness
 
 ---
 
-## Process Enforcement (v1.26.0)
+## Process Enforcement & Visualization (v1.27.0)
 
-The most recent architecture cycle introduced **Steel Discipline** — a set of process shields that prevent the four most common AI failure modes.
+The most recent architecture cycle introduced **Visual Engineering** and **Steel Discipline**.
 
 ### Anti-Rationalization Gates
 
@@ -160,10 +161,11 @@ Tier 5  CLAUDE.md @include chain     — Static universal context, always in pro
 | Core Workflow | `/start` `/brainstorm` `/orchestrate` `/dream` `/save-state` `/gate-check` |
 | Engineering Reviews | `/code-review` `/design-review` `/api-design` `/db-review` `/security-audit` |
 | Process | `/sprint-plan` `/retrospective` `/milestone-review` `/estimate` `/tech-debt` |
+| **New: Visuals** | `/visualize` skills to generate SVG/PNG diagrams following Claude Official styles |
 | Release | `/release-checklist` `/launch-checklist` `/changelog` `/hotfix` `/patch-notes` |
 | Process Shields | `/spec` `/plan` `/tdd` `/context` `/annotate` `/fork-join` |
 | Team Orchestration | `/team-feature` `/team-backend` `/team-frontend` `/team-ui` `/team-release` |
-| Technology Frameworks | `fastapi-pro` `kubernetes-architect` `nextjs-app-router-patterns` `prisma-expert` `rag-engineer` `aws-serverless` + 60 more |
+| Technology Frameworks | `fastapi-pro` `kubernetes-architect` `nextjs-app-router-patterns` `prisma-expert` `rag-engineer` `aws-serverless` + 70 more |
 
 ### Context-Aware Routing
 
@@ -326,7 +328,7 @@ Tested on **Windows 10/11** with Git Bash. All hooks use POSIX-compatible patter
 
 ## Version
 
-**v1.26.0** — 2026-04-13
+**v1.27.0** — 2026-04-14
 
 See [`History_Update.md`](History_Update.md) for full changelog.
 

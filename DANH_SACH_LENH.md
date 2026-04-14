@@ -1,6 +1,6 @@
 # 📜 Danh sách toàn bộ Lệnh Command trong SDD
 
-Đây là danh sách đầy đủ các lệnh Slash Command được trích xuất từ hệ thống Skills của SDD (121 lệnh).
+Đây là danh sách đầy đủ các lệnh Slash Command được trích xuất từ hệ thống Skills của SDD (122 lệnh).
 Bạn có thể sử dụng bất kỳ lệnh nào bằng cách gõ `/tên_lệnh` trong terminal.
 
 | Lệnh (Command) | Mô tả hoạt động |
@@ -126,3 +126,4 @@ Bạn có thể sử dụng bất kỳ lệnh nào bằng cách gõ `/tên_lện
 | `/update-codemap` | Updates docs/technical/CODEMAP.md by scanning the current codebase structure. Run after a significant feature merge, refactor, or when CODEMAP feels stale. |
 | `/validate-idea` | Validates a business idea using the minimalist entrepreneur framework. Use when someone has a business idea and wants to test if it's worth pursuing before building anything. |
 | `/vector-database-engineer` | Provides vector database and semantic search patterns for Pinecone, Weaviate, Qdrant, Milvus, and pgvector in RAG and recommendation systems. Use when implementing vector search or when the user mentions vector database, semantic search, embeddings, or similarity search. |
+| `/visual-engineer` | Generates high-fidelity architecture diagrams, sequence flows, and component maps for SDD projects. Use when finalizing a design phase, documenting system architecture, or visualizing agentic workflows. Default style: Style 6 (Claude Official). |

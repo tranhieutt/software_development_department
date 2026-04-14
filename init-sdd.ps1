@@ -21,7 +21,7 @@ if (-not (Test-Path $Path)) {
 }
 
 $SddRoot = Get-Location
-$SourceFiles = @(".claude", "CLAUDE.md", "PRD.md", "TODO.md", ".tasks", ".gitignore", "HUONG_DAN_NHANH.md", "DANH_SACH_LENH.md")
+$SourceFiles = @(".claude", "CLAUDE.md", "PRD.md", "TODO.md", ".tasks", ".gitignore", "HUONG_DAN_NHANH.md", "DANH_SACH_LENH.md", "docs", "scripts")
 
 # 3. Copy core files
 Write-Host ""
