@@ -30,6 +30,9 @@ graphify-out/
 docs/IMPROVEMENTS-PROPOSAL.md
 docs/MULTI-STAGE-DOCUMENT-WORKFLOW.md
 
+# === create-sdd npm package (separate git repo → sdd-cli) ===
+create-sdd/
+
 # === Build Output ===
 build/
 builds/
