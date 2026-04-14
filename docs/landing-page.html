@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Claude Code SDD</title>
+  <style>
+    :root {
+      --bg:          #F2EDE3;
+      --bg-alt:      #EAE4D8;
+      --surface:     #FFFFFF;
+      --border:      #D8D1C5;
+      --border-dark: #B8B0A4;
+      --text:        #1A1816;
+      --text-2:      #5C5650;
+      --text-3:      #8C8680;
+      --accent:      #C4583A;
+      --accent-dim:  rgba(196,88,58,0.08);
+      --green:       #2E7D52;
+      --amber:       #8A6220;
+      --mono:        'JetBrains Mono', 'Fira Code', 'SF Mono', monospace;
+      --sans:        'Inter', 'SF Pro Text', -apple-system, sans-serif;
+      --r:           4px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: 14px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ── Nav ── */
+    nav {
+      position: sticky; top: 0; z-index: 50;
+      background: rgba(242,237,227,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner {
+      max-width: 960px; margin: 0 auto; padding: 0 24px;
+      height: 52px; display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-brand { font-size: 13px; font-weight: 600; color: var(--text); }
+    .nav-brand span { color: var(--text-3); font-weight: 400; margin-left: 8px; font-family: var(--mono); font-size: 12px; }
+    .nav-links { display: flex; gap: 20px; }
+    .nav-links a { font-size: 13px; color: var(--text-2); }
+    .nav-links a:hover { color: var(--text); text-decoration: none; }
+
+    /* ── Container ── */
+    .wrap { max-width: 960px; margin: 0 auto; padding: 0 24px; }
+
+    /* ── Section spacing ── */
+    section { padding: 64px 0; border-bottom: 1px solid var(--border); }
+    section:last-of-type { border-bottom: none; }
+
+    /* ── Hero ── */
+    .hero { padding: 80px 0 64px; }
+    .hero-meta {
+      font-family: var(--mono); font-size: 11px; color: var(--text-3);
+      letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 20px;
+    }
+    h1 {
+      font-size: clamp(28px, 4vw, 44px);
+      font-weight: 600; letter-spacing: -0.025em; line-height: 1.15;
+      color: var(--text); margin-bottom: 16px;
+    }
+    .hero-desc {
+      font-size: 16px; color: var(--text-2); max-width: 520px;
+      line-height: 1.65; margin-bottom: 32px;
+    }
+    .btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 8px 16px; border-radius: var(--r); font-size: 13px; font-weight: 500;
+      border: 1px solid transparent; cursor: pointer; transition: all 0.1s;
+    }
+    .btn-primary { background: var(--text); color: var(--bg); border-color: var(--text); }
+    .btn-primary:hover { background: #2E2A26; text-decoration: none; }
+    .btn-ghost { background: transparent; color: var(--text-2); border-color: var(--border-dark); }
+    .btn-ghost:hover { background: var(--bg-alt); color: var(--text); text-decoration: none; }
+
+    /* ── Stats ── */
+    .stat-row {
+      display: flex; flex-wrap: wrap; gap: 0;
+      border: 1px solid var(--border); border-radius: var(--r);
+      overflow: hidden; margin-top: 48px;
+      background: var(--surface);
+    }
+    .stat {
+      flex: 1 1 140px; padding: 20px 16px; text-align: center;
+      border-right: 1px solid var(--border);
+    }
+    .stat:last-child { border-right: none; }
+    .stat-n { font-size: 26px; font-weight: 600; letter-spacing: -0.03em; color: var(--text); }
+    .stat-l { font-size: 11px; color: var(--text-3); margin-top: 3px; font-family: var(--mono); }
+
+    /* ── Section headers ── */
+    .sh { margin-bottom: 32px; }
+    .sh-tag { font-family: var(--mono); font-size: 11px; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; }
+    h2 { font-size: 22px; font-weight: 600; letter-spacing: -0.02em; color: var(--text); margin-bottom: 6px; }
+    .sh-sub { font-size: 14px; color: var(--text-2); max-width: 480px; line-height: 1.6; }
+
+    /* ── Two-col layout ── */
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    @media (max-width: 680px) { .two-col { grid-template-columns: 1fr; } }
+
+    /* ── Prose card ── */
+    .card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--r); padding: 20px 22px;
+    }
+    .card-label {
+      font-family: var(--mono); font-size: 11px; text-transform: uppercase;
+      letter-spacing: 0.06em; margin-bottom: 10px;
+    }
+    .card-label.warn { color: var(--amber); }
+    .card-label.ok   { color: var(--green); }
+    .card p { font-size: 13px; color: var(--text-2); line-height: 1.7; }
+    .card p strong { color: var(--text); font-weight: 500; }
+
+    /* ── Tier table ── */
+    .tier-table { display: flex; flex-direction: column; gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: var(--r); overflow: hidden; }
+    .tier-row { display: flex; align-items: flex-start; gap: 16px; background: var(--surface); padding: 14px 18px; }
+    .tier-row:hover { background: var(--bg-alt); }
+    .tier-badge { font-family: var(--mono); font-size: 10px; font-weight: 600; white-space: nowrap; padding: 3px 8px; border-radius: 2px; flex-shrink: 0; margin-top: 1px; }
+    .t1 { background: rgba(196,88,58,0.1); color: var(--accent); }
+    .t2 { background: rgba(0,80,160,0.08); color: #0050A0; }
+    .t3 { background: rgba(46,125,82,0.08); color: var(--green); }
+    .tier-agents { display: flex; flex-wrap: wrap; gap: 6px; }
+    .pill { font-family: var(--mono); font-size: 11px; color: var(--text-2); background: var(--bg-alt); border: 1px solid var(--border); padding: 2px 8px; border-radius: 2px; }
+
+    /* ── Harness table ── */
+    table { width: 100%; border-collapse: collapse; }
+    thead th { font-size: 11px; font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-3); padding: 10px 12px; border-bottom: 1px solid var(--border); text-align: left; }
+    tbody td { font-size: 13px; padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: middle; color: var(--text-2); }
+    tbody tr:last-child td { border-bottom: none; }
+    tbody tr:hover td { background: var(--bg-alt); }
+    .status-ok  { color: var(--green); font-family: var(--mono); font-size: 11px; }
+    .status-par { color: var(--amber); font-family: var(--mono); font-size: 11px; }
+    .td-id { font-family: var(--mono); font-size: 12px; color: var(--text-3); }
+    .td-name { color: var(--text); font-weight: 500; }
+
+    /* ── Skill domains ── */
+    .domain-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: var(--r); overflow: hidden; }
+    .domain { background: var(--surface); padding: 16px 18px; }
+    .domain:hover { background: var(--bg-alt); }
+    .domain-name { font-size: 12px; font-weight: 600; color: var(--text); margin-bottom: 10px; font-family: var(--mono); }
+    .domain-pills { display: flex; flex-wrap: wrap; gap: 4px; }
+    .cmd-pill { font-family: var(--mono); font-size: 11px; color: var(--accent); background: var(--accent-dim); border: 1px solid rgba(196,88,58,0.15); padding: 2px 7px; border-radius: 2px; }
+
+    /* ── Memory layers ── */
+    .mem-layers { display: flex; flex-direction: column; gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: var(--r); overflow: hidden; }
+    .mem-row { display: flex; align-items: baseline; gap: 16px; background: var(--surface); padding: 12px 18px; }
+    .mem-row:hover { background: var(--bg-alt); }
+    .mem-tier { font-family: var(--mono); font-size: 10px; font-weight: 700; width: 20px; color: var(--text-3); flex-shrink: 0; }
+    .mem-path { font-family: var(--mono); font-size: 12px; color: var(--text); flex: 0 0 200px; }
+    .mem-desc { font-size: 12px; color: var(--text-2); }
+
+    /* ── Protocol steps ── */
+    .steps { display: flex; flex-direction: column; }
+    .step { display: flex; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--border); }
+    .step:last-child { border-bottom: none; }
+    .step-n { font-family: var(--mono); font-size: 11px; color: var(--text-3); width: 20px; flex-shrink: 0; padding-top: 2px; }
+    .step-title { font-size: 13px; font-weight: 500; color: var(--text); }
+    .step-body { font-size: 13px; color: var(--text-2); margin-top: 2px; }
+
+    /* ── Timeline ── */
+    .timeline { display: flex; flex-direction: column; gap: 24px; }
+    .tl { display: flex; gap: 20px; }
+    .tl-line { display: flex; flex-direction: column; align-items: center; gap: 0; }
+    .tl-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--border-dark); flex-shrink: 0; margin-top: 4px; }
+    .tl-dot.latest { background: var(--accent); }
+    .tl-bar { flex: 1; width: 1px; background: var(--border); margin-top: 4px; }
+    .tl-content { flex: 1; padding-bottom: 8px; }
+    .tl-v { font-family: var(--mono); font-size: 12px; color: var(--accent); }
+    .tl-d { font-family: var(--mono); font-size: 11px; color: var(--text-3); margin-left: 8px; }
+    .tl-title { font-size: 14px; font-weight: 500; color: var(--text); margin: 4px 0 6px; }
+    .tl-tags { display: flex; flex-wrap: wrap; gap: 5px; }
+    .tl-tag { font-size: 11px; color: var(--text-3); background: var(--bg-alt); border: 1px solid var(--border); padding: 1px 7px; border-radius: 2px; font-family: var(--mono); }
+
+    /* ── Code block ── */
+    .codeblock {
+      background: #1E1C1A; border-radius: var(--r); overflow: hidden;
+      border: 1px solid #3A3632;
+    }
+    .codeblock-header {
+      padding: 10px 16px; border-bottom: 1px solid #3A3632;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .codeblock-dots { display: flex; gap: 5px; }
+    .dot { width: 10px; height: 10px; border-radius: 50%; }
+    .dot:nth-child(1) { background: #FF6058; }
+    .dot:nth-child(2) { background: #FEBC2E; }
+    .dot:nth-child(3) { background: #28C840; }
+    .codeblock-lang { font-family: var(--mono); font-size: 11px; color: #666; }
+    pre { padding: 20px; font-family: var(--mono); font-size: 12px; line-height: 1.75; overflow-x: auto; }
+    .c { color: #5C6370; }
+    .kw { color: #98C379; }
+    .s  { color: #D19A66; }
+
+    /* ── Entry points ── */
+    .entry-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 8px; }
+    .entry { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 12px 16px; }
+    .entry:hover { background: var(--bg-alt); }
+    .entry-cmd { font-family: var(--mono); font-size: 13px; color: var(--accent); font-weight: 600; }
+    .entry-desc { font-size: 12px; color: var(--text-3); margin-top: 3px; }
+
+    /* ── Feature list ── */
+    .feat-list { display: flex; flex-direction: column; gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: var(--r); overflow: hidden; }
+    .feat { display: flex; gap: 16px; align-items: baseline; background: var(--surface); padding: 12px 18px; }
+    .feat:hover { background: var(--bg-alt); }
+    .feat-name { font-size: 13px; font-weight: 500; color: var(--text); flex: 0 0 180px; }
+    .feat-desc { font-size: 13px; color: var(--text-2); line-height: 1.5; }
+
+    /* ── Footer ── */
+    footer { padding: 32px 0; border-top: 1px solid var(--border); }
+    .footer-inner { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+    .footer-left { font-size: 12px; color: var(--text-3); line-height: 1.7; }
+    .footer-links { display: flex; gap: 16px; }
+    .footer-links a { font-size: 12px; color: var(--text-3); }
+    .footer-links a:hover { color: var(--text-2); }
+
+    @media (max-width: 600px) {
+      nav .nav-links { display: none; }
+      .mem-path { flex: 0 0 140px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <div class="nav-brand">
+      Claude Code SDD
+      <span>v1.27.0</span>
+    </div>
+    <div class="nav-links">
+      <a href="#architecture">Architecture</a>
+      <a href="#skills">Skills</a>
+      <a href="#memory">Memory</a>
+      <a href="#start">Setup</a>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-meta">Claude Code · Agentic Harness · v1.27.0 · 2026-04-14</div>
+    <h1>Software Development<br>Department</h1>
+    <p class="hero-desc">
+      A multi-agent harness built on Claude Code's agentic primitives.
+      Enforces process discipline, scoped authority, and persistent memory
+      across an engineering organization structure.
+    </p>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <a class="btn btn-primary" href="https://github.com/tranhieutt/software_development_department" target="_blank">GitHub</a>
+      <a class="btn btn-ghost" href="#start">Setup →</a>
+    </div>
+
+    <div class="stat-row">
+      <div class="stat">
+        <div class="stat-n">27</div>
+        <div class="stat-l">agents</div>
+      </div>
+      <div class="stat">
+        <div class="stat-n">122</div>
+        <div class="stat-l">skills</div>
+      </div>
+      <div class="stat">
+        <div class="stat-n">10/12</div>
+        <div class="stat-l">harness patterns</div>
+      </div>
+      <div class="stat">
+        <div class="stat-n">8</div>
+        <div class="stat-l">hooks</div>
+      </div>
+      <div class="stat">
+        <div class="stat-n">12</div>
+        <div class="stat-l">path-scoped rules</div>
+      </div>
+      <div class="stat">
+        <div class="stat-n">5</div>
+        <div class="stat-l">memory tiers</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Problem -->
+<section>
+  <div class="wrap">
+    <div class="sh">
+      <div class="sh-tag">Context</div>
+      <h2>Problem statement</h2>
+    </div>
+    <div class="two-col">
+      <div class="card">
+        <div class="card-label warn">Without structure</div>
+        <p>
+          An AI session has no <strong>department boundaries</strong>, no <strong>escalation path</strong>,
+          no <strong>domain authority</strong>, and no <strong>memory across concerns</strong>.
+          It answers every question but owns nothing. The result is organizational entropy:
+          skipped design docs, silent technical debt, and scope creep without pushback.
+        </p>
+      </div>
+      <div class="card">
+        <div class="card-label ok">SDD approach</div>
+        <p>
+          A <strong>governed multi-agent harness</strong> — not a wrapper or prompt library.
+          It imposes the coordination patterns of a real engineering department:
+          vertical delegation, horizontal consultation, conflict resolution, and
+          domain isolation, all enforced via hooks and verification gates.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Architecture -->
+<section id="architecture">
+  <div class="wrap">
+    <div class="sh">
+      <div class="sh-tag">Architecture</div>
+      <h2>Department hierarchy</h2>
+      <p class="sh-sub">Three tiers with clear escalation paths. Strategic conflicts route to <code style="font-family:var(--mono);font-size:12px">cto</code>; technical conflicts to <code style="font-family:var(--mono);font-size:12px">technical-director</code>.</p>
+    </div>
+    <div class="tier-table">
+      <div class="tier-row">
+        <div>
+          <div class="tier-badge t1">Tier 1 · Opus</div>
+        </div>
+        <div class="tier-agents">
+          <span class="pill">cto</span>
+          <span class="pill">technical-director</span>
+          <span class="pill">producer</span>
+        </div>
+      </div>
+      <div class="tier-row">
+        <div>
+          <div class="tier-badge t2">Tier 2 · Sonnet</div>
+        </div>
+        <div class="tier-agents">
+          <span class="pill">product-manager</span>
+          <span class="pill">lead-programmer</span>
+          <span class="pill">ux-designer</span>
+          <span class="pill">qa-lead</span>
+          <span class="pill">release-manager</span>
+        </div>
+      </div>
+      <div class="tier-row">
+        <div>
+          <div class="tier-badge t3">Tier 3 · Sonnet/Haiku</div>
+        </div>
+        <div class="tier-agents">
+          <span class="pill">frontend-developer</span>
+          <span class="pill">backend-developer</span>
+          <span class="pill">fullstack-developer</span>
+          <span class="pill">mobile-developer</span>
+          <span class="pill">ai-programmer</span>
+          <span class="pill">data-engineer</span>
+          <span class="pill">security-engineer</span>
+          <span class="pill">devops-engineer</span>
+          <span class="pill">performance-analyst</span>
+          <span class="pill">tech-writer</span>
+          <span class="pill">qa-tester</span>
+          <span class="pill">prototyper</span>
+          <span class="pill">community-manager</span>
+          <span class="pill">analytics-engineer</span>
+          <span class="pill">ux-researcher</span>
+          <span class="pill">network-programmer</span>
+          <span class="pill">tools-programmer</span>
+          <span class="pill">ui-programmer</span>
+          <span class="pill">accessibility-specialist</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Harness patterns -->
+    <div style="margin-top:48px;">
+      <div class="sh">
+        <div class="sh-tag">Harness coverage</div>
+        <h2>10 / 12 agentic patterns</h2>
+      </div>
+      <div class="card" style="padding:0;">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Pattern</th>
+              <th>Status</th>
+              <th>Implementation</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="td-id">1</td><td class="td-name">Structured Agent Definitions</td><td class="status-ok">IMPLEMENTED</td><td>27 agents, YAML frontmatter, domain ownership</td></tr>
+            <tr><td class="td-id">2</td><td class="td-name">Path-Scoped Rules</td><td class="status-ok">IMPLEMENTED</td><td>12 rules, auto-enforced by file path</td></tr>
+            <tr><td class="td-id">3</td><td class="td-name">Tiered Memory</td><td class="status-ok">IMPLEMENTED</td><td>5-layer: index → topic files → archive → Supermemory</td></tr>
+            <tr><td class="td-id">4</td><td class="td-name">Dream Consolidation</td><td class="status-ok">IMPLEMENTED</td><td><code style="font-family:var(--mono);font-size:11px">auto-dream.sh</code> — 5-phase consolidation pipeline</td></tr>
+            <tr><td class="td-id">6</td><td class="td-name">Context Fork</td><td class="status-ok">IMPLEMENTED</td><td>10 analysis skills run in isolated subagent context</td></tr>
+            <tr><td class="td-id">7</td><td class="td-name">Skill Routing</td><td class="status-ok">IMPLEMENTED</td><td>122 skills with <code style="font-family:var(--mono);font-size:11px">paths:</code>, <code style="font-family:var(--mono);font-size:11px">when_to_use:</code>, <code style="font-family:var(--mono);font-size:11px">effort:</code> metadata</td></tr>
+            <tr><td class="td-id">8</td><td class="td-name">Fork-Join Parallelism</td><td class="status-ok">IMPLEMENTED</td><td><code style="font-family:var(--mono);font-size:11px">fork-join.sh</code> — git worktree lifecycle manager</td></tr>
+            <tr><td class="td-id">10</td><td class="td-name">Least Privilege Tools</td><td class="status-ok">IMPLEMENTED</td><td><code style="font-family:var(--mono);font-size:11px">allowed-tools:</code> per skill, 22-entry permission allow-list</td></tr>
+            <tr><td class="td-id">11</td><td class="td-name">Bash Guard</td><td class="status-ok">IMPLEMENTED</td><td><code style="font-family:var(--mono);font-size:11px">bash-guard.sh</code> — blocks RCE patterns, destructive commands</td></tr>
+            <tr><td class="td-id">12</td><td class="td-name">Annotation System</td><td class="status-ok">IMPLEMENTED</td><td><code style="font-family:var(--mono);font-size:11px">/annotate</code> skill + <code style="font-family:var(--mono);font-size:11px">annotations.md</code> persistent gotcha store</td></tr>
+            <tr style="opacity:0.5"><td class="td-id">5</td><td class="td-name">Multi-Stage Context Compaction</td><td class="status-par">PARTIAL</td><td>Requires platform-level conversation control (not project-scope)</td></tr>
+            <tr style="opacity:0.5"><td class="td-id">9</td><td class="td-name">Progressive Tool Expansion</td><td class="status-par">PARTIAL</td><td>Requires harness-level tool activation — platform-determined</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Process -->
+<section>
+  <div class="wrap">
+    <div class="sh">
+      <div class="sh-tag">Process enforcement</div>
+      <h2>Collaboration protocol &amp; process gates</h2>
+    </div>
+    <div class="two-col">
+      <div>
+        <p style="font-size:13px;color:var(--text-2);margin-bottom:16px;">
+          Every agent follows a five-step interaction protocol. No action is taken without explicit user approval.
+        </p>
+        <div class="steps">
+          <div class="step">
+            <div class="step-n">01</div>
+            <div><div class="step-title">Ask</div><div class="step-body">Clarify intent before proposing solutions</div></div>
+          </div>
+          <div class="step">
+            <div class="step-n">02</div>
+            <div><div class="step-title">Options</div><div class="step-body">Present 2–4 alternatives with trade-offs</div></div>
+          </div>
+          <div class="step">
+            <div class="step-n">03</div>
+            <div><div class="step-title">Decide</div><div class="step-body">User makes the call</div></div>
+          </div>
+          <div class="step">
+            <div class="step-n">04</div>
+            <div><div class="step-title">Draft</div><div class="step-body">Agent shows work before committing</div></div>
+          </div>
+          <div class="step">
+            <div class="step-n">05</div>
+            <div><div class="step-title">Approve</div><div class="step-body">Nothing written without explicit sign-off</div></div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <p style="font-size:13px;color:var(--text-2);margin-bottom:16px;">
+          Implicit workflow commands in <code style="font-family:var(--mono);font-size:12px">CLAUDE.md</code> act as mandatory process checkpoints.
+        </p>
+        <div class="feat-list">
+          <div class="feat">
+            <div class="feat-name"><code style="font-family:var(--mono);font-size:12px;color:var(--accent)">/spec</code></div>
+            <div class="feat-desc">Blueprint + approval required before any file is created</div>
+          </div>
+          <div class="feat">
+            <div class="feat-name"><code style="font-family:var(--mono);font-size:12px;color:var(--accent)">/plan</code></div>
+            <div class="feat-desc">Atomic task breakdown before implementation begins</div>
+          </div>
+          <div class="feat">
+            <div class="feat-name"><code style="font-family:var(--mono);font-size:12px;color:var(--accent)">/tdd</code></div>
+            <div class="feat-desc">Red → Green → Refactor cycle; terminal log required</div>
+          </div>
+          <div class="feat">
+            <div class="feat-name"><code style="font-family:var(--mono);font-size:12px;color:var(--accent)">/context</code></div>
+            <div class="feat-desc">Diagnose context state; recall from Supermemory first</div>
+          </div>
+          <div class="feat">
+            <div class="feat-name"><code style="font-family:var(--mono);font-size:12px;color:var(--accent)">/annotate</code></div>
+            <div class="feat-desc">Persist API gotchas, caveats, and workarounds immediately</div>
+          </div>
+        </div>
+        <div style="margin-top:12px;padding:12px 14px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);">
+          <div style="font-family:var(--mono);font-size:11px;color:var(--text-3);margin-bottom:6px;">Verifiable plan format (Rule 12)</div>
+          <pre style="padding:0;background:none;font-size:12px;color:var(--text-2);">[Step] → verify: [specific, testable criterion]</pre>
+          <div style="font-size:11px;color:var(--text-3);margin-top:6px;">"looks good" and "should work" are not accepted criteria.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Skills -->
+<section id="skills">
+  <div class="wrap">
+    <div class="sh">
+      <div class="sh-tag">Skill system</div>
+      <h2>122 skills · 7 domains</h2>
+      <p class="sh-sub">
+        Skills activate conditionally based on open files.
+        <code style="font-family:var(--mono);font-size:12px">paths:</code> triggers limit the visible set to what is contextually relevant.
+      </p>
+    </div>
+    <div class="domain-grid">
+      <div class="domain">
+        <div class="domain-name">core-workflow</div>
+        <div class="domain-pills">
+          <span class="cmd-pill">/start</span>
+          <span class="cmd-pill">/brainstorm</span>
+          <span class="cmd-pill">/orchestrate</span>
+          <span class="cmd-pill">/dream</span>
+          <span class="cmd-pill">/gate-check</span>
+          <span class="cmd-pill">/save-state</span>
+        </div>
+      </div>
+      <div class="domain">
+        <div class="domain-name">engineering-reviews</div>
+        <div class="domain-pills">
+          <span class="cmd-pill">/code-review</span>
+          <span class="cmd-pill">/api-design</span>
+          <span class="cmd-pill">/security-audit</span>
+          <span class="cmd-pill">/db-review</span>
+          <span class="cmd-pill">/design-review</span>
+        </div>
+      </div>
+      <div class="domain">
+        <div class="domain-name">process-shields</div>
+        <div class="domain-pills">
+          <span class="cmd-pill">/spec</span>
+          <span class="cmd-pill">/plan</span>
+          <span class="cmd-pill">/tdd</span>
+          <span class="cmd-pill">/context</span>
+          <span class="cmd-pill">/annotate</span>
+          <span class="cmd-pill">/fork-join</span>
+        </div>
+      </div>
+      <div class="domain">
+        <div class="domain-name">release</div>
+        <div class="domain-pills">
+          <span class="cmd-pill">/release-checklist</span>
+          <span class="cmd-pill">/changelog</span>
+          <span class="cmd-pill">/hotfix</span>
+          <span class="cmd-pill">/patch-notes</span>
+          <span class="cmd-pill">/launch-checklist</span>
+        </div>
+      </div>
+      <div class="domain">
+        <div class="domain-name">sprint-management</div>
+        <div class="domain-pills">
+          <span class="cmd-pill">/sprint-plan</span>
+          <span class="cmd-pill">/retrospective</span>
+          <span class="cmd-pill">/milestone-review</span>
+          <span class="cmd-pill">/estimate</span>
+          <span class="cmd-pill">/tech-debt</span>
+        </div>
+      </div>
+      <div class="domain">
+        <div class="domain-name">team-orchestration</div>
+        <div class="domain-pills">
+          <span class="cmd-pill">/team-feature</span>
+          <span class="cmd-pill">/team-backend</span>
+          <span class="cmd-pill">/team-frontend</span>
+          <span class="cmd-pill">/team-release</span>
+          <span class="cmd-pill">/team-ui</span>
+        </div>
+      </div>
+      <div class="domain">
+        <div class="domain-name">tech-frameworks</div>
+        <div class="domain-pills">
+          <span class="cmd-pill">fastapi-pro</span>
+          <span class="cmd-pill">nextjs-app-router</span>
+          <span class="cmd-pill">kubernetes-architect</span>
+          <span class="cmd-pill">rag-engineer</span>
+          <span class="cmd-pill">prisma-expert</span>
+          <span class="cmd-pill">+70 more</span>
+        </div>
+      </div>
+      <div class="domain">
+        <div class="domain-name">visual-engineering</div>
+        <div class="domain-pills">
+          <span class="cmd-pill">/visualize</span>
+          <span class="cmd-pill">SVG/PNG output</span>
+          <span class="cmd-pill">Style 6 (Claude Official)</span>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:16px;padding:12px 16px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);">
+      <div style="font-family:var(--mono);font-size:11px;color:var(--text-3);margin-bottom:6px;">Context-aware activation example</div>
+      <pre style="padding:0;background:none;font-size:12px;color:var(--text-2);line-height:1.8;">Editing *.tsx, next.config.*  →  ~20 Next.js / React / Tailwind skills available
+Editing *.py, manage.py       →  Django, FastAPI, ML skills surface
+Editing Dockerfile, *.tf      →  DevOps, Kubernetes, AWS skills activate</pre>
+    </div>
+  </div>
+</section>
+
+<!-- Memory -->
+<section id="memory">
+  <div class="wrap">
+    <div class="sh">
+      <div class="sh-tag">Memory architecture</div>
+      <h2>5-layer persistent memory</h2>
+      <p class="sh-sub">
+        Files persist across sessions, compactions, and crashes.
+        Incremental loading with a 3-Question Relevance Gate: max 3 Tier 2 files per session, stop if context &lt; 30%.
+      </p>
+    </div>
+    <div class="mem-layers">
+      <div class="mem-row">
+        <div class="mem-tier">T1</div>
+        <div class="mem-path">MEMORY.md</div>
+        <div class="mem-desc">50-line index, keyword triggers — always in context via CLAUDE.md</div>
+      </div>
+      <div class="mem-row">
+        <div class="mem-tier">T2</div>
+        <div class="mem-path">.claude/memory/*.md</div>
+        <div class="mem-desc">Topic files: annotations, tech decisions, role context — max 3/session, line-range reads preferred</div>
+      </div>
+      <div class="mem-row">
+        <div class="mem-tier">T3</div>
+        <div class="mem-path">.claude/memory/archive/</div>
+        <div class="mem-desc">Cold storage: sessions, decisions, dreams — grep-search only, never proactive load</div>
+      </div>
+      <div class="mem-row">
+        <div class="mem-tier">T4</div>
+        <div class="mem-path">MCP Supermemory</div>
+        <div class="mem-desc">Semantic recall across sessions (external). <code style="font-family:var(--mono);font-size:11px">mcp_supermemory_recall</code> before research; <code style="font-family:var(--mono);font-size:11px">mcp_supermemory_memory</code> after major features</div>
+      </div>
+      <div class="mem-row">
+        <div class="mem-tier">T5</div>
+        <div class="mem-path">CLAUDE.md @include chain</div>
+        <div class="mem-desc">Static universal context — always injected into system prompt, not loaded on demand</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Changelog -->
+<section>
+  <div class="wrap">
+    <div class="sh">
+      <div class="sh-tag">Changelog</div>
+      <h2>Recent releases</h2>
+    </div>
+    <div class="timeline">
+      <div class="tl">
+        <div class="tl-line"><div class="tl-dot latest"></div><div class="tl-bar"></div></div>
+        <div class="tl-content">
+          <div><span class="tl-v">v1.27.0</span><span class="tl-d">2026-04-14</span></div>
+          <div class="tl-title">Visual Engineering — Documentation-as-Visual-Code</div>
+          <div class="tl-tags">
+            <span class="tl-tag">visual-engineer skill</span>
+            <span class="tl-tag">SVG/PNG automation</span>
+            <span class="tl-tag">122 skills</span>
+            <span class="tl-tag">Semantic Shapes</span>
+            <span class="tl-tag">docs/visual-standards/</span>
+          </div>
+        </div>
+      </div>
+      <div class="tl">
+        <div class="tl-line"><div class="tl-dot"></div><div class="tl-bar"></div></div>
+        <div class="tl-content">
+          <div><span class="tl-v">v1.26.0</span><span class="tl-d">2026-04-13</span></div>
+          <div class="tl-title">MCP Supermemory integration + Anti-Rationalization gates</div>
+          <div class="tl-tags">
+            <span class="tl-tag">supermemory MCP</span>
+            <span class="tl-tag">process shields</span>
+            <span class="tl-tag">implicit workflow commands</span>
+            <span class="tl-tag">anti-rationalizations section</span>
+          </div>
+        </div>
+      </div>
+      <div class="tl">
+        <div class="tl-line"><div class="tl-dot"></div><div class="tl-bar"></div></div>
+        <div class="tl-content">
+          <div><span class="tl-v">v1.25.3</span><span class="tl-d">2026-04-13</span></div>
+          <div class="tl-title">Karpathy LLM coding behavior principles</div>
+          <div class="tl-tags">
+            <span class="tl-tag">surgical changes rule</span>
+            <span class="tl-tag">verifiable plan format</span>
+            <span class="tl-tag">goal-driven execution</span>
+          </div>
+        </div>
+      </div>
+      <div class="tl">
+        <div class="tl-line"><div class="tl-dot"></div><div class="tl-bar"></div></div>
+        <div class="tl-content">
+          <div><span class="tl-v">v1.25.2</span><span class="tl-d">2026-04-11</span></div>
+          <div class="tl-title">Progressive Disclosure refactor — -2,200 lines context waste</div>
+          <div class="tl-tags">
+            <span class="tl-tag">11 skills refactored</span>
+            <span class="tl-tag">trigger word improvements</span>
+            <span class="tl-tag">routing accuracy</span>
+          </div>
+        </div>
+      </div>
+      <div class="tl">
+        <div class="tl-line"><div class="tl-dot"></div></div>
+        <div class="tl-content">
+          <div><span class="tl-v">v1.24.0</span><span class="tl-d">2026-04-07</span></div>
+          <div class="tl-title">Context Hub patterns (Andrew Ng)</div>
+          <div class="tl-tags">
+            <span class="tl-tag">annotation system</span>
+            <span class="tl-tag">incremental context loading</span>
+            <span class="tl-tag">3-question relevance gate</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Setup -->
+<section id="start">
+  <div class="wrap">
+    <div class="sh">
+      <div class="sh-tag">Setup</div>
+      <h2>Getting started</h2>
+    </div>
+    <div class="two-col" style="align-items:start;">
+      <div class="codeblock">
+        <div class="codeblock-header">
+          <div class="codeblock-dots">
+            <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+          </div>
+          <span class="codeblock-lang">bash</span>
+        </div>
+        <pre><span class="c"># Prerequisites: Claude Code, Git, jq, Python 3</span>
+<span class="kw">npm</span> install -g @anthropic-ai/claude-code
+
+<span class="c"># Clone as project template</span>
+<span class="kw">git</span> clone https://github.com/tranhieutt/\
+  software_development_department.git <span class="s">my-project</span>
+<span class="kw">cd</span> <span class="s">my-project</span>
+
+<span class="c"># Launch and run guided onboarding</span>
+<span class="kw">claude</span>
+<span class="s">/start</span></pre>
+      </div>
+      <div>
+        <p style="font-size:13px;color:var(--text-2);margin-bottom:16px;">Entry points by situation:</p>
+        <div class="entry-grid">
+          <div class="entry">
+            <div class="entry-cmd">/brainstorm</div>
+            <div class="entry-desc">Starting from a concept</div>
+          </div>
+          <div class="entry">
+            <div class="entry-cmd">/project-stage-detect</div>
+            <div class="entry-desc">Joining an existing codebase</div>
+          </div>
+          <div class="entry">
+            <div class="entry-cmd">/sprint-plan</div>
+            <div class="entry-desc">Planning from a backlog</div>
+          </div>
+          <div class="entry">
+            <div class="entry-cmd">/orchestrate</div>
+            <div class="entry-desc">Coordinating multiple agents</div>
+          </div>
+          <div class="entry">
+            <div class="entry-cmd">/start</div>
+            <div class="entry-desc">Unknown starting point</div>
+          </div>
+        </div>
+        <div style="margin-top:16px;" class="card">
+          <div class="card-label" style="color:var(--text-3);">Customization</div>
+          <p>
+            Add or remove agents, edit skill prompts, modify hooks, add path-scoped rules.
+            See <code style="font-family:var(--mono);font-size:11px">UPGRADING.md</code> for pulling upstream changes
+            without overwriting local customizations.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-inner">
+      <div class="footer-left">
+        Claude Code Software Development Department · v1.27.0 · MIT License<br>
+        Author: <a href="https://github.com/tranhieutt">tranhieutt</a> ·
+        Based on <a href="https://github.com/Donchitos/Claude-Code-Game-Studios">Claude Code Game Studios</a> by Donchitos
+      </div>
+      <div class="footer-links">
+        <a href="https://github.com/tranhieutt/software_development_department">GitHub</a>
+        <a href="History_Update.md">History</a>
+        <a href="https://docs.anthropic.com/en/docs/claude-code">Claude Code Docs</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
