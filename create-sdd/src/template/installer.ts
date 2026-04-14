@@ -3,9 +3,7 @@
  * Handles: file existence checks, conflict resolution, settings.json merge,
  * and MEMORY.md preservation.
  */
-import { readJsonSync, writeJsonSync, readFileSync, writeFileSync, existsSync, ensureDirSync } from 'fs-extra';
-import { readdirSync, statSync } from 'fs';
-import { createHash } from 'crypto';
+import { mkdirSync, readdirSync, statSync, existsSync, readFileSync, writeFileSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { render, type TemplateVars } from './engine.js';
@@ -76,12 +74,12 @@ export async function install(opts: InstallOptions): Promise<InstallResult> {
   // 4. Write .claude/sdd-version.json
   const versionFile = join(targetDir, '.claude', 'sdd-version.json');
   if (!dryRun) {
-    ensureDirSync(dirname(versionFile));
-    writeJsonSync(versionFile, {
+    mkdirSync(dirname(versionFile), { recursive: true });
+    writeFileSync(versionFile, JSON.stringify({
       version: vars.SDD_VERSION,
       installedAt: new Date().toISOString(),
       modules,
-    }, { spaces: 2 });
+    }, null, 2), 'utf-8');
   }
   result.copied.push('.claude/sdd-version.json');
 
@@ -136,7 +134,7 @@ async function installTemplateFile(
   const rendered = render(raw, vars);
 
   if (!dryRun) {
-    ensureDirSync(dirname(dest));
+    mkdirSync(dirname(dest), { recursive: true });
     writeFileSync(dest, rendered, 'utf-8');
   }
   result.copied.push(relDest);
@@ -149,22 +147,22 @@ async function mergeSettings(
   dryRun: boolean,
   result: InstallResult
 ): Promise<void> {
-  const template = readJsonSync(templatePath);
+  const template = JSON.parse(readFileSync(templatePath, 'utf-8')) as Record<string, unknown>;
 
   if (!existsSync(destPath)) {
     if (!dryRun) {
-      ensureDirSync(dirname(destPath));
-      writeJsonSync(destPath, template, { spaces: 2 });
+      mkdirSync(dirname(destPath), { recursive: true });
+      writeFileSync(destPath, JSON.stringify(template, null, 2), 'utf-8');
     }
     result.copied.push('.claude/settings.json');
     return;
   }
 
   // Existing settings — deep-merge hooks (append, deduplicate by command)
-  const existing = readJsonSync(destPath);
+  const existing = JSON.parse(readFileSync(destPath, 'utf-8')) as Record<string, unknown>;
   const merged = deepMergeSettings(existing, template);
   if (!dryRun) {
-    writeJsonSync(destPath, merged, { spaces: 2 });
+    writeFileSync(destPath, JSON.stringify(merged, null, 2), 'utf-8');
   }
   result.merged.push('.claude/settings.json');
 }
@@ -202,6 +200,3 @@ function getRelative(absPath: string): string {
   return normalized;
 }
 
-function md5(content: string): string {
-  return createHash('md5').update(content).digest('hex');
-}
