@@ -1,0 +1,1769 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Harness Engineering — SDD Architecture</title>
+<style>
+/* ── Anthropic Design Tokens ── */
+:root {
+  --cream:       #FAF9F6;
+  --cream-2:     #F3F1EC;
+  --cream-3:     #E8E3DA;
+  --coral:       #D4521A;
+  --coral-2:     #E8643A;
+  --coral-light: #FDEADE;
+  --brown:       #3D2B1F;
+  --brown-2:     #5C4033;
+  --gray:        #8A7F76;
+  --gray-2:      #C4BDB5;
+  --white:       #FFFFFF;
+  --shadow:      0 2px 16px rgba(61,43,31,.09);
+  --shadow-lg:   0 8px 40px rgba(61,43,31,.14);
+  --radius:      18px;
+  --radius-sm:   10px;
+  --font:        'Inter','Helvetica Neue',Arial,sans-serif;
+  --mono:        'JetBrains Mono','Fira Code',monospace;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font);
+  background: var(--cream);
+  color: var(--brown);
+  min-height: 100vh;
+  /* allow natural page scroll */
+  overflow-x: hidden;
+}
+
+/* ── Top Bar ── */
+.top-bar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  height: 52px;
+  background: rgba(250,249,246,.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--cream-3);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 28px;
+  box-shadow: 0 1px 6px rgba(61,43,31,.06);
+}
+.logo { display: flex; align-items: center; gap: 10px; }
+.logo-mark {
+  width: 26px; height: 26px; background: var(--coral);
+  border-radius: 6px; display: flex; align-items: center; justify-content: center;
+}
+.logo-mark svg { width: 14px; height: 14px; fill: #fff; }
+.logo-text { font-size: 13px; font-weight: 600; letter-spacing: -.2px; }
+.logo-text em { font-style: normal; color: var(--coral); }
+.counter {
+  font-family: var(--mono); font-size: 11px; color: var(--gray);
+  background: var(--cream-2); border: 1px solid var(--cream-3);
+  padding: 3px 10px; border-radius: 20px;
+}
+
+/* ── Stage — wraps all slides, positions them absolutely ── */
+.stage {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 72px 20px 80px;
+}
+
+/* ── Carousel container — height driven by JS ── */
+.carousel {
+  width: min(900px, 100%);
+  position: relative;
+  /* height set dynamically by JS */
+}
+
+/* ── Individual Slides ── */
+.slide {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  /* NO max-height, NO overflow → full natural height */
+  background: var(--white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lg);
+  padding: 52px 56px 56px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+
+  /* hidden state */
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(72px) scale(.975);
+  transition: opacity .4s cubic-bezier(.4,0,.2,1),
+              transform .4s cubic-bezier(.4,0,.2,1);
+  will-change: transform, opacity;
+}
+.slide.active {
+  opacity: 1;
+  pointer-events: auto;
+  transform: none;
+  position: relative; /* important — lets carousel grow to fit */
+}
+.slide.exit-left {
+  opacity: 0;
+  transform: translateX(-72px) scale(.975);
+  position: absolute; /* take out of flow while exiting */
+}
+.slide.exit-right {
+  opacity: 0;
+  transform: translateX(72px) scale(.975);
+  position: absolute;
+}
+
+/* ── Hero slide ── */
+.slide-hero {
+  background: linear-gradient(150deg, #3D2B1F 0%, #5C3A28 55%, #7A4A30 100%);
+  color: var(--white);
+}
+
+/* ── Typography ── */
+.tag {
+  font-size: 10.5px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 1.4px;
+  color: var(--coral);
+}
+.slide-hero .tag { color: var(--coral-2); }
+
+.slide-title {
+  font-size: 28px; font-weight: 750;
+  line-height: 1.2; letter-spacing: -.6px;
+  color: var(--brown);
+}
+.slide-hero .slide-title { color: var(--white); font-size: 44px; font-weight: 800; }
+
+.slide-lead {
+  font-size: 15px; line-height: 1.7;
+  color: var(--brown-2);
+}
+.slide-hero .slide-lead { color: rgba(255,255,255,.65); font-size: 16px; max-width: 560px; }
+
+/* ── HR ── */
+hr { border: none; height: 1px; background: var(--cream-3); }
+.slide-hero hr { background: rgba(255,255,255,.12); }
+
+/* ── Stats ── */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  gap: 14px;
+}
+.stat {
+  border-radius: var(--radius-sm);
+  padding: 18px 16px;
+  text-align: center;
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.12);
+}
+.stat-n {
+  font-size: 32px; font-weight: 800; line-height: 1;
+  color: var(--coral-2); font-feature-settings: "tnum";
+}
+.slide-hero .stat-n { color: var(--white); }
+.stat-l { font-size: 10.5px; font-weight: 600; text-transform: uppercase;
+          letter-spacing: .8px; color: rgba(255,255,255,.45); margin-top: 5px; }
+
+/* ── Section label ── */
+.section-label {
+  font-size: 11px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .9px; color: var(--gray); margin-bottom: 10px;
+}
+
+/* ── Two-column grid ── */
+.col2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.col3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+@media(max-width:640px) { .col2,.col3 { grid-template-columns: 1fr; } }
+
+/* ── Table ── */
+.tbl { width: 100%; border-collapse: collapse; font-size: 13px; }
+.tbl thead th {
+  background: var(--cream-2); color: var(--brown-2);
+  font-size: 10.5px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .7px; padding: 10px 14px; text-align: left;
+  border-bottom: 1px solid var(--cream-3);
+}
+.tbl tbody td {
+  padding: 11px 14px; border-bottom: 1px solid var(--cream-3);
+  color: var(--brown-2); line-height: 1.55; vertical-align: top;
+}
+.tbl tbody tr:last-child td { border-bottom: none; }
+.tbl tbody tr:hover td { background: var(--cream); }
+.mono { font-family: var(--mono); font-size: 11.5px; color: var(--coral); white-space: nowrap; }
+
+/* ── Badges ── */
+.badge {
+  display: inline-block; border-radius: 5px; padding: 2px 8px;
+  font-size: 11px; font-weight: 600; white-space: nowrap;
+}
+.b-coral  { background: var(--coral-light); color: var(--coral); }
+.b-gray   { background: var(--cream-2); color: var(--gray); border: 1px solid var(--cream-3); }
+.b-dark   { background: var(--brown); color: var(--white); }
+.b-green  { background: #D1FAE5; color: #065F46; }
+.b-red    { background: #FEE2E2; color: #991B1B; }
+.b-yellow { background: #FEF9C3; color: #854D0E; }
+
+/* ── Flow steps ── */
+.flow { display: flex; flex-direction: column; }
+.flow-item {
+  display: flex; gap: 16px; align-items: flex-start;
+  padding: 13px 0; border-bottom: 1px solid var(--cream-3);
+}
+.flow-item:last-child { border-bottom: none; }
+.flow-num {
+  width: 26px; height: 26px; border-radius: 50%; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 800; margin-top: 1px;
+  background: var(--coral); color: white;
+}
+.flow-num.dim { background: var(--cream-2); color: var(--gray); }
+.flow-body { flex: 1; }
+.flow-title { font-size: 14px; font-weight: 650; color: var(--brown); }
+.flow-desc  { font-size: 13px; color: var(--gray); line-height: 1.5; margin-top: 2px; }
+
+/* ── Code block ── */
+pre {
+  background: #2C1D15;
+  color: #F0E8E0;
+  border-radius: var(--radius-sm);
+  padding: 20px 24px;
+  font-family: var(--mono);
+  font-size: 12px;
+  line-height: 1.8;
+  overflow-x: auto;
+}
+.c-key { color: var(--coral-2); font-weight: 600; }
+.c-val { color: #7DCFB6; }
+.c-str { color: #A8D89A; }
+.c-cmt { color: #6B7F8A; }
+
+/* ── Info card ── */
+.card {
+  background: var(--cream-2);
+  border: 1px solid var(--cream-3);
+  border-radius: var(--radius-sm);
+  padding: 18px 20px;
+}
+.card-title { font-size: 12px; font-weight: 700; text-transform: uppercase;
+              letter-spacing: .6px; color: var(--brown); margin-bottom: 10px; }
+
+/* ── Callout ── */
+.callout {
+  border-left: 3px solid var(--coral);
+  background: var(--coral-light);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  padding: 14px 18px;
+  font-size: 13.5px; line-height: 1.65; color: var(--brown-2);
+}
+.callout strong { color: var(--coral); }
+
+/* ── Memory tier ── */
+.mem-tier {
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--cream-3);
+  overflow: hidden;
+}
+.mem-head {
+  display: flex; align-items: center; gap: 10px;
+  padding: 11px 16px;
+  background: var(--cream-2);
+  border-bottom: 1px solid var(--cream-3);
+}
+.mem-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+.d-coral  { background: var(--coral); }
+.d-amber  { background: #E8A030; }
+.d-gray   { background: var(--gray-2); }
+.mem-head-label { font-size: 13px; font-weight: 650; color: var(--brown); }
+.mem-rule  { font-family: var(--mono); font-size: 10.5px; color: var(--gray); margin-left: auto; }
+.mem-body { display: flex; flex-wrap: wrap; gap: 8px; padding: 14px 16px; }
+
+/* ── Tier agent block ── */
+.tier-block { border: 1px solid var(--cream-3); border-radius: var(--radius-sm); overflow: hidden; }
+.tier-head {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 16px; background: var(--cream-2);
+  border-bottom: 1px solid var(--cream-3);
+}
+.tier-lv {
+  font-size: 10px; font-weight: 800; text-transform: uppercase;
+  letter-spacing: .5px; color: white; padding: 2px 7px; border-radius: 4px;
+}
+.t1 { background: var(--coral); }
+.t2 { background: var(--brown-2); }
+.t3 { background: var(--gray); }
+.tier-name  { font-size: 13px; font-weight: 650; color: var(--brown); }
+.tier-model { font-family: var(--mono); font-size: 10.5px; color: var(--gray); margin-left: auto; }
+.tier-pills { display: flex; flex-wrap: wrap; gap: 7px; padding: 14px 16px; }
+.pill {
+  font-size: 12px; font-weight: 500;
+  padding: 4px 11px; border-radius: 20px;
+  background: var(--cream); border: 1px solid var(--cream-3);
+  color: var(--brown-2);
+}
+.pill.hi { background: var(--coral-light); border-color: rgba(212,82,26,.2); color: var(--coral); }
+
+/* ── Guard blocks ── */
+.guard { border: 1px solid var(--cream-3); border-radius: var(--radius-sm); overflow: hidden; }
+.guard-head { display: flex; align-items: center; gap: 8px; padding: 10px 16px;
+              font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .6px; }
+.g-hard { background: #FEE2E2; color: #9B1C1C; }
+.g-soft { background: #FEF9C3; color: #7C3B0B; }
+.guard-list { padding: 4px 0; }
+.guard-row {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 10px 16px; border-bottom: 1px solid var(--cream-3);
+  font-size: 13px;
+}
+.guard-row:last-child { border-bottom: none; }
+.guard-row code {
+  font-family: var(--mono); font-size: 11px;
+  background: var(--cream-2); padding: 2px 7px;
+  border-radius: 4px; color: var(--brown); white-space: nowrap; flex-shrink: 0;
+}
+.guard-row span { color: var(--gray); line-height: 1.5; }
+
+/* ── Loop diagram ── */
+.loop { display: flex; flex-direction: column; gap: 3px; }
+.loop-step {
+  display: flex; align-items: flex-start; gap: 14px;
+  padding: 12px 16px; border-radius: var(--radius-sm);
+  border: 1px solid var(--cream-3); background: var(--cream);
+}
+.loop-step.accent {
+  background: var(--coral-light);
+  border-color: rgba(212,82,26,.25);
+}
+.loop-icon { font-size: 17px; width: 26px; text-align: center; flex-shrink: 0; margin-top: 1px; }
+.loop-text { font-size: 13px; color: var(--brown-2); line-height: 1.5; }
+.loop-text strong { color: var(--brown); font-weight: 650; }
+.loop-arrow { text-align: center; font-size: 13px; color: var(--gray-2); line-height: 1.2; padding: 1px 0; }
+
+/* ── Phase pills ── */
+.phase-row { display: flex; gap: 0; align-items: stretch; flex-wrap: nowrap; overflow-x: auto; }
+.phase {
+  flex: 1; min-width: 90px;
+  border-radius: 0; border: 1px solid var(--cream-3);
+  margin-right: -1px; padding: 14px 12px; text-align: center;
+  background: var(--cream);
+}
+.phase:first-child { border-radius: var(--radius-sm) 0 0 var(--radius-sm); }
+.phase:last-child  { border-radius: 0 var(--radius-sm) var(--radius-sm) 0; margin-right: 0; }
+.phase.active-ph { background: var(--coral-light); border-color: rgba(212,82,26,.3); z-index: 1; }
+.phase-n { font-size: 22px; font-weight: 800; color: var(--coral); line-height: 1; }
+.phase-l { font-size: 11px; color: var(--gray); margin-top: 4px; font-weight: 500; }
+
+/* ── Wave row ── */
+.wave-row { display: grid; grid-template-columns: 80px 1fr 1fr; gap: 0;
+            border: 1px solid var(--cream-3); border-radius: var(--radius-sm);
+            overflow: hidden; margin-bottom: -1px; }
+.wave-row:last-child { margin-bottom: 0; }
+.wave-label { background: var(--brown); color: white; font-size: 11px; font-weight: 700;
+              text-transform: uppercase; letter-spacing: .5px; display: flex;
+              align-items: center; justify-content: center; padding: 12px; }
+.wave-agents { padding: 10px 14px; display: flex; flex-wrap: wrap; gap: 6px;
+               align-items: center; border-left: 1px solid var(--cream-3);
+               border-right: 1px solid var(--cream-3); background: var(--cream); }
+.wave-note { padding: 10px 14px; font-size: 12px; color: var(--gray); align-self: center; }
+
+/* ── Parallel rule ── */
+.par-rule { display: flex; flex-direction: column; gap: 8px; }
+.par-item { display: flex; gap: 12px; align-items: center; font-size: 13px; padding: 10px 14px;
+            border-radius: var(--radius-sm); border: 1px solid var(--cream-3); }
+.par-item.no  { background: #FEF2F2; border-color: #FCA5A5; color: var(--brown-2); }
+.par-item.yes { background: #F0FDF4; border-color: #86EFAC; color: var(--brown-2); }
+.par-sym { font-size: 16px; font-weight: 800; flex-shrink: 0; width: 20px; text-align: center; }
+
+/* ── Nav buttons ── */
+.nav {
+  position: fixed; top: 50%; transform: translateY(-50%);
+  width: 42px; height: 42px; border-radius: 50%;
+  background: var(--white); border: 1px solid var(--cream-3);
+  box-shadow: var(--shadow); cursor: pointer; z-index: 300;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; color: var(--brown-2); transition: all .2s;
+}
+.nav:hover { background: var(--coral); color: white; border-color: var(--coral); transform: translateY(-50%) scale(1.1); }
+.nav:disabled { opacity: .25; pointer-events: none; }
+#prev { left: 14px; }
+#next { right: 14px; }
+
+/* ── Dots ── */
+.dots {
+  position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+  display: flex; gap: 7px; align-items: center; z-index: 300;
+  background: rgba(250,249,246,.88); backdrop-filter: blur(8px);
+  padding: 7px 14px; border-radius: 30px;
+  border: 1px solid var(--cream-3); box-shadow: var(--shadow);
+}
+.dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--gray-2); cursor: pointer; transition: all .25s;
+}
+.dot.on { background: var(--coral); width: 22px; border-radius: 4px; }
+.dot:hover:not(.on) { background: var(--brown-2); }
+
+/* ── Kbd hint ── */
+.hint {
+  position: fixed; bottom: 18px; right: 22px; z-index: 300;
+  font-size: 11px; color: var(--gray); font-family: var(--mono);
+  display: flex; gap: 6px; align-items: center;
+}
+kbd {
+  background: var(--cream-2); border: 1px solid var(--cream-3);
+  border-radius: 3px; padding: 1px 6px; font-size: 10px;
+  font-family: var(--mono); color: var(--brown-2);
+}
+
+/* ── Progress bar ── */
+.progress {
+  position: fixed; top: 52px; left: 0; right: 0; height: 2px;
+  background: var(--cream-3); z-index: 200;
+}
+.progress-fill {
+  height: 100%; background: var(--coral);
+  transition: width .4s cubic-bezier(.4,0,.2,1);
+}
+
+/* ── Responsive ── */
+@media(max-width:680px) {
+  .slide { padding: 36px 24px 40px; }
+  .slide-hero .slide-title { font-size: 32px; }
+  .slide-title { font-size: 22px; }
+  #prev { left: 6px; }
+  #next { right: 6px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Top Bar -->
+<div class="top-bar">
+  <div class="logo">
+    <div class="logo-mark">
+      <svg viewBox="0 0 20 20"><path d="M10 2L2 18h16L10 2zm0 4.5L14.5 16h-9L10 6.5z"/></svg>
+    </div>
+    <span class="logo-text">SDD · <em>Harness Engineering</em></span>
+  </div>
+  <span class="counter" id="counter">1 / 15</span>
+</div>
+<div class="progress"><div class="progress-fill" id="progress-fill" style="width:6.67%"></div></div>
+
+<!-- Stage -->
+<div class="stage">
+<div class="carousel" id="carousel">
+
+<!-- ══════════════════════════════════════════
+     SLIDE 01 — HERO
+════════════════════════════════════════════ -->
+<div class="slide slide-hero active" data-i="0">
+  <div class="tag">SDD · Software Development Department</div>
+  <div class="slide-title">Harness<br>Engineering</div>
+  <div class="slide-lead">
+    Kiến trúc tự quản lý toàn diện — hooks, agents, memory, orchestration, safety gates.
+    Tất cả hoạt động khép kín, không cần user intervention trong vòng lặp thường ngày.
+  </div>
+  <hr>
+  <div class="stats">
+    <div class="stat"><div class="stat-n">17</div><div class="stat-l">Nhóm kỹ thuật</div></div>
+    <div class="stat"><div class="stat-n">12</div><div class="stat-l">Lifecycle Hooks</div></div>
+    <div class="stat"><div class="stat-n">31</div><div class="stat-l">Specialized Agents</div></div>
+    <div class="stat"><div class="stat-n">112<span style="font-size:.55em">+</span></div><div class="stat-l">Skills</div></div>
+    <div class="stat"><div class="stat-n">3</div><div class="stat-l">Memory Tiers</div></div>
+    <div class="stat"><div class="stat-n">13</div><div class="stat-l">Rule Files</div></div>
+  </div>
+  <hr>
+  <div style="display:flex;flex-wrap:wrap;gap:8px;">
+    <span class="badge b-coral">Hook Orchestration</span>
+    <span class="badge b-coral">Session Lifecycle</span>
+    <span class="badge b-coral">State Checkpoint</span>
+    <span class="badge b-coral">Memory 3-Tier</span>
+    <span class="badge b-coral">Auto-Dream</span>
+    <span class="badge b-coral">Audit Trail</span>
+    <span class="badge b-coral">Multi-Agent Orchestration</span>
+    <span class="badge b-coral">Fork-Join Parallel</span>
+    <span class="badge b-coral">Quality Gates</span>
+    <span class="badge b-coral">Status Line</span>
+    <span class="badge b-coral">Agent Hierarchy</span>
+    <span class="badge b-coral">Context Management</span>
+    <span class="badge b-coral">Safety Guard</span>
+    <span class="badge b-coral">Self-Managing Loop</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SLIDE 02 — HOOK ORCHESTRATION
+════════════════════════════════════════════ -->
+<div class="slide" data-i="1">
+  <div class="tag">Kỹ thuật 01</div>
+  <div class="slide-title">Hook Orchestration</div>
+  <div class="slide-lead">6 event types — mỗi event có nhiều handler tạo vòng kiểm soát tự động quanh mọi hành động của agent.</div>
+
+  <table class="tbl">
+    <thead>
+      <tr>
+        <th style="width:190px">Event</th>
+        <th style="width:220px">Hook File(s)</th>
+        <th>Harness Pattern</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="mono">SessionStart</span></td>
+        <td>session-start.sh<br>detect-gaps.sh</td>
+        <td>Load sprint context, git activity; phát hiện project mới, docs thiếu; recover session trước từ active.md</td>
+      </tr>
+      <tr>
+        <td><span class="mono">PreToolUse (Bash)</span></td>
+        <td>bash-guard.sh<br>validate-commit.sh<br>validate-push.sh</td>
+        <td>Hard-block lệnh nguy hiểm; 4-layer commit quality gate; kiểm tra protected branch trước push</td>
+      </tr>
+      <tr>
+        <td><span class="mono">PreToolUse (Write/Edit)</span></td>
+        <td>pre-refactor-impact.sh</td>
+        <td>Nhắc chạy /gitnexus-impact-analysis trước khi sửa bất kỳ file trong src/</td>
+      </tr>
+      <tr>
+        <td><span class="mono">PostToolUse (Write/Edit)</span></td>
+        <td>validate-assets.sh</td>
+        <td>Kiểm tra naming convention và JSON validity cho file trong assets/</td>
+      </tr>
+      <tr>
+        <td><span class="mono">PreCompact</span></td>
+        <td>pre-compact.sh</td>
+        <td>Dump toàn bộ session state (active.md, modified files, WIP docs) vào conversation trước khi context bị nén</td>
+      </tr>
+      <tr>
+        <td><span class="mono">Stop</span></td>
+        <td>session-stop.sh</td>
+        <td>Archive session summary → production/session-logs/; kiểm tra 3 điều kiện auto-dream; trigger nếu thỏa</td>
+      </tr>
+      <tr>
+        <td><span class="mono">SubagentStart</span></td>
+        <td>log-agent.sh</td>
+        <td>Ghi JSONL audit log cho mọi lần spawn subagent — không agent nào có thể khởi động mà không bị log</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout">
+    <strong>Core Pattern:</strong> User action → Event fired → Hook intercepts → Validate / Block / Log → Continue or Abort.<br>
+    Toàn bộ flow tự động — agent không thể bypass nếu không vô hiệu hóa hook trong settings.json.
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SLIDE 03 — SESSION LIFECYCLE
+════════════════════════════════════════════ -->
+<div class="slide" data-i="2">
+  <div class="tag">Kỹ thuật 02</div>
+  <div class="slide-title">Session Lifecycle Management</div>
+  <div class="slide-lead">Toàn bộ vòng đời session được quản lý tự động từ khởi động đến lưu trữ trạng thái — không cần user trigger.</div>
+
+  <div class="col2">
+    <div>
+      <div class="section-label" style="color:var(--coral);">Session Start</div>
+      <div class="flow">
+        <div class="flow-item">
+          <div class="flow-num">1</div>
+          <div class="flow-body">
+            <div class="flow-title">session-start.sh tự động chạy</div>
+            <div class="flow-desc">Hook bắt event SessionStart, không cần user gọi</div>
+          </div>
+        </div>
+        <div class="flow-item">
+          <div class="flow-num">2</div>
+          <div class="flow-body">
+            <div class="flow-title">Phát hiện &amp; preview active.md</div>
+            <div class="flow-desc">Nếu tồn tại session trước → hiển thị recap ngắn gọn</div>
+          </div>
+        </div>
+        <div class="flow-item">
+          <div class="flow-num">3</div>
+          <div class="flow-body">
+            <div class="flow-title">detect-gaps.sh kiểm tra project</div>
+            <div class="flow-desc">Project mới (gợi ý /start)? Thiếu docs khi đã có code?</div>
+          </div>
+        </div>
+        <div class="flow-item">
+          <div class="flow-num">4</div>
+          <div class="flow-body">
+            <div class="flow-title">Load MEMORY.md (Tier 1)</div>
+            <div class="flow-desc">Luôn được load, cung cấp toàn bộ project context</div>
+          </div>
+        </div>
+        <div class="flow-item">
+          <div class="flow-num">5</div>
+          <div class="flow-body">
+            <div class="flow-title">Hiển thị git activity + sprint</div>
+            <div class="flow-desc">Tóm tắt commits gần nhất, sprint đang chạy</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="section-label">Session Stop</div>
+      <div class="flow">
+        <div class="flow-item">
+          <div class="flow-num dim">1</div>
+          <div class="flow-body">
+            <div class="flow-title">session-stop.sh tự động chạy</div>
+            <div class="flow-desc">Hook bắt event Stop khi session kết thúc</div>
+          </div>
+        </div>
+        <div class="flow-item">
+          <div class="flow-num dim">2</div>
+          <div class="flow-body">
+            <div class="flow-title">Tạo session summary</div>
+            <div class="flow-desc">Agents dùng, commits, uncommitted files</div>
+          </div>
+        </div>
+        <div class="flow-item">
+          <div class="flow-num dim">3</div>
+          <div class="flow-body">
+            <div class="flow-title">Archive → session-logs/</div>
+            <div class="flow-desc">session-log.md + agent-audit.jsonl</div>
+          </div>
+        </div>
+        <div class="flow-item">
+          <div class="flow-num dim">4</div>
+          <div class="flow-body">
+            <div class="flow-title">Kiểm tra 3 điều kiện</div>
+            <div class="flow-desc">MEMORY &gt; 40 lines? Session thứ 5? File stale 7+ ngày?</div>
+          </div>
+        </div>
+        <div class="flow-item">
+          <div class="flow-num dim">5</div>
+          <div class="flow-body">
+            <div class="flow-title">Trigger auto-dream.sh nếu cần</div>
+            <div class="flow-desc">Memory consolidation chạy tự động trong nền</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SLIDE 04 — STATE CHECKPOINT
+════════════════════════════════════════════ -->
+<div class="slide" data-i="3">
+  <div class="tag">Kỹ thuật 03</div>
+  <div class="slide-title">State Checkpoint &amp; Recovery</div>
+  <div class="slide-lead"><code style="font-family:var(--mono);font-size:12px;background:var(--cream-2);padding:2px 7px;border-radius:4px;">production/session-state/active.md</code> — recovery point tự động, gitignored, luôn sẵn sàng sau crash hoặc /clear.</div>
+
+  <div class="col2" style="gap:24px;align-items:start">
+    <div>
+      <div class="section-label">Cấu trúc file</div>
+      <pre><span class="c-cmt">---</span>
+<span class="c-key">session</span>:    <span class="c-val">session-abc123</span>
+<span class="c-key">branch</span>:     <span class="c-val">main</span>
+<span class="c-key">tags</span>:       <span class="c-str">[feature, backend]</span>
+<span class="c-key">started</span>:    <span class="c-val">2026-04-15T10:00:00</span>
+<span class="c-key">lastActive</span>: <span class="c-val">2026-04-15T11:30:00</span>
+<span class="c-cmt">---
+
+&lt;!-- STATUS --&gt;</span>
+<span class="c-key">Epic</span>:    <span class="c-val">User Authentication</span>
+<span class="c-key">Feature</span>: <span class="c-val">JWT Refresh Token</span>
+<span class="c-key">Task</span>:    <span class="c-val">Write unit tests</span>
+
+<span class="c-cmt">## Progress</span>
+<span class="c-str">- [x] Schema migration</span>
+<span class="c-str">- [x] POST /auth/refresh</span>
+<span class="c-str">- [ ] Unit tests  ← next step</span>
+
+<span class="c-cmt">## Open Questions</span>
+<span class="c-str">- Confirm token TTL với team</span></pre>
+    </div>
+    <div>
+      <div class="section-label">Recovery Flow</div>
+      <div class="flow">
+        <div class="flow-item">
+          <div class="flow-num">1</div>
+          <div class="flow-body">
+            <div class="flow-title">Session crash / /clear / compaction</div>
+            <div class="flow-desc">active.md vẫn tồn tại trên disk — không bị xóa</div>
+          </div>
+        </div>
+        <div class="flow-item">
+          <div class="flow-num">2</div>
+          <div class="flow-body">
+            <div class="flow-title">session-start.sh phát hiện file</div>
+            <div class="flow-desc">Preview nội dung, hiển thị Epic/Feature/Task breadcrumb</div>
+          </div>
+        </div>
+        <div class="flow-item">
+          <div class="flow-num">3</div>
+          <div class="flow-body">
+            <div class="flow-title">Đọc file đầy đủ để recover context</div>
+            <div class="flow-desc">Modified files, open questions, architecture decisions</div>
+          </div>
+        </div>
+        <div class="flow-item">
+          <div class="flow-num">4</div>
+          <div class="flow-body">
+            <div class="flow-title">Tiếp tục từ task còn dở</div>
+            <div class="flow-desc">Không mất context, không cần giải thích lại từ đầu</div>
+          </div>
+        </div>
+      </div>
+      <div class="callout" style="margin-top:16px;">
+        <strong>Nguyên tắc:</strong> File là bộ nhớ — không phải conversation history. Conversation history là phụ, file trên disk mới là thật.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SLIDE 05 — MEMORY SYSTEM
+════════════════════════════════════════════ -->
+<div class="slide" data-i="4">
+  <div class="tag">Kỹ thuật 04</div>
+  <div class="slide-title">Memory System — 3-Tier Architecture</div>
+  <div class="slide-lead">Context là tài nguyên quý nhất. Memory phân tầng giúp tối ưu token usage mà vẫn đảm bảo đúng thông tin đúng lúc.</div>
+
+  <div style="display:flex;flex-direction:column;gap:12px;">
+    <div class="mem-tier" style="border-color:rgba(212,82,26,.3)">
+      <div class="mem-head">
+        <div class="mem-dot d-coral"></div>
+        <span class="mem-head-label">Tier 1 — Always Loaded (mọi session)</span>
+        <span class="mem-rule">HARD LIMIT: ≤ 50 lines</span>
+      </div>
+      <div class="mem-body">
+        <span class="badge b-coral">MEMORY.md — Master Index</span>
+        <span style="font-size:12px;color:var(--gray);align-self:center;">→ Pointer đến Tier 2 files · Auto-trigger /dream khi &gt;40 lines</span>
+      </div>
+    </div>
+
+    <div class="mem-tier" style="border-color:rgba(232,160,48,.3)">
+      <div class="mem-head">
+        <div class="mem-dot d-amber"></div>
+        <span class="mem-head-label">Tier 2 — On-Demand (max 3 files/session, load bằng Relevance Gate)</span>
+        <span class="mem-rule">3-Question Gate</span>
+      </div>
+      <div class="mem-body">
+        <span class="badge b-gray">annotations.md</span>
+        <span class="badge b-gray">project_tech_decisions.md</span>
+        <span class="badge b-gray">user_role.md</span>
+        <span class="badge b-gray">feedback_rules.md</span>
+        <span class="badge b-gray">reference_links.md</span>
+        <span class="badge b-gray">gitnexus-registry.md</span>
+      </div>
+    </div>
+
+    <div class="mem-tier">
+      <div class="mem-head">
+        <div class="mem-dot d-gray"></div>
+        <span class="mem-head-label">Tier 3 — Search-Only (KHÔNG bao giờ load chủ động)</span>
+        <span class="mem-rule">Grep only khi user yêu cầu</span>
+      </div>
+      <div class="mem-body">
+        <span class="badge b-dark">archive/sessions/</span>
+        <span class="badge b-dark">archive/decisions/</span>
+        <span class="badge b-dark">archive/dreams/</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">3-Question Relevance Gate — phải qua cả 3 mới được load Tier 2</div>
+    <div style="display:flex;flex-direction:column;gap:8px;">
+      <div style="display:flex;gap:10px;font-size:13px;align-items:flex-start;">
+        <span class="badge b-coral" style="flex-shrink:0;">Q1</span>
+        <span style="color:var(--brown-2);">Task này <strong>CÓ THỰC SỰ</strong> cần nội dung file này? Keyword match ≠ load. Nếu không nói được dùng fact nào → skip.</span>
+      </div>
+      <div style="display:flex;gap:10px;font-size:13px;align-items:flex-start;">
+        <span class="badge b-coral" style="flex-shrink:0;">Q2</span>
+        <span style="color:var(--brown-2);">Tôi sẽ dùng nó trong 3 agent turns tới không? "Có thể sau" = KHÔNG load.</span>
+      </div>
+      <div style="display:flex;gap:10px;font-size:13px;align-items:flex-start;">
+        <span class="badge b-coral" style="flex-shrink:0;">Q3</span>
+        <span style="color:var(--brown-2);">Một subsection (line range) có đủ không? Nếu có → đọc từng đoạn thay vì cả file.</span>
+      </div>
+    </div>
+  </div>
+
+  <table class="tbl">
+    <thead><tr><th>Task Type</th><th>Load</th><th>Skip</th></tr></thead>
+    <tbody>
+      <tr><td>Bug fix in existing code</td><td><span class="badge b-coral">annotations.md</span></td><td>user_role, tech_decisions</td></tr>
+      <tr><td>New API / SDK integration</td><td><span class="badge b-coral">annotations.md</span> <span class="badge b-coral">reference_links.md</span></td><td>gitnexus-registry</td></tr>
+      <tr><td>Architecture decision</td><td><span class="badge b-coral">project_tech_decisions.md</span></td><td>feedback_rules, reference_links</td></tr>
+      <tr><td>Code review / PR feedback</td><td><span class="badge b-coral">feedback_rules.md</span></td><td>project_tech_decisions, gitnexus</td></tr>
+      <tr><td>Codebase impact analysis</td><td><span class="badge b-coral">gitnexus-registry.md</span></td><td>all others</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SLIDE 06 — AUTO-DREAM
+════════════════════════════════════════════ -->
+<div class="slide" data-i="5">
+  <div class="tag">Kỹ thuật 05</div>
+  <div class="slide-title">Auto-Dream — Memory Consolidation</div>
+  <div class="slide-lead">5-phase reflective cleanup tự động ngăn memory bloat và dữ liệu stale tích lũy qua nhiều session.</div>
+
+  <div class="col2" style="gap:28px;align-items:start">
+    <div>
+      <div class="section-label">5 Execution Phases</div>
+      <div class="flow">
+        <div class="flow-item">
+          <div class="flow-num">1</div>
+          <div class="flow-body">
+            <div class="flow-title">Orient</div>
+            <div class="flow-desc">Đánh giá sức khỏe memory directory, đọc MEMORY.md, kiểm tra topic files hiện có, xác định line count</div>
+          </div>
+        </div>
+        <div class="flow-item">
+          <div class="flow-num">2</div>
+          <div class="flow-body">
+            <div class="flow-title">Detect</div>
+            <div class="flow-desc">Tìm file stale, entries sai, broken links trong MEMORY.md, duplicated memories, drifted facts</div>
+          </div>
+        </div>
+        <div class="flow-item">
+          <div class="flow-num">3</div>
+          <div class="flow-body">
+            <div class="flow-title">Consolidate</div>
+            <div class="flow-desc">Merge memories trùng lặp, update stale facts, tạo Tier 2 files mới nếu có topic chưa được ghi nhận</div>
+          </div>
+        </div>
+        <div class="flow-item">
+          <div class="flow-num">4</div>
+          <div class="flow-body">
+            <div class="flow-title">Prune</div>
+            <div class="flow-desc">Xóa orphaned MEMORY.md entries, sửa YAML frontmatter violations, trim MEMORY.md về &lt;40 lines</div>
+          </div>
+        </div>
+        <div class="flow-item">
+          <div class="flow-num">5</div>
+          <div class="flow-body">
+            <div class="flow-title">Archive</div>
+            <div class="flow-desc">Di chuyển file cũ → archive/decisions/; ghi log actions vào archive/dreams/</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <div class="card">
+        <div class="card-title">3 Auto-trigger Conditions</div>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div style="display:flex;gap:10px;align-items:center;font-size:13px;">
+            <span style="font-size:16px;">📏</span>
+            <span style="color:var(--brown-2);">MEMORY.md vượt <strong>40 lines</strong> (tiệm cận hard limit 50)</span>
+          </div>
+          <div style="display:flex;gap:10px;align-items:center;font-size:13px;">
+            <span style="font-size:16px;">🔢</span>
+            <span style="color:var(--brown-2);">Mỗi <strong>session thứ 5</strong> — maintenance định kỳ</span>
+          </div>
+          <div style="display:flex;gap:10px;align-items:center;font-size:13px;">
+            <span style="font-size:16px;">🕰️</span>
+            <span style="color:var(--brown-2);">3+ Tier 2 files không truy cập <strong>7+ ngày</strong></span>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">Invocation Paths</div>
+        <div style="display:flex;flex-direction:column;gap:8px;font-size:13px;color:var(--brown-2);">
+          <div>🔄 <strong>Auto:</strong> session-stop.sh → conditions met → trigger</div>
+          <div>💬 <strong>Manual:</strong> /dream slash command</div>
+          <div>📋 <strong>Overflow:</strong> MEMORY.md lint fail</div>
+        </div>
+      </div>
+      <div class="callout">
+        <strong>Fail-open rule:</strong> Nếu auto-dream fail/timeout → log vào active.md và tiếp tục session. Không bao giờ block foreground task.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SLIDE 07 — AUDIT TRAIL
+════════════════════════════════════════════ -->
+<div class="slide" data-i="6">
+  <div class="tag">Kỹ thuật 06</div>
+  <div class="slide-title">Agent Audit Trail — Structured Logging</div>
+  <div class="slide-lead">Mọi subagent invocation được ghi lại tự động — machine-queryable JSONL và human-readable log song song.</div>
+
+  <div class="col2" style="gap:24px;align-items:start">
+    <div>
+      <div class="section-label">JSONL Format (agent-audit.jsonl)</div>
+      <pre><span class="c-cmt">// production/session-logs/</span>
+{
+  <span class="c-key">"event"</span>:      <span class="c-str">"SubagentStart"</span>,
+  <span class="c-key">"timestamp"</span>:  <span class="c-str">"2026-04-15T10:30:00Z"</span>,
+  <span class="c-key">"session_id"</span>: <span class="c-str">"session-abc123"</span>,
+  <span class="c-key">"agent_id"</span>:   <span class="c-str">"agent-xyz789"</span>,
+  <span class="c-key">"agent_name"</span>: <span class="c-str">"backend-developer"</span>,
+  <span class="c-key">"branch"</span>:     <span class="c-str">"main"</span>
+}</pre>
+      <div style="margin-top:12px">
+        <div class="section-label">Text Format (agent-audit.log)</div>
+        <pre style="font-size:11px;line-height:1.6"><span class="c-val">2026-04-15T10:30:00Z</span> | <span class="c-str">backend-developer</span> (<span class="c-key">agent-xyz</span>) | branch: <span class="c-val">main</span> | session: <span class="c-val">abc123</span></pre>
+      </div>
+    </div>
+    <div>
+      <div class="section-label">Log Files</div>
+      <table class="tbl">
+        <thead><tr><th>File</th><th>Format</th><th>Dùng để</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><span class="mono">agent-audit.jsonl</span></td>
+            <td>JSONL</td>
+            <td>jq query, analytics, audit</td>
+          </tr>
+          <tr>
+            <td><span class="mono">agent-audit.log</span></td>
+            <td>Text</td>
+            <td>Human quick scan</td>
+          </tr>
+          <tr>
+            <td><span class="mono">session-log.md</span></td>
+            <td>Markdown</td>
+            <td>Session stats tổng hợp</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="callout" style="margin-top:16px;">
+        <strong>Guarantee:</strong> Hook <code style="font-family:var(--mono);font-size:11px">SubagentStart</code> bắt mọi invocation qua Agent tool. Không agent nào spawn được mà không để lại audit record.
+      </div>
+      <div class="card" style="margin-top:14px;">
+        <div class="card-title">Queries có thể chạy</div>
+        <pre style="background:var(--brown);font-size:11px;line-height:1.7;margin-top:4px"><span class="c-cmt"># Đếm số lần mỗi agent được dùng</span>
+jq -r <span class="c-str">'.agent_name'</span> audit.jsonl | sort | uniq -c
+
+<span class="c-cmt"># Agent nào dùng nhiều nhất hôm nay</span>
+jq -r <span class="c-str">'select(.timestamp | startswith("2026-04-15"))'</span> \
+  audit.jsonl | jq -r <span class="c-str">'.agent_name'</span></pre>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SLIDE 08 — MULTI-AGENT ORCHESTRATION
+════════════════════════════════════════════ -->
+<div class="slide" data-i="7">
+  <div class="tag">Kỹ thuật 07</div>
+  <div class="slide-title">Multi-Agent Orchestration — Wave Execution</div>
+  <div class="slide-lead">Skill /orchestrate phân tích dependency, xây execution waves từ 27 agent domains, và trình bày kế hoạch cho user phê duyệt trước khi chạy.</div>
+
+  <div>
+    <div class="section-label">Execution Phases</div>
+    <div class="col2" style="gap:16px">
+      <div class="flow">
+        <div class="flow-item">
+          <div class="flow-num">1</div>
+          <div class="flow-body">
+            <div class="flow-title">Ground Phase</div>
+            <div class="flow-desc">Đọc CLAUDE.md, agent-roster.md, PRD, Architecture, technical decisions — xây context đầy đủ trước khi plan</div>
+          </div>
+        </div>
+        <div class="flow-item">
+          <div class="flow-num">2</div>
+          <div class="flow-body">
+            <div class="flow-title">Decompose &amp; Route</div>
+            <div class="flow-desc">Map task → 27 agent domains; xác định specialist cần thiết dựa trên domain routing table</div>
+          </div>
+        </div>
+        <div class="flow-item">
+          <div class="flow-num">3</div>
+          <div class="flow-body">
+            <div class="flow-title">Dependency Analysis</div>
+            <div class="flow-desc">tech-director → all · data-engineer → backend · ux-designer → frontend · backend → frontend</div>
+          </div>
+        </div>
+      </div>
+      <div class="flow">
+        <div class="flow-item">
+          <div class="flow-num">4</div>
+          <div class="flow-body">
+            <div class="flow-title">Wave Planning → User Approval</div>
+            <div class="flow-desc">Present plan đầy đủ; KHÔNG execute cho đến khi được approve</div>
+          </div>
+        </div>
+        <div class="flow-item">
+          <div class="flow-num">5</div>
+          <div class="flow-body">
+            <div class="flow-title">Wave Execution</div>
+            <div class="flow-desc">Agents trong cùng wave chạy parallel; waves chạy sequential theo dependency order</div>
+          </div>
+        </div>
+        <div class="flow-item">
+          <div class="flow-num">6</div>
+          <div class="flow-body">
+            <div class="flow-title">Synthesize</div>
+            <div class="flow-desc">Combine outputs từ tất cả agents → unified result cho user</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="section-label">Wave Structure — Ví dụ Feature Authentication</div>
+    <div style="display:flex;flex-direction:column;gap:-1px;border-radius:var(--radius-sm);overflow:hidden;border:1px solid var(--cream-3);">
+      <div class="wave-row">
+        <div class="wave-label" style="background:#3D2B1F;">Wave 1</div>
+        <div class="wave-agents">
+          <span class="badge b-coral">cto</span>
+          <span class="badge b-coral">technical-director</span>
+        </div>
+        <div class="wave-note">Architecture sign-off trước. Parallel-safe với nhau.</div>
+      </div>
+      <div class="wave-row" style="border-top:1px solid var(--cream-3);">
+        <div class="wave-label" style="background:#5C4033;">Wave 2</div>
+        <div class="wave-agents">
+          <span class="badge b-gray">backend-developer</span>
+          <span class="badge b-gray">ux-designer</span>
+          <span class="badge b-gray">data-engineer</span>
+        </div>
+        <div class="wave-note">Independent domains — chạy song song.</div>
+      </div>
+      <div class="wave-row" style="border-top:1px solid var(--cream-3);">
+        <div class="wave-label" style="background:#8A7F76;">Wave 3</div>
+        <div class="wave-agents">
+          <span class="badge b-gray">frontend-developer</span>
+          <span class="badge b-gray">qa-tester</span>
+        </div>
+        <div class="wave-note">Phụ thuộc Wave 2 — chờ API contract &amp; design.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <strong>Parallel-safe combinations:</strong> ux-designer ↔ backend-developer · devops ↔ implementation · security ↔ design · analytics ↔ any
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SLIDE 09 — FORK-JOIN
+════════════════════════════════════════════ -->
+<div class="slide" data-i="8">
+  <div class="tag">Kỹ thuật 08</div>
+  <div class="slide-title">Fork-Join — Parallel Worktree Execution</div>
+  <div class="slide-lead">Git worktree isolation cho phép N agents làm việc hoàn toàn độc lập trên cùng codebase — không conflict, không chờ đợi.</div>
+
+  <div class="col2" style="gap:28px;align-items:start">
+    <div>
+      <div class="section-label">CLI Commands (fork-join.sh)</div>
+      <table class="tbl">
+        <thead><tr><th>Command</th><th>Action</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><span class="mono">fork &lt;branch&gt; &lt;dir&gt; [base]</span></td>
+            <td>Tạo git worktree riêng biệt từ base branch</td>
+          </tr>
+          <tr>
+            <td><span class="mono">status &lt;dir&gt;</span></td>
+            <td>Xem commits, staged files, modified files</td>
+          </tr>
+          <tr>
+            <td><span class="mono">list</span></td>
+            <td>Liệt kê tất cả active worktrees</td>
+          </tr>
+          <tr>
+            <td><span class="mono">join &lt;dir&gt; [--no-delete]</span></td>
+            <td>Merge branch về main, xóa worktree</td>
+          </tr>
+          <tr>
+            <td><span class="mono">purge &lt;dir&gt;</span></td>
+            <td>Force remove không merge (discard)</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="section-label" style="margin-top:20px;">Execution Workflow</div>
+      <div class="flow">
+        <div class="flow-item">
+          <div class="flow-num">1</div>
+          <div class="flow-body">
+            <div class="flow-title">fork → N isolated worktrees</div>
+            <div class="flow-desc">Mỗi unit có branch riêng, thư mục riêng</div>
+          </div>
+        </div>
+        <div class="flow-item">
+          <div class="flow-num">2</div>
+          <div class="flow-body">
+            <div class="flow-title">N subagents chạy đồng thời</div>
+            <div class="flow-desc">Mỗi agent trong worktree của mình — zero conflict</div>
+          </div>
+        </div>
+        <div class="flow-item">
+          <div class="flow-num">3</div>
+          <div class="flow-body">
+            <div class="flow-title">status → verify completion</div>
+            <div class="flow-desc">Kiểm tra từng worktree trước khi join</div>
+          </div>
+        </div>
+        <div class="flow-item">
+          <div class="flow-num">4</div>
+          <div class="flow-body">
+            <div class="flow-title">join → merge + cleanup</div>
+            <div class="flow-desc">Sequential merge về main; uncommitted changes block join</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="section-label">Parallel-Safe Decision Rule</div>
+      <div class="par-rule">
+        <div class="par-item no">
+          <span class="par-sym" style="color:#DC2626;">✕</span>
+          <div>
+            <strong>Cùng file</strong>
+            <div style="font-size:12px;color:var(--gray);margin-top:2px;">Hai agents cần write cùng 1 file → Sequential bắt buộc</div>
+          </div>
+        </div>
+        <div class="par-item no">
+          <span class="par-sym" style="color:#DC2626;">✕</span>
+          <div>
+            <strong>Output dependency</strong>
+            <div style="font-size:12px;color:var(--gray);margin-top:2px;">Agent B cần output của Agent A → Sequential bắt buộc</div>
+          </div>
+        </div>
+        <div class="par-item yes">
+          <span class="par-sym" style="color:#16A34A;">✓</span>
+          <div>
+            <strong>Không liên hệ</strong>
+            <div style="font-size:12px;color:var(--gray);margin-top:2px;">Khác file, khác domain, không phụ thuộc nhau → Parallel-safe → Fork!</div>
+          </div>
+        </div>
+      </div>
+      <div class="callout" style="margin-top:16px;">
+        <strong>Fallback:</strong> Nếu &lt;2 units parallelizable → suggest /orchestrate thay thế Fork-Join.
+      </div>
+      <div class="card" style="margin-top:14px;">
+        <div class="card-title">Worktree Isolation (Coordination Rule #10)</div>
+        <div style="font-size:13px;color:var(--brown-2);line-height:1.6;">
+          Dùng <code style="font-family:var(--mono);font-size:11px">isolation: "worktree"</code> cho bất kỳ task nào có nguy cơ break working code: large refactors (5+ files), experimental approaches, DB migrations.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SLIDE 10 — CODE QUALITY GATES
+════════════════════════════════════════════ -->
+<div class="slide" data-i="9">
+  <div class="tag">Kỹ thuật 09</div>
+  <div class="slide-title">Code Quality Gates</div>
+  <div class="slide-lead">validate-commit.sh chặn commit vi phạm ở 4 lớp kiểm tra. 13 path-specific rule files định nghĩa tiêu chuẩn từng domain.</div>
+
+  <div>
+    <div class="section-label">4-Layer Pre-Commit Validation</div>
+    <div class="flow">
+      <div class="flow-item">
+        <div class="flow-num">1</div>
+        <div class="flow-body">
+          <div class="flow-title">Design Doc Structure</div>
+          <div class="flow-desc">8 required sections có đủ không? — Overview · User Value · Requirements · Formulas · Edge Cases · Dependencies · Config Parameters · Acceptance Criteria</div>
+        </div>
+      </div>
+      <div class="flow-item">
+        <div class="flow-num">2</div>
+        <div class="flow-body">
+          <div class="flow-title">JSON Data Files</div>
+          <div class="flow-desc">Valid JSON syntax không? Naming convention theo chuẩn kebab-case không? Schema có được document không?</div>
+        </div>
+      </div>
+      <div class="flow-item">
+        <div class="flow-num">3</div>
+        <div class="flow-body">
+          <div class="flow-title">Hardcoded Values</div>
+          <div class="flow-desc">Magic strings/numbers trong src/ không? API keys, tokens bị commit vào version control không?</div>
+        </div>
+      </div>
+      <div class="flow-item">
+        <div class="flow-num">4</div>
+        <div class="flow-body">
+          <div class="flow-title">GitNexus Blast-Radius Scan</div>
+          <div class="flow-desc">Impact score của thay đổi có vượt ngưỡng an toàn không? Cần impact analysis từ /gitnexus-impact-analysis trước?</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="section-label">13 Path-Specific Rule Files</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px;">
+      <div class="card" style="padding:12px 14px">
+        <div style="font-size:11px;font-weight:700;color:var(--coral);margin-bottom:4px;font-family:var(--mono)">api-code.md</div>
+        <div style="font-size:11.5px;color:var(--gray);">Endpoints, validation, auth, versioning</div>
+      </div>
+      <div class="card" style="padding:12px 14px">
+        <div style="font-size:11px;font-weight:700;color:var(--coral);margin-bottom:4px;font-family:var(--mono)">database-code.md</div>
+        <div style="font-size:11.5px;color:var(--gray);">Schema, migrations, indexes, queries</div>
+      </div>
+      <div class="card" style="padding:12px 14px">
+        <div style="font-size:11px;font-weight:700;color:var(--coral);margin-bottom:4px;font-family:var(--mono)">frontend-code.md</div>
+        <div style="font-size:11.5px;color:var(--gray);">Components, state, a11y, performance</div>
+      </div>
+      <div class="card" style="padding:12px 14px">
+        <div style="font-size:11px;font-weight:700;color:var(--coral);margin-bottom:4px;font-family:var(--mono)">secrets-config.md</div>
+        <div style="font-size:11.5px;color:var(--gray);">.env, tokens, forbidden patterns</div>
+      </div>
+      <div class="card" style="padding:12px 14px">
+        <div style="font-size:11px;font-weight:700;color:var(--coral);margin-bottom:4px;font-family:var(--mono)">test-standards.md</div>
+        <div style="font-size:11.5px;color:var(--gray);">Coverage, naming, assertions</div>
+      </div>
+      <div class="card" style="padding:12px 14px">
+        <div style="font-size:11px;font-weight:700;color:var(--coral);margin-bottom:4px;font-family:var(--mono)">ai-code.md</div>
+        <div style="font-size:11.5px;color:var(--gray);">ML inference, model params, debug</div>
+      </div>
+      <div class="card" style="padding:12px 14px">
+        <div style="font-size:11px;font-weight:700;color:var(--coral);margin-bottom:4px;font-family:var(--mono)">network-code.md</div>
+        <div style="font-size:11.5px;color:var(--gray);">WebSocket, real-time, protocols</div>
+      </div>
+      <div class="card" style="padding:12px 14px">
+        <div style="font-size:11px;font-weight:700;color:var(--coral);margin-bottom:4px;font-family:var(--mono)">prototype-code.md</div>
+        <div style="font-size:11.5px;color:var(--gray);">Throwaway — isolated từ src/</div>
+      </div>
+      <div class="card" style="padding:12px 14px">
+        <div style="font-size:11px;font-weight:700;color:var(--coral);margin-bottom:4px;font-family:var(--mono)">+ 5 more</div>
+        <div style="font-size:11.5px;color:var(--gray);">data-files, design-docs, git-push, src-code, ui-code</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SLIDE 11 — STATUS LINE
+════════════════════════════════════════════ -->
+<div class="slide" data-i="10">
+  <div class="tag">Kỹ thuật 10</div>
+  <div class="slide-title">Real-time Context Awareness — Status Line</div>
+  <div class="slide-lead">statusline.sh cung cấp single-line JSON display cập nhật liên tục, giúp agent luôn biết trạng thái hiện tại mà không cần đọc file.</div>
+
+  <div>
+    <div class="section-label">Live Output Example</div>
+    <div style="background:#2C1D15;border-radius:var(--radius-sm);padding:18px 24px;font-family:var(--mono);font-size:14px;color:#F0E8E0;letter-spacing:.3px;display:flex;gap:16px;flex-wrap:wrap;align-items:center;">
+      <span><span style="color:var(--coral-2);font-weight:700;">ctx: 42%</span></span>
+      <span style="color:rgba(255,255,255,.2);">│</span>
+      <span style="color:#7DCFB6;">claude-sonnet-4-6</span>
+      <span style="color:rgba(255,255,255,.2);">│</span>
+      <span style="color:#A8D89A;">Pre-Production</span>
+      <span style="color:rgba(255,255,255,.2);">│</span>
+      <span style="color:rgba(255,255,255,.7);">Auth <span style="color:rgba(255,255,255,.3);">›</span> JWT <span style="color:rgba(255,255,255,.3);">›</span> Unit Tests</span>
+    </div>
+  </div>
+
+  <div class="col2" style="gap:24px;align-items:start">
+    <div>
+      <div class="section-label">4 Display Segments</div>
+      <table class="tbl">
+        <thead><tr><th>Segment</th><th>Source</th><th>Ý nghĩa</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><span class="mono">ctx: 42%</span></td>
+            <td>Hook JSON input</td>
+            <td>% context window đã dùng → biết khi nào cần compact</td>
+          </tr>
+          <tr>
+            <td><span class="mono">model name</span></td>
+            <td>Hook JSON input</td>
+            <td>Model đang chạy session (Opus/Sonnet/Haiku)</td>
+          </tr>
+          <tr>
+            <td><span class="mono">stage</span></td>
+            <td>Auto-detect từ artifacts</td>
+            <td>Giai đoạn project hiện tại (5 stages)</td>
+          </tr>
+          <tr>
+            <td><span class="mono">breadcrumb</span></td>
+            <td>active.md STATUS block</td>
+            <td>Epic › Feature › Task đang làm</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div>
+      <div class="section-label">Auto-detect Production Stage</div>
+      <div class="phase-row">
+        <div class="phase">
+          <div class="phase-n">1</div>
+          <div class="phase-l">Concept</div>
+        </div>
+        <div class="phase">
+          <div class="phase-n">2</div>
+          <div class="phase-l">Systems Design</div>
+        </div>
+        <div class="phase">
+          <div class="phase-n">3</div>
+          <div class="phase-l">Tech Setup</div>
+        </div>
+        <div class="phase active-ph">
+          <div class="phase-n" style="color:var(--coral);">4</div>
+          <div class="phase-l">Pre-Production</div>
+        </div>
+        <div class="phase">
+          <div class="phase-n">5</div>
+          <div class="phase-l">Production</div>
+        </div>
+      </div>
+      <div class="callout" style="margin-top:14px;">
+        Stage được phát hiện tự động dựa trên artifacts: có PRD? Architecture? CI/CD? Có deployments? — không cần user khai báo.
+      </div>
+      <div class="card" style="margin-top:14px;">
+        <div class="card-title">Input Format</div>
+        <pre style="background:var(--brown);font-size:11px;line-height:1.7;margin-top:4px">{
+  <span class="c-key">"context_tokens_used"</span>: <span class="c-val">42000</span>,
+  <span class="c-key">"context_tokens_max"</span>:  <span class="c-val">100000</span>,
+  <span class="c-key">"model"</span>: <span class="c-str">"claude-sonnet-4-6"</span>,
+  <span class="c-key">"session_id"</span>: <span class="c-str">"abc123"</span>
+}</pre>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SLIDE 12 — AGENT HIERARCHY
+════════════════════════════════════════════ -->
+<div class="slide" data-i="11">
+  <div class="tag">Kỹ thuật 11</div>
+  <div class="slide-title">3-Tier Agent Hierarchy — 31 Specialized Agents</div>
+  <div class="slide-lead">Mỗi agent có owned documents, read-only references, escalation path, và collaboration protocol được định nghĩa rõ ràng.</div>
+
+  <div style="display:flex;flex-direction:column;gap:12px;">
+    <div class="tier-block">
+      <div class="tier-head">
+        <span class="tier-lv t1">Tier 1</span>
+        <span class="tier-name">Leadership — Strategic Decisions &amp; Cross-system Authority</span>
+        <span class="tier-model">claude-opus-4-6</span>
+      </div>
+      <div class="tier-pills">
+        <span class="pill hi">cto</span>
+        <span class="pill hi">technical-director</span>
+        <span class="pill hi">producer</span>
+        <span style="font-size:12px;color:var(--gray);align-self:center;margin-left:4px;">Architecture decisions · Technology evaluations · Cross-system conflicts · Sprint planning</span>
+      </div>
+    </div>
+
+    <div class="tier-block">
+      <div class="tier-head">
+        <span class="tier-lv t2">Tier 2</span>
+        <span class="tier-name">Department Leads — Domain Authority &amp; Escalation Targets</span>
+        <span class="tier-model">claude-sonnet-4-6</span>
+      </div>
+      <div class="tier-pills">
+        <span class="pill">product-manager</span>
+        <span class="pill">lead-programmer</span>
+        <span class="pill">ux-designer</span>
+        <span class="pill">qa-lead</span>
+        <span class="pill">release-manager</span>
+        <span class="pill">investigator</span>
+        <span class="pill">verifier</span>
+        <span class="pill">solver</span>
+      </div>
+    </div>
+
+    <div class="tier-block">
+      <div class="tier-head">
+        <span class="tier-lv t3">Tier 3</span>
+        <span class="tier-name">Specialists — Implementation &amp; Execution</span>
+        <span class="tier-model">sonnet / haiku</span>
+      </div>
+      <div class="tier-pills">
+        <span class="pill">frontend-developer</span>
+        <span class="pill">backend-developer</span>
+        <span class="pill">fullstack-developer</span>
+        <span class="pill">data-engineer</span>
+        <span class="pill">ai-programmer</span>
+        <span class="pill">analytics-engineer</span>
+        <span class="pill">devops-engineer</span>
+        <span class="pill">network-programmer</span>
+        <span class="pill">tools-programmer</span>
+        <span class="pill">security-engineer</span>
+        <span class="pill">qa-tester</span>
+        <span class="pill">accessibility-specialist</span>
+        <span class="pill">ui-programmer</span>
+        <span class="pill">ui-spec-designer</span>
+        <span class="pill">ux-researcher</span>
+        <span class="pill">tech-writer</span>
+        <span class="pill">performance-analyst</span>
+        <span class="pill">mobile-developer</span>
+        <span class="pill">prototyper</span>
+        <span class="pill">community-manager</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="col2" style="gap:16px">
+    <div class="card">
+      <div class="card-title">Delegation Rules</div>
+      <div style="display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--brown-2);">
+        <div>↓ CTO delegates to: technical-director, product-manager, producer</div>
+        <div>↓ Producer delegates to: any agent trong domain</div>
+        <div>↑ Conflict escalation: lead-programmer → technical-director</div>
+        <div>↑ Schedule conflict: producer → cto</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Common Workflow Patterns</div>
+      <div style="display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--brown-2);">
+        <div>Pattern 0: Multi-agent via /orchestrate</div>
+        <div>Pattern 1: Parallel front/backend (fork-join)</div>
+        <div>Pattern 2: Sequential design → impl → test</div>
+        <div>Pattern 3: All impl → tech-writer (docs last)</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SLIDE 13 — CONTEXT MANAGEMENT
+════════════════════════════════════════════ -->
+<div class="slide" data-i="12">
+  <div class="tag">Kỹ thuật 12</div>
+  <div class="slide-title">Context Management — Proactive Compaction</div>
+  <div class="slide-lead">Compact ở 60–70% — không đợi limit. File là bộ nhớ thật, conversation history chỉ là phụ.</div>
+
+  <div class="col2" style="gap:28px;align-items:start">
+    <div>
+      <div class="section-label">Context Budgets by Task Type</div>
+      <table class="tbl">
+        <thead><tr><th>Task Type</th><th>Budget</th></tr></thead>
+        <tbody>
+          <tr><td>Light (read / review)</td><td><span class="badge b-green">~3k tokens startup</span></td></tr>
+          <tr><td>Medium (implement feature)</td><td><span class="badge b-yellow">~8k tokens</span></td></tr>
+          <tr><td>Heavy (multi-system refactor)</td><td><span class="badge b-red">~15k tokens</span></td></tr>
+        </tbody>
+      </table>
+
+      <div class="section-label" style="margin-top:20px;">Compact Command</div>
+      <pre style="font-size:11.5px"><span class="c-cmt"># Focused compaction với context</span>
+/compact <span class="c-str">Focus on [task] —
+  sections 1-3 written to file,
+  working on section 4</span></pre>
+
+      <div class="section-label" style="margin-top:16px;">Recovery After Compact</div>
+      <div class="flow">
+        <div class="flow-item">
+          <div class="flow-num">1</div>
+          <div class="flow-body">
+            <div class="flow-title">Đọc production/session-state/active.md</div>
+            <div class="flow-desc">Toàn bộ state ở đây — không cần đọc conversation</div>
+          </div>
+        </div>
+        <div class="flow-item">
+          <div class="flow-num">2</div>
+          <div class="flow-body">
+            <div class="flow-title">Đọc file đang làm dở</div>
+            <div class="flow-desc">Partial reads nếu chỉ cần một section cụ thể</div>
+          </div>
+        </div>
+        <div class="flow-item">
+          <div class="flow-num">3</div>
+          <div class="flow-body">
+            <div class="flow-title">Tiếp tục từ section tiếp theo</div>
+            <div class="flow-desc">Không phải làm lại, không mất decisions đã có</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="section-label">Load Decision Matrix</div>
+      <table class="tbl">
+        <thead><tr><th>Task</th><th>Load</th><th>Skip</th></tr></thead>
+        <tbody>
+          <tr><td>Bug fix</td><td><span class="badge b-coral">annotations</span></td><td>user_role, tech_decisions</td></tr>
+          <tr><td>New API integration</td><td><span class="badge b-coral">annotations</span> <span class="badge b-coral">reference_links</span></td><td>gitnexus</td></tr>
+          <tr><td>Architecture decision</td><td><span class="badge b-coral">tech_decisions</span></td><td>feedback_rules</td></tr>
+          <tr><td>Code review</td><td><span class="badge b-coral">feedback_rules</span></td><td>tech_decisions</td></tr>
+          <tr><td>Impact analysis</td><td><span class="badge b-coral">gitnexus</span></td><td>all others</td></tr>
+          <tr><td>Style / UX request</td><td><span class="badge b-coral">user_role</span></td><td>all others</td></tr>
+          <tr><td>Unknown gotcha</td><td><span class="badge b-coral">annotations</span></td><td>all others</td></tr>
+        </tbody>
+      </table>
+
+      <div class="callout" style="margin-top:16px;">
+        <strong>Hard limits:</strong> Tier 2 cap = max 3 files/session. Nếu file thứ 4 cần thiết → summarize file ít dùng nhất thành 3 bullets và release khỏi context.
+      </div>
+      <div class="card" style="margin-top:14px;">
+        <div class="card-title">Compaction Preservation Checklist</div>
+        <div style="font-size:12.5px;color:var(--brown-2);line-height:1.8;">
+          ✓ Reference đến active.md<br>
+          ✓ Files đã modified trong session<br>
+          ✓ Architecture decisions + rationale<br>
+          ✓ Agent outcomes (success/fail/blocked)<br>
+          ✓ Test results (pass/fail counts)<br>
+          ✓ Unresolved blockers
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SLIDE 14 — SAFETY GUARD
+════════════════════════════════════════════ -->
+<div class="slide" data-i="13">
+  <div class="tag">Kỹ thuật 13</div>
+  <div class="slide-title">Safety Guard — bash-guard.sh</div>
+  <div class="slide-lead">2-level protection chạy tự động trước mọi Bash command — Hard Block không thể bypass, Soft Warn yêu cầu xác nhận.</div>
+
+  <div class="col2" style="gap:20px;align-items:start">
+    <div>
+      <div class="guard" style="border-color:#FCA5A5">
+        <div class="guard-head g-hard">🛑 HARD BLOCK — Abort Immediately</div>
+        <div class="guard-list">
+          <div class="guard-row">
+            <code>:(){ :|:& };:</code>
+            <span>Fork bomb — crash toàn bộ shell process tree</span>
+          </div>
+          <div class="guard-row">
+            <code>mkfs.*</code>
+            <span>Format disk/partition — không thể undo</span>
+          </div>
+          <div class="guard-row">
+            <code>dd if=/dev/zero</code>
+            <span>Overwrite data với zeros liên tục</span>
+          </div>
+          <div class="guard-row">
+            <code>crontab -r</code>
+            <span>Xóa toàn bộ cron jobs không có backup</span>
+          </div>
+          <div class="guard-row">
+            <code>rm -rf /</code>
+            <span>Xóa root filesystem</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="guard" style="border-color:#FCD34D">
+        <div class="guard-head g-soft">⚠ SOFT WARN — Ask Confirmation</div>
+        <div class="guard-list">
+          <div class="guard-row">
+            <code>DROP TABLE</code>
+            <span>Xóa database table — cần confirm schema backup</span>
+          </div>
+          <div class="guard-row">
+            <code>DROP DATABASE</code>
+            <span>Xóa toàn bộ database — irreversible trong prod</span>
+          </div>
+          <div class="guard-row">
+            <code>git reset --hard</code>
+            <span>Xóa uncommitted changes không thể recover</span>
+          </div>
+          <div class="guard-row">
+            <code>rm -rf /path/...</code>
+            <span>Xóa thư mục lớn — kiểm tra path trước</span>
+          </div>
+          <div class="guard-row">
+            <code>git push --force main</code>
+            <span>Force push lên protected branch</span>
+          </div>
+          <div class="guard-row">
+            <code>git push --force develop</code>
+            <span>Overwrite shared branch history</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col2" style="gap:16px">
+    <div class="card">
+      <div class="card-title">Risk Tier Assessment</div>
+      <div style="display:flex;flex-direction:column;gap:8px;font-size:13px;">
+        <div style="display:flex;gap:10px;align-items:center;">
+          <span class="badge b-green">Low</span>
+          <span style="color:var(--brown-2);">Reversible · local only · no shared state</span>
+        </div>
+        <div style="display:flex;gap:10px;align-items:center;">
+          <span class="badge b-yellow">Medium</span>
+          <span style="color:var(--brown-2);">Shared code · cần rollback plan</span>
+        </div>
+        <div style="display:flex;gap:10px;align-items:center;">
+          <span class="badge b-red">High</span>
+          <span style="color:var(--brown-2);">Destructive · prod impact · explicit approval required</span>
+        </div>
+      </div>
+    </div>
+    <div class="callout">
+      <strong>Nguyên tắc:</strong> Khi gặp obstacle, không dùng destructive actions để bypass. Tìm root cause và fix underlying issue. Chỉ dùng --no-verify, reset --hard khi user explicitly yêu cầu.
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SLIDE 15 — SELF-MANAGING LOOP
+════════════════════════════════════════════ -->
+<div class="slide" data-i="14">
+  <div class="tag">Tổng kết</div>
+  <div class="slide-title">Vòng lặp Tự quản lý — The Complete Harness</div>
+  <div class="slide-lead">17 kỹ thuật kết hợp thành một harness khép kín. Không cần user intervention vào lifecycle — chỉ cần focus vào việc thực sự.</div>
+
+  <div class="loop">
+    <div class="loop-step">
+      <div class="loop-icon">🚀</div>
+      <div class="loop-text"><strong>Session Start</strong> → session-start.sh load context · detect-gaps.sh phát hiện missing docs · active.md recovery nếu có session trước</div>
+    </div>
+    <div class="loop-arrow">↓</div>
+    <div class="loop-step">
+      <div class="loop-icon">🤖</div>
+      <div class="loop-text"><strong>Agent Spawned</strong> → log-agent.sh ghi JSONL audit record · SubagentStart event bắt mọi invocation</div>
+    </div>
+    <div class="loop-arrow">↓</div>
+    <div class="loop-step">
+      <div class="loop-icon">🔍</div>
+      <div class="loop-text"><strong>Code Edit (src/)</strong> → pre-refactor-impact.sh nhắc chạy impact analysis · kiểm tra blast-radius trước khi thay đổi</div>
+    </div>
+    <div class="loop-arrow">↓</div>
+    <div class="loop-step">
+      <div class="loop-icon">✅</div>
+      <div class="loop-text"><strong>Commit</strong> → validate-commit.sh chạy 4-layer quality gate: design docs · JSON validity · hardcoded values · blast-radius</div>
+    </div>
+    <div class="loop-arrow">↓</div>
+    <div class="loop-step">
+      <div class="loop-icon">📤</div>
+      <div class="loop-text"><strong>Push</strong> → validate-push.sh kiểm tra protected branch · warn trước khi push lên main/develop</div>
+    </div>
+    <div class="loop-arrow">↓</div>
+    <div class="loop-step">
+      <div class="loop-icon">🗜️</div>
+      <div class="loop-text"><strong>Context 60–70%</strong> → Proactive /compact · pre-compact.sh dump state vào conversation · active.md checkpoint cập nhật</div>
+    </div>
+    <div class="loop-arrow">↓</div>
+    <div class="loop-step">
+      <div class="loop-icon">💾</div>
+      <div class="loop-text"><strong>Session End</strong> → session-stop.sh archive session summary · kiểm tra 3 điều kiện · trigger auto-dream nếu cần</div>
+    </div>
+    <div class="loop-arrow">↓</div>
+    <div class="loop-step accent">
+      <div class="loop-icon">🔄</div>
+      <div class="loop-text" style="color:var(--coral);"><strong>Next Session</strong> → session-start.sh recover từ active.md → tiếp tục chính xác từ điểm dừng → vòng lặp bắt đầu lại</div>
+    </div>
+  </div>
+
+  <div class="col2" style="gap:16px">
+    <div class="card" style="background:var(--brown);border-color:var(--brown);">
+      <div class="card-title" style="color:rgba(255,255,255,.5);">Self-managing Properties</div>
+      <div style="display:flex;flex-direction:column;gap:6px;font-size:13px;color:rgba(255,255,255,.8);line-height:1.6;">
+        <div>✦ Hooks chạy tự động — không cần user trigger</div>
+        <div>✦ Memory bounded — auto-consolidate khi cần</div>
+        <div>✦ State persisted — recover sau mọi loại crash</div>
+        <div>✦ Quality enforced — commit không thể bypass</div>
+        <div>✦ Audit trail complete — mọi action có record</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Core Design Philosophy</div>
+      <div style="font-size:13px;color:var(--brown-2);line-height:1.7;">
+        <strong>File là bộ nhớ</strong> — không phải conversation.<br>
+        <strong>Hooks là safety net</strong> — không phải afterthought.<br>
+        <strong>Agents là specialists</strong> — không phải generalists.<br>
+        <strong>Memory là tiered</strong> — không phải flat dump.
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /carousel -->
+</div><!-- /stage -->
+
+<!-- Navigation -->
+<button class="nav" id="prev" onclick="go(-1)" disabled>‹</button>
+<button class="nav" id="next" onclick="go(1)">›</button>
+
+<!-- Dots -->
+<div class="dots" id="dots"></div>
+
+<!-- Kbd hint -->
+<div class="hint"><kbd>←</kbd><kbd>→</kbd> navigate · <kbd>Home</kbd><kbd>End</kbd> jump</div>
+
+<script>
+const TOTAL = 15;
+let cur = 0;
+let animating = false;
+
+const slides = Array.from(document.querySelectorAll('.slide'));
+const dotsEl = document.getElementById('dots');
+const counterEl = document.getElementById('counter');
+const progressEl = document.getElementById('progress-fill');
+
+// Build dots
+slides.forEach((_, i) => {
+  const d = document.createElement('div');
+  d.className = 'dot' + (i === 0 ? ' on' : '');
+  d.onclick = () => goTo(i);
+  dotsEl.appendChild(d);
+});
+
+function updateUI() {
+  counterEl.textContent = (cur + 1) + ' / ' + TOTAL;
+  progressEl.style.width = ((cur + 1) / TOTAL * 100) + '%';
+  document.getElementById('prev').disabled = cur === 0;
+  document.getElementById('next').disabled = cur === TOTAL - 1;
+  dotsEl.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('on', i === cur));
+}
+
+function goTo(n) {
+  if (animating || n === cur || n < 0 || n >= TOTAL) return;
+  animating = true;
+
+  const dir = n > cur ? 1 : -1;
+  const prev = cur;
+  cur = n;
+
+  // Outgoing: set exit class (position: absolute, removes from flow)
+  slides[prev].classList.remove('active');
+  slides[prev].classList.add(dir > 0 ? 'exit-left' : 'exit-right');
+
+  // Incoming: start in offscreen state then activate
+  slides[cur].style.transform = dir > 0 ? 'translateX(72px) scale(.975)' : 'translateX(-72px) scale(.975)';
+  slides[cur].style.opacity = '0';
+  slides[cur].style.position = 'relative'; // back in flow
+
+  // Force layout
+  slides[cur].getBoundingClientRect();
+
+  // Activate incoming
+  slides[cur].classList.add('active');
+  slides[cur].style.transform = '';
+  slides[cur].style.opacity = '';
+
+  // Scroll to top of page
+  window.scrollTo({ top: 0, behavior: 'instant' });
+
+  updateUI();
+
+  setTimeout(() => {
+    slides[prev].classList.remove('exit-left', 'exit-right');
+    slides[prev].style.position = ''; // goes back to position:absolute (hidden)
+    animating = false;
+  }, 450);
+}
+
+function go(d) { goTo(cur + d); }
+
+// Keyboard
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown') go(1);
+  else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') go(-1);
+  else if (e.key === 'Home') goTo(0);
+  else if (e.key === 'End') goTo(TOTAL - 1);
+});
+
+// Touch
+let tx = 0;
+document.addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, { passive: true });
+document.addEventListener('touchend', e => {
+  const dx = e.changedTouches[0].clientX - tx;
+  if (Math.abs(dx) > 48) go(dx < 0 ? 1 : -1);
+});
+
+updateUI();
+</script>
+</body>
+</html>
