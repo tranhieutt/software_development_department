@@ -6,6 +6,30 @@ Tài liệu này ghi lại lịch sử cập nhật tài liệu và source code 
 
 ## 🗓️ Lịch sử cập nhật
 
+### [v1.28.0] - 2026-04-15
+
+**Chủ đề:** Tích hợp Tier 2 Diagnostic Agents, Vertical Slicing & Chuẩn hóa UI Spec
+
+SDD được nâng cấp với hệ thống chẩn đoán lỗi chuyên sâu và triết lý phát triển "Vertical Slicing" để đảm bảo tính thực thi tuyệt đối.
+
+**Upgrade #1 — Quy trình Chẩn đoán (Tier 2 Diagnostic Agents):**
+- Khởi tạo bộ 3 Agent chuyên trách: `investigator` (Truy vết), `verifier` (Phản biện), `solver` (Giải quyết).
+- Tích hợp kỹ năng `/diagnose` vào `CLAUDE.md` để tự động hóa quy trình xử lý lỗi phức tạp thông qua các báo cáo chẩn đoán tại `.claude/docs/diagnostics/`.
+
+**Upgrade #2 — Triển khai "Vertical Slicing" (Fullstack):**
+- Định nghĩa triết lý phát triển lát cắt chức năng (Vertical Slices) đảm bảo "Working Software" ở mọi giai đoạn.
+- Bổ sung kỹ năng `/vertical-slice` giúp định nghĩa Feature Contract giữa Frontend và Backend trước khi code.
+
+**Upgrade #3 — Chuẩn hóa UI Spec (Tier 3 Specialist):**
+- Khởi tạo Agent `@ui-spec-designer` và tài liệu `ui-spec-template.md`.
+- Ép buộc định nghĩa Matrix 5 trạng thái (Default, Loading, Empty, Error, Partial) và Interaction logic theo chuẩn EARS.
+
+**Upgrade #4 — Visual Architecture Documentation:**
+- Tự động hóa bản vẽ kiến trúc bằng `visual-engineer` (Style 6 - Claude Official).
+- Kết quả: `docs/sdd-architecture.svg` và bản render high-res `docs/sdd-architecture.png` (sử dụng `sharp-cli` cho hiệu năng và độ sắc nét tối ưu trên Windows).
+
+---
+
 ### [v1.27.0] - 2026-04-14
 
 **Chủ đề:** Tích hợp Kỹ năng Visual Engineering & Chuẩn hóa Tài liệu Kiến trúc
@@ -649,4 +673,4 @@ Kết quả: Gõ `/` khi làm Next.js project → ~20 skills thay vì 98.
 
 ---
 
-Last Updated: 2026-04-13 — v1.26.0
+Last Updated: 2026-04-15 — v1.28.0
