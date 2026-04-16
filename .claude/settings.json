@@ -79,6 +79,18 @@
         ]
       }
     ],
+    "UserPromptSubmit": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/prompt-context.sh",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
     "PreToolUse": [
       {
         "matcher": "Bash",
@@ -109,12 +121,27 @@
             "timeout": 10
           }
         ]
+      },
+      {
+        "matcher": "Read",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/file-history.sh",
+            "timeout": 5
+          }
+        ]
       }
     ],
     "PostToolUse": [
       {
         "matcher": "Write|Edit",
         "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/log-writes.sh",
+            "timeout": 5
+          },
           {
             "type": "command",
             "command": "bash .claude/hooks/validate-assets.sh",

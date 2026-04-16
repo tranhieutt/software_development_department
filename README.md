@@ -12,7 +12,7 @@
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT License"></a>
   <img src="https://img.shields.io/badge/agents-27-blueviolet" alt="27 Agents">
   <img src="https://img.shields.io/badge/skills-127-green" alt="127 Skills">
-  <img src="https://img.shields.io/badge/hooks-8-orange" alt="8 Hooks">
+  <img src="https://img.shields.io/badge/hooks-13-orange" alt="13 Hooks">
   <img src="https://img.shields.io/badge/rules-16-red" alt="16 Rules">
   <a href="https://docs.anthropic.com/en/docs/claude-code"><img src="https://img.shields.io/badge/built%20for-Claude%20Code-f5f5f5?logo=anthropic" alt="Built for Claude Code"></a>
 </p>

@@ -6,6 +6,67 @@ Tài liệu này ghi lại lịch sử cập nhật tài liệu và source code 
 
 ## 🗓️ Lịch sử cập nhật
 
+### [v1.31.0] - 2026-04-16
+
+**Chủ đề:** Automated Discipline — Hook Intelligence từ Claude-mem patterns
+
+Nâng cấp hệ thống hooks từ **kỷ luật thủ công** sang **kỷ luật tự động hóa** bằng cách tích hợp các pattern từ Claude-mem v12.x. SDD nay có bộ nhớ thích nghi theo từng prompt, audit trail đầy đủ cho mọi file write, và khả năng phục hồi context thông minh hơn sau compaction.
+
+#### P0: Quick Fixes
+
+**Fix 1 — Stderr leak trong `bash-guard.sh`:**
+
+- Warnings (exit 0) chuyển từ `>&2` sang stdout — loại bỏ error UI đỏ giả trong Claude Code
+- Blocks (exit 2) giữ nguyên stderr vì Claude Code feeds stderr to Claude khi exit 2
+
+**Fix 2 — Error handling trong `session-start.sh`:**
+
+- `BRANCH`, `LATEST_SPRINT`, `LATEST_MILESTONE` thêm `|| echo "(no git)"` / `|| true` fallback — tránh crash khi chạy ngoài git repo hoặc thiếu thư mục sprints/milestones
+
+#### P1: Automation — 3 hooks mới + 2 hooks nâng cấp
+
+**Upgrade 1 — UserPromptSubmit: Memory-aware context injection (`prompt-context.sh` mới):**
+
+- Mỗi prompt → trích keyword (words >4 ký tự) → tìm topic files liên quan trong `.claude/memory/` → inject `additionalContext`
+- Tối đa 3 files, dedup chính xác, silent exit khi không có match
+- Giải quyết Gap G1: context không còn static từ SessionStart mà thích nghi theo từng prompt
+
+**Upgrade 2 — PostToolUse Write|Edit: JSONL write logger (`log-writes.sh` mới):**
+
+- Ghi `event/timestamp/session_id/file/branch` vào `production/session-logs/writes.jsonl` ngay lập tức khi Write/Edit xảy ra
+- Chính xác hơn `git diff` (bắt cả committed files, có timestamp)
+- Giải quyết Gap G2: audit trail đầy đủ cho mọi file write trong session
+
+**Upgrade 3 — PreToolUse Read: Git history injection (`file-history.sh` mới):**
+
+- File size gate: bỏ qua file <1KB (overhead > benefit)
+- Inject 5 commits gần nhất, last author, last date → Claude hiểu tại sao file trông như vậy
+- Giải quyết Gap G5: SDD có impact analysis cho Write, nay có lịch sử khi đọc file
+
+**Upgrade 4 — PreCompact: Last intent signal (`pre-compact.sh` nâng cấp):**
+
+- Thêm section "Last Intent Signal": last commit message, staged stat, last file written từ writes.jsonl
+- Claude biết đang làm gì ngay lúc compact xảy ra → recovery tốt hơn
+- Giải quyết Gap G6: pre-compact không còn mù về intent
+
+**Nâng cấp `session-stop.sh`:**
+
+- Đọc `writes.jsonl` thay vì chỉ `git diff` → "Files Written This Session" chính xác kể cả committed files
+
+**Cập nhật `settings.json`:**
+
+- Đăng ký `UserPromptSubmit` hook với `prompt-context.sh`
+- Thêm `PreToolUse Read` với `file-history.sh`
+- PostToolUse Write|Edit: `log-writes.sh` chạy trước `validate-assets.sh`
+
+#### Số liệu v1.31.0
+
+- Hooks: 10 → 13 scripts (+3 mới: `prompt-context.sh`, `log-writes.sh`, `file-history.sh`)
+- Hook events coverage: SessionStart, UserPromptSubmit *(mới)*, PreToolUse Bash/Write|Edit/Read *(mới)*, PostToolUse Write|Edit, PreCompact, Stop, SubagentStart
+- Gaps resolved: G1 (adaptive context), G2 (write logging), G5 (read history), G6 (compact intent)
+
+---
+
 ### [v1.30.0] - 2026-04-16
 
 **Chủ đề:** Nâng cấp hạ tầng Multi-Agent Systems (MAS Infrastructure)

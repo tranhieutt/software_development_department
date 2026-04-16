@@ -77,6 +77,21 @@ echo ""
 echo "## Recovery Instructions"
 echo "After compaction, read $STATE_FILE to recover full working context."
 echo "Then read any files listed above that are being actively worked on."
+
+# --- Last intent signal (what was Claude doing right before compact) ---
+echo ""
+echo "## Last Intent Signal"
+LAST_COMMIT=$(git log -1 --pretty="Commit: %s (%ar)" 2>/dev/null || true)
+LAST_STAGED=$(git diff --staged --stat 2>/dev/null | tail -1)
+[ -n "$LAST_COMMIT" ] && echo "$LAST_COMMIT"
+[ -n "$LAST_STAGED" ] && echo "Staged: $LAST_STAGED"
+WRITES_LOG="production/session-logs/writes.jsonl"
+if [ -f "$WRITES_LOG" ]; then
+    LAST_WRITE=$(tail -1 "$WRITES_LOG" 2>/dev/null | \
+        grep -oE '"file":"[^"]*"' | sed 's/"file":"//;s/"$//')
+    [ -n "$LAST_WRITE" ] && echo "Last file written: $LAST_WRITE"
+fi
+
 echo "=== END SESSION STATE ==="
 
 exit 0

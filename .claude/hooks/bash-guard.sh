@@ -100,7 +100,7 @@ warn_if_match 'DROP\s+DATABASE' \
     "SQL DROP DATABASE detected — this destroys the entire database"
 
 if [ -n "$WARNINGS" ]; then
-    printf "[HOOK:BashGuard] Warnings for command review:%b\n" "$WARNINGS" >&2
+    printf "[HOOK:BashGuard] Warnings for command review:%b\n" "$WARNINGS"
 fi
 
 exit 0

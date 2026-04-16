@@ -73,6 +73,20 @@ fi
         echo "### Uncommitted Changes"
         echo "$MODIFIED_FILES"
     fi
+
+    # Files written this session (from writes.jsonl — more accurate than git diff)
+    WRITES_LOG="$SESSION_LOG_DIR/writes.jsonl"
+    if [ -f "$WRITES_LOG" ] && command -v jq >/dev/null 2>&1; then
+        WRITTEN_FILES=$(jq -r --arg sid "$SESSION_ID" \
+            'select(.session_id == $sid) | .file' \
+            "$WRITES_LOG" 2>/dev/null | sort -u)
+        if [ -n "$WRITTEN_FILES" ]; then
+            echo ""
+            echo "### Files Written This Session"
+            echo "$WRITTEN_FILES" | while read -r f; do echo "  - $f"; done
+        fi
+    fi
+
     echo "---"
     echo ""
 } >> "$SESSION_LOG_DIR/session-log.md" 2>/dev/null
@@ -99,6 +113,19 @@ ARCHIVE_FILENAME="$ARCHIVE_SESSION_DIR/$(date +%Y-%m-%d_%H-%M)_session.md"
         echo ""
         echo "## Uncommitted Files"
         echo "$MODIFIED_FILES"
+    fi
+
+    # Files written this session (from writes.jsonl)
+    WRITES_LOG="$SESSION_LOG_DIR/writes.jsonl"
+    if [ -f "$WRITES_LOG" ] && command -v jq >/dev/null 2>&1; then
+        WRITTEN_FILES=$(jq -r --arg sid "$SESSION_ID" \
+            'select(.session_id == $sid) | .file' \
+            "$WRITES_LOG" 2>/dev/null | sort -u)
+        if [ -n "$WRITTEN_FILES" ]; then
+            echo ""
+            echo "## Files Written This Session"
+            echo "$WRITTEN_FILES" | while read -r f; do echo "  - $f"; done
+        fi
     fi
 } > "$ARCHIVE_FILENAME" 2>/dev/null
 

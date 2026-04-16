@@ -7,7 +7,7 @@
 echo "=== Claude Code Software Development Department — Session Context ==="
 
 # Current branch
-BRANCH=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
+BRANCH=$(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo "(no git)")
 if [ -n "$BRANCH" ]; then
     echo "Branch: $BRANCH"
 
@@ -20,14 +20,14 @@ if [ -n "$BRANCH" ]; then
 fi
 
 # Current sprint (find most recent sprint file)
-LATEST_SPRINT=$(ls -t production/sprints/sprint-*.md 2>/dev/null | head -1)
+LATEST_SPRINT=$(ls -t production/sprints/sprint-*.md 2>/dev/null | head -1 || true)
 if [ -n "$LATEST_SPRINT" ]; then
     echo ""
     echo "Active sprint: $(basename "$LATEST_SPRINT" .md)"
 fi
 
 # Current milestone
-LATEST_MILESTONE=$(ls -t production/milestones/*.md 2>/dev/null | head -1)
+LATEST_MILESTONE=$(ls -t production/milestones/*.md 2>/dev/null | head -1 || true)
 if [ -n "$LATEST_MILESTONE" ]; then
     echo "Active milestone: $(basename "$LATEST_MILESTONE" .md)"
 fi
