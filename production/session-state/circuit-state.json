@@ -1,0 +1,77 @@
+{
+  "_schema": "circuit-state/v1",
+  "_description": "Tracks Circuit Breaker state per agent. Updated by coordination rules Rule 14. Read at the start of any multi-agent task to check if an agent is OPEN (bypassed).",
+  "_states": ["CLOSED", "OPEN", "HALF-OPEN"],
+  "agents": {
+    "backend-developer": {
+      "state": "CLOSED",
+      "failure_count": 0,
+      "last_failure_at": null,
+      "open_since": null,
+      "fallback": "fullstack-developer",
+      "next_half_open_at": null
+    },
+    "frontend-developer": {
+      "state": "CLOSED",
+      "failure_count": 0,
+      "last_failure_at": null,
+      "open_since": null,
+      "fallback": "fullstack-developer",
+      "next_half_open_at": null
+    },
+    "fullstack-developer": {
+      "state": "CLOSED",
+      "failure_count": 0,
+      "last_failure_at": null,
+      "open_since": null,
+      "fallback": null,
+      "next_half_open_at": null
+    },
+    "qa-tester": {
+      "state": "CLOSED",
+      "failure_count": 0,
+      "last_failure_at": null,
+      "open_since": null,
+      "fallback": "qa-lead",
+      "next_half_open_at": null
+    },
+    "qa-lead": {
+      "state": "CLOSED",
+      "failure_count": 0,
+      "last_failure_at": null,
+      "open_since": null,
+      "fallback": null,
+      "next_half_open_at": null
+    },
+    "data-engineer": {
+      "state": "CLOSED",
+      "failure_count": 0,
+      "last_failure_at": null,
+      "open_since": null,
+      "fallback": "backend-developer",
+      "next_half_open_at": null
+    },
+    "investigator": {
+      "state": "CLOSED",
+      "failure_count": 0,
+      "last_failure_at": null,
+      "open_since": null,
+      "fallback": "solver",
+      "next_half_open_at": null
+    },
+    "solver": {
+      "state": "CLOSED",
+      "failure_count": 0,
+      "last_failure_at": null,
+      "open_since": null,
+      "fallback": null,
+      "next_half_open_at": null
+    }
+  },
+  "config": {
+    "failure_threshold": 3,
+    "backoff_sequence_s": [2, 4, 8],
+    "half_open_after_minutes": 10,
+    "max_backoff_s": 64
+  }
+}

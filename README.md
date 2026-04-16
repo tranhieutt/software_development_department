@@ -4,16 +4,16 @@
     A structured agentic system that transforms a single Claude Code session<br />
     into a coordinated software engineering organization.
     <br /><br />
-    27 agents · 122 context-optimized skills · 10/12 agentic harness patterns · Steel-discipline enforcement · Visual Engineering
+    27 agents · 127 context-optimized skills · 10/12 agentic harness patterns · MAS Infrastructure · Steel-discipline enforcement · Visual Engineering
   </p>
 </p>
 
 <p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT License"></a>
   <img src="https://img.shields.io/badge/agents-27-blueviolet" alt="27 Agents">
-  <img src="https://img.shields.io/badge/skills-122-green" alt="122 Skills">
+  <img src="https://img.shields.io/badge/skills-127-green" alt="127 Skills">
   <img src="https://img.shields.io/badge/hooks-8-orange" alt="8 Hooks">
-  <img src="https://img.shields.io/badge/rules-12-red" alt="12 Rules">
+  <img src="https://img.shields.io/badge/rules-16-red" alt="16 Rules">
   <a href="https://docs.anthropic.com/en/docs/claude-code"><img src="https://img.shields.io/badge/built%20for-Claude%20Code-f5f5f5?logo=anthropic" alt="Built for Claude Code"></a>
 </p>
 

@@ -70,3 +70,88 @@
     - API contracts between layers must be locked (via Design Doc or ADR) before implementation.
     - A slice is not complete until it is integrated and verified end-to-end.
     - Prefer multiple small vertical slices over one large monolithic fullstack task.
+
+14. **Circuit Breaker for Agent Failures**: When an agent fails repeatedly on the same
+    task, the system must isolate it and route to a fallback rather than retrying infinitely.
+
+    **States:**
+    - `CLOSED` — Agent is operating normally. All tasks routed to it as usual.
+    - `OPEN` — Agent has failed 3+ consecutive times. Bypass it immediately; route to
+      the designated fallback agent. Log the transition to
+      `production/session-state/circuit-state.json`.
+    - `HALF-OPEN` — After 10 minutes in OPEN state, allow exactly one retry attempt.
+      If it succeeds → return to `CLOSED`. If it fails again → return to `OPEN`.
+
+    **Exponential backoff before tripping OPEN:**
+    Apply backoff between retries (do not trip OPEN immediately on first failure):
+    - Retry 1: wait 2s
+    - Retry 2: wait 4s
+    - Retry 3: wait 8s → if still failing, trip to `OPEN`
+
+    **Fallback pairs:**
+
+    | Primary agent | Fallback agent |
+    | :--- | :--- |
+    | `backend-developer` | `fullstack-developer` |
+    | `frontend-developer` | `fullstack-developer` |
+    | `qa-tester` | `qa-lead` |
+    | `data-engineer` | `backend-developer` |
+    | `investigator` | `solver` |
+
+    **Integration with Rule 6 (Layered Recovery):**
+    Circuit Breaker activates **after** Rule 6 layered recovery is exhausted.
+    Rule 6 handles transient failures (context stale, bad prompt). Circuit Breaker
+    handles persistent failures (agent structurally unable to complete the task).
+
+    **State file:** `production/session-state/circuit-state.json`
+    Read this file at the start of any multi-agent task to check if a required agent
+    is currently `OPEN` and should be bypassed.
+
+    **Ledger obligation:** Every Circuit Breaker state transition must be appended to
+    `production/traces/decision_ledger.jsonl` with `risk_tier: "High"`.
+
+15. **Decision Tracing Ledger**: Agents must record significant decisions to
+    `production/traces/decision_ledger.jsonl` for audit and debugging.
+
+    **When to write a ledger entry:**
+    - Any decision with `risk_tier` Medium or High
+    - Any Circuit Breaker state transition (Rule 14)
+    - Any cross-agent handoff with non-trivial acceptance criteria
+    - Task completion or failure (final outcome of a checkpoint)
+    - Any decision that overrides a prior decision in `consensus/merged-decisions.md`
+
+    **Entry format (one JSON object per line):**
+
+    ```jsonl
+    {"ts":"<ISO>","session":"<branch>","agent_id":"<agent>","task_id":"<id>","request":"<what was asked>","reasoning":"<why this choice>","choice":"<decision made>","outcome":"pass|fail|blocked|skipped","risk_tier":"High|Medium|Low","duration_s":<N>}
+    ```
+
+    **What NOT to log:** Trivial style choices, obvious one-line fixes, read-only
+    exploration steps. Keep the ledger focused on decisions worth auditing.
+
+    **Audit tool:** Run `/trace-history` to view the ledger with filters by agent,
+    risk tier, task, outcome, or date range.
+
+16. **A2A Handoff Contracts**: When one agent completes its slice and passes work
+    to another agent, a formal handoff contract must be generated before the
+    receiving agent begins work.
+
+    **When a handoff contract is required:**
+    - Any work crossing domain boundaries (backend → QA, frontend → lead-programmer)
+    - Any work with `risk_tier` Medium or High
+    - Any partial artifact (`artifact_status: partial | draft`) passed between agents
+
+    **When a handoff contract is optional (Low risk, same-domain):**
+    - Minor corrections passed back within the same agent turn
+    - Read-only review requests with no artifact transfer
+
+    **Protocol:**
+    1. Sending agent runs `/handoff <from> <to> <artifact> [task_id]`
+    2. Contract is saved to `.tasks/handoffs/<from>-to-<to>-<task_id>.json`
+    3. Receiving agent reads the contract and verifies all `acceptance_criteria`
+       before starting work
+    4. If any criterion fails → receiving agent rejects the handoff and returns
+       specific failures to the sender; does NOT begin work on a failing artifact
+
+    **Schema reference:** `.claude/docs/handoff-schema.md`
+    **Contracts directory:** `.tasks/handoffs/`

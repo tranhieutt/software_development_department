@@ -6,6 +6,62 @@ Tài liệu này ghi lại lịch sử cập nhật tài liệu và source code 
 
 ## 🗓️ Lịch sử cập nhật
 
+### [v1.30.0] - 2026-04-16
+
+**Chủ đề:** Nâng cấp hạ tầng Multi-Agent Systems (MAS Infrastructure)
+
+SDD được nâng cấp toàn diện từ một bộ khung điều phối đơn giản lên **MAS Infrastructure** đầy đủ, bổ sung 7 upgrade lớn về Fault Tolerance, Observability, Orchestration, và Agent Communication — lấy cảm hứng từ chuẩn Multi-Agent Infrastructure của DigitalOcean.
+
+#### Upgrade #1 — Fault Tolerance: Atomic Checkpointing
+
+- Cập nhật skill `/save-state`: ghi atomic checkpoint per-task vào `.tasks/checkpoints/[task_id].md` với `task_id`, `agent_id`, `output_snapshot`.
+- Tạo mới skill `/resume-from [task_id]`: khôi phục ngay tại điểm lỗi, tích hợp exponential backoff (2s → 4s → 8s), tự động tăng `retry_count`.
+- Tạo thư mục `.tasks/checkpoints/` làm nơi lưu trữ checkpoint per-task.
+
+#### Upgrade #2 — Shared Memory: Namespace Isolation
+
+- Triển khai cấu trúc `.claude/memory/specialists/[agent_name].md` cho 7 core agents: `backend-developer`, `frontend-developer`, `qa-tester`, `data-engineer`, `fullstack-developer`, `investigator`, `technical-director`.
+- Tạo Consensus Hub tại `.claude/memory/consensus/merged-decisions.md` — `@technical-director` hợp nhất tri thức cross-domain định kỳ.
+- Thêm Tier 2.5 vào `MEMORY.md` và Namespace Isolation Rules vào `context-management.md`: tối đa 1 specialist file per session turn.
+
+#### Upgrade #3 — Observability: Decision Tracing Ledger
+
+- Tạo `production/traces/decision_ledger.jsonl`: ghi lại `agent_id`, `request`, `reasoning`, `choice`, `outcome`, `risk_tier` cho mọi quyết định Medium/High risk.
+- Tạo mới skill `/trace-history`: xem timeline quyết định với filter theo agent, risk tier, task, outcome, date.
+- Thêm Rule 15 vào `coordination-rules.md`: bắt buộc ghi ledger với các quyết định quan trọng.
+
+#### Upgrade #4 — Orchestration: Dynamic Workflow Graph
+
+- Tạo `docs/templates/workflow-graph.md`: định nghĩa schema YAML và 4 orchestration patterns: Sequential, Parallel Fan-out, Hierarchical, Iterative Loop.
+- Tạo mới skill `/map-workflow`: `@producer` thiết lập graph trước khi dispatch, có bước approval bắt buộc.
+- Cập nhật `docs/WORKFLOW-GUIDE.md` với pointer đến template và skill mới.
+
+#### Upgrade #5 — Fault Isolation: Circuit Breaker Pattern
+
+- Thêm Rule 14 vào `coordination-rules.md`: 3 trạng thái CLOSED → OPEN → HALF-OPEN, backoff 2s → 4s → 8s trước khi OPEN, tự động route sang fallback agent.
+- Tạo `production/session-state/circuit-state.json`: theo dõi trạng thái 8 agents với fallback pairs (`backend↔fullstack`, `frontend↔fullstack`, `qa-tester↔qa-lead`, v.v.).
+
+#### Upgrade #6 — Agent Communication: A2A Handoff Schema
+
+- Tạo `.claude/docs/handoff-schema.md`: chuẩn hóa contract chuyển giao với fields `from`, `to`, `artifact`, `artifact_status`, `acceptance_criteria`, `context_snapshot`, `risk_tier`.
+- Tạo mới skill `/handoff`: tự động generate contract JSON, validate criteria, ghi ledger entry tự động với Medium/High risk.
+- Tạo thư mục `.tasks/handoffs/` lưu contracts.
+- Thêm Rule 16 vào `coordination-rules.md`: protocol sender/receiver, reject handoff nếu criteria không đạt.
+
+#### Upgrade #7 — Observability: Per-Agent Performance Registry
+
+- Tạo `production/traces/agent-metrics.jsonl`: ghi metrics per agent per session (`tasks_completed`, `tasks_failed`, `avg_tokens_est`, `error_rate`, `circuit_state`).
+- Tạo mới skill `/agent-health`: hiển thị bảng tóm tắt hiệu suất, cross-check với circuit breaker state, flag agents có error_rate > 30% hoặc circuit OPEN/HALF-OPEN.
+
+#### Tổng kết thay đổi
+
+- Coordination rules: 13 → 16 rules
+- Skills mới: +5 (`/resume-from`, `/trace-history`, `/map-workflow`, `/handoff`, `/agent-health`)
+- Skills cập nhật: +1 (`/save-state`)
+- Files mới: 20+ files/dirs across `.claude/`, `.tasks/`, `production/`, `docs/`
+
+---
+
 ### [v1.28.0] - 2026-04-15
 
 **Chủ đề:** Tích hợp Tier 2 Diagnostic Agents, Vertical Slicing & Chuẩn hóa UI Spec

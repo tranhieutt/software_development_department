@@ -1,0 +1,1 @@
+{"_schema":"decision-ledger/v1","_fields":["ts","session","agent_id","task_id","request","reasoning","choice","outcome","risk_tier","duration_s"],"_risk_tiers":["Low","Medium","High"],"_outcomes":["pass","fail","blocked","skipped"]}

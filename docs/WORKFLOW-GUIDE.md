@@ -2,6 +2,11 @@
 
 This guide walks through the complete workflow for using the Software Development Department agent architecture from project inception through to production release.
 
+> **Dynamic Workflows:** Before dispatching agents on any multi-step feature,
+> use `/map-workflow` to generate a structured execution graph.
+> Four patterns are available: **Sequential**, **Parallel**, **Hierarchical**, **Iterative**.
+> Schema reference: [`docs/templates/workflow-graph.md`](templates/workflow-graph.md)
+
 ---
 
 ## Overview: How the Department Works

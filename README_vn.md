@@ -4,16 +4,16 @@
     Hệ thống agentic có cấu trúc — biến một session Claude Code đơn lẻ<br />
     thành một software engineering organization thực sự.
     <br /><br />
-    27 agents · 108 context-optimized skills · 10/12 agentic harness patterns · Steel Discipline
+    27 agents · 127 context-optimized skills · 10/12 agentic harness patterns · MAS Infrastructure · Steel Discipline
   </p>
 </p>
 
 <p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT License"></a>
   <a href=".claude/agents"><img src="https://img.shields.io/badge/agents-27-blueviolet" alt="27 Agents"></a>
-  <a href=".claude/skills"><img src="https://img.shields.io/badge/skills-108-green" alt="108 Skills"></a>
+  <a href=".claude/skills"><img src="https://img.shields.io/badge/skills-127-green" alt="127 Skills"></a>
   <a href=".claude/hooks"><img src="https://img.shields.io/badge/hooks-8-orange" alt="8 Hooks"></a>
-  <a href=".claude/rules"><img src="https://img.shields.io/badge/rules-12-red" alt="12 Rules"></a>
+  <a href=".claude/rules"><img src="https://img.shields.io/badge/rules-16-red" alt="16 Rules"></a>
   <a href="https://docs.anthropic.com/en/docs/claude-code"><img src="https://img.shields.io/badge/built%20for-Claude%20Code-f5f5f5?logo=anthropic" alt="Built for Claude Code"></a>
 </p>
 

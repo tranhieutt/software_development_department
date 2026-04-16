@@ -163,22 +163,45 @@ Before loading any Tier 2 memory file, answer these questions:
 | Codebase impact analysis | `gitnexus-registry.md` | all others |
 | Style / personalization request | `user_role.md` | all others |
 | Debugging unknown gotcha | `annotations.md` | all others |
+| Specialist agent executing a task | `specialists/[agent-name].md` | all other specialist files |
+| Cross-agent handoff or multi-agent plan | `consensus/merged-decisions.md` | individual specialist files |
+
+### Namespace Isolation Rules (Tier 2.5)
+
+These rules prevent **Context Pollution** — loading specialist knowledge from unrelated agents
+that contaminates the active agent's reasoning.
+
+1. **One namespace per turn**: Load at most **1** specialist file per agent turn.
+2. **Identity-bound loading**: `specialists/[agent].md` is loaded ONLY when that agent
+   is the active executor — NOT because the task mentions the domain.
+   - ✅ `@backend-developer` executing → load `specialists/backend-developer.md`
+   - ❌ Task mentions "API" → do NOT load `specialists/backend-developer.md` for a different agent
+3. **Consensus first for cross-domain work**: Before any task involving 2+ agents,
+   read `consensus/merged-decisions.md` to check for binding cross-domain decisions.
+4. **Write-back protocol**: When a specialist makes a decision worth preserving,
+   write it to their namespace file immediately — do not wait until session end.
+5. **Consensus merge trigger**: When a specialist decision affects other agents,
+   notify `@technical-director` to merge it into `consensus/merged-decisions.md`.
 
 ### Loading Sequence
 
 ```
 Task received
-  1. MEMORY.md          ← already loaded (via CLAUDE.md)
-  2. Relevance gate     ← apply 3 questions above to each Tier 2 candidate
-  3. Load matched files ← max 3, subsections preferred over full files
-  4. Budget check       ← if context < 30% remaining → stop, summarize loaded
-  5. Tier 3             ← only if user explicitly asks "what did we decide about X"
+  1. MEMORY.md               ← already loaded (via CLAUDE.md)
+  2. Relevance gate          ← apply 3 questions above to each Tier 2 candidate
+  3. Load matched Tier 2     ← max 3, subsections preferred over full files
+  3a. Namespace check        ← if a specialist agent is active, load specialists/[agent].md
+  3b. Cross-agent check      ← if task involves 2+ agents, load consensus/merged-decisions.md
+  4. Budget check            ← if context < 30% remaining → stop, summarize loaded
+  5. Tier 3                  ← only if user explicitly asks "what did we decide about X"
 ```
 
 ### Hard Limits
 
 - **Tier 2 cap:** Maximum **3 files** per session. If a 4th is needed, summarize the
   least-referenced one to 3 bullets and release it from context.
+- **Tier 2.5 cap:** Maximum **1 specialist file** per session turn. Never load two
+  specialist namespaces simultaneously — this defeats isolation.
 - **Subsection reads:** Always prefer targeted line reads over full-file reads.
 - **Never speculate:** Do not load Tier 2 "just in case". Load when a specific need arises.
 - **Promote insights, not data:** After using a Tier 2 file, extract the 1-2 facts you

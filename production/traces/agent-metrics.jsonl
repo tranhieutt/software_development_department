@@ -1,0 +1,1 @@
+{"_schema":"agent-metrics/v1","_fields":["date","session","agent","tasks_completed","tasks_failed","tasks_blocked","avg_tokens_est","error_rate","circuit_state","notes"]}
