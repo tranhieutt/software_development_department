@@ -4,14 +4,14 @@
     Hệ thống agentic có cấu trúc — biến một session Claude Code đơn lẻ<br />
     thành một software engineering organization thực sự.
     <br /><br />
-    31 agents · 123 context-optimized skills · 10/12 agentic harness patterns · MAS Infrastructure · Steel Discipline
+    31 agents · 117 context-optimized skills · 10/12 agentic harness patterns · MAS Infrastructure · Steel Discipline
   </p>
 </p>
 
 <p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT License"></a>
   <a href=".claude/agents"><img src="https://img.shields.io/badge/agents-31-blueviolet" alt="31 Agents"></a>
-  <a href=".claude/skills"><img src="https://img.shields.io/badge/skills-123-green" alt="123 Skills"></a>
+  <a href=".claude/skills"><img src="https://img.shields.io/badge/skills-117-green" alt="117 Skills"></a>
   <a href=".claude/hooks"><img src="https://img.shields.io/badge/hooks-15-orange" alt="15 Hooks"></a>
   <a href=".claude/rules"><img src="https://img.shields.io/badge/rules-13-red" alt="13 Rules"></a>
   <a href="https://docs.anthropic.com/en/docs/claude-code"><img src="https://img.shields.io/badge/built%20for-Claude%20Code-f5f5f5?logo=anthropic" alt="Built for Claude Code"></a>
@@ -48,7 +48,7 @@ Kết quả:
 - **Process được enforced**: Spec trước implementation, plan trước code, tests trước merge — thực thi qua hooks và verification gates, không phải lời khuyên
 - **Memory tồn tại liên tục**: 5-layer durable memory architecture (Tier 1 index → Tier 2 topic files → Tier 3 cold archive → MCP Supermemory semantic store) sống qua từng session
 - **Context được dùng chính xác**: Incremental loading với 3-Question Relevance Gate ngăn chặn context stuffing; tối đa 3 Tier 2 files mỗi session
-- **Routing chính xác**: 123 skills với `paths:` triggers, `when_to_use:` semantics, và `effort:` scores cho phép AI tự route mà không cần người dùng điều hướng thủ công
+- **Routing chính xác**: 117 skills với `paths:` triggers, `when_to_use:` semantics, và `effort:` scores cho phép AI tự route mà không cần người dùng điều hướng thủ công
 
 ---
 
@@ -97,7 +97,7 @@ SDD triển khai **10 trong 12** patterns từ kiến trúc agentic harness nộ
 | #3 Tiered Memory | ✅ | 5 tầng: MEMORY.md → topic files → archive → Supermemory |
 | #4 Dream Consolidation | ✅ | `auto-dream.sh` — 5-phase consolidation tự động |
 | #6 Context: Fork | ✅ | 10 analysis skills nặng chạy trong subagent context độc lập |
-| #7 Skill Routing | ✅ | 123 skills với metadata `paths:`, `when_to_use:`, `effort:` |
+| #7 Skill Routing | ✅ | 117 skills với metadata `paths:`, `when_to_use:`, `effort:` |
 | #8 Fork-Join Parallelism | ✅ | `fork-join.sh` — git worktree lifecycle manager |
 | #10 Least Privilege Tools | ✅ | `allowed-tools:` per skill + 22-entry permission allow-list |
 | #11 Bash Guard | ✅ | `bash-guard.sh` chặn RCE patterns và các lệnh nguy hiểm |
@@ -162,7 +162,7 @@ Tier 5  CLAUDE.md @include chain     — Static universal context, luôn trong p
 
 ## Skill System
 
-### 123 Skills trên 7 Domain
+### 117 Skills trên 7 Domain
 
 | Domain | Skills tiêu biểu |
 |---|---|
@@ -193,7 +193,7 @@ Gõ `/` trong Claude Code — bạn thấy cái relevant, không phải cả 123
 | Thành phần | Số lượng | Mô tả |
 |---|---|---|
 | **Agents** | 31 | Agents chuyên biệt cho product, engineering, design, QA, data, operations |
-| **Skills** | 123 | Core workflows và technology frameworks với context-aware routing |
+| **Skills** | 117 | Core workflows và technology frameworks với context-aware routing |
 | **Hooks** | 15 | Automated validation: commits, pushes, asset changes, session lifecycle, pre-compact, gap detection, bash guard, fork-join |
 | **Rules** | 13 | Coding standards tự động enforce theo file path |
 | **Templates** | 22+ | PRDs, API designs, system architecture, ADRs, mobile, incident response, postmortem |

@@ -27,7 +27,23 @@ BRANCH=$(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo "unknown")
 LOG_DIR="production/session-logs"
 mkdir -p "$LOG_DIR" 2>/dev/null
 
-LOG_ENTRY="{\"event\":\"${TOOL_NAME}\",\"timestamp\":\"$TIMESTAMP\",\"session_id\":\"$SESSION_ID\",\"file\":\"$FILE_PATH\",\"branch\":\"$BRANCH\"}"
+# Create safe JSON entry
+if command -v jq >/dev/null 2>&1; then
+    LOG_ENTRY=$(jq -n \
+        --arg ev "$TOOL_NAME" \
+        --arg ts "$TIMESTAMP" \
+        --arg sid "$SESSION_ID" \
+        --arg f "$FILE_PATH" \
+        --arg b "$BRANCH" \
+        '{event: $ev, timestamp: $ts, session_id: $sid, file: $f, branch: $b}' \
+        --compact-output)
+else
+    # Fallback: Minimal escaping for double quotes and backslashes
+    ESCAPED_PATH=$(echo "$FILE_PATH" | sed 's/\\/\\\\/g; s/"/\\"/g')
+    ESCAPED_TOOL=$(echo "$TOOL_NAME" | sed 's/\\/\\\\/g; s/"/\\"/g')
+    LOG_ENTRY="{\"event\":\"$ESCAPED_TOOL\",\"timestamp\":\"$TIMESTAMP\",\"session_id\":\"$SESSION_ID\",\"file\":\"$ESCAPED_PATH\",\"branch\":\"$BRANCH\"}"
+fi
+
 echo "$LOG_ENTRY" >> "$LOG_DIR/writes.jsonl" 2>/dev/null
 
 exit 0

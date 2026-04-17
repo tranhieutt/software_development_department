@@ -8,7 +8,7 @@
 <!-- Agents update this section on every significant decision -->
 
 - Stack: [not configured] — run `/start` to populate
-- Last session: 2026-04-16 22:37 · agents=1 · commits=1
+- Last session: 2026-04-17 11:16 · agents=4 · commits=1
 - Current focus: _(agent fills in at session start)_
 
 ## Tier 2 — Load On Demand (max 3 files per session)

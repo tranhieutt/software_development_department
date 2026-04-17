@@ -47,7 +47,7 @@ SECRET_PATTERNS=(
     'ANTHROPIC_API_KEY\s*=\s*sk-ant-[A-Za-z0-9]'
     'OPENAI_API_KEY\s*=\s*sk-[A-Za-z0-9]'
     'sk-ant-[A-Za-z0-9\-]{20,}'
-    'sk-[A-Za-z0-9]{40,}'
+    'sk-[A-Za-z0-9]{48}'
     'ghp_[A-Za-z0-9]{36}'
     'github_pat_[A-Za-z0-9_]{80,}'
     'xox[baprs]-[A-Za-z0-9\-]{10,}'
@@ -55,6 +55,11 @@ SECRET_PATTERNS=(
     'password\s*=\s*["\x27][^"\x27]{8,}["\x27]'
     'secret\s*=\s*["\x27][^"\x27]{8,}["\x27]'
     'DATABASE_URL\s*=\s*postgresql://[^:]+:[^@]+@'
+    'AWS_ACCESS_KEY_ID\s*=\s*(AKIA|ASIA)[0-9A-Z]{16}'
+    '(AKIA|ASIA)[0-9A-Z]{16}'
+    'Bearer\s+[A-Za-z0-9\-._~+/]{40,}'
+    'AIza[0-9A-Za-z\\-_]{35}'
+    'AccountKey=[A-Za-z0-9+/=]{88}'
 )
 
 STAGED_DIFF=$(git diff --cached 2>/dev/null)

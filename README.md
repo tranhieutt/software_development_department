@@ -4,14 +4,14 @@
     A structured agentic system that transforms a single Claude Code session<br />
     into a coordinated software engineering organization.
     <br /><br />
-    31 agents · 118 context-optimized skills · 10/12 agentic harness patterns · MAS Infrastructure · Steel-discipline enforcement · Visual Engineering
+    31 agents · 117 context-optimized skills · 10/12 agentic harness patterns · MAS Infrastructure · Steel-discipline enforcement · Visual Engineering
   </p>
 </p>
 
 <p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT License"></a>
   <a href=".claude/agents"><img src="https://img.shields.io/badge/agents-31-blueviolet" alt="31 Agents"></a>
-  <a href=".claude/skills"><img src="https://img.shields.io/badge/skills-118-green" alt="118 Skills"></a>
+  <a href=".claude/skills"><img src="https://img.shields.io/badge/skills-117-green" alt="117 Skills"></a>
   <a href=".claude/hooks"><img src="https://img.shields.io/badge/hooks-15-orange" alt="15 Hooks"></a>
   <a href=".claude/rules"><img src="https://img.shields.io/badge/rules-13-red" alt="13 Rules"></a>
   <a href="https://docs.anthropic.com/en/docs/claude-code"><img src="https://img.shields.io/badge/built%20for-Claude%20Code-f5f5f5?logo=anthropic" alt="Built for Claude Code"></a>
@@ -48,7 +48,7 @@ The result is a system where:
 - **Process is enforced**: spec before implementation, plan before code, tests before merge — enforced via hooks and verification gates, not suggestions
 - **Memory persists**: a 5-layer durable memory architecture (Tier 1 index → Tier 2 topic files → Tier 3 cold archive → MCP Supermemory semantic store) survives across sessions (**Privacy-first: Bring Your Own Brain**)
 - **Context is surgical**: incremental loading with a 3-Question Relevance Gate prevents context stuffing; max 3 Tier 2 files per session
-- **Routing is precise**: 118 skills with `paths:` triggers, `when_to_use:` semantics, and `effort:` scores let the AI self-route without human navigation
+- **Routing is precise**: 117 skills with `paths:` triggers, `when_to_use:` semantics, and `effort:` scores let the AI self-route without human navigation
 - **Visual Intelligence**: Automated Technical Diagramming (SVG/PNG) for architectures, sequence flows, and process models via `/visualize`. 
 
 ---
@@ -163,7 +163,7 @@ Tier 5  CLAUDE.md @include chain     — Static universal context, always in pro
 
 ## Skill System
 
-### 118 Skills Across 7 Domains
+### 117 Skills Across 7 Domains
 
 | Domain | Representative Skills |
 |---|---|
@@ -195,7 +195,7 @@ Type `/` in Claude Code — you see what's relevant, not all 123.
 | Category | Count | Description |
 |---|---|---|
 | **Agents** | 31 | Specialized subagents across product, engineering, design, QA, data, and operations |
-| **Skills** | 118 | Core workflows and technology frameworks with context-aware routing |
+| **Skills** | 117 | Core workflows and technology frameworks with context-aware routing |
 | **Hooks** | 15 | Automated validation: commits, pushes, asset changes, session lifecycle, pre-compact, gap detection, bash guard, fork-join |
 | **Rules** | 13 | Path-scoped coding standards enforced automatically by file location |
 | **Templates** | 22+ | PRDs, API designs, system architecture, ADRs, mobile, incident response, postmortem |

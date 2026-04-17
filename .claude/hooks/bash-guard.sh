@@ -43,6 +43,20 @@ block_if_match() {
 block_if_match ':\s*\(\s*\)\s*\{' \
     "Fork bomb pattern detected: :(){ :|:& };:"
 
+# rm -rf variants (Hard blocks for root/all patterns)
+block_if_match 'rm\s+(-r\s*-f|-f\s*-r|-rf|-fr)\s+/' \
+    "rm -rf on root is forbidden"
+
+block_if_match 'rm\s+(-r\s*-f|-f\s*-r|-rf|-fr)\s+\*' \
+    "rm -rf on all files (*) is forbidden via BashGuard"
+
+# tee .env overwrites
+block_if_match 'tee\s+.*\.env' \
+    "Overwriting .env files via tee is forbidden"
+
+block_if_match '>\s*\.env' \
+    "Direct redirection to .env is forbidden"
+
 # Disk formatting
 block_if_match 'mkfs\.' \
     "Disk formatting is forbidden (mkfs.*)"

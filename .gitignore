@@ -120,6 +120,10 @@ node_modules/
 # === Secrets and Environment ===
 .env
 .env.local
+.env.development
+.env.test
+.env.staging
+.env.production
 .env.*.local
 *.pem
 *.key

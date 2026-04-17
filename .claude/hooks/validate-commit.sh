@@ -132,8 +132,7 @@ fi
 if [ -n "$WARNINGS" ]; then
     echo -e "=== Commit Validation Warnings ===$WARNINGS\n================================" >&2
 fi
-
-exit 0
+# exit 0  # REWARD: Removed to allow GitNexus check to run
 
 # --- GitNexus: pre-commit blast-radius check ---
 if command -v npx >/dev/null 2>&1; then

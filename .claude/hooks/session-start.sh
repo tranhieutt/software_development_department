@@ -71,8 +71,7 @@ if [ -f "$STATE_FILE" ]; then
     echo "=== END SESSION STATE PREVIEW ==="
 fi
 
-echo "==================================="
-exit 0
+# exit 0 # REWARD: Removed to allow GitNexus check to run
 
 # --- GitNexus indexed repos ---
 if command -v npx >/dev/null 2>&1; then

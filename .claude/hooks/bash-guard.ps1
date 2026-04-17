@@ -32,6 +32,14 @@ function Block-IfMatch($pattern, $reason) {
 # Fork bomb variants
 Block-IfMatch ':\s*\(\s*\)\s*\{' "Fork bomb pattern detected: :(){ :|:& };:"
 
+# rm -rf variants (Hard blocks for root/all patterns)
+Block-IfMatch 'rm\s+(-r\s*-f|-f\s*-r|-rf|-fr)\s+/' "rm -rf on root is forbidden"
+Block-IfMatch 'rm\s+(-r\s*-f|-f\s*-r|-rf|-fr)\s+\*' "rm -rf on all files (*) is forbidden via BashGuard"
+
+# tee .env overwrites
+Block-IfMatch 'tee\s+.*\.env' "Overwriting .env files via tee is forbidden"
+Block-IfMatch '>\s*\.env' "Direct redirection to .env is forbidden"
+
 # Disk formatting
 Block-IfMatch 'mkfs\.' "Disk formatting is forbidden (mkfs.*)"
 

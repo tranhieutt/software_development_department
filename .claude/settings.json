@@ -35,7 +35,8 @@
       "mcp__gitnexus__list_repos(*)",
       "mcp__gitnexus__cypher(*)",
       "mcp__gitnexus__rename(*)",
-      "Bash(npx gitnexus*)"
+      "Bash(npx gitnexus*)",
+      "Bash(bash .claude/hooks/fork-join.sh *)"
     ],
     "deny": [
       "Bash(rm -rf *)",
@@ -86,7 +87,7 @@
           {
             "type": "command",
             "command": "bash .claude/hooks/prompt-context.sh",
-            "timeout": 5
+            "timeout": 10
           }
         ]
       }

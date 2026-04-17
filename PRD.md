@@ -9,8 +9,8 @@
 
 ---
 
-**Version**: 1.31.0
-**Status**: Active / Refinement
+**Version**: 1.31.2
+**Status**: Initial Draft
 **Last updated by human**: 2026-04-17
 **Product owner**: Software Development Department Engineer
 
@@ -19,7 +19,7 @@
 ## Approvals
 
 | Role | Name | Status | Date |
-|------|------|--------|------|
+| :--- | :--- | :--- | :--- |
 | Product Manager | [Name] | Pending | — |
 | Technical Director | [Name] | Pending | — |
 | CTO | [Name] | Pending | — |
@@ -41,9 +41,10 @@ Modern AI coding tools like Claude Code are incredibly powerful but often operat
 ### 2.2 The Problem
 
 As project complexity grows, the "single-agent" approach fails due to context limits and cognitive overload. There is a lack of:
-1.  **Domain Specialization:** One agent trying to be architect, coder, and tester.
-2.  **Long-term Memory:** Important constraints and decisions are forgotten when context is compacted.
-3.  **Process Governance:** No automated checks for security, coding standards, or workflow compliance.
+
+1. **Domain Specialization:** One agent trying to be architect, coder, and tester.
+2. **Long-term Memory:** Important constraints and decisions are forgotten when context is compacted.
+3. **Process Governance:** No automated checks for security, coding standards, or workflow compliance.
 
 ### 2.3 Why Now
 
@@ -62,7 +63,7 @@ The shift from "AI autocompletion" to "Agentic Software Engineering" requires a 
 ### 3.2 Success Metrics
 
 | Metric | Baseline | Target | How Measured |
-|--------|----------|--------|--------------|
+| :--- | :--- | :--- | :--- |
 | Project Adoption Rate | 0 | 10+ projects | Internal tally |
 | Skill Reuse % | < 10% | > 40% | /harness-audit metrics |
 | Time-to-First-PRD | > 1 hour | < 30 min | User feedback / timing |
@@ -72,21 +73,21 @@ The shift from "AI autocompletion" to "Agentic Software Engineering" requires a 
 
 ## 4. User Personas
 
-### Persona: [Name, e.g., "Alex the Admin"]
+### Persona: Minh the Modern Manager
 
-- **Role**: [Job title or user type]
-- **Goals**: [What they want to accomplish]
-- **Pain points**: [Current frustrations this product addresses]
-- **Technical level**: [Non-technical / Moderate / Developer]
-- **Usage frequency**: [Daily / Weekly / Occasional]
+- **Role**: Software Engineering Manager / Architect
+- **Goals**: Scale team productivity using AI while maintaining strict architectural standards and security.
+- **Pain points**: AI "autopilot" mistakes, context loss in long sessions, lack of audit trail for AI decisions.
+- **Technical level**: Developer / Architect
+- **Usage frequency**: Daily
 
-### Persona: [Name, e.g., "Sam the End User"]
+### Persona: Duy the Dev
 
-- **Role**: [Job title or user type]
-- **Goals**: [What they want to accomplish]
-- **Pain points**: [Current frustrations]
-- **Technical level**: [Non-technical / Moderate / Developer]
-- **Usage frequency**: [Daily / Weekly / Occasional]
+- **Role**: Full-stack Developer
+- **Goals**: Offload repetitive coding and documentation tasks to AI agents reliably.
+- **Pain points**: Manual context management, repeating instructions, AI following outdated patterns.
+- **Technical level**: Moderate / Developer
+- **Usage frequency**: Daily
 
 ---
 
@@ -115,27 +116,33 @@ The shift from "AI autocompletion" to "Agentic Software Engineering" requires a 
 ## 6. Non-Functional Requirements
 
 ### Performance
-- [e.g., API response time < 200ms at p95 under normal load]
-- [e.g., Page initial load < 3s on 4G connection]
+
+- Hook overhead < 500ms per trigger.
+- Context loading < 2s for Tier-2 memory files.
 
 ### Security
-- [e.g., Authentication required for all non-public endpoints]
-- [e.g., All user data encrypted at rest]
-- [e.g., OWASP Top 10 mitigations in place]
+
+- 0 hardcoded secrets committed to repository (enforced by hooks).
+- Strict blocking of dangerous bash commands (rm -rf, overwrite .env).
+- Privacy-first logging: Scrubbing of sensitive data in task logs.
 
 ### Scalability
-- [e.g., System must support up to 10,000 concurrent users without degradation]
+
+- Support for projects with 1000+ files via GitNexus indexing.
+- Support for 30+ specialized agent domains.
 
 ### Accessibility
-- [e.g., WCAG 2.1 AA compliance for all user-facing interfaces]
+
+- CLI-first interface with structured markdown outputs for screen readers.
 
 ### Browser / Platform Support
-- [e.g., Modern browsers: Chrome 110+, Firefox 110+, Safari 16+, Edge 110+]
-- [e.g., Mobile-responsive down to 375px width]
+
+- Platform Parity: Identical behavior on Windows (PowerShell) and Linux/macOS (Bash).
 
 ### Reliability
-- [e.g., 99.5% uptime SLA]
-- [e.g., Automated backups every 24 hours]
+
+- Hook Fail-Safe: Standard tasks must proceed even if hooks fail-open (best effort).
+- State Reconstruction: 100% recovery of session intent after context compaction.
 
 ---
 
@@ -143,9 +150,9 @@ The shift from "AI autocompletion" to "Agentic Software Engineering" requires a 
 
 The following will **not** be built in the initial version. This list prevents scope creep and helps agents avoid building features that aren't required yet.
 
-- [Feature A — reason: too complex for v1, planned for v2]
-- [Feature B — reason: requires third-party integration not yet evaluated]
-- [Feature C — reason: low user demand, deprioritized]
+- Native GUI application (remains CLI-based).
+- Automatic multi-repo synchronization (single-repo focus for now).
+- Direct cloud deployment orchestration (hand-off to scripts/tools instead).
 
 ---
 
@@ -154,9 +161,9 @@ The following will **not** be built in the initial version. This list prevents s
 > These are unresolved decisions that require human input before implementation can proceed.
 
 | # | Question | Owner | Status |
-|---|----------|-------|--------|
-| 1 | [e.g., Which payment provider: Stripe or Paddle?] | [Product Owner] | Open |
-| 2 | [e.g., Will we support SSO in v1?] | [CTO] | Open |
+| :--- | :--- | :--- | :--- |
+| 1 | Should we support ZSH/Fish explicitly or only Bash/PowerShell? | Architect | Open |
+| 2 | Do we need a local SQLite database for session history instead of JSONL? | Data Eng | Open |
 
 ---
 
@@ -165,5 +172,5 @@ The following will **not** be built in the initial version. This list prevents s
 > Human entries only. Agents do not modify this section.
 
 | Date | Author | Change Description |
-|------|--------|--------------------|
-| [YYYY-MM-DD] | [Name] | Initial draft |
+| :--- | :--- | :--- |
+| 2026-04-17 | Antigravity | Initial draft with filled placeholders from v1.31.2 update |
