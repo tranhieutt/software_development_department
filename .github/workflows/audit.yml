@@ -1,0 +1,35 @@
+name: Harness Audit
+on: [pull_request, push]
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install -g ajv-cli
+
+      - name: Run Pattern Audit
+        run: node scripts/harness-audit.js repo
+
+      - name: Validate Frontmatter
+        run: node tests/skills/validate-frontmatter.test.js
+
+      - name: Validate Skills
+        run: bash scripts/validate-skills.sh
+
+      - name: ShellCheck Hooks
+        run: |
+          sudo apt-get update && sudo apt-get install -y shellcheck
+          shellcheck .claude/hooks/*.sh
+
+      - name: Validate settings.json Schema
+        run: |
+          # Use curl to get the schema if not local
+          curl -s https://json.schemastore.org/claude-code-settings.json -o .claude/settings.schema.json
+          ajv validate -s .claude/settings.schema.json -d .claude/settings.json

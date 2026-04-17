@@ -6,6 +6,35 @@ Tài liệu này ghi lại lịch sử cập nhật tài liệu và source code 
 
 ## 🗓️ Lịch sử cập nhật
 
+### [v1.32.0] - 2026-04-17
+
+**Chủ đề:** Finalizing Framework Maintenance — Kiến trúc hóa tri thức & Quy hoạch Repo
+
+Hoàn tất giai đoạn bảo trì P1/P2, tập trung vào việc kiến trúc hóa toàn bộ hệ thống tri thức và làm sạch repo để đạt trạng thái "Production Ready".
+
+#### Upgrade #1 — Tái cấu trúc thư mục Tài liệu (Knowledge Reorganization):
+
+- **docs/technical/**: Tập trung các tài liệu chuyên sâu về kiến trúc (`ARCHITECTURE.md`), nguyên tắc thiết kế (`COLLABORATIVE-DESIGN-PRINCIPLE.md`), và bộ tiêu chuẩn trực quan (`visual-standards/`).
+- **docs/onboarding/**: Chứa các tài liệu hướng dẫn nhanh cho thành viên mới (di chuyển từ `HUONG_DAN_NHANH.md`).
+- **docs/internal/**: Lưu trữ các báo cáo audit (`report_audit_ver2_opus47.md`) và kế hoạch phát hành (`report_plan_package_cli.md`).
+- **docs/reference/**: Danh sách lệnh (`DANH_SACH_LENH.md`) và các tài liệu tham khảo khác.
+- **docs/retrospectives/**: Quy hoạch toàn bộ báo cáo lịch sử nâng cấp MAS và Claude-mem.
+- **docs/archived/**: Nơi lưu các tài liệu cũ không còn phù hợp với kiến trúc MAS mới.
+
+#### Upgrade #2 — Automated Testing Integration:
+
+- Mở rộng thư mục `tests/` với các test suites cho **Hooks** và **Skills**.
+- **Hook Smoke Tests:** Triển khai 34 test cases cho `bash-guard.sh` và `validate-commit.sh`, verify các lớp bảo mật và routing.
+- **Skill Validation:** Tích hợp kiểm tra định dạng tri thức tự động.
+
+#### Upgrade #3 — Hygiene & Governance:
+
+- Dọn dẹp triệt để root folder: Di chuyển `History_Update.md`, `DANH_SACH_LENH.md`, `HUONG_DAN_NHANH.md` vào các folder chức năng trong `docs/`.
+- Cập nhật `.gitignore`: Bổ sung các pattern bảo vệ cho `.worktrees/`, `graphify-out/`, và các file tạm từ `Supermemory`.
+- **Durable Memory Audit:** Lưu trữ và chỉ mục hóa các phiên "Auto-Dream" và "Session Trace" vào `.claude/memory/archive/`.
+
+---
+
 ### [v1.31.3] - 2026-04-17
 
 **Chủ đề:** Security Hardening — P0 Audit Fixes (Opus 4.7)
@@ -302,19 +331,19 @@ Dựa trên phân tích so sánh bộ skill SDD với bộ chuẩn Claude Manage
 
 **Vấn đề 2 — Progressive Disclosure (4 batches, 11 skills):**
 
-| Skills | Trước | Sau | Ghi chú |
-|---|---|---|---|
-| `senior-frontend` | 495 | ~149 | Bỏ scaffolding scripts, giữ actionable patterns |
-| `code-review-checklist` | 466 | ~94 | Bỏ explanations thừa, giữ checklist items |
-| `architecture-decision-records` | 452 | ~127 | Bỏ verbose templates, giữ 1 MADR template |
-| `postmortem-writing` | 413 | ~132 | Bỏ ví dụ dài, giữ templates + core concepts |
-| `prisma-expert` | 365 | ~148 | Bỏ diagnostic scripts, giữ critical rules |
-| `backend-architect` | 337 | ~95 | Bỏ 200-line capability list, thêm decision matrix |
-| `aws-serverless` | 332 | ~168 | Fix truncated code snippets, remove broken tables |
-| `devops-deploy` | 295 | ~197 | Fix broken YAML frontmatter, remove boilerplate |
-| `database-architect` | 270 | ~120 | Bỏ bullet list, thêm SQL patterns + decision matrix |
-| `frontend-design` | 281 | ~90 | Rút gọn DFI framework, thêm operator checklist |
-| `mlops-engineer` | 225 | ~177 | Bỏ 150-line capability list, thêm tool matrix + 5 code patterns |
+| Skills                          | Trước | Sau  | Ghi chú                                                         |
+| ------------------------------- | ----- | ---- | --------------------------------------------------------------- |
+| `senior-frontend`               | 495   | ~149 | Bỏ scaffolding scripts, giữ actionable patterns                 |
+| `code-review-checklist`         | 466   | ~94  | Bỏ explanations thừa, giữ checklist items                       |
+| `architecture-decision-records` | 452   | ~127 | Bỏ verbose templates, giữ 1 MADR template                       |
+| `postmortem-writing`            | 413   | ~132 | Bỏ ví dụ dài, giữ templates + core concepts                     |
+| `prisma-expert`                 | 365   | ~148 | Bỏ diagnostic scripts, giữ critical rules                       |
+| `backend-architect`             | 337   | ~95  | Bỏ 200-line capability list, thêm decision matrix               |
+| `aws-serverless`                | 332   | ~168 | Fix truncated code snippets, remove broken tables               |
+| `devops-deploy`                 | 295   | ~197 | Fix broken YAML frontmatter, remove boilerplate                 |
+| `database-architect`            | 270   | ~120 | Bỏ bullet list, thêm SQL patterns + decision matrix             |
+| `frontend-design`               | 281   | ~90  | Rút gọn DFI framework, thêm operator checklist                  |
+| `mlops-engineer`                | 225   | ~177 | Bỏ 150-line capability list, thêm tool matrix + 5 code patterns |
 
 **Skills đánh giá nhưng KHÔNG rút gọn (code-dense / justified):**
 - `deep-interview` (651), `laravel-patterns` (421), `docker-patterns` (370), `drizzle-orm-expert` (366), `claude-api` (343), `springboot-patterns` (320), `map-systems` / `orchestrate` (307–313): toàn code thực tế, không có padding
@@ -595,16 +624,16 @@ Chi tiết: [upgrade_plan_based_claude_code_original.md](upgrade_plan_based_clau
 
 Thêm `paths:` vào **48 technology skills** — skills chỉ visible khi mở file phù hợp:
 
-| Nhóm | Skills | Ví dụ trigger |
-| --- | --- | --- |
-| Frontend / React / Next.js | 13 | `*.tsx`, `next.config.*`, `tailwind.config.*` |
-| Backend Node.js / NestJS | 7 | `*.module.ts`, `nest-cli.json`, `schema.prisma` |
-| Python | 6 | `*.py`, `manage.py`, `requirements.txt` |
-| Mobile (Flutter / iOS / KMP) | 4 | `*.dart`, `*.swift`, `pubspec.yaml` |
-| Database (SQL / NoSQL / Vector) | 4 | `*.sql`, `migrations/**`, `*.prisma` |
-| Infrastructure / DevOps | 7 | `Dockerfile*`, `k8s/**`, `*.tf`, `.gitlab-ci.yml` |
-| .NET / Java / PHP | 3 | `*.cs`, `*.java`, `*.php`, `pom.xml` |
-| AI / LLM | 4 | `*anthropic*`, `*langchain*`, `*gemini*` |
+| Nhóm                            | Skills | Ví dụ trigger                                     |
+| ------------------------------- | ------ | ------------------------------------------------- |
+| Frontend / React / Next.js      | 13     | `*.tsx`, `next.config.*`, `tailwind.config.*`     |
+| Backend Node.js / NestJS        | 7      | `*.module.ts`, `nest-cli.json`, `schema.prisma`   |
+| Python                          | 6      | `*.py`, `manage.py`, `requirements.txt`           |
+| Mobile (Flutter / iOS / KMP)    | 4      | `*.dart`, `*.swift`, `pubspec.yaml`               |
+| Database (SQL / NoSQL / Vector) | 4      | `*.sql`, `migrations/**`, `*.prisma`              |
+| Infrastructure / DevOps         | 7      | `Dockerfile*`, `k8s/**`, `*.tf`, `.gitlab-ci.yml` |
+| .NET / Java / PHP               | 3      | `*.cs`, `*.java`, `*.php`, `pom.xml`              |
+| AI / LLM                        | 4      | `*anthropic*`, `*langchain*`, `*gemini*`          |
 
 Kết quả: Gõ `/` khi làm Next.js project → ~20 skills thay vì 98.
 
@@ -646,24 +675,24 @@ Kết quả: Gõ `/` khi làm Next.js project → ~20 skills thay vì 98.
 
 **Update skills cho 16 agents:**
 
-| Agent | Skills mới |
-|---|---|
-| `backend-developer` | code-review-checklist, commit, pr-writer, backend-architect, microservices-patterns, nodejs-backend-patterns, nestjs-expert, fastapi-pro, django-patterns, springboot-patterns, docker-patterns, postgres-patterns, sql-optimization-patterns, backend-security-coder, aws-serverless |
-| `frontend-developer` | code-review-checklist, commit, pr-writer, senior-frontend, react-nextjs-development, nextjs-app-router-patterns, nextjs-best-practices, angular-best-practices, tailwind-patterns, shadcn, radix-ui-design-system, frontend-design, frontend-security-coder, frontend-ui-dark-ts |
-| `fullstack-developer` | code-review-checklist, commit, pr-writer, react-nextjs-development, nextjs-app-router-patterns, nextjs-best-practices, prisma-expert, drizzle-orm-expert |
-| `mobile-developer` | code-review-checklist, commit, pr-writer, flutter-expert, ios-developer, react-native-architecture, compose-multiplatform-patterns |
-| `data-engineer` | code-review-checklist, database-architect, postgres-patterns, nosql-expert, sql-optimization-patterns, vector-database-engineer, drizzle-orm-expert, prisma-expert, event-sourcing-architect |
-| `lead-programmer` | code-review-checklist, architecture-decision-records, commit, pr-writer |
-| `devops-engineer` | commit, deployment-procedures, postmortem-writing, docker-patterns, kubernetes-architect, gitlab-ci-patterns, aws-serverless, hybrid-cloud-architect, cloud-architect, deployment-engineer, devops-deploy |
-| `security-engineer` | security-audit, backend-security-coder, frontend-security-coder |
-| `technical-director` | architecture-decision-records, microservices-patterns, event-sourcing-architect, cloud-architect, hybrid-cloud-architect |
-| `cto` | architecture-decision-records, cloud-architect, hybrid-cloud-architect |
-| `ai-programmer` | ml-engineer, mlops-engineer, rag-engineer, llm-app-patterns, llm-application-dev-ai-assistant, gemini-api-integration, vector-database-engineer |
-| `ui-programmer` | commit, pr-writer, radix-ui-design-system, shadcn, tailwind-patterns, frontend-ui-dark-ts |
-| `tools-programmer` | commit, pr-writer |
-| `producer` | postmortem-writing |
-| `release-manager` | deployment-procedures |
-| `qa-lead` | code-review-checklist |
+| Agent                 | Skills mới                                                                                                                                                                                                                                                                            |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `backend-developer`   | code-review-checklist, commit, pr-writer, backend-architect, microservices-patterns, nodejs-backend-patterns, nestjs-expert, fastapi-pro, django-patterns, springboot-patterns, docker-patterns, postgres-patterns, sql-optimization-patterns, backend-security-coder, aws-serverless |
+| `frontend-developer`  | code-review-checklist, commit, pr-writer, senior-frontend, react-nextjs-development, nextjs-app-router-patterns, nextjs-best-practices, angular-best-practices, tailwind-patterns, shadcn, radix-ui-design-system, frontend-design, frontend-security-coder, frontend-ui-dark-ts      |
+| `fullstack-developer` | code-review-checklist, commit, pr-writer, react-nextjs-development, nextjs-app-router-patterns, nextjs-best-practices, prisma-expert, drizzle-orm-expert                                                                                                                              |
+| `mobile-developer`    | code-review-checklist, commit, pr-writer, flutter-expert, ios-developer, react-native-architecture, compose-multiplatform-patterns                                                                                                                                                    |
+| `data-engineer`       | code-review-checklist, database-architect, postgres-patterns, nosql-expert, sql-optimization-patterns, vector-database-engineer, drizzle-orm-expert, prisma-expert, event-sourcing-architect                                                                                          |
+| `lead-programmer`     | code-review-checklist, architecture-decision-records, commit, pr-writer                                                                                                                                                                                                               |
+| `devops-engineer`     | commit, deployment-procedures, postmortem-writing, docker-patterns, kubernetes-architect, gitlab-ci-patterns, aws-serverless, hybrid-cloud-architect, cloud-architect, deployment-engineer, devops-deploy                                                                             |
+| `security-engineer`   | security-audit, backend-security-coder, frontend-security-coder                                                                                                                                                                                                                       |
+| `technical-director`  | architecture-decision-records, microservices-patterns, event-sourcing-architect, cloud-architect, hybrid-cloud-architect                                                                                                                                                              |
+| `cto`                 | architecture-decision-records, cloud-architect, hybrid-cloud-architect                                                                                                                                                                                                                |
+| `ai-programmer`       | ml-engineer, mlops-engineer, rag-engineer, llm-app-patterns, llm-application-dev-ai-assistant, gemini-api-integration, vector-database-engineer                                                                                                                                       |
+| `ui-programmer`       | commit, pr-writer, radix-ui-design-system, shadcn, tailwind-patterns, frontend-ui-dark-ts                                                                                                                                                                                             |
+| `tools-programmer`    | commit, pr-writer                                                                                                                                                                                                                                                                     |
+| `producer`            | postmortem-writing                                                                                                                                                                                                                                                                    |
+| `release-manager`     | deployment-procedures                                                                                                                                                                                                                                                                 |
+| `qa-lead`             | code-review-checklist                                                                                                                                                                                                                                                                 |
 
 ---
 
