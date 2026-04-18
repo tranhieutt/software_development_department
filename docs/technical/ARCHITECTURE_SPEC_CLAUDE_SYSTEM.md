@@ -257,7 +257,7 @@ This layer holds persistent runtime state outside conversation history.
 
 ### Key Files
 - `production/session-state/active.md`
-- `production/session-state/circuit-state.json`
+- `.claude/memory/circuit-state.json`
 - `production/traces/decision_ledger.jsonl`
 
 ### Architectural Role
@@ -394,8 +394,8 @@ Used for:
 
 ### Characteristics
 - layered recovery before escalation
-- circuit breaker after repeated persistent failure
-- fallback agent routing
+- global circuit breaker state via `.claude/memory/circuit-state.json`
+- fallback agent routing at the orchestration layer
 - failure and decision logging
 
 ## 8.5 Compaction / Crash Recovery Scenario

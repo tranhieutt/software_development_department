@@ -12,24 +12,24 @@
 5. **No Unilateral Cross-Domain Changes**: An agent must never modify files
    outside its designated directories without explicit delegation.
 6. **Layered Recovery Before Escalation**: Before surfacing a blocker to the user,
-   agents must attempt recovery in this order — from least to most disruptive:
+   agents must attempt recovery in this order - from least to most disruptive:
    1. Re-read the relevant files and retry with fresh context
    2. Delegate to a specialized subagent with the full diagnosis in the prompt
    3. Run `/compact` if context may be stale, then retry once more
-   4. Only after all three fail → surface to user with every attempted step documented
+   4. Only after all three fail -> surface to user with every attempted step documented
 7. **Subagent Concurrency Classification**: Before spawning multiple subagents,
    classify each by its side-effect profile:
-   - **Concurrent-safe** (read-only — no file writes, no commands): Explore, research,
-     Grep/Glob/Read agents → batch and run in parallel
+   - **Concurrent-safe** (read-only - no file writes, no commands): Explore, research,
+     Grep/Glob/Read agents -> batch and run in parallel
    - **State-modifying** (writes files, runs commands, modifies DB): backend-developer,
-     frontend-developer, data-engineer → run sequentially, never overlap on the same domain
+     frontend-developer, data-engineer -> run sequentially, never overlap on the same domain
 8. **Withheld Error Pattern**: Agents must not surface intermediate errors directly to
    the user. Apply layered recovery (Rule 6) first. Only expose the error when all
-   recovery options are exhausted — include the full recovery attempt history in the
+   recovery options are exhausted - include the full recovery attempt history in the
    report so the user can understand what was tried.
 9. **Fail-Open for Optional Agents**: Any subagent handling a background or optional
    task (memory extraction, summary generation, documentation update) must fail-open:
-   - If the subagent fails, errors out, or times out → log the failure in `active.md`
+   - If the subagent fails, errors out, or times out -> log the failure in `active.md`
      and continue the main workflow without blocking
    - Never let an optional background agent gate a required foreground task
    - Background failures are surfaced as warnings, not blockers
@@ -39,14 +39,14 @@
     - Experimental approaches not yet validated
     - Database migrations or schema changes
     - Changes the agent is not confident about
-    The worktree gives a fully isolated copy — review the diff, merge if good, discard
+    The worktree gives a fully isolated copy - review the diff, merge if good, discard
     if not. Never let uncertainty be a reason to avoid attempting a task.
 11. **Permission Mode Selection**: Choose the appropriate permission mode before
-    starting a task — do not default to the most permissive mode:
-    - `plan` — explore and review code without any writes or command execution
-    - `default` — normal development; prompt before each side-effecting tool call
-    - `acceptEdits` — batch file edits already reviewed; skips per-file prompts
-    - `bypassPermissions` — CI pipelines and automation only, with `--allowedTools`
+    starting a task - do not default to the most permissive mode:
+    - `plan` - explore and review code without any writes or command execution
+    - `default` - normal development; prompt before each side-effecting tool call
+    - `acceptEdits` - batch file edits already reviewed; skips per-file prompts
+    - `bypassPermissions` - CI pipelines and automation only, with `--allowedTools`
       whitelist specified explicitly
     Never use `bypassPermissions` interactively. Prefer `plan` mode for all
     read-only research tasks to prevent accidental writes.
@@ -54,12 +54,12 @@
     implementing. Each step must include an inline verification criterion:
 
     ```text
-    1. [Step] → verify: [check]
-    2. [Step] → verify: [check]
-    3. [Step] → verify: [check]
+    1. [Step] -> verify: [check]
+    2. [Step] -> verify: [check]
+    3. [Step] -> verify: [check]
     ```
 
-    - The verification criterion must be concrete and testable — not "make sure it works"
+    - The verification criterion must be concrete and testable - not "make sure it works"
     - Examples of strong criteria: "tests pass", "endpoint returns 201", "no TS errors"
     - Examples of weak criteria: "looks good", "should be fine", "works as expected"
     - Do not begin implementation until the plan has been presented and approved
@@ -71,22 +71,15 @@
     - A slice is not complete until it is integrated and verified end-to-end.
     - Prefer multiple small vertical slices over one large monolithic fullstack task.
 
-14. **Circuit Breaker for Agent Failures**: When an agent fails repeatedly on the same
-    task, the system must isolate it and route to a fallback rather than retrying infinitely.
+14. **Circuit Breaker Routing for Agent Failures**: When persistent Task execution
+    failures occur, route around weak spots instead of retrying infinitely.
 
-    **States:**
-    - `CLOSED` — Agent is operating normally. All tasks routed to it as usual.
-    - `OPEN` — Agent has failed 3+ consecutive times. Bypass it immediately; route to
-      the designated fallback agent. Log the transition to
-      `production/session-state/circuit-state.json`.
-    - `HALF-OPEN` — After 10 minutes in OPEN state, allow exactly one retry attempt.
-      If it succeeds → return to `CLOSED`. If it fails again → return to `OPEN`.
-
-    **Exponential backoff before tripping OPEN:**
-    Apply backoff between retries (do not trip OPEN immediately on first failure):
-    - Retry 1: wait 2s
-    - Retry 2: wait 4s
-    - Retry 3: wait 8s → if still failing, trip to `OPEN`
+    **Mechanism authority:**
+    - Circuit state, thresholds, TTL, and transitions are defined by
+      `docs/internal/adr/ADR-004-unified-failure-state-machine.md`
+    - Conflict resolution and Rule 14 scope are defined by
+      `docs/internal/adr/ADR-005-resolve-rule14-vs-adr004-conflict.md`
+    - The single source of truth state file is `.claude/memory/circuit-state.json`
 
     **Fallback pairs:**
 
@@ -98,14 +91,15 @@
     | `data-engineer` | `backend-developer` |
     | `investigator` | `solver` |
 
-    **Integration with Rule 6 (Layered Recovery):**
-    Circuit Breaker activates **after** Rule 6 layered recovery is exhausted.
-    Rule 6 handles transient failures (context stale, bad prompt). Circuit Breaker
-    handles persistent failures (agent structurally unable to complete the task).
-
-    **State file:** `production/session-state/circuit-state.json`
-    Read this file at the start of any multi-agent task to check if a required agent
-    is currently `OPEN` and should be bypassed.
+    **Routing semantics:**
+    - Circuit Breaker activates **after** Rule 6 layered recovery is exhausted.
+      Rule 6 handles transient failures; the circuit handles persistent execution-health
+      degradation.
+    - When the circuit is `HALF_OPEN`, the orchestrator MAY route non-critical sub-tasks
+      to the fallback agent. For critical sub-tasks, prefer the primary agent because
+      `HALF_OPEN` is the probe phase.
+    - When the circuit is `OPEN`, the orchestrator SHOULD route Task dispatches to the
+      fallback agent or surface to the human if no suitable fallback exists.
 
     **Ledger obligation:** Every Circuit Breaker state transition must be appended to
     `production/traces/decision_ledger.jsonl` with `risk_tier: "High"`.
@@ -137,7 +131,7 @@
     receiving agent begins work.
 
     **When a handoff contract is required:**
-    - Any work crossing domain boundaries (backend → QA, frontend → lead-programmer)
+    - Any work crossing domain boundaries (backend -> QA, frontend -> lead-programmer)
     - Any work with `risk_tier` Medium or High
     - Any partial artifact (`artifact_status: partial | draft`) passed between agents
 
@@ -150,7 +144,7 @@
     2. Contract is saved to `.tasks/handoffs/<from>-to-<to>-<task_id>.json`
     3. Receiving agent reads the contract and verifies all `acceptance_criteria`
        before starting work
-    4. If any criterion fails → receiving agent rejects the handoff and returns
+    4. If any criterion fails -> receiving agent rejects the handoff and returns
        specific failures to the sender; does NOT begin work on a failing artifact
 
     **Schema reference:** `.claude/docs/handoff-schema.md`
