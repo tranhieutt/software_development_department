@@ -1,197 +1,296 @@
-﻿---
+---
 name: fastapi-pro
 type: reference
-description: "Provides expert FastAPI patterns for async endpoints, SQLAlchemy 2.0, Pydantic V2, dependency injection, and production deployment. Use when working with Python FastAPI files or when the user mentions FastAPI, async Python API, or Pydantic."
-paths: ["**/*.py", "**/requirements*.txt", "**/pyproject.toml", "**/main.py"]
+description: "Production FastAPI patterns — async endpoints, SQLAlchemy 2.0 async, Pydantic V2, dependency injection, JWT auth, testing. Use for Python 3.11+ FastAPI backends. NOT for Django (→ `django-patterns`) or Node.js (→ `backend-patterns`)."
+paths: ["**/*.py", "**/requirements*.txt", "**/pyproject.toml", "**/main.py", "**/app/**/*.py"]
 effort: 3
 allowed-tools: Read, Glob, Grep, Write, Edit, Bash
 user-invocable: true
-when_to_use: "When building high-performance async APIs with FastAPI, SQLAlchemy 2.0, or Pydantic V2"
+when_to_use: "When building async FastAPI APIs with SQLAlchemy 2.0 async + Pydantic V2 — endpoints, auth, DB session handling, testing, deployment"
 ---
 
-## Use this skill when
+# FastAPI Production Patterns
 
-- Working on fastapi pro tasks or workflows
-- Needing guidance, best practices, or checklists for fastapi pro
+## Critical rules (non-obvious)
 
-## Do not use this skill when
+- **`async def` endpoint blocking sync DB call** → blocks entire event loop. Either use `async` DB driver (asyncpg/aiomysql) throughout OR switch endpoint to plain `def` (FastAPI runs it in threadpool).
+- **Pydantic V2 `model_config = ConfigDict(...)` replaces V1 `class Config`**. Forgetting this silently loses settings like `from_attributes=True` needed for ORM → DTO conversion.
+- **`Depends()` caches per-request**: same dependency called twice in one request returns same instance. Don't rely on this for cross-request state — use app state / Redis instead.
+- **SQLAlchemy 2.0 async session must not leak across requests**: always scope via `Depends` with `async with AsyncSession(...)` — raw module-level session causes `GreenletError` under load.
+- **`BackgroundTasks` runs AFTER response sent in the same worker process**: if worker dies mid-task the work is lost. For durable background jobs use Celery / Dramatiq / ARQ.
+- **Uvicorn `--workers N` forks processes — can't share in-memory state**. Use Redis or DB for any shared state (rate-limit counters, cache).
 
-- The task is unrelated to fastapi pro
-- You need a different domain or tool outside this scope
+## Project layout
 
-## Instructions
+```
+app/
+├── main.py               # FastAPI() instance + lifespan
+├── api/
+│   ├── deps.py           # shared Depends (get_db, get_current_user)
+│   └── v1/
+│       ├── users.py      # APIRouter
+│       └── products.py
+├── core/
+│   ├── config.py         # Pydantic Settings
+│   ├── security.py       # JWT encode/decode, password hashing
+│   └── db.py             # engine + AsyncSession factory
+├── models/               # SQLAlchemy ORM models
+├── schemas/              # Pydantic DTOs (Request/Response)
+├── services/             # business logic (no framework coupling)
+└── tests/
+```
 
-- Clarify goals, constraints, and required inputs.
-- Apply relevant best practices and validate outcomes.
-- Provide actionable steps and verification.
-- If detailed examples are required, open `resources/implementation-playbook.md`.
+## Pydantic V2 settings + config
 
-You are a FastAPI expert specializing in high-performance, async-first API development with modern Python patterns.
+```python
+# app/core/config.py
+from pydantic import Field
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
-## Purpose
+class Settings(BaseSettings):
+    model_config = SettingsConfigDict(env_file=".env", env_prefix="APP_")
 
-Expert FastAPI developer specializing in high-performance, async-first API development. Masters modern Python web development with FastAPI, focusing on production-ready microservices, scalable architectures, and cutting-edge async patterns.
+    database_url: str = Field(..., description="postgresql+asyncpg://...")
+    jwt_secret: str = Field(..., min_length=32)
+    jwt_algorithm: str = "HS256"
+    jwt_exp_minutes: int = 30
+    cors_origins: list[str] = Field(default_factory=list)
 
-## Capabilities
+settings = Settings()  # fails fast at import if required vars missing
+```
 
-### Core FastAPI Expertise
+## SQLAlchemy 2.0 async session (per-request)
 
-- FastAPI 0.100+ features including Annotated types and modern dependency injection
-- Async/await patterns for high-concurrency applications
-- Pydantic V2 for data validation and serialization
-- Automatic OpenAPI/Swagger documentation generation
-- WebSocket support for real-time communication
-- Background tasks with BackgroundTasks and task queues
-- File uploads and streaming responses
-- Custom middleware and request/response interceptors
+```python
+# app/core/db.py
+from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine, async_sessionmaker
 
-### Data Management & ORM
+engine = create_async_engine(
+    settings.database_url,
+    pool_size=20,
+    max_overflow=10,
+    pool_pre_ping=True,          # reconnect on stale conns (LB idle timeout)
+    echo=False,
+)
+SessionLocal = async_sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
 
-- SQLAlchemy 2.0+ with async support (asyncpg, aiomysql)
-- Alembic for database migrations
-- Repository pattern and unit of work implementations
-- Database connection pooling and session management
-- MongoDB integration with Motor and Beanie
-- Redis for caching and session storage
-- Query optimization and N+1 query prevention
-- Transaction management and rollback strategies
+# app/api/deps.py
+from typing import AsyncIterator
+from fastapi import Depends
 
-### API Design & Architecture
+async def get_db() -> AsyncIterator[AsyncSession]:
+    async with SessionLocal() as session:
+        try:
+            yield session
+            await session.commit()
+        except Exception:
+            await session.rollback()
+            raise
+        # close is automatic via `async with`
+```
 
-- RESTful API design principles
-- GraphQL integration with Strawberry or Graphene
-- Microservices architecture patterns
-- API versioning strategies
-- Rate limiting and throttling
-- Circuit breaker pattern implementation
-- Event-driven architecture with message queues
-- CQRS and Event Sourcing patterns
+## Lifespan + startup/shutdown
 
-### Authentication & Security
+```python
+# app/main.py
+from contextlib import asynccontextmanager
+from fastapi import FastAPI
 
-- OAuth2 with JWT tokens (python-jose, pyjwt)
-- Social authentication (Google, GitHub, etc.)
-- API key authentication
-- Role-based access control (RBAC)
-- Permission-based authorization
-- CORS configuration and security headers
-- Input sanitization and SQL injection prevention
-- Rate limiting per user/IP
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Startup: warm caches, test DB
+    async with engine.begin() as conn:
+        await conn.execute(text("SELECT 1"))
+    yield
+    # Shutdown: drain connections
+    await engine.dispose()
 
-### Testing & Quality Assurance
+app = FastAPI(title="My API", lifespan=lifespan)
+```
 
-- pytest with pytest-asyncio for async tests
-- TestClient for integration testing
-- Factory pattern with factory_boy or Faker
-- Mock external services with pytest-mock
-- Coverage analysis with pytest-cov
-- Performance testing with Locust
-- Contract testing for microservices
-- Snapshot testing for API responses
+## JWT auth with OAuth2PasswordBearer
 
-### Performance Optimization
+```python
+# app/core/security.py
+from datetime import datetime, timedelta, timezone
+from jose import jwt, JWTError
+from passlib.context import CryptContext
 
-- Async programming best practices
-- Connection pooling (database, HTTP clients)
-- Response caching with Redis or Memcached
-- Query optimization and eager loading
-- Pagination and cursor-based pagination
-- Response compression (gzip, brotli)
-- CDN integration for static assets
-- Load balancing strategies
+pwd = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-### Observability & Monitoring
+def hash_password(p: str) -> str: return pwd.hash(p)
+def verify_password(p: str, h: str) -> bool: return pwd.verify(p, h)
 
-- Structured logging with loguru or structlog
-- OpenTelemetry integration for tracing
-- Prometheus metrics export
-- Health check endpoints
-- APM integration (DataDog, New Relic, Sentry)
-- Request ID tracking and correlation
-- Performance profiling with py-spy
-- Error tracking and alerting
+def create_access_token(sub: str) -> str:
+    exp = datetime.now(timezone.utc) + timedelta(minutes=settings.jwt_exp_minutes)
+    return jwt.encode({"sub": sub, "exp": exp}, settings.jwt_secret, settings.jwt_algorithm)
 
-### Deployment & DevOps
+# app/api/deps.py
+from fastapi import HTTPException, status
+from fastapi.security import OAuth2PasswordBearer
 
-- Docker containerization with multi-stage builds
-- Kubernetes deployment with Helm charts
-- CI/CD pipelines (GitHub Actions, GitLab CI)
-- Environment configuration with Pydantic Settings
-- Uvicorn/Gunicorn configuration for production
-- ASGI servers optimization (Hypercorn, Daphne)
-- Blue-green and canary deployments
-- Auto-scaling based on metrics
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/auth/login")
 
-### Integration Patterns
+async def get_current_user(
+    token: str = Depends(oauth2_scheme),
+    db: AsyncSession = Depends(get_db),
+) -> User:
+    try:
+        payload = jwt.decode(token, settings.jwt_secret, algorithms=[settings.jwt_algorithm])
+        user_id: str = payload.get("sub")
+    except JWTError:
+        raise HTTPException(status.HTTP_401_UNAUTHORIZED, "Invalid token")
+    user = await db.get(User, user_id)
+    if not user:
+        raise HTTPException(status.HTTP_401_UNAUTHORIZED, "User not found")
+    return user
+```
 
-- Message queues (RabbitMQ, Kafka, Redis Pub/Sub)
-- Task queues with Celery or Dramatiq
-- gRPC service integration
-- External API integration with httpx
-- Webhook implementation and processing
-- Server-Sent Events (SSE)
-- GraphQL subscriptions
-- File storage (S3, MinIO, local)
+## Endpoint pattern (thin controller, service below)
 
-### Advanced Features
+```python
+# app/api/v1/users.py
+from fastapi import APIRouter, Depends, HTTPException, status
 
-- Dependency injection with advanced patterns
-- Custom response classes
-- Request validation with complex schemas
-- Content negotiation
-- API documentation customization
-- Lifespan events for startup/shutdown
-- Custom exception handlers
-- Request context and state management
+router = APIRouter(prefix="/users", tags=["users"])
 
-## Behavioral Traits
+@router.post("", response_model=UserOut, status_code=status.HTTP_201_CREATED)
+async def create_user(
+    payload: UserCreate,
+    db: AsyncSession = Depends(get_db),
+) -> UserOut:
+    try:
+        user = await user_service.create(db, payload)
+    except DuplicateEmailError:
+        raise HTTPException(status.HTTP_409_CONFLICT, "Email taken")
+    return UserOut.model_validate(user)   # V2 from-attributes
 
-- Writes async-first code by default
-- Emphasizes type safety with Pydantic and type hints
-- Follows API design best practices
-- Implements comprehensive error handling
-- Uses dependency injection for clean architecture
-- Writes testable and maintainable code
-- Documents APIs thoroughly with OpenAPI
-- Considers performance implications
-- Implements proper logging and monitoring
-- Follows 12-factor app principles
+@router.get("/{user_id}", response_model=UserOut)
+async def get_user(
+    user_id: int,
+    db: AsyncSession = Depends(get_db),
+    current: User = Depends(get_current_user),
+) -> UserOut:
+    user = await db.get(User, user_id)
+    if not user:
+        raise HTTPException(status.HTTP_404_NOT_FOUND)
+    if user.id != current.id and not current.is_admin:
+        raise HTTPException(status.HTTP_403_FORBIDDEN)
+    return UserOut.model_validate(user)
+```
 
-## Knowledge Base
+## Pydantic V2 schemas with `from_attributes`
 
-- FastAPI official documentation
-- Pydantic V2 migration guide
-- SQLAlchemy 2.0 async patterns
-- Python async/await best practices
-- Microservices design patterns
-- REST API design guidelines
-- OAuth2 and JWT standards
-- OpenAPI 3.1 specification
-- Container orchestration with Kubernetes
-- Modern Python packaging and tooling
+```python
+from pydantic import BaseModel, ConfigDict, EmailStr, Field
 
-## Response Approach
+class UserBase(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+    email: EmailStr
+    full_name: str = Field(min_length=1, max_length=100)
 
-1. **Analyze requirements** for async opportunities
-2. **Design API contracts** with Pydantic models first
-3. **Implement endpoints** with proper error handling
-4. **Add comprehensive validation** using Pydantic
-5. **Write async tests** covering edge cases
-6. **Optimize for performance** with caching and pooling
-7. **Document with OpenAPI** annotations
-8. **Consider deployment** and scaling strategies
+class UserCreate(UserBase):
+    password: str = Field(min_length=8, max_length=128)
 
-## Example Interactions
+class UserOut(UserBase):
+    id: int
+    created_at: datetime
+```
 
-- "Create a FastAPI microservice with async SQLAlchemy and Redis caching"
-- "Implement JWT authentication with refresh tokens in FastAPI"
-- "Design a scalable WebSocket chat system with FastAPI"
-- "Optimize this FastAPI endpoint that's causing performance issues"
-- "Set up a complete FastAPI project with Docker and Kubernetes"
-- "Implement rate limiting and circuit breaker for external API calls"
-- "Create a GraphQL endpoint alongside REST in FastAPI"
-- "Build a file upload system with progress tracking"
+## Global exception handler
 
-## When to Use
+```python
+# app/main.py
+from fastapi import Request
+from fastapi.responses import JSONResponse
 
-- Use when Build high-performance async APIs with FastAPI, SQLAlchemy 2.0, and Pydantic V2. Master microservices, WebSockets, and modern Python async patterns.
+class AppError(Exception):
+    def __init__(self, msg: str, status_code: int = 400):
+        self.msg, self.status_code = msg, status_code
+
+@app.exception_handler(AppError)
+async def app_error_handler(req: Request, exc: AppError):
+    return JSONResponse(status_code=exc.status_code, content={"error": exc.msg})
+
+@app.exception_handler(Exception)
+async def unhandled(req: Request, exc: Exception):
+    logger.exception("Unhandled error", extra={"path": req.url.path})
+    return JSONResponse(status_code=500, content={"error": "Internal server error"})
+```
+
+## Testing with pytest-asyncio
+
+```python
+# tests/conftest.py
+import pytest_asyncio
+from httpx import AsyncClient, ASGITransport
+
+@pytest_asyncio.fixture
+async def client():
+    async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as c:
+        yield c
+
+@pytest_asyncio.fixture
+async def db_session():
+    async with SessionLocal() as s:
+        yield s
+        await s.rollback()  # isolate test
+
+# tests/test_users.py
+@pytest.mark.asyncio
+async def test_create_user(client: AsyncClient):
+    r = await client.post("/api/v1/users", json={"email": "a@b.com", "full_name": "A", "password": "pw12345678"})
+    assert r.status_code == 201
+    assert r.json()["email"] == "a@b.com"
+```
+
+## Production deployment (Uvicorn + Gunicorn)
+
+```bash
+# Dockerfile CMD — recommended for production
+gunicorn app.main:app \
+  --workers 4 \
+  --worker-class uvicorn.workers.UvicornWorker \
+  --bind 0.0.0.0:8000 \
+  --timeout 60 \
+  --keep-alive 5 \
+  --access-logfile -
+```
+
+Workers = `(2 × CPU) + 1` for CPU-bound; lower for IO-heavy async (async workers share event loop already).
+
+## Common pitfalls
+
+| Pitfall | Fix |
+|---|---|
+| `async def` + sync `psycopg2`/`pymysql` | Use `asyncpg` / `aiomysql` OR drop `async` on endpoint |
+| `BaseSettings` V1 pattern (`class Config`) | V2 uses `model_config = SettingsConfigDict(...)` |
+| `from_attributes=True` missing → validation error from ORM instance | Add to `ConfigDict` on every DTO reading from ORM |
+| Forgetting `await` on SQLAlchemy 2.0 async query | Linter — use `sqlalchemy[asyncio]` type stubs + mypy |
+| Returning ORM object → leaks relationships (N+1 on serialize) | Always `model_validate(orm_obj)` to scoped Pydantic DTO |
+| `BackgroundTasks` for durable work | Switch to Celery / Dramatiq / ARQ |
+| `CORSMiddleware` added AFTER auth middleware | CORS must be OUTERMOST — added first |
+| `response_model` + return extra fields → silently stripped | Use `response_model_exclude_unset=True` consciously |
+
+## Observability hooks
+
+```python
+# Structured logging
+import structlog
+logger = structlog.get_logger()
+
+@app.middleware("http")
+async def log_requests(request: Request, call_next):
+    start = time.monotonic()
+    response = await call_next(request)
+    logger.info("http_request",
+        method=request.method, path=request.url.path,
+        status=response.status_code,
+        duration_ms=(time.monotonic() - start) * 1000,
+    )
+    return response
+```
+
+- Add `prometheus-fastapi-instrumentator` for `/metrics`.
+- Health check: GET `/healthz` returns `{"status": "ok"}` + DB `SELECT 1`.
+- Request ID: `X-Request-ID` header middleware → bind to contextvars for logging.

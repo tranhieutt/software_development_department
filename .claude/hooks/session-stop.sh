@@ -174,6 +174,18 @@ if [ "$DREAM_TRIGGERED" = false ]; then
     fi
 fi
 
+# ─── Cooldown: skip dream if one already ran in the last 60 minutes ──────────
+# Prevents the infinite-loop pathology where Condition 1 (MEMORY.md > 40 lines)
+# stays true indefinitely because auto-dream can't shrink MEMORY.md by itself.
+# Without this guard, every single session would re-trigger dream.
+if [ "$DREAM_TRIGGERED" = true ]; then
+    RECENT_DREAM=$(find ".claude/memory/archive/dreams" -name "*_dream.md" -mmin -60 2>/dev/null | head -1)
+    if [ -n "$RECENT_DREAM" ]; then
+        DREAM_TRIGGERED=false
+        DREAM_REASON="Cooldown active — last dream < 60min ago ($(basename "$RECENT_DREAM"))"
+    fi
+fi
+
 # Execute auto-dream if triggered
 DREAM_OUTPUT=""
 if [ "$DREAM_TRIGGERED" = true ] && [ -f "$AUTO_DREAM_HOOK" ]; then

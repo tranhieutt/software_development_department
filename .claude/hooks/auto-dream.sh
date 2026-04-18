@@ -14,7 +14,7 @@ ARCHIVE_DREAMS="$MEMORY_DIR/archive/dreams"
 mkdir -p "$ARCHIVE_DREAMS" 2>/dev/null
 
 TIMESTAMP=$(date +%Y-%m-%d_%H-%M)
-DREAM_LOG="$ARCHIVE_DREAMS/$TIMESTAMP_dream.md"
+DREAM_LOG="$ARCHIVE_DREAMS/${TIMESTAMP}_dream.md"
 
 echo "🌙 Auto-Dream triggered at $(date '+%Y-%m-%d %H:%M')"
 
@@ -85,20 +85,27 @@ if [ -f "$MEMORY_INDEX" ]; then
     mv "$TMP" "$MEMORY_INDEX" 2>/dev/null
 fi
 
-# ─── Phase 5: Write dream log to archive ─────────────────────────────────────
-{
-    echo "# Auto-Dream Log: $(date '+%Y-%m-%d %H:%M')"
-    echo ""
-    echo "## Actions"
-    echo "- Files assessed: $TOTAL_FILES"
-    echo "- Stale files archived: $ARCHIVED"
-    echo "- Oversize files flagged: $LARGE_COUNT"
-    echo "- Broken links pruned: $PRUNED"
-    echo ""
-    echo "## Memory State After"
-    echo "- Index: $(wc -l < "$MEMORY_INDEX" 2>/dev/null | tr -d ' ') lines"
-    [ "$LARGE_COUNT" -gt 0 ] && echo "- ⚠️ $LARGE_COUNT large files still need manual /dream (Consider storing deeply in MCP Supermemory)"
-} > "$ARCHIVE_DREAMS/${TIMESTAMP}_dream.md" 2>/dev/null
+# ─── Phase 5: Write dream log to archive (idempotent — skip when no-op) ─────
+# Only persist a dream log if something actually changed. This prevents the
+# infinite-loop pathology where dream triggers every session, does nothing,
+# but still creates an archive file that inflates session-stop's counters.
+if [ "$ARCHIVED" -eq 0 ] && [ "$PRUNED" -eq 0 ] && [ "$LARGE_COUNT" -eq 0 ]; then
+    echo "   (no-op — nothing changed; skipping dream log write)"
+else
+    {
+        echo "# Auto-Dream Log: $(date '+%Y-%m-%d %H:%M')"
+        echo ""
+        echo "## Actions"
+        echo "- Files assessed: $TOTAL_FILES"
+        echo "- Stale files archived: $ARCHIVED"
+        echo "- Oversize files flagged: $LARGE_COUNT"
+        echo "- Broken links pruned: $PRUNED"
+        echo ""
+        echo "## Memory State After"
+        echo "- Index: $(wc -l < "$MEMORY_INDEX" 2>/dev/null | tr -d ' ') lines"
+        [ "$LARGE_COUNT" -gt 0 ] && echo "- ⚠️ $LARGE_COUNT large files still need manual /dream (Consider storing deeply in MCP Supermemory)"
+    } > "$DREAM_LOG" 2>/dev/null
+fi
 
 # ─── Summary output ───────────────────────────────────────────────────────────
 echo ""

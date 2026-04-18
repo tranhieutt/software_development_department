@@ -22,6 +22,8 @@ If the user invokes these short commands, or if the task context implies them, Y
 - **`/vertical-slice`**: ALWAYS trigger the `vertical-slicing` skill when planning fullstack features. Divide work into functional end-to-end units.
 - **`/ui-spec`**: ALWAYS trigger the `ui-spec-creation` skill. Transform PRDs and prototypes into rigorous technical UI specifications with state matrices.
 
+> **Commands vs Skills precedence:** Workflow commands trên đây là **gates** (xác định stage của task); skills là **domain expertise** (cung cấp content). Commands CHỨA skills, không thay thế. Xem [`.claude/docs/skills-precedence.md`](.claude/docs/skills-precedence.md) để biết rule chi tiết và boundary giữa các skill trùng scope.
+
 
 ## Project Durable Memory
 

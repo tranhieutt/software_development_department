@@ -1,12 +1,12 @@
 ---
 name: frontend-patterns
 type: reference
-description: "Applies modern frontend patterns for React, Vue, or vanilla JS including component composition, state management, performance, and testing. Use when working with frontend component files or when the user mentions frontend patterns, React hooks, or state management."
+description: "Framework-agnostic React/Vue patterns — component composition, hooks, TanStack Query, memoization, error boundaries. Use for generic React/Vue work (Vite, CRA, Storybook). For Next.js App Router / Server Components specifically, use `senior-frontend` instead."
 paths: ["**/*.tsx", "**/*.jsx", "**/*.vue", "**/components/**"]
 effort: 3
 allowed-tools: Read, Glob, Grep, Write, Edit, Bash
 user-invocable: true
-when_to_use: "When building React/Vue components, state management, or optimizing frontend performance"
+when_to_use: "When building React/Vue components, hooks, state management, or client-side performance — NOT for Next.js App Router (see `senior-frontend`)"
 ---
 
 # Frontend Patterns

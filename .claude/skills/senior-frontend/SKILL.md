@@ -1,9 +1,9 @@
 ---
 name: senior-frontend
 type: reference
-description: "Provides senior-level React, Next.js, TypeScript, and Tailwind CSS frontend development including component architecture, performance optimization, and accessibility. Use when the user needs advanced frontend guidance or mentions React components, Next.js performance, or frontend architecture."
-paths: ["**/*.tsx", "**/*.jsx", "**/*.vue", "**/package.json"]
-when_to_use: "When building React/Next.js components, optimizing frontend performance, analyzing bundle sizes, or reviewing frontend code quality"
+description: "Next.js App Router specific patterns — Server Components, Client Components boundary, parallel fetching, bundle analysis, a11y. Use ONLY for Next.js 13+ App Router projects. For generic React/Vue patterns, use `frontend-patterns` instead."
+paths: ["**/app/**/*.tsx", "**/app/**/*.jsx", "**/next.config.*", "**/app/layout.tsx"]
+when_to_use: "When building Next.js 13+ App Router applications with Server Components, NOT for generic React/Vue (see `frontend-patterns`)"
 allowed-tools: Read, Glob, Grep, Write, Edit, Bash
 user-invocable: true
 effort: 3
