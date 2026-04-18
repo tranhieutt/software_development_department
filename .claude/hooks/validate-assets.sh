@@ -16,7 +16,7 @@ else
 fi
 
 # Normalize path separators (Windows backslash to forward slash)
-FILE_PATH=$(echo "$FILE_PATH" | sed 's|\\|/|g')
+FILE_PATH=${FILE_PATH//\\//}
 
 # Only check files in assets/
 if ! echo "$FILE_PATH" | grep -qE '(^|/)assets/'; then

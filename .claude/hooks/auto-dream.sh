@@ -37,7 +37,6 @@ for f in "$MEMORY_DIR"/*.md; do
     [ -f "$f" ] || continue
 
     FILE_LINES=$(wc -l < "$f" 2>/dev/null | tr -d ' ')
-    FILE_BYTES=$(wc -c < "$f" 2>/dev/null | tr -d ' ')
 
     # Flag files older than 30 days with minimal content (< 5 lines)
     if [ "$FILE_LINES" -lt 5 ] 2>/dev/null; then

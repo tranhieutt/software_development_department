@@ -95,10 +95,14 @@ cmd_status() {
     [ -z "$WORKTREE_DIR" ] && die "Usage: fork-join.sh status <worktree-dir>"
     [ -d "$WORKTREE_DIR" ] || die "Worktree directory not found: $WORKTREE_DIR"
 
-    local BRANCH=$(git -C "$WORKTREE_DIR" branch --show-current 2>/dev/null)
-    local CHANGED=$(git -C "$WORKTREE_DIR" diff --name-only 2>/dev/null | wc -l | tr -d ' ')
-    local STAGED=$(git -C "$WORKTREE_DIR" diff --staged --name-only 2>/dev/null | wc -l | tr -d ' ')
-    local COMMITS=$(git -C "$WORKTREE_DIR" log --oneline "$(git branch --show-current)..$BRANCH" 2>/dev/null | wc -l | tr -d ' ')
+    local BRANCH
+    local CHANGED
+    local STAGED
+    local COMMITS
+    BRANCH=$(git -C "$WORKTREE_DIR" branch --show-current 2>/dev/null)
+    CHANGED=$(git -C "$WORKTREE_DIR" diff --name-only 2>/dev/null | wc -l | tr -d ' ')
+    STAGED=$(git -C "$WORKTREE_DIR" diff --staged --name-only 2>/dev/null | wc -l | tr -d ' ')
+    COMMITS=$(git -C "$WORKTREE_DIR" log --oneline "$(git branch --show-current)..$BRANCH" 2>/dev/null | wc -l | tr -d ' ')
 
     echo "📊 Worktree Status: $WORKTREE_DIR"
     echo "   Branch    : $BRANCH"
@@ -131,14 +135,17 @@ cmd_join() {
     [ -z "$WORKTREE_DIR" ] && die "Usage: fork-join.sh join <worktree-dir> [--no-delete]"
     [ -d "$WORKTREE_DIR" ] || die "Worktree directory not found: $WORKTREE_DIR"
 
-    local FEATURE_BRANCH=$(git -C "$WORKTREE_DIR" branch --show-current 2>/dev/null)
-    local BASE_BRANCH=$(git branch --show-current 2>/dev/null)
+    local FEATURE_BRANCH
+    local BASE_BRANCH
+    FEATURE_BRANCH=$(git -C "$WORKTREE_DIR" branch --show-current 2>/dev/null)
+    BASE_BRANCH=$(git branch --show-current 2>/dev/null)
 
     # Validate branch names before using in commit message (H3: command injection defense)
     validate_branch_name "$FEATURE_BRANCH"
 
     # Ensure worktree has clean state
-    local UNCOMMITTED=$(git -C "$WORKTREE_DIR" diff --name-only 2>/dev/null | wc -l | tr -d ' ')
+    local UNCOMMITTED
+    UNCOMMITTED=$(git -C "$WORKTREE_DIR" diff --name-only 2>/dev/null | wc -l | tr -d ' ')
     if [ "$UNCOMMITTED" -gt 0 ]; then
         die "Worktree has uncommitted changes. Commit or stash before joining."
     fi

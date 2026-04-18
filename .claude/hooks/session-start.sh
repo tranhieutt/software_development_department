@@ -20,14 +20,14 @@ if [ -n "$BRANCH" ]; then
 fi
 
 # Current sprint (find most recent sprint file)
-LATEST_SPRINT=$(ls -t production/sprints/sprint-*.md 2>/dev/null | head -1 || true)
+LATEST_SPRINT=$(find production/sprints -maxdepth 1 -type f -name 'sprint-*.md' -printf '%T@ %p\n' 2>/dev/null | sort -nr | head -1 | cut -d' ' -f2-)
 if [ -n "$LATEST_SPRINT" ]; then
     echo ""
     echo "Active sprint: $(basename "$LATEST_SPRINT" .md)"
 fi
 
 # Current milestone
-LATEST_MILESTONE=$(ls -t production/milestones/*.md 2>/dev/null | head -1 || true)
+LATEST_MILESTONE=$(find production/milestones -maxdepth 1 -type f -name '*.md' -printf '%T@ %p\n' 2>/dev/null | sort -nr | head -1 | cut -d' ' -f2-)
 if [ -n "$LATEST_MILESTONE" ]; then
     echo "Active milestone: $(basename "$LATEST_MILESTONE" .md)"
 fi

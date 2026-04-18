@@ -16,7 +16,7 @@ else
 fi
 
 # Normalize backslashes to forward slashes
-FILE_PATH=$(echo "$FILE_PATH" | sed 's|\|/|g')
+FILE_PATH=${FILE_PATH//\\//}
 
 # Only check files in src/ — skip config, tests, docs, hooks, etc.
 if ! echo "$FILE_PATH" | grep -qE '(^|/)src/'; then

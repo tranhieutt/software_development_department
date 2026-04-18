@@ -18,7 +18,6 @@ if ! command -v jq >/dev/null 2>&1; then
 fi
 
 PROMPT=$(echo "$INPUT" | jq -r '.prompt // ""')
-SESSION_ID=$(echo "$INPUT" | jq -r '.session_id // "unknown"')
 
 [ -z "$PROMPT" ] && exit 0
 

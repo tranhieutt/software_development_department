@@ -32,7 +32,7 @@ LAST_DATE=$(git log -1 --pretty="%ar" -- "$FILE_PATH" 2>/dev/null)
 FORMATTED_LOG=$(echo "$GIT_LOG" | while read -r line; do echo "  - $line"; done)
 
 CONTEXT="## File History: $(basename "$FILE_PATH")
-_Last modified: $LAST_DATE by $LAST_AUTHOR_
+_Last modified: $LAST_DATE by ${LAST_AUTHOR}_
 
 Recent commits touching this file:
 $FORMATTED_LOG"

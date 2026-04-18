@@ -115,18 +115,27 @@ if [ -n "$PY_FILES" ]; then
     done
 
     RUFF_AVAILABLE=false
+    run_ruff() {
+        return 127
+    }
+
     if command -v ruff >/dev/null 2>&1; then
         RUFF_AVAILABLE=true
+        run_ruff() {
+            ruff "$@"
+        }
     elif [ -n "$PYTHON_CMD" ] && "$PYTHON_CMD" -m ruff --version >/dev/null 2>&1; then
         RUFF_AVAILABLE=true
-        alias ruff="$PYTHON_CMD -m ruff"
+        run_ruff() {
+            "$PYTHON_CMD" -m ruff "$@"
+        }
     fi
 
     if [ "$RUFF_AVAILABLE" = true ]; then
         LINT_OUTPUT=""
         while IFS= read -r pyfile; do
             [ -f "$pyfile" ] || continue
-            RESULT=$(ruff check "$pyfile" 2>&1)
+            RESULT=$(run_ruff check "$pyfile" 2>&1)
             if [ -n "$RESULT" ]; then
                 LINT_OUTPUT="$LINT_OUTPUT\n  $pyfile:\n$(echo "$RESULT" | head -5 | sed 's/^/    /')"
             fi

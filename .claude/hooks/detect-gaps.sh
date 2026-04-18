@@ -75,7 +75,7 @@ if [ -d "prototypes" ]; then
   if [ -n "$PROTOTYPE_DIRS" ]; then
     while IFS= read -r proto_dir; do
       # Normalize path separators for Windows
-      proto_dir=$(echo "$proto_dir" | sed 's|\\|/|g')
+      proto_dir=${proto_dir//\\//}
 
       # Check for README.md or CONCEPT.md
       if [ ! -f "${proto_dir}/README.md" ] && [ ! -f "${proto_dir}/CONCEPT.md" ]; then
@@ -117,7 +117,7 @@ if [ -d "src/api" ]; then
 
   if [ -n "$GAMEPLAY_SYSTEMS" ]; then
     while IFS= read -r system_dir; do
-      system_dir=$(echo "$system_dir" | sed 's|\\|/|g')
+      system_dir=${system_dir//\\//}
       system_name=$(basename "$system_dir")
       file_count=$(find "$system_dir" -type f 2>/dev/null | wc -l)
       file_count=$(echo "$file_count" | tr -d ' ')
