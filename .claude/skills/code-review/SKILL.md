@@ -1,5 +1,6 @@
 ---
 name: code-review
+type: workflow
 description: "Performs architectural and quality code review checking coding standards, SOLID principles, architectural compliance, and common software issues. Use when reviewing a file or directory before merge, or when the user mentions code review, PR review, or quality check."
 argument-hint: "[path-to-file-or-directory]"
 user-invocable: true

@@ -5,6 +5,7 @@ description: "When dealing with a complex issue, epic, or multi-step feature req
 argument-hint: "[epic-description-or-issue-url]"
 user-invocable: true
 allowed-tools: Read, Glob, Grep
+context: fork
 effort: 3
 agent: lead-programmer
 when_to_use: "When starting a complex project, when receiving an epic or vague, large-scale request, or when the user invokes /plan."

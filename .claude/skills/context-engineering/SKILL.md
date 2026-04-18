@@ -1,10 +1,14 @@
 ---
 name: context-engineering
+type: workflow
 description: Strictly enforce context engineering principles to avoid context stuffing, optimize memory architecture, and manage the Research-Plan-Reset-Implement cycle.
 user-invocable: true
 allowed-tools: Read, Glob, Grep, Write
+context: fork
+agent: technical-director
 effort: 4
 argument-hint: "[context source or workflow scope]"
+when_to_use: "When prompts, logs, specs, or multi-step work exceed a clean working set and the agent needs to compress, externalize, or reset context before continuing"
 ---
 
 # 1. Overview

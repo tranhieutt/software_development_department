@@ -1,6 +1,9 @@
 ﻿---
 name: commit
+type: workflow
 description: "Creates a well-formed git commit following conventional commit format with type, scope, and descriptive message. Use when the user is ready to commit changes or mentions conventional commits."
+context: fork
+agent: lead-programmer
 effort: 1
 allowed-tools: Read, Glob, Grep, Write, Bash
 argument-hint: "[commit message or empty for auto-generate]"

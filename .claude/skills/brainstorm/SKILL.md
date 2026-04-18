@@ -1,9 +1,12 @@
 ---
 name: brainstorm
+type: workflow
 description: "Facilitates structured product ideation to define user needs, core value, and product direction. Use when the user wants to explore a new product idea, has a vague concept to develop, or mentions brainstorming or ideation."
 argument-hint: "[product type or problem hint, or 'open' for fully open brainstorm]"
 user-invocable: true
 allowed-tools: Read, Glob, Grep, Write, WebSearch, AskUserQuestion
+context: fork
+agent: product-strategist
 effort: 3
 when_to_use: "When starting a new product idea from scratch or needing structured creative ideation for a product concept"
 ---

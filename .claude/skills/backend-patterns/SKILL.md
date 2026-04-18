@@ -5,6 +5,8 @@ description: "Applies production backend patterns: middleware, error handling, a
 paths: ["**/*.ts", "**/*.js", "**/server.*", "**/app.*", "**/routes/**"]
 effort: 3
 allowed-tools: Read, Glob, Grep, Write, Edit, Bash
+context: fork
+agent: backend-architect
 user-invocable: true
 when_to_use: "When building Node.js backend services with Express, Fastify, or similar frameworks"
 ---

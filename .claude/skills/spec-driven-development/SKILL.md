@@ -5,6 +5,7 @@ description: "Enforces the creation of a clear, actionable specification before 
 argument-hint: "[feature-description-or-issue]"
 user-invocable: true
 allowed-tools: Read, Glob, Grep, WebSearch
+context: fork
 effort: 3
 agent: lead-programmer
 when_to_use: "When starting a new feature, doing major architectural refactoring, receiving a complex prompt, or when the user invokes /spec."

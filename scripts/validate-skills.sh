@@ -61,7 +61,7 @@ for skill_dir in "$SKILLS_DIR"/*/; do
   fi
 
   # Recommended fields → warn, không fail
-  for field in "${RECOMMENDED_FIELDS[@]}" "${OPTIONAL_FIELDS[@]}"; do
+  for field in "${RECOMMENDED_FIELDS[@]}"; do
     if ! echo "$frontmatter" | grep -q "^${field}:"; then
       missing_optional+=("$field")
     fi
