@@ -186,6 +186,21 @@
             "timeout": 5
           }
         ]
+      },
+      {
+        "matcher": "Task",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/decision-ledger-writer.sh",
+            "timeout": 5
+          },
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/circuit-updater.sh",
+            "timeout": 5
+          }
+        ]
       }
     ],
     "PreCompact": [
