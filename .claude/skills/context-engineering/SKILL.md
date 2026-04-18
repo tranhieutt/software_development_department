@@ -1,6 +1,10 @@
 ---
 name: context-engineering
 description: Strictly enforce context engineering principles to avoid context stuffing, optimize memory architecture, and manage the Research-Plan-Reset-Implement cycle.
+user-invocable: true
+allowed-tools: Read, Glob, Grep, Write
+effort: 4
+argument-hint: "[context source or workflow scope]"
 ---
 
 # 1. Overview

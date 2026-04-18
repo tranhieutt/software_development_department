@@ -1,6 +1,10 @@
 ---
 name: vertical-slicing
 description: "Guidelines and procedures for planning and implementing end-to-end functional slices for fullstack features."
+user-invocable: true
+allowed-tools: Read, Glob, Grep, Write
+effort: 3
+argument-hint: "[feature, epic, or PRD name]"
 ---
 
 # Skill: /vertical-slice

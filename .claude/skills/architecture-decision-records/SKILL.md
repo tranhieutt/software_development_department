@@ -1,3 +1,4 @@
+---
 name: architecture-decision-records
 description: "Manages the ADR (Architecture Decision Record) registry. Use when recording tech-stack choices, design patterns, or infrastructure decisions with context, alternatives, and rationale. Supports listing, searching, or creating formal ADR documents."
 context: fork

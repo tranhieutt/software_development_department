@@ -1,8 +1,10 @@
-﻿---
+---
 name: learner
 description: "Extracts reusable patterns, preferences, and lessons from the current session and saves them to .claude/memory/ for future use. Use at the end of a session or when the user wants to save patterns for future sessions."
+argument-hint: "[session summary or learning focus]"
 level: 7
 allowed-tools: Read, Glob, Grep, Write, Edit
+user-invocable: true
 effort: 3
 when_to_use: "Use at the end of a session when complex problems were solved or novel patterns discovered, to persist reusable heuristics to .claude/memory/ for future sessions."
 ---
@@ -20,9 +22,9 @@ It consists of two main sections:
 ## 1. Quality Gate
 
 Before deciding to extract a new Skill, ALL of the following criteria must be met:
-- "Could someone easily Google this in 5 minutes?" → **NO**
-- "Is this solution necessary and highly specific to the current codebase?" → **YES**
-- "Did finding this solution require significant debugging or analysis effort?" → **YES**
+- "Could someone easily Google this in 5 minutes?" -> **NO**
+- "Is this solution necessary and highly specific to the current codebase?" -> **YES**
+- "Did finding this solution require significant debugging or analysis effort?" -> **YES**
 
 A saved Skill SHOULD NOT be a trivial, copy-paste code snippet. It must be a **Mental model / Heuristic** that teaches Claude HOW TO THINK when encountering similar errors.
 
@@ -44,8 +46,8 @@ When the user asks to extract a lesson (e.g., by typing `learner` or requesting 
 - **Triggers**: An array of keywords that will automatically wake up this Skill in the future (e.g., `["TypeError", "auth_controller.ts", "session undefined"]`).
 
 ### Step 2: Classification
-- If the insight is about **Domain Knowledge / Gotcha** → Save with the suffix `{topic_name}-expertise.md`
-- If the insight is about an **Operational Procedure** → Save with the suffix `{topic_name}-workflow.md`
+- If the insight is about **Domain Knowledge / Gotcha** -> Save with the suffix `{topic_name}-expertise.md`
+- If the insight is about an **Operational Procedure** -> Save with the suffix `{topic_name}-workflow.md`
 
 ### Step 3: Save the New Skill File
 - Saving a new Skill MUST ONLY BE DONE in the project-level directory:
