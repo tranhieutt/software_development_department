@@ -1,3 +1,9 @@
+---
+name: memory-structure
+description: Tier 2.5 specialist namespace map and loading rules for selective memory retrieval.
+type: project
+---
+
 # 🧠 SDD Memory Structure — Tier 2.5 Specialist Namespace
 
 > Moved from `MEMORY.md` (A8 — 2026-04-17) to keep Tier 1 index under 40 lines.
