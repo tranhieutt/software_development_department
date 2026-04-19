@@ -6,6 +6,44 @@ Tài liệu này ghi lại lịch sử cập nhật tài liệu và source code 
 
 ## 🗓️ Lịch sử cập nhật
 
+### [v1.39.0] - 2026-04-19
+
+**Chủ đề:** P1 Đợt 1 remediation từ Architecture Audit 2026-04-19 — structural integrity cho Role layer + Governance precedence
+
+Đợt 1 của P1 backlog tập trung vào 3 gap cấu trúc: agent frontmatter không hoàn chỉnh, precedence rule chỉ cover command↔skill (thiếu 4/5 layer), và Control-Plane không được viết ra thành 1 doc duy nhất. Sau patch này, letter-of-the-spec compliance tăng thêm một bậc; phần còn lại của backlog (Đợt 2+) sẽ xử lý ledger orchestrator, Tier 2 description rewrite, và các §15 artifacts còn thiếu.
+
+> **Audit correction (verify trước khi sửa):** audit ban đầu claim 3 agent thiếu delegation/escalation (`accessibility-specialist`, `security-engineer`, `ui-spec-designer`). Khi re-verify, chỉ `ui-spec-designer` thực sự thiếu; 2 agent còn lại đã có Coordination section đầy đủ. Patch này chỉ sửa `ui-spec-designer` và không chạm 2 file kia.
+
+#### Fix — `.claude/agents/ui-spec-designer.md` — complete frontmatter + coordination
+
+- Bổ sung frontmatter fields đang thiếu: `tools: Read, Glob, Grep, Write, Edit`, `model: sonnet`, `maxTurns: 15`, `skills: [ui-spec, spec-driven-development, design-system, frontend-patterns]`.
+- Thêm section "Documents You Own / Read / Never Modify" để phân định ranh giới với `ux-designer` (design/) và PRD.md (human-only).
+- Thêm Coordination section (cross-agent consultation với `ux-designer`, `product-manager`, `frontend-developer`, `accessibility-specialist`, `qa-lead`) và Escalation ladder (scope → PM, architecture → technical-director, a11y block → producer).
+- Kết quả: `ui-spec-designer` giờ hợp lệ theo YAML schema Claude Code expects, và có đường dẫn escalation rõ ràng — khớp luồng với 30 agent còn lại.
+
+#### Fix — `.claude/docs/skills-precedence.md` — expand to 5-layer precedence matrix + English
+
+- Bản cũ chỉ cover Layer 5 (command ↔ skill) và viết bilingual VN/EN.
+- Bản mới rewrite hoàn toàn bằng tiếng Anh và mở rộng thành 5-layer ladder: **L1 Critical Rules** (CLAUDE.md §🚨) → **L2 Coordination Rules** (Rules 1–16 + ADRs) → **L3 Permission Lists** (`settings.json`) → **L4 Hook Behaviors** (hook scripts) → **L5 Skill Precedence** (command ↔ skill).
+- Bổ sung resolution protocol: higher layer luôn thắng; conflict cùng layer có escalation path cụ thể (L1 → human, L2 → ADR/Rule 3, L3 → JSON merge order, L4 → registration order + shared state orchestrator, L5 → skill-boundary table).
+- Thêm 5 cross-layer interaction được document rõ (hooks implement, not invent; settings revoke tool access; critical rules block hook writes; multiple hooks on same file need orchestrator; memory precedence).
+- Closes audit §14.5 "Rule precedence not explicit" — trước chỉ partially resolved, giờ resolved fully.
+
+#### New — `docs/technical/CONTROL_PLANE_MAP.md`
+
+- Single-doc map theo §15.1 của Architecture Spec: task-type → stage (command) → primary skill → owning agent → exit criteria → fallback → state update.
+- Cover 6-stage fullstack ladder (`/plan` → `/spec` → `/vertical-slice` → `/tdd` → review → merge), 4-stage incident path (`/diagnose` investigator → verifier → solver → TDD), task-type routing table (10 task types), fallback & escalation ladder (Rule 6 → Rule 14 → Rule 3 → human), state update points table (7 canonical state files), và human-vs-AI decision rights table.
+- Ghi rõ 4 Open Items còn lại: ledger orchestrator (P1), Hook Responsibility Matrix (P2, §15.4), Memory Retrieval Map (P2, §15.5), Stage Transition State Machine (P2, §15.3).
+- Kết quả: khi một agent mới vào hệ thống, 1 file này trả lời được 4 câu "where am I / which skill+agent / exit criteria / fallback" mà không phải grep nhiều doc rời rạc.
+
+#### Tác động
+
+- **Spec compliance** ước tính tăng từ ~85% lên ~88%: đóng P1 items 1, 2, 3, 4, 6. Còn P1 item 5 (ledger orchestrator — cần test plan) và P1 item 7 (Tier 2 descriptions) cho các đợt sau.
+- **Role layer score** (audit §3.3) từ 85% → ước tính 95% (30/31 → 31/31 agent hoàn chỉnh frontmatter).
+- **Governance score** (audit §3.1) từ 92% → ước tính 97% (skills-precedence giờ cover đủ 5 layer, không còn bilingual drift).
+
+---
+
 ### [v1.38.0] - 2026-04-19
 
 **Chủ đề:** P0 remediation từ Architecture Audit 2026-04-19 — đóng 3 spec-breaking gap
