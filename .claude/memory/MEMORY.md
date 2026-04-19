@@ -15,12 +15,12 @@
 
 <!-- Keyword match is NOT enough — use the Load Decision Matrix in context-management.md -->
 
-- [User Profile](user_role.md) — [user preferences, coding style, personalization]
-- [Tech Decisions](project_tech_decisions.md) — [architecture, stack choice, infrastructure]
-- [Feedback Rules](feedback_rules.md) — [do/don't, code review, repeated mistakes]
-- [Reference Links](reference_links.md) — [staging URL, external tools, credentials]
-- [GitNexus Registry](gitnexus-registry.md) — [gitnexus, impact analysis, repo index]
-- [Annotations](annotations.md) — [api, sdk, gotcha, caveat, workaround, integration, version]
+- [User Profile](user_role.md) — How should agents adapt style and tone for this user?
+- [Tech Decisions](project_tech_decisions.md) — What architecture decisions and stack constraints must survive context resets?
+- [Feedback Rules](feedback_rules.md) — What mistakes or rules has the user corrected that agents must never repeat?
+- [Reference Links](reference_links.md) — Where are the staging URLs, external tools, and project resource links?
+- [GitNexus Registry](gitnexus-registry.md) — Is the GitNexus index fresh enough to trust for impact analysis on this repo?
+- [Annotations](annotations.md) — Are there known gotchas or caveats for this API, library, or integration?
 
 ## Tier 2.5 — Specialist Namespace (1 file max, active agent only)
 
