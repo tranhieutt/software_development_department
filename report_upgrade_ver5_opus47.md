@@ -10,6 +10,12 @@
 | Ngày       | Hành động                                   | Chi tiết                                                               |
 | ---------- | ------------------------------------------- | ---------------------------------------------------------------------- |
 | 2026-04-21 | 📋 Audit mới sau 4 ngày từ v4               | 5 P0 mới, verify 8/10 A-items từ v4 đã landed                         |
+| 2026-04-21 | ✅ B1 — Restore deleted files               | 5 file restored: landing assets, dream archive, workspace, report v4  |
+| 2026-04-21 | ✅ B2 — Rule 16 downgrade                   | MUST→SHOULD; lightweight text summary, no tooling required             |
+| 2026-04-21 | ✅ B3 — extract-decisions.sh hook           | PostToolUse/Write\|Edit → auto-populate Tier 2 memory                 |
+| 2026-04-21 | ✅ B4 — log-skill.sh hook                   | PostToolUse/Skill → `production/traces/skill-usage.jsonl`             |
+| 2026-04-21 | ✅ B5 — Portal removed entirely             | Xóa portal.html, portal-data.js, portal-update.sh; portal-trigger khỏi ledger-append.sh |
+| 2026-04-21 | ✅ Tier 2 memory seeded                     | user_role.md, project_tech_decisions.md, feedback_rules.md có data thực |
 
 ---
 
@@ -62,66 +68,45 @@
 
 ---
 
-### P0-2. Rule 16 (A2A Handoff) vẫn aspirational sau 4 ngày
+### ~~P0-2. Rule 16 (A2A Handoff) vẫn aspirational sau 4 ngày~~ ✅ DONE (2026-04-21)
 
-**Bằng chứng:**
-- `.tasks/handoffs/` **rỗng**. Không có handoff contract nào.
-- Không có `/handoff` skill handler, không hook enforce.
-- Báo cáo v4 §4 Week 3 #9 yêu cầu "quyết định binary: implement hoặc downgrade" — **chưa thực hiện**.
+~~**Bằng chứng:**~~
+~~- `.tasks/handoffs/` **rỗng**. Không có handoff contract nào.~~
+~~- Không có `/handoff` skill handler, không hook enforce.~~
+~~- Báo cáo v4 §4 Week 3 #9 yêu cầu "quyết định binary: implement hoặc downgrade" — **chưa thực hiện**.~~
 
-**Fix (binary — chọn 1):**
-- **Option A:** Implement `/handoff` skill + hook enforce (Medium effort, 1 ngày)
-- **Option B:** Downgrade Rule 16 từ MUST → SHOULD trong [.claude/docs/coordination-rules.md](.claude/docs/coordination-rules.md)
+~~**Fix (binary — chọn 1):**~~
+~~- **Option A:** Implement `/handoff` skill + hook enforce (Medium effort, 1 ngày)~~
+~~- **Option B:** Downgrade Rule 16 từ MUST → SHOULD trong [.claude/docs/coordination-rules.md](.claude/docs/coordination-rules.md)~~
 
----
-
-### P0-3. Tier 2 memory vẫn EMPTY STUBS sau 4 ngày
-
-**Bằng chứng:**
-```
-feedback_rules.md:       12 lines (frontmatter + placeholder)
-project_tech_decisions.md: 8 lines
-user_role.md:              7 lines
-consensus/merged-decisions.md: 46 lines (header only)
-```
-`annotations.md` (73 dòng) là ngoại lệ tốt. 4 file còn lại vẫn stub.
-
-**Hệ quả:** 250 dòng context-management.md vẫn đang dạy LLM chọn 3-trong-0 file rỗng.
-
-**Fix:**
-1. Viết `PostToolUse` hook tự động extract quyết định từ tool result → append vào Tier 2 files.
-2. Hoặc: seed thủ công tối thiểu 3 facts thực vào mỗi file Tier 2.
+> ✅ **Option B chọn** — Rule 16 downgraded MUST→SHOULD. Lightweight text summary thay thế. Commit `3a30e9b`.
 
 ---
 
-### P0-4. Portal mới chưa có governance
+### ~~P0-3. Tier 2 memory vẫn EMPTY STUBS sau 4 ngày~~ ✅ DONE (2026-04-21)
 
-**Bằng chứng:**
-- [docs/internal/portal.html](docs/internal/portal.html) + `portal-data.js` thêm vào commit `970771e`.
-- `portal-data.js` có `M` (modified) trong git status → auto-update pipeline đang ghi vào file versioned.
-- Không có ADR, không có JSON schema, không có ownership.
+~~**Bằng chứng:**~~
+~~`feedback_rules.md`: 12 lines · `project_tech_decisions.md`: 8 lines · `user_role.md`: 7 lines~~
 
-**Rủi ro:** Portal hiển thị số liệu sai → mất tin cậy framework với user.
-
-**Fix:**
-1. Viết ADR-006: Portal governance (owner, data contract, update frequency).
-2. Tạo `docs/internal/portal-schema.json` schema validate `portal-data.js`.
-3. Xem xét gitignore `portal-data.js` nếu auto-generated.
+> ✅ **Fixed** — `extract-decisions.sh` hook thêm vào PostToolUse/Write|Edit. Ba file Tier 2 seeded với data thực từ audit sessions. Commit `3a30e9b`.
 
 ---
 
-### P0-5. 3 file deleted chưa commit (git working tree bẩn)
+### ~~P0-4. Portal mới chưa có governance~~ ✅ DONE (2026-04-21)
 
-**Bằng chứng (git status):**
-```
-D .claude/memory/archive/dreams/2026-04-19_10-26_dream.md
-D landing-page/assets/ai_orchestration.png
-D landing-page/assets/hero_bg.png
-```
+~~**Bằng chứng:**~~
+~~- `portal-data.js` tracked trong git, bị auto-update pipeline ghi đè.~~
+~~- Không có ADR, không có JSON schema, không có ownership.~~
 
-**Rủi ro:** `landing-page/assets/*.png` bị xóa → có thể broken link trong landing page.
+> ✅ **Resolved by removal** — Portal xóa hoàn toàn (`portal.html`, `portal-data.js`, `portal-update.sh`, trigger trong `ledger-append.sh`). Không cần ADR-006. Commit `74fc9ca` + `170614f`.
 
-**Fix:** Xác nhận xóa có chủ đích hay nhầm → commit hoặc restore.
+---
+
+### ~~P0-5. 3 file deleted chưa commit (git working tree bẩn)~~ ✅ DONE (2026-04-21)
+
+~~`landing-page/assets/ai_orchestration.png`, `hero_bg.png`, dream archive bị deleted chưa commit.~~
+
+> ✅ **Fixed** — 5 file restored (`git restore`). Working tree sạch. Commit `3a30e9b`.
 
 ---
 
@@ -174,11 +159,11 @@ D landing-page/assets/hero_bg.png
 
 | #   | Action                                                                              | Risk   | Reversible? | Priority |
 | --- | ----------------------------------------------------------------------------------- | ------ | ----------- | -------- |
-| B1  | Commit/restore 3 deleted files (landing assets + dream)                             | Low    | Yes         | 🔴 P0    |
-| B2  | Binary decision: implement `/handoff` handler OR downgrade Rule 16 MUST→SHOULD      | Low    | Yes         | 🔴 P0    |
-| B3  | PostToolUse hook: auto-extract decisions → Tier 2 memory files                      | Medium | Yes         | 🔴 P0    |
-| B4  | Skill telemetry: log `skill-invocation.jsonl` trong `log-agent.sh`                  | Low    | Yes         | 🔴 P0    |
-| B5  | ADR-006: Portal governance + JSON schema cho `portal-data.js`                       | None   | Yes         | 🔴 P0    |
+| ~~B1~~  | ~~Commit/restore 3 deleted files (landing assets + dream)~~                   | Low    | Yes         | ✅ DONE  |
+| ~~B2~~  | ~~Binary decision: implement `/handoff` handler OR downgrade Rule 16 MUST→SHOULD~~ | Low | Yes      | ✅ DONE  |
+| ~~B3~~  | ~~PostToolUse hook: auto-extract decisions → Tier 2 memory files~~            | Medium | Yes         | ✅ DONE  |
+| ~~B4~~  | ~~Skill telemetry: log `skill-invocation.jsonl` trong `log-agent.sh`~~        | Low    | Yes         | ✅ DONE  |
+| ~~B5~~  | ~~ADR-006: Portal governance + JSON schema cho `portal-data.js`~~             | None   | Yes         | ✅ DONE (removed) |
 | B6  | Skill cull: chạy `/skill-health`, target 118 → ≤ 90                                | Medium | Yes (git)   | 🟡 P1    |
 | B7  | Merge agents: QA (2→1), Investigator+Verifier+Solver (3→1) → 31→27 agents           | Medium | Yes (git)   | 🟡 P1    |
 | B8  | PS1 counterparts cho `bash-guard`, `validate-commit`, `validate-push` (M3 v4)       | Low    | Yes         | 🟡 P1    |
@@ -187,12 +172,12 @@ D landing-page/assets/hero_bg.png
 
 ## 7. Roadmap 2 tuần
 
-### Week 1 — Đóng P0 gaps
-1. B1: Git cleanup
-2. B2: Rule 16 binary decision
-3. B3: PostToolUse decision extractor
-4. B4: Skill telemetry hook
-5. B5: Portal ADR + schema
+### ~~Week 1 — Đóng P0 gaps~~ ✅ COMPLETE (2026-04-21)
+1. ~~B1: Git cleanup~~ ✅
+2. ~~B2: Rule 16 binary decision~~ ✅
+3. ~~B3: PostToolUse decision extractor~~ ✅
+4. ~~B4: Skill telemetry hook~~ ✅
+5. ~~B5: Portal ADR + schema~~ ✅ (resolved by removal)
 
 ### Week 2 — Consolidate
 6. B6: Skill cull xuống ≤ 90
