@@ -32,9 +32,10 @@ function Block-IfMatch($pattern, $reason) {
 # Fork bomb variants
 Block-IfMatch ':\s*\(\s*\)\s*\{' "Fork bomb pattern detected: :(){ :|:& };:"
 
-# rm -rf variants (Hard blocks for root/all patterns)
+# rm -rf variants (Hard blocks for root/all patterns + local directory variants)
 Block-IfMatch 'rm\s+(-r\s*-f|-f\s*-r|-rf|-fr)\s+/' "rm -rf on root is forbidden"
 Block-IfMatch 'rm\s+(-r\s*-f|-f\s*-r|-rf|-fr)\s+\*' "rm -rf on all files (*) is forbidden via BashGuard"
+Block-IfMatch 'rm\s+(-r\s*-f|-f\s*-r|-rf|-fr)\s+\.(\/|$)' "rm -rf on current directory (./ or .) is forbidden"
 
 # tee .env overwrites
 Block-IfMatch 'tee\s+.*\.env' "Overwriting .env files via tee is forbidden"
@@ -57,19 +58,19 @@ Block-IfMatch '^twine\s+upload' "PyPI publish requires explicit user confirmatio
 # --- SOFT WARNINGS ---
 $warnings = @()
 
-function Warn-IfMatch($pattern, $msg) {
+function Add-Warning($pattern, $msg) {
     if ($command -match $pattern) {
         $script:warnings += "  [WARN] $msg"
     }
 }
 
-Warn-IfMatch 'DROP\s+TABLE' "SQL DROP TABLE detected — verify this is intentional"
-Warn-IfMatch 'DELETE\s+FROM' "SQL DELETE FROM detected — ensure WHERE clause is correct"
-Warn-IfMatch 'TRUNCATE\s+(TABLE\s+)?' "SQL TRUNCATE detected — this permanently removes all rows"
-Warn-IfMatch 'git\s+reset\s+--hard' "git reset --hard discards uncommitted changes permanently"
-Warn-IfMatch 'git\s+clean\s+-fd?' "git clean -f removes untracked files permanently"
-Warn-IfMatch 'docker\s+volume\s+rm' "docker volume rm deletes persistent data"
-Warn-IfMatch 'DROP\s+DATABASE' "SQL DROP DATABASE detected — this destroys the entire database"
+Add-Warning 'DROP\s+TABLE' "SQL DROP TABLE detected — verify this is intentional"
+Add-Warning 'DELETE\s+FROM' "SQL DELETE FROM detected — ensure WHERE clause is correct"
+Add-Warning 'TRUNCATE\s+(TABLE\s+)?' "SQL TRUNCATE detected — this permanently removes all rows"
+Add-Warning 'git\s+reset\s+--hard' "git reset --hard discards uncommitted changes permanently"
+Add-Warning 'git\s+clean\s+-fd?' "git clean -f removes untracked files permanently"
+Add-Warning 'docker\s+volume\s+rm' "docker volume rm deletes persistent data"
+Add-Warning 'DROP\s+DATABASE' "SQL DROP DATABASE detected — this destroys the entire database"
 
 if ($warnings.Count -gt 0) {
     Write-Host "[HOOK:BashGuard] Warnings for command review:"

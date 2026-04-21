@@ -115,17 +115,17 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash .claude/hooks/bash-guard.sh",
+            "command": "pwsh -NoProfile -NonInteractive -File .claude/hooks/bash-guard.ps1 || bash .claude/hooks/bash-guard.sh",
             "timeout": 5
           },
           {
             "type": "command",
-            "command": "bash .claude/hooks/validate-commit.sh",
+            "command": "pwsh -NoProfile -NonInteractive -File .claude/hooks/validate-commit.ps1 || bash .claude/hooks/validate-commit.sh",
             "timeout": 30
           },
           {
             "type": "command",
-            "command": "bash .claude/hooks/validate-push.sh",
+            "command": "pwsh -NoProfile -NonInteractive -File .claude/hooks/validate-push.ps1 || bash .claude/hooks/validate-push.sh",
             "timeout": 10
           }
         ]
