@@ -6,6 +6,61 @@ Tài liệu này ghi lại lịch sử cập nhật tài liệu và source code 
 
 ## 🗓️ Lịch sử cập nhật
 
+### [v1.43.0] - 2026-04-21
+
+**Chủ đề:** Governance hardening — P0 audit remediation, agent consolidation, cross-platform hooks
+
+Đợt cập nhật này đóng toàn bộ 5 P0 gaps từ audit v5 (2026-04-21): khôi phục deleted files, downgrade Rule 16 MUST→SHOULD, thêm PostToolUse decision extractor, skill telemetry, và xóa Governance Portal không có governance. Tiếp theo consolidate 5 agents thành 2, và hoàn thiện cross-platform hook support cho Windows PowerShell.
+
+#### Fix - Git working tree cleanup
+
+- Restore 5 accidentally-deleted files: `landing-page/assets/ai_orchestration.png`, `landing-page/assets/hero_bg.png`, `.claude/memory/archive/dreams/2026-04-19_10-26_dream.md`, `Software Development Department.code-workspace`, `report_upgrade_ver4_opus47.md`.
+
+#### Fix - Rule 16 A2A Handoff downgraded MUST→SHOULD
+
+- `.claude/docs/coordination-rules.md`: Rule 16 downgraded từ MUST → SHOULD. 0 handoff contracts được tạo sau nhiều sessions — full protocol quá friction. Lightweight text summary thay thế, không cần tooling.
+
+#### New - `extract-decisions.sh` — PostToolUse decision extractor
+
+- Hook mới trigger PostToolUse/Write|Edit: quét content được write cho decision markers (`## Decision`, `**Decision:**`, `> **Note:**`, `// NOTE:`, `// GOTCHA:`, `// WORKAROUND:`, `# FEEDBACK:`) và tự động append vào Tier 2 memory files.
+- Fail-open per Rule 9.
+
+#### New - `log-skill.sh` — skill invocation telemetry
+
+- Hook mới trigger PostToolUse/Skill: log mỗi skill invocation vào `production/traces/skill-usage.jsonl`.
+- Prerequisite cho skill cull decisions trong tương lai — telemetry trước, cull sau.
+
+#### Chore - Seed Tier 2 memory với data thực
+
+- `user_role.md`: profile user (Vietnamese, owner/architect, Git Bash on Windows, approves before implement).
+- `project_tech_decisions.md`: stack constraints, governance decisions (circuit breaker, ledger, Rule 16 downgrade, skill telemetry, git branch policy).
+- `feedback_rules.md`: rules từ audit sessions (telemetry trước expansion, MUST cần hook, options trước implement, commit thường xuyên).
+
+#### Chore - Remove SDD Governance Portal
+
+- Xóa `docs/internal/portal.html`, `docs/internal/portal-data.js`, `scripts/portal-update.sh` — portal không có ADR, không có schema, pipeline ghi vào file versioned.
+- Xóa portal-update trigger khỏi `scripts/ledger-append.sh`.
+
+#### Refactor - Agent consolidation: 31 → 28 agents
+
+- `qa-lead` + `qa-tester` → `qa-engineer`: unified agent, tự chọn lead/tester mode dựa trên task.
+- `investigator` + `verifier` + `solver` → `diagnostics`: 3-phase pipeline (Investigate → Verify → Solve) enforce tuần tự, không thể skip phase.
+- Xóa 2 empty specialist stubs: `.claude/memory/specialists/investigator.md`, `.claude/memory/specialists/qa-tester.md`.
+- Update Circuit Breaker fallback table và Tier 2.5 specialist registry.
+
+#### Chore - Skills cleanup: 118 → 116
+
+- Xóa `_SKILL_TEMPLATE.md` và `templates/SKILL.md.tmpl` (non-skill files không invoke được).
+- Target ≤90 skills revised — không phù hợp với universal framework (SDD build software ở mọi stack).
+
+#### Feat - B8: Cross-platform hook dispatch (Windows PowerShell support)
+
+- `validate-push.ps1`: PS1 counterpart mới cho `validate-push.sh` — protected branch warning + 16 secret patterns scan.
+- `bash-guard.ps1`: thêm `rm -rf ./` pattern; fix `Warn-IfMatch` → `Add-Warning` (PSUseApprovedVerbs).
+- `settings.json`: tất cả 3 guard hooks dùng `pwsh ... || bash ...` dispatch — PS1 trên Windows native, bash fallback trên Git Bash/Unix.
+
+---
+
 ### [v1.42.0] - 2026-04-19
 
 **Chủ đề:** SDD Governance Portal — dashboard ledger trực quan và tích hợp portal-update vào ledger-append
