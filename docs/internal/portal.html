@@ -317,7 +317,7 @@
                             </tr>
                         </thead>
                         <tbody id="ledger-body">
-                            <!-- Data injected via portal-data.js -->
+                            <!-- Data loaded from decision_ledger.jsonl via fetch -->
                         </tbody>
                     </table>
                 </div>
@@ -329,17 +329,20 @@
         </footer>
     </div>
 
-    <!-- Load Local Data -->
-    <script src="portal-data.js"></script>
     <script>
-        function initPortal() {
-            if (!window.LEDGER_DATA) {
-                console.error("Data missing!");
-                document.getElementById('ledger-body').innerHTML = '<tr><td colspan="5" style="text-align:center; padding: 4rem;">Wait, where is the data? Please run scripts/portal-update.sh</td></tr>';
+        async function initPortal() {
+            let data = [];
+            try {
+                const res = await fetch('../../production/traces/decision_ledger.jsonl');
+                if (!res.ok) throw new Error('fetch failed');
+                const text = await res.text();
+                data = text.trim().split('\n').filter(Boolean).map(l => JSON.parse(l)).reverse();
+            } catch {
+                document.getElementById('ledger-body').innerHTML =
+                    '<tr><td colspan="5" style="text-align:center;padding:4rem;color:var(--text-dim)">Open portal via a local server or from the repo root.<br><code>npx serve .</code></td></tr>';
                 return;
             }
 
-            const data = window.LEDGER_DATA.reverse(); // Newest first
             render(data);
 
             // Setup Search
@@ -398,7 +401,7 @@
             });
         }
 
-        window.onload = initPortal;
+        window.addEventListener('DOMContentLoaded', initPortal);
     </script>
 </body>
 
