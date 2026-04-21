@@ -26,3 +26,4 @@ type: project
 - **MEMORY.md hard limit:** 50 lines (trigger `/dream` nếu vượt 40)
 - **Hook timeout budget:** 5s default, 10s max cho validate hooks
 - **jq required:** Tất cả hook parse JSON phải require jq (exit 1 nếu thiếu); không dùng regex fallback
+

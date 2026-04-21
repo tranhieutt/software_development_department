@@ -52,9 +52,11 @@ const skipPatterns = [
     /\.(png|jpg|gif|ico|woff|ttf|map|lock)$/i,
     /session-logs\//,
     /archive\//,
-
     /decision_ledger\.jsonl$/,
-    /agent-metrics\.jsonl$/
+    /agent-metrics\.jsonl$/,
+    /CHANGELOG\.md$/i,
+    /skill-usage\.jsonl$/,
+    /report_upgrade.*\.md$/i
 ];
 if (skipPatterns.some(p => p.test(filePath))) process.exit(0);
 
