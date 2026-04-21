@@ -52,7 +52,7 @@ const skipPatterns = [
     /\.(png|jpg|gif|ico|woff|ttf|map|lock)$/i,
     /session-logs\//,
     /archive\//,
-    /portal\.html$/,
+
     /decision_ledger\.jsonl$/,
     /agent-metrics\.jsonl$/
 ];
