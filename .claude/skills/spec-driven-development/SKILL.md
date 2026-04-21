@@ -21,7 +21,7 @@ This skill forces the agent to pause, analyze, and agree upon a specification be
 
 ## Workflow (Strict Process)
 
-**ABSOLUTE DIRECTIVE**: You are an Agent. You MUST NOT start writing implementation files (.ts, .js, .py, etc.) until you have completed this workflow.
+**ABSOLUTE DIRECTIVE**: You are an Agent. You MUST NOT start writing implementation files (.ts, .js, .py, etc.) until you have completed this workflow and the user has explicitly approved the spec or the documented Fast Gate/Override Gate from `using-sdd`.
 
 ### 1. Context Analysis
 - Review relevant files using `Read`, `Glob`, or `Grep` to understand the system boundaries.
@@ -32,6 +32,8 @@ This skill forces the agent to pause, analyze, and agree upon a specification be
   - **Core Objective**
   - **Proposed Data/UI Flow**
   - **Files to Modify & Files to Create**
+  - **Pre-Code Gate**: why this requires Spec Gate, Fast Gate, or Override Gate
+  - **Verification Method**: the test, build, lint, visual check, or manual check that will prove the change
 
 ### 3. Task Breakdown
 - Break the feature into granular, atomic checklist items:
@@ -40,6 +42,12 @@ This skill forces the agent to pause, analyze, and agree upon a specification be
 
 ### 4. Approval Gate
 - End your response by asking the user for explicit approval: *"Do you approve of this specification and task sequence? Please permit me to begin Task 1 (TDD)."*
+- If the user does not approve, stop. Do not begin TDD, do not edit tests, and do not edit production code.
+- If the user approves, the next response before any edit must state:
+
+```text
+Pre-code gate: Spec satisfied by user approval; next edit: <file>; verification: <command/check>.
+```
 
 ---
 
@@ -52,6 +60,8 @@ Be aware of lazy logic that an Agent typically uses to skip this step. If a thou
 | "This is a tiny change, no need for a massive spec." | **REJECTED.** Even a 1-line change needs a quick confirmation. Reply with: *"I will modify X to do Y. Shall I proceed?"* |
 | "The user is rushing and wants code immediately." | **REJECTED.** Hasty code causes bugs and frustrates users more. Write a "Fast-Spec" with just 3 bullet points outlining the action and side-effects. |
 | "I understand the request perfectly. I'll just write all 3 files at once in this single turn." | **REJECTED.** High complexity requires phased execution. Write the spec, break it down, and execute sequentially focusing on one atomic task at a time. |
+| "I'll write the RED test now; that isn't production code." | **REJECTED unless approved.** RED tests are part of execution. Do not write them until the Spec Gate or Plan Gate is approved. |
+| "The user said 'continue', so approval is implied." | **REJECTED.** Approval must clearly authorize implementation of the shown spec/task sequence. Ask if unclear. |
 
 ---
 
@@ -59,8 +69,10 @@ Be aware of lazy logic that an Agent typically uses to skip this step. If a thou
 
 Do not conclude your first interaction turn unless you have fulfilled the following:
 - [ ] Displayed the Spec structure and Task Checklist to the user.
+- [ ] Included the Pre-Code Gate and Verification Method.
 - [ ] Explicitly checked for side-effect risks on the existing infrastructure.
 - [ ] Requested strict explicit approval from the user to proceed.
+- [ ] Made no test or production edits before approval.
 
 ---
 

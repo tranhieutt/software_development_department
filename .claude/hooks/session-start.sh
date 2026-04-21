@@ -6,6 +6,15 @@
 
 echo "=== Claude Code Software Development Department — Session Context ==="
 
+USING_SDD_SKILL=".claude/skills/using-sdd/SKILL.md"
+if [ -f "$USING_SDD_SKILL" ]; then
+    echo ""
+    echo "=== SDD ROUTER ==="
+    echo "Required workflow router: $USING_SDD_SKILL"
+    echo "Before any task action, route the request through using-sdd and follow the matching SDD skill gates."
+    echo "=== END SDD ROUTER ==="
+fi
+
 # Current branch
 BRANCH=$(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo "(no git)")
 if [ -n "$BRANCH" ]; then

@@ -23,6 +23,17 @@ TDD acts as the ultimate truth verifier. It prevents Agents from blindly inserti
 
 **ABSOLUTE DIRECTIVE**: Under NO circumstances are you allowed to write the final implementation logic before a test has explicitly failed in the terminal environment.
 
+**PRECONDITION**: TDD is an execution workflow, not a planning bypass. Before
+writing the RED test, confirm the applicable `using-sdd` pre-code gate is
+satisfied:
+
+- Fast Gate for a tiny explicit fix
+- Spec Gate for an approved spec task
+- Plan Gate for an approved implementation-plan task
+- Override Gate when the user explicitly accepted skipping the normal gate
+
+If no gate is satisfied, stop and request the missing approval or clarification.
+
 ### 1. RED Phase (Write the Failing Test)
 - Read the specification for the current atomic task.
 - Create or modify the appropriate test file (e.g., `*.test.ts`, `*_test.go`, `test_*.py`) to assert the expected behavior.
@@ -75,12 +86,14 @@ Be aware of lazy logic that an Agent typically uses to skip testing. If a though
 | "I'll just write the implementation first because it's super easy, and add the tests after." | **CRITICAL REJECTION.** Writing code before a test guarantees brittle code and untested edge cases. You MUST write the failing test first. No exceptions. |
 | "The project doesn't seem to have a test framework set up, so I will just skip TDD and do a console.log." | **REJECTED.** `console.log` is not an automated test. If a test runner (Jest, PyTest, Go test, Vitest) is missing, STOP working and ask the User for permission to install and configure one immediately. |
 | "I don't need to run the final terminal command to check if it's green. I can read the logic and I know it works." | **REJECTED.** Code does not exist until the compiler/test-runner proves it exists. You cannot hallucinate terminal outputs. Run the actual command. |
+| "Writing the failing test is safe before approval." | **REJECTED.** RED tests are execution. Confirm the pre-code gate before editing tests. |
 
 ---
 
 ## Verification Gates
 
 Do not conclude the turn unless you have:
+- [ ] Confirmed the `using-sdd` pre-code gate before editing tests or production code.
 - [ ] Executed the test runner during the **RED** phase and captured a definitive FAILING state log.
 - [ ] Executed the test runner during the **GREEN** phase and captured a PASSING log.
 - [ ] Displayed both terminal outputs (Red & Green) as indisputable evidence to the User.

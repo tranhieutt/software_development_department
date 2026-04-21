@@ -6,6 +6,56 @@ Tài liệu này ghi lại lịch sử cập nhật tài liệu và source code 
 
 ## 🗓️ Lịch sử cập nhật
 
+### [v1.46.0] - 2026-04-21
+
+**Chu de:** SDD workflow discipline - using-sdd router, pre-code gates, agent-ready planning, subagent-driven execution
+
+Dot cap nhat nay dua cac bai hoc tu Superpowers vao SDD theo huong behavior-shaping: agent phai route request qua workflow dung, khong viet code truoc gate, plan phai du kha nang giao cho worker, va approved multi-task plan co workflow thuc thi rieng voi review gates.
+
+#### New - `using-sdd` workflow router
+
+- Them `.claude/skills/using-sdd/SKILL.md` lam router/discipline layer cho moi request phat trien phan mem.
+- Dinh tuyen tu natural language sang cac workflow SDD phu hop: `brainstorm`, `deep-interview`, `spec-driven-development`, `planning-and-task-breakdown`, `test-driven-development`, `subagent-driven-development`, `orchestrate`, `fork-join`, `code-review`, `gate-check`, va release skills.
+- Them ma tran pre-code gates: Fast Gate, Spec Gate, Plan Gate, Interview Gate, Override Gate.
+- Them mau bat buoc truoc production edit: `Pre-code gate: ...; next edit: ...; verification: ...`.
+- `session-start.sh` hien thi SDD router reminder moi dau session de tranh agent bo qua skill routing.
+
+#### New - Pre-code gate hooks
+
+- Them `.claude/hooks/pre-code-gate.ps1` va `.claude/hooks/pre-code-gate.sh`.
+- `settings.json` dang ky hook `Write|Edit`, uu tien Windows PowerShell va fallback Bash.
+- Hook canh bao khi agent sap sua implementation-like files ma chua state gate va verification check.
+- Hook bo qua docs/skill edits de tranh noise khi bao tri workflow docs.
+
+#### Rewrite - `planning-and-task-breakdown` thanh agent-ready plan
+
+- Rewrite `.claude/skills/planning-and-task-breakdown/SKILL.md` tu checklist cap cao thanh implementation plan co the giao cho agent thuc thi.
+- Them Scope Check, File Responsibility Map, Dependency Mapping, No Placeholders, Self-Review, Execution Handoff.
+- Moi task bat buoc co purpose, dependencies, exact files, acceptance criteria, RED/GREEN/REFACTOR steps, command, expected output, review step, va commit message.
+- Execution Mode Recommendation gio ho tro: Inline TDD, `subagent-driven-development`, `orchestrate`, `fork-join`.
+
+#### New - `subagent-driven-development`
+
+- Them `.claude/skills/subagent-driven-development/SKILL.md`.
+- Workflow thuc thi approved plan theo tung task tuan tu: fresh implementer subagent -> spec compliance review -> code quality review -> fix loop -> next task.
+- Dinh nghia prompt contract cho implementer, spec reviewer, va code quality reviewer.
+- Dinh nghia status contract: `DONE`, `DONE_WITH_CONCERNS`, `NEEDS_CONTEXT`, `BLOCKED`.
+- Phan biet ro voi `orchestrate` (multi-domain waves) va `fork-join` (parallel disjoint workstreams).
+
+#### Hardening - Spec and TDD gates
+
+- `spec-driven-development`: bat spec output phai co Pre-Code Gate, Verification Method, va approval ro truoc khi TDD/code.
+- `test-driven-development`: RED test khong con la duong vong de bat dau execution khi plan/spec chua duoc approve.
+- `using-sdd`: them execution-mode selection table cho approved plans.
+
+#### Verification
+
+- `scripts/validate-skills.ps1`: PASS 118/118 skills, 0 required metadata failures.
+- `settings.json`: JSON parse OK.
+- `pre-code-gate.ps1`: verified warning for `landing-page/index.html` and silent skip for `.claude/skills/using-sdd/SKILL.md`.
+
+---
+
 ### [v1.45.0] - 2026-04-21
 
 **Chủ đề:** P0-1 per-agent circuit breaker, skill telemetry fix, agent-health report, skill usage report
