@@ -15,10 +15,10 @@ type: project
 | ------------------- | ------------------------------------------------------------------------ | ------------------------- |
 | Backend Developer   | [specialists/backend-developer.md](specialists/backend-developer.md)     | backend tasks, API, DB    |
 | Frontend Developer  | [specialists/frontend-developer.md](specialists/frontend-developer.md)   | UI, React, CSS            |
-| QA Tester           | [specialists/qa-tester.md](specialists/qa-tester.md)                     | testing, coverage, bugs   |
+| QA Engineer         | *(merged — use `qa-engineer` agent directly)*                            | testing, coverage, bugs   |
 | Data Engineer       | [specialists/data-engineer.md](specialists/data-engineer.md)             | pipelines, ETL, analytics |
 | Fullstack Developer | [specialists/fullstack-developer.md](specialists/fullstack-developer.md) | full-stack features       |
-| Investigator        | [specialists/investigator.md](specialists/investigator.md)               | debugging, root cause     |
+| Diagnostics         | *(merged — use `diagnostics` agent directly)*                            | debugging, root cause     |
 | Technical Director  | [specialists/technical-director.md](specialists/technical-director.md)   | arch decisions, review    |
 
 ## Consensus

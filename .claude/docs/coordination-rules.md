@@ -87,9 +87,9 @@
     | :--- | :--- |
     | `backend-developer` | `fullstack-developer` |
     | `frontend-developer` | `fullstack-developer` |
-    | `qa-tester` | `qa-lead` |
+    | `qa-engineer` | `fullstack-developer` |
     | `data-engineer` | `backend-developer` |
-    | `investigator` | `solver` |
+    | `diagnostics` | `investigator` *(legacy fallback — use `diagnostics` directly)* |
 
     **Routing semantics:**
     - Circuit Breaker activates **after** Rule 6 layered recovery is exhausted.
