@@ -126,26 +126,25 @@
     **Audit tool:** Run `/trace-history` to view the ledger with filters by agent,
     risk tier, task, outcome, or date range.
 
-16. **A2A Handoff Contracts**: When one agent completes its slice and passes work
-    to another agent, a formal handoff contract must be generated before the
-    receiving agent begins work.
+16. **A2A Handoff Contracts** *(SHOULD — recommended practice, not enforced)*:
+    When one agent completes its slice and passes work to another agent, a handoff
+    summary is recommended before the receiving agent begins work.
 
-    **When a handoff contract is required:**
+    **When a handoff summary is strongly recommended:**
     - Any work crossing domain boundaries (backend -> QA, frontend -> lead-programmer)
-    - Any work with `risk_tier` Medium or High
+    - Any work with `risk_tier` High
     - Any partial artifact (`artifact_status: partial | draft`) passed between agents
 
-    **When a handoff contract is optional (Low risk, same-domain):**
+    **When a handoff summary can be skipped:**
+    - `risk_tier` Low or Medium with same-domain work
     - Minor corrections passed back within the same agent turn
     - Read-only review requests with no artifact transfer
 
-    **Protocol:**
-    1. Sending agent runs `/handoff <from> <to> <artifact> [task_id]`
-    2. Contract is saved to `.tasks/handoffs/<from>-to-<to>-<task_id>.json`
-    3. Receiving agent reads the contract and verifies all `acceptance_criteria`
-       before starting work
-    4. If any criterion fails -> receiving agent rejects the handoff and returns
-       specific failures to the sender; does NOT begin work on a failing artifact
+    **Lightweight protocol (no tooling required):**
+    1. Sending agent states in plain text: what was built, what's missing, acceptance criteria
+    2. Receiving agent acknowledges before starting work
+    3. Formal contract file in `.tasks/handoffs/` is optional — use only for High-risk cross-domain work
 
-    **Schema reference:** `.claude/docs/handoff-schema.md`
-    **Contracts directory:** `.tasks/handoffs/`
+    > **Note (2026-04-21):** Downgraded from MUST to SHOULD — no handoff contracts were
+    > generated across multiple sessions, indicating the full protocol has too much friction.
+    > Lightweight text summaries achieve 80% of the value with near-zero overhead.
