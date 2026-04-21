@@ -6,6 +6,44 @@ Tài liệu này ghi lại lịch sử cập nhật tài liệu và source code 
 
 ## 🗓️ Lịch sử cập nhật
 
+### [v1.45.0] - 2026-04-21
+
+**Chủ đề:** P0-1 per-agent circuit breaker, skill telemetry fix, agent-health report, skill usage report
+
+Đợt cập nhật này đóng toàn bộ P0-1 và P0-3 từ audit v6, đồng thời hoàn thành Week 2 roadmap: per-agent circuit breaker (schema v2), ledger entries cho state transitions, agent-health CLI, skill usage report, và cull candidates list.
+
+#### Fix - P0-1: Circuit breaker refactored sang per-agent model
+
+- `circuit-state.json` migrate lên schema v2: `agents.<name>.{state, fail_count, fallback, ...}` thay vì flat global state.
+- 5 agents tracked với fallback pairs từ coordination-rules: `backend-developer`, `frontend-developer`, `qa-engineer`, `data-engineer`, `diagnostics`.
+- `circuit-guard.sh` v2: đọc `subagent_type` từ Task input, chỉ block/warn agent đang OPEN, hiển thị fallback agent để route.
+- `circuit-updater.sh` v2: ghi success/fail vào đúng agent key, không ghi global.
+- Mỗi state transition (CLOSED→HALF_OPEN, HALF_OPEN→OPEN, OPEN→HALF_OPEN TTL) tự động ghi entry vào `decision_ledger.jsonl` với `risk_tier: High`.
+
+#### Fix - P0-3: Skill telemetry chuyển sang UserPromptSubmit hook
+
+- Root cause xác nhận: Claude Code không fire `PostToolUse` cho `Skill` tool (internal harness construct, không đi qua tool lifecycle).
+- `log-skill.sh` rewrite: chuyển từ PostToolUse sang `UserPromptSubmit` hook, detect `/skill-name` pattern từ user prompt.
+- `settings.json` cập nhật: remove `Skill` matcher khỏi PostToolUse, thêm `log-skill.sh` vào UserPromptSubmit.
+- `production/traces/skill-usage.jsonl` giờ được tạo và ghi data.
+- Giới hạn đã ghi nhận: chỉ catch user-typed slash commands, không catch Claude-autonomous skill calls.
+
+#### New - `scripts/agent-health.js` — per-agent circuit status report
+
+- CLI report đọc `circuit-state.json` v2 và in table per-agent: state, fail count, last fail time, fallback agent.
+- Tự động hiển thị `↳ Last transition` từ `decision_ledger.jsonl` nếu có.
+- Flags: `--open` (chỉ OPEN/HALF_OPEN), `--json` (raw JSON output).
+
+#### New - `scripts/skill-usage-report.js` — skill usage analysis + cull candidates
+
+- Report đọc `skill-usage.jsonl` + scan `.claude/skills/` directory, phân loại: used / never-used / cull candidates.
+- Cull heuristics: name token similarity ≥70%, domain cluster ≥4 members đều never-used.
+- Tự động ghi `production/traces/skill-cull-candidates.md` — 48 candidates identified (heuristic, chưa có usage data thực).
+- Flags: `--cull-only`, `--days N`, `--json`.
+- **Lưu ý:** Không cull skills cho đến khi có ≥7 ngày usage data thực.
+
+---
+
 ### [v1.44.0] - 2026-04-21
 
 **Chủ đề:** Runtime diagnostics — P0 audit v6 (GPT-5.4 cross-review), trace integrity, schema discovery hooks

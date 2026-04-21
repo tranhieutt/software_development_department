@@ -1,9 +1,52 @@
 {
-    "state": "CLOSED",
-    "fail_count": 0,
-    "last_fail_ts": null,
-    "last_success_ts": null,
-    "open_reason": null,
-    "retry_backoff_s": 0,
-    "_comment": "Managed by UFSM — see docs/internal/adr/ADR-004-unified-failure-state-machine.md"
+    "_version": 2,
+    "_comment": "Per-agent circuit state — managed by UFSM ADR-004 (v2). Do not edit manually.",
+    "_schema": "agents.<name>.{state,fail_count,last_fail_ts,last_success_ts,open_reason,retry_backoff_s,fallback}",
+    "agents": {
+        "backend-developer": {
+            "state": "CLOSED",
+            "fail_count": 0,
+            "last_fail_ts": null,
+            "last_success_ts": null,
+            "open_reason": null,
+            "retry_backoff_s": 0,
+            "fallback": "fullstack-developer"
+        },
+        "frontend-developer": {
+            "state": "CLOSED",
+            "fail_count": 0,
+            "last_fail_ts": null,
+            "last_success_ts": null,
+            "open_reason": null,
+            "retry_backoff_s": 0,
+            "fallback": "fullstack-developer"
+        },
+        "qa-engineer": {
+            "state": "CLOSED",
+            "fail_count": 0,
+            "last_fail_ts": null,
+            "last_success_ts": null,
+            "open_reason": null,
+            "retry_backoff_s": 0,
+            "fallback": "fullstack-developer"
+        },
+        "data-engineer": {
+            "state": "CLOSED",
+            "fail_count": 0,
+            "last_fail_ts": null,
+            "last_success_ts": null,
+            "open_reason": null,
+            "retry_backoff_s": 0,
+            "fallback": "backend-developer"
+        },
+        "diagnostics": {
+            "state": "CLOSED",
+            "fail_count": 0,
+            "last_fail_ts": null,
+            "last_success_ts": null,
+            "open_reason": null,
+            "retry_backoff_s": 0,
+            "fallback": null
+        }
+    }
 }
