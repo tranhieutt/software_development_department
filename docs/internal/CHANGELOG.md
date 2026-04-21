@@ -6,6 +6,37 @@ Tài liệu này ghi lại lịch sử cập nhật tài liệu và source code 
 
 ## 🗓️ Lịch sử cập nhật
 
+### [v1.44.0] - 2026-04-21
+
+**Chủ đề:** Runtime diagnostics — P0 audit v6 (GPT-5.4 cross-review), trace integrity, schema discovery hooks
+
+Đợt cập nhật này xử lý 3 trong 5 P0 findings từ audit v6: sửa corruption UTF-16 trong `agent-metrics.jsonl`, thêm `trace-integrity-check.js`, và cài debug hooks để discover Task/Skill tool input schema trước khi implement per-agent circuit breaker. P0-1 (per-agent circuit breaker) tạm dừng chờ schema verification.
+
+#### Fix - `agent-metrics.jsonl` UTF-16 encoding corruption
+
+- Dòng 2 bị UTF-16 LE encoding (NUL bytes xen kẽ) — không parseable bởi jq/Node/Python.
+- Cleaned: giữ dòng schema header (UTF-8 OK), xóa dòng corrupt (data thủ công từ 2026-04-17, không có giá trị runtime).
+
+#### New - `scripts/trace-integrity-check.js` — JSONL trace validator
+
+- Script mới validate tất cả JSONL files trong `production/traces/`: check UTF-8 clean, no NUL bytes, one valid JSON object per line.
+- Exit 0 = clean, exit 1 = failures. Candidate cho CI gate.
+- Covers: `decision_ledger.jsonl`, `agent-metrics.jsonl`, `skill-usage.jsonl`.
+
+#### New - Debug hooks for schema discovery (temporary)
+
+- `debug-posttooluse.sh` + catch-all PostToolUse matcher trong `settings.json`: log `tool_name` của mọi PostToolUse event vào `production/session-logs/posttooluse-names.log` để verify xem `Skill` matcher có fire không.
+- `circuit-guard.sh`: thêm one-shot dump Task input payload vào `production/session-logs/task-input-sample.json` để verify `subagent_type` field tồn tại trước khi implement per-agent circuit breaker.
+- Cả 2 là temporary — sẽ remove sau khi có data.
+
+#### Blocked - P0-1 per-agent circuit breaker
+
+- Plan đã reviewed bởi CTO + Technical Director (session 2026-04-21).
+- Consensus: per-agent schema đúng hướng, nhưng agent detection strategy cần verify trước — `subagent_type` field trong Task input chưa được confirm.
+- Unblocks khi `task-input-sample.json` có data.
+
+---
+
 ### [v1.43.0] - 2026-04-21
 
 **Chủ đề:** Governance hardening — P0 audit remediation, agent consolidation, cross-platform hooks

@@ -163,6 +163,16 @@
     ],
     "PostToolUse": [
       {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/debug-posttooluse.sh",
+            "timeout": 3
+          }
+        ]
+      },
+      {
         "matcher": "Write|Edit",
         "hooks": [
           {

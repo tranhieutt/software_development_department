@@ -23,6 +23,13 @@ if [ "$TOOL_NAME" != "Task" ]; then
     exit 0
 fi
 
+# ─── DEBUG: dump Task input payload once for schema discovery ─────────────────
+DEBUG_FILE="production/session-logs/task-input-sample.json"
+if [ ! -f "$DEBUG_FILE" ]; then
+    mkdir -p "$(dirname "$DEBUG_FILE")"
+    echo "$INPUT" | jq '.' > "$DEBUG_FILE" 2>/dev/null || true
+fi
+
 CIRCUIT_FILE=".claude/memory/circuit-state.json"
 
 # If state file doesn't exist, auto-create with CLOSED (non-blocking)
