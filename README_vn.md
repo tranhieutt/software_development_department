@@ -4,15 +4,15 @@
     Hệ thống agentic có cấu trúc — biến một session Claude Code đơn lẻ<br />
     thành một software engineering organization thực sự.
     <br /><br />
-    31 agents · 117 context-optimized skills · 10/12 agentic harness patterns · MAS Infrastructure · Steel Discipline
+    31 agents · 116 context-optimized skills · 10/12 agentic harness patterns · MAS Infrastructure · Steel Discipline · Runtime-proven harness
   </p>
 </p>
 
 <p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT License"></a>
   <a href=".claude/agents"><img src="https://img.shields.io/badge/agents-31-blueviolet" alt="31 Agents"></a>
-  <a href=".claude/skills"><img src="https://img.shields.io/badge/skills-117-green" alt="117 Skills"></a>
-  <a href=".claude/hooks"><img src="https://img.shields.io/badge/hooks-15-orange" alt="15 Hooks"></a>
+  <a href=".claude/skills"><img src="https://img.shields.io/badge/skills-116-green" alt="116 Skills"></a>
+  <a href=".claude/hooks"><img src="https://img.shields.io/badge/hooks-20-orange" alt="20 Hooks"></a>
   <a href=".claude/rules"><img src="https://img.shields.io/badge/rules-13-red" alt="13 Rules"></a>
   <a href="https://docs.anthropic.com/en/docs/claude-code"><img src="https://img.shields.io/badge/built%20for-Claude%20Code-f5f5f5?logo=anthropic" alt="Built for Claude Code"></a>
 </p>
@@ -107,6 +107,49 @@ SDD triển khai **10 trong 12** patterns từ kiến trúc agentic harness nộ
 
 ---
 
+## Runtime Observability (v1.45.0)
+
+Chu kỳ architecture gần nhất nâng SDD từ **artifact-complete** lên **runtime-proven** — mọi thành phần harness đều có telemetry, audit trail, và health reporting.
+
+### Per-Agent Circuit Breaker
+
+Circuit breaker được refactor từ global kill-switch sang per-agent state machine (`circuit-state.json` schema v2):
+
+```json
+{
+  "agents": {
+    "qa-engineer": { "state": "OPEN", "fail_count": 4, "fallback": "fullstack-developer" },
+    "backend-developer": { "state": "CLOSED", "fail_count": 0, "fallback": "fullstack-developer" }
+  }
+}
+```
+
+- `circuit-guard.sh` đọc `subagent_type` từ Task input — chỉ block agent đang fail, không block toàn bộ harness
+- `circuit-updater.sh` ghi state theo agent key — mỗi transition CLOSED→HALF_OPEN→OPEN được log vào `decision_ledger.jsonl` với `risk_tier: High`
+- Tự động reset sau 60 phút TTL: OPEN→HALF_OPEN để probe
+
+### Agent Health Report
+
+```bash
+node scripts/agent-health.js           # bảng per-agent: state, fail count, fallback, last transition
+node scripts/agent-health.js --open    # chỉ hiện OPEN/HALF_OPEN
+node scripts/agent-health.js --json    # output JSON cho automation
+```
+
+### Skill Usage Telemetry
+
+`log-skill.sh` (UserPromptSubmit hook) ghi lại các lần gọi `/skill-name` vào `production/traces/skill-usage.jsonl`. Usage data cho phép phân tích evidence-based:
+
+```bash
+node scripts/skill-usage-report.js              # full report: used / never-used / cull candidates
+node scripts/skill-usage-report.js --cull-only  # 48 candidates theo domain cluster
+node scripts/skill-usage-report.js --days 7     # lọc N ngày gần nhất
+```
+
+Không cull skills cho đến khi có ≥7 ngày data thực.
+
+---
+
 ## Steel Discipline (v1.26.0)
 
 Chu kỳ architecture gần nhất đưa vào **Steel Discipline** — một bộ process shields ngăn chặn bốn failure mode phổ biến nhất của AI.
@@ -162,7 +205,7 @@ Tier 5  CLAUDE.md @include chain     — Static universal context, luôn trong p
 
 ## Skill System
 
-### 117 Skills trên 7 Domain
+### 116 Skills trên 7 Domain
 
 | Domain | Skills tiêu biểu |
 |---|---|
@@ -193,8 +236,8 @@ Gõ `/` trong Claude Code — bạn thấy cái relevant, không phải cả 123
 | Thành phần | Số lượng | Mô tả |
 |---|---|---|
 | **Agents** | 31 | Agents chuyên biệt cho product, engineering, design, QA, data, operations |
-| **Skills** | 117 | Core workflows và technology frameworks với context-aware routing |
-| **Hooks** | 15 | Automated validation: commits, pushes, asset changes, session lifecycle, pre-compact, gap detection, bash guard, fork-join |
+| **Skills** | 116 | Core workflows và technology frameworks với context-aware routing |
+| **Hooks** | 20 | Automated validation: commits, pushes, asset changes, session lifecycle, circuit breaker, skill telemetry, decision ledger, bash guard, fork-join |
 | **Rules** | 13 | Coding standards tự động enforce theo file path |
 | **Templates** | 22+ | PRDs, API designs, system architecture, ADRs, mobile, incident response, postmortem |
 
@@ -335,7 +378,7 @@ Xem [`UPGRADING.md`](UPGRADING.md) để pull upstream changes mà không overwr
 
 ## Version
 
-**v1.31.0** — 2026-04-17
+**v1.45.0** — 2026-04-21
 
 Xem [`docs/internal/CHANGELOG.md`](docs/internal/CHANGELOG.md) để theo dõi lịch sử cập nhật.
 

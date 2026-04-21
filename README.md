@@ -4,15 +4,15 @@
     A structured agentic system that transforms a single Claude Code session<br />
     into a coordinated software engineering organization.
     <br /><br />
-    31 agents · 117 context-optimized skills · 10/12 agentic harness patterns · MAS Infrastructure · Steel-discipline enforcement · Visual Engineering
+    31 agents · 116 context-optimized skills · 10/12 agentic harness patterns · MAS Infrastructure · Steel-discipline enforcement · Runtime-proven harness
   </p>
 </p>
 
 <p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT License"></a>
   <a href=".claude/agents"><img src="https://img.shields.io/badge/agents-31-blueviolet" alt="31 Agents"></a>
-  <a href=".claude/skills"><img src="https://img.shields.io/badge/skills-117-green" alt="117 Skills"></a>
-  <a href=".claude/hooks"><img src="https://img.shields.io/badge/hooks-15-orange" alt="15 Hooks"></a>
+  <a href=".claude/skills"><img src="https://img.shields.io/badge/skills-116-green" alt="116 Skills"></a>
+  <a href=".claude/hooks"><img src="https://img.shields.io/badge/hooks-20-orange" alt="20 Hooks"></a>
   <a href=".claude/rules"><img src="https://img.shields.io/badge/rules-13-red" alt="13 Rules"></a>
   <a href="https://docs.anthropic.com/en/docs/claude-code"><img src="https://img.shields.io/badge/built%20for-Claude%20Code-f5f5f5?logo=anthropic" alt="Built for Claude Code"></a>
 </p>
@@ -108,9 +108,52 @@ SDD implements **10 of 12** patterns from Claude Code's internal agentic harness
 
 ---
 
-## Process Enforcement & Visualization (v1.27.0)
+## Runtime Observability (v1.45.0)
 
-The most recent architecture cycle introduced **Visual Engineering** and **Steel Discipline**.
+The most recent architecture cycle upgraded SDD from **artifact-complete** to **runtime-proven** — every harness component now has telemetry, audit trails, and health reporting.
+
+### Per-Agent Circuit Breaker
+
+Circuit breaker migrated from global kill-switch to per-agent state machine (`circuit-state.json` schema v2):
+
+```json
+{
+  "agents": {
+    "qa-engineer": { "state": "OPEN", "fail_count": 4, "fallback": "fullstack-developer" },
+    "backend-developer": { "state": "CLOSED", "fail_count": 0, "fallback": "fullstack-developer" }
+  }
+}
+```
+
+- `circuit-guard.sh` reads `subagent_type` from Task input — only blocks the failing agent, not the entire harness
+- `circuit-updater.sh` writes state per agent key — CLOSED→HALF_OPEN→OPEN transitions log to `decision_ledger.jsonl` with `risk_tier: High`
+- Auto-reset after 60-minute TTL transitions OPEN→HALF_OPEN for probe
+
+### Agent Health Report
+
+```bash
+node scripts/agent-health.js           # per-agent circuit table + fallback + last transition
+node scripts/agent-health.js --open    # only OPEN/HALF_OPEN agents
+node scripts/agent-health.js --json    # machine-readable output
+```
+
+### Skill Usage Telemetry
+
+`log-skill.sh` (UserPromptSubmit hook) captures `/skill-name` invocations into `production/traces/skill-usage.jsonl`. Usage data feeds the skill usage report:
+
+```bash
+node scripts/skill-usage-report.js              # full report: used / never-used / cull candidates
+node scripts/skill-usage-report.js --cull-only  # 48 domain-cluster cull candidates identified
+node scripts/skill-usage-report.js --days 7     # filter to last N days
+```
+
+Cull decisions are evidence-based — no skills removed until ≥7 days of real usage data.
+
+---
+
+## Process Enforcement (v1.27.0)
+
+The earlier architecture cycle introduced **Steel Discipline**.
 
 ### Anti-Rationalization Gates
 
@@ -163,7 +206,7 @@ Tier 5  CLAUDE.md @include chain     — Static universal context, always in pro
 
 ## Skill System
 
-### 117 Skills Across 7 Domains
+### 116 Skills Across 7 Domains
 
 | Domain | Representative Skills |
 |---|---|
@@ -195,8 +238,8 @@ Type `/` in Claude Code — you see what's relevant, not all 123.
 | Category | Count | Description |
 |---|---|---|
 | **Agents** | 31 | Specialized subagents across product, engineering, design, QA, data, and operations |
-| **Skills** | 117 | Core workflows and technology frameworks with context-aware routing |
-| **Hooks** | 15 | Automated validation: commits, pushes, asset changes, session lifecycle, pre-compact, gap detection, bash guard, fork-join |
+| **Skills** | 116 | Core workflows and technology frameworks with context-aware routing |
+| **Hooks** | 20 | Automated validation: commits, pushes, asset changes, session lifecycle, circuit breaker, skill telemetry, decision ledger, bash guard, fork-join |
 | **Rules** | 13 | Path-scoped coding standards enforced automatically by file location |
 | **Templates** | 22+ | PRDs, API designs, system architecture, ADRs, mobile, incident response, postmortem |
 
@@ -337,7 +380,7 @@ Tested on **Windows 10/11** with Git Bash. All hooks use POSIX-compatible patter
 
 ## Version
 
-**v1.31.0** — 2026-04-17
+**v1.45.0** — 2026-04-21
 
 See [`docs/internal/CHANGELOG.md`](docs/internal/CHANGELOG.md) for release history.
 
