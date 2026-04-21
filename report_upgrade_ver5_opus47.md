@@ -16,6 +16,8 @@
 | 2026-04-21 | ✅ B4 — log-skill.sh hook                   | PostToolUse/Skill → `production/traces/skill-usage.jsonl`             |
 | 2026-04-21 | ✅ B5 — Portal removed entirely             | Xóa portal.html, portal-data.js, portal-update.sh; portal-trigger khỏi ledger-append.sh |
 | 2026-04-21 | ✅ Tier 2 memory seeded                     | user_role.md, project_tech_decisions.md, feedback_rules.md có data thực |
+| 2026-04-21 | ✅ B7 — Agent merge 5→2                     | qa-lead+qa-tester→qa-engineer; investigator+verifier+solver→diagnostics; 31→28 agents |
+| 2026-04-21 | ✅ B6 — Skill cleanup                       | Xóa _SKILL_TEMPLATE.md + templates/SKILL.md.tmpl (non-skill files); 118→116. Target ≤90 revised — không phù hợp với universal framework |
 
 ---
 
@@ -132,10 +134,10 @@
 | Architecture coherence            | 4/10            | **5/10**        | **+1**  | ADR-004/005 landed                         |
 | Enforcement (hook → rule binding) | 3/10            | **7/10**        | **+4**  | Circuit + Ledger = real enforcement now    |
 | Security posture                  | 5/10            | 6/10            | +1      | A4/A5 done; M5/M3/H2 vẫn open             |
-| Memory effectiveness              | 2/10            | **2/10**        | 0       | Stubs unchanged sau 4 ngày                 |
-| Skill ecosystem health            | 5/10            | **4/10**        | **-1**  | Bloat tăng net; không có telemetry         |
+| Memory effectiveness              | 2/10            | **5/10**        | **+3**  | 3 Tier 2 files seeded + extract-decisions hook |
+| Skill ecosystem health            | 5/10            | **6/10**        | **+1**  | Telemetry added; non-skill files removed; target ≤90 revised |
 | Cross-platform (Windows)          | 3/10            | 3/10            | —       | PS1 counterparts vẫn thiếu                 |
-| **Tổng trung bình**               | **4.3/10**      | **5.0/10**      | **+0.7** |                                            |
+| **Tổng trung bình**               | **4.3/10**      | **6.0/10**      | **+1.7** | Sau khi hoàn tất Week 1+2                  |
 
 ---
 
@@ -164,8 +166,8 @@
 | ~~B3~~  | ~~PostToolUse hook: auto-extract decisions → Tier 2 memory files~~            | Medium | Yes         | ✅ DONE  |
 | ~~B4~~  | ~~Skill telemetry: log `skill-invocation.jsonl` trong `log-agent.sh`~~        | Low    | Yes         | ✅ DONE  |
 | ~~B5~~  | ~~ADR-006: Portal governance + JSON schema cho `portal-data.js`~~             | None   | Yes         | ✅ DONE (removed) |
-| B6  | Skill cull: chạy `/skill-health`, target 118 → ≤ 90                                | Medium | Yes (git)   | 🟡 P1    |
-| B7  | Merge agents: QA (2→1), Investigator+Verifier+Solver (3→1) → 31→27 agents           | Medium | Yes (git)   | 🟡 P1    |
+| ~~B6~~  | ~~Skill cull: chạy `/skill-health`, target 118 → ≤ 90~~                       | Medium | Yes (git)   | ✅ DONE (revised) |
+| ~~B7~~  | ~~Merge agents: QA (2→1), Investigator+Verifier+Solver (3→1) → 31→27 agents~~ | Medium | Yes (git)   | ✅ DONE (31→28)  |
 | B8  | PS1 counterparts cho `bash-guard`, `validate-commit`, `validate-push` (M3 v4)       | Low    | Yes         | 🟡 P1    |
 
 ---
@@ -180,11 +182,25 @@
 5. ~~B5: Portal ADR + schema~~ ✅ (resolved by removal)
 
 ### Week 2 — Consolidate
-6. B6: Skill cull xuống ≤ 90
-7. B7: Agent merge (QA, Investigator trio)
-8. B8: PS1 counterparts
-9. Release SDD v1.43.0 với CHANGELOG đầy đủ
+6. ~~B6: Skill cull xuống ≤ 90~~ ✅ (revised: xóa non-skill files; target ≤90 không phù hợp universal framework)
+7. ~~B7: Agent merge (QA, Investigator trio)~~ ✅ (31→28 agents)
+8. B8: PS1 counterparts *(deferred — low ROI, user dùng Git Bash)*
+9. Release SDD v1.43.0 với CHANGELOG đầy đủ ⬜
 
 ---
 
-*Báo cáo tiếp theo nên được trigger sau khi B1–B5 hoàn thành, hoặc sau 1 tuần.*
+---
+
+## 8. Trạng thái cuối phiên (2026-04-21)
+
+| Hạng mục        | Trước (v4)  | Sau (v5)    |
+| --------------- | ----------- | ----------- |
+| Agents          | 31          | **28**      |
+| Skills          | 118         | **116**     |
+| P0 items open   | 5           | **0**       |
+| Tier 2 stubs    | 4/6         | **1/6** (consensus/merged-decisions.md còn placeholder) |
+| Enforcement     | 3/10        | **7/10**    |
+
+**Còn lại:** B8 (PS1 counterparts — deferred), Release v1.43.0 với CHANGELOG.
+
+*Báo cáo tiếp theo nên trigger sau 1–2 tuần sử dụng thực tế để có telemetry skill-usage.*
