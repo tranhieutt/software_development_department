@@ -3,7 +3,8 @@
 // Reads production/traces/skill-usage.jsonl + .claude/skills/ directory.
 //
 // Usage:
-//   node scripts/skill-usage-report.js              # full report (table + cull list)
+//   node scripts/skill-usage-report.js              # compact summary
+//   node scripts/skill-usage-report.js --full       # full report (table + cull list)
 //   node scripts/skill-usage-report.js --json       # raw JSON
 //   node scripts/skill-usage-report.js --cull-only  # cull candidates only
 //   node scripts/skill-usage-report.js --days 7     # limit to last N days (default: all)
@@ -18,6 +19,8 @@ const CULL_FILE   = path.join(process.cwd(), 'production/traces/skill-cull-candi
 const args     = process.argv.slice(2);
 const FLAG_JSON      = args.includes('--json');
 const FLAG_CULL_ONLY = args.includes('--cull-only');
+const FLAG_FULL      = args.includes('--full');
+const FLAG_COMPACT   = args.includes('--compact') || (!FLAG_JSON && !FLAG_FULL && !FLAG_CULL_ONLY);
 const daysIdx        = args.indexOf('--days');
 const DAYS_LIMIT     = daysIdx !== -1 ? parseInt(args[daysIdx + 1], 10) : null;
 
@@ -142,6 +145,78 @@ if (FLAG_JSON) {
 
 const NOW_ISO = new Date().toISOString().slice(0, 19).replace('T', ' ');
 const PAD = (s, n) => String(s ?? '').slice(0, n).padEnd(n);
+
+function writeCullFile() {
+    const cullLines = [
+        `# Skill Cull Candidates`,
+        ``,
+        `> Generated: ${NOW_ISO} UTC | Total skills: ${allSkills.length} | Cull candidates: ${cullCandidates.length}`,
+        `> **Do NOT delete** without usage data covering >=7 days. This list is heuristic only.`,
+        ``,
+        `## Criteria`,
+        `- Missing \`SKILL.md\` metadata file (likely placeholder/template)`,
+        `- Name overlaps >=70% token similarity with another skill`,
+        ``,
+        `## Candidates`,
+        ``,
+        `| Skill | Reason | Decision |`,
+        `|---|---|---|`,
+        ...cullCandidates.map(c => `| \`${c.skill}\` | ${c.reason} | pending |`),
+        ``,
+        `## Used Skills (safe - do not cull)`,
+        ``,
+        ...used.map(s => `- \`${s.skill}\` - ${s.count} call(s), ${s.sessions} session(s)`),
+    ];
+
+    fs.mkdirSync(path.dirname(CULL_FILE), { recursive: true });
+    fs.writeFileSync(CULL_FILE, cullLines.join('\n') + '\n');
+}
+
+if (FLAG_COMPACT) {
+    const periodNote = DAYS_LIMIT ? `last ${DAYS_LIMIT} days` : 'all time';
+    const topUsed = used.slice(0, 5);
+    const topCull = cullCandidates.slice(0, 10);
+
+    writeCullFile();
+
+    console.log(`SDD Skill Usage: ${allSkills.length} total | ${used.length} used | ${neverUsed.length} never-used | ${cullCandidates.length} cull candidates (${periodNote})`);
+
+    console.log('');
+    console.log('Top Used:');
+    if (topUsed.length === 0) {
+        console.log('- none recorded');
+    } else {
+        for (const s of topUsed) {
+            const last = s.lastSeen ? s.lastSeen.slice(0, 10) : 'unknown';
+            console.log(`- ${s.skill}: ${s.count} call(s), ${s.sessions} session(s), last=${last}`);
+        }
+    }
+
+    console.log('');
+    console.log('Warnings:');
+    if (topCull.length === 0) {
+        console.log('- no cull candidates identified');
+    } else {
+        for (const c of topCull.slice(0, 5)) {
+            console.log(`- ${c.skill}: ${c.reason}`);
+        }
+        if (topCull.length > 5) {
+            console.log(`- ${topCull.length - 5} more candidate(s) in production/traces/skill-cull-candidates.md`);
+        }
+    }
+
+    console.log('');
+    console.log('Next:');
+    if (cullCandidates.length > 0) {
+        console.log('1. Review production/traces/skill-cull-candidates.md before deleting anything.');
+        console.log('2. Require at least 7 days of usage data before culling.');
+        console.log('3. Run: node scripts/skill-usage-report.js --full');
+    } else {
+        console.log('1. No cull action required.');
+        console.log('2. Run --full only when auditing individual skill usage.');
+    }
+    process.exit(0);
+}
 
 // ─── Full report ──────────────────────────────────────────────────────────────
 if (!FLAG_CULL_ONLY) {

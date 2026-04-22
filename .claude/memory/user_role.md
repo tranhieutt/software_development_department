@@ -13,3 +13,8 @@ type: user
 - **Decision style:** Muốn options rõ ràng (Option A / Option B) trước khi implement; không thích surprises
 - **Git workflow:** Làm việc trên nhánh `main` trực tiếp (xác nhận 2026-04-19)
 - **Review style:** Tiếp cận theo góc "kiến trúc sư trưởng Anthropic" — đánh giá khắt khe, thực tế, không ngại chỉ ra anti-pattern
+
+## 2026-04-22 — kho global của bạn ấy
+**Trigger:** "tôi là kho global của bạn ấy"
+**Source:** user-prompt
+kho global của bạn ấy

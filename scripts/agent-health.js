@@ -3,7 +3,8 @@
 // Reads .claude/memory/circuit-state.json (schema v2) and prints a table.
 //
 // Usage:
-//   node scripts/agent-health.js           # full table
+//   node scripts/agent-health.js           # compact summary
+//   node scripts/agent-health.js --full    # full table
 //   node scripts/agent-health.js --json    # raw JSON output
 //   node scripts/agent-health.js --open    # show only OPEN/HALF_OPEN agents
 
@@ -16,6 +17,8 @@ const LEDGER_FILE  = path.join(process.cwd(), 'production/traces/decision_ledger
 const args = process.argv.slice(2);
 const FLAG_JSON = args.includes('--json');
 const FLAG_OPEN = args.includes('--open');
+const FLAG_FULL = args.includes('--full');
+const FLAG_COMPACT = args.includes('--compact') || (!FLAG_JSON && !FLAG_FULL);
 
 // ─── Load circuit state ───────────────────────────────────────────────────────
 if (!fs.existsSync(CIRCUIT_FILE)) {
@@ -70,6 +73,11 @@ const agents = Object.entries(circuit.agents)
         return (order[a.state] ?? 3) - (order[b.state] ?? 3);
     });
 
+const allAgents = Object.entries(circuit.agents);
+const allOpen = allAgents.filter(([, v]) => v.state === 'OPEN');
+const allHalfOpen = allAgents.filter(([, v]) => v.state === 'HALF_OPEN');
+const allClosed = allAgents.filter(([, v]) => v.state === 'CLOSED');
+
 // ─── JSON output ──────────────────────────────────────────────────────────────
 if (FLAG_JSON) {
     const out = agents.map(([name, v]) => ({
@@ -83,6 +91,57 @@ if (FLAG_JSON) {
         last_transition: lastTransition[name] ?? null,
     }));
     console.log(JSON.stringify(out, null, 2));
+    process.exit(0);
+}
+
+if (FLAG_COMPACT) {
+    const visibleOpen = agents.filter(([, v]) => v.state === 'OPEN');
+    const visibleHalfOpen = agents.filter(([, v]) => v.state === 'HALF_OPEN');
+    const problemAgents = [...visibleOpen, ...visibleHalfOpen].slice(0, 5);
+
+    console.log(`SDD Agent Health: ${allAgents.length} tracked | CLOSED ${allClosed.length} | HALF_OPEN ${allHalfOpen.length} | OPEN ${allOpen.length}`);
+
+    if (problemAgents.length > 0) {
+        console.log('');
+        console.log('Critical:');
+        for (const [name, v] of problemAgents.slice(0, 3)) {
+            const fallback = v.fallback || 'none';
+            const reason = v.open_reason ? ` - ${v.open_reason}` : '';
+            console.log(`- ${name}: ${v.state}, fail_count=${v.fail_count ?? 0}, fallback=${fallback}${reason}`);
+        }
+        if (problemAgents.length > 3) {
+            console.log(`- ${problemAgents.length - 3} more non-closed agent(s).`);
+        }
+    } else {
+        console.log('');
+        console.log('Critical: none');
+    }
+
+    const staleFailures = agents
+        .filter(([, v]) => v.state === 'CLOSED' && (v.fail_count ?? 0) > 0)
+        .slice(0, 5);
+    if (staleFailures.length > 0) {
+        console.log('');
+        console.log('Warnings:');
+        for (const [name, v] of staleFailures) {
+            console.log(`- ${name}: CLOSED with fail_count=${v.fail_count ?? 0}; last_fail=${relativeTime(v.last_fail_ts)}`);
+        }
+    }
+
+    console.log('');
+    console.log('Next:');
+    if (allOpen.length > 0) {
+        console.log('1. Route OPEN agent tasks to their fallback agents.');
+        console.log('2. Inspect circuit transition history before resetting any agent.');
+        console.log('3. Run: node scripts/agent-health.js --full');
+    } else if (allHalfOpen.length > 0) {
+        console.log('1. Keep HALF_OPEN agents on low-risk validation tasks.');
+        console.log('2. Watch the next transition in production/traces/decision_ledger.jsonl.');
+        console.log('3. Run: node scripts/agent-health.js --full');
+    } else {
+        console.log('1. No circuit action required.');
+        console.log('2. Run --full only when investigating a specific agent.');
+    }
     process.exit(0);
 }
 

@@ -20,7 +20,7 @@
  * Zero runtime dependencies (Node stdlib only).
  *
  * Usage:
- *   node scripts/harness-audit.js [scope] [--format text|json]
+ *   node scripts/harness-audit.js [scope] [--compact|--full|--format compact|text|json]
  *
  * Scopes:
  *   repo        (default) All 12 patterns, max 120
@@ -719,6 +719,59 @@ function formatText(result) {
   return lines.join('\n');
 }
 
+function formatCompact(result) {
+  const lines = [];
+  const failed = result.failed_checks;
+  const critical = failed
+    .filter((f) => ['pte', 'crc', 'dlh', 'pcc'].includes(f.patKey))
+    .slice(0, 3);
+  const warnings = failed
+    .filter((f) => !critical.includes(f))
+    .slice(0, 5);
+
+  lines.push(`SDD Harness Audit: ${result.overall_score}/${result.max_score} (${result.scope})`);
+  lines.push('');
+
+  lines.push('Critical:');
+  if (critical.length === 0) {
+    lines.push('- none');
+  } else {
+    for (const f of critical) {
+      const path = f.path ? ` (${f.path})` : '';
+      lines.push(`- ${f.id}: ${CHECK_HINTS[f.id] || 'Fix failed check'}${path}`);
+    }
+  }
+
+  lines.push('');
+  lines.push('Warnings:');
+  if (warnings.length === 0) {
+    lines.push('- none');
+  } else {
+    for (const f of warnings) {
+      const path = f.path ? ` (${f.path})` : '';
+      lines.push(`- ${f.id}: ${CHECK_HINTS[f.id] || 'Fix failed check'}${path}`);
+    }
+    if (failed.length > critical.length + warnings.length) {
+      lines.push(`- ${failed.length - critical.length - warnings.length} more failed check(s); run --full for details.`);
+    }
+  }
+
+  lines.push('');
+  lines.push('Next:');
+  if (result.top_actions.length === 0) {
+    lines.push('1. No harness action required.');
+    lines.push('2. Run --full only when auditing pattern-level evidence.');
+  } else {
+    result.top_actions.slice(0, 3).forEach((a, i) => {
+      const path = a.path ? ` (${a.path})` : '';
+      lines.push(`${i + 1}. ${a.action}${path}`);
+    });
+    lines.push(`${Math.min(result.top_actions.length, 3) + 1}. Run: node scripts/harness-audit.js ${result.scope} --full`);
+  }
+
+  return lines.join('\n');
+}
+
 // ═══════════════════════════════════════════════════════════════════════════
 // CLI
 // ═══════════════════════════════════════════════════════════════════════════
@@ -726,10 +779,12 @@ function formatText(result) {
 function parseArgs(argv) {
   const args = argv.slice(2);
   let scope = 'repo';
-  let format = 'text';
+  let format = 'compact';
   for (let i = 0; i < args.length; i++) {
     const a = args[i];
     if (a === '--format') { format = args[++i] || 'text'; continue; }
+    if (a === '--compact') { format = 'compact'; continue; }
+    if (a === '--full') { format = 'text'; continue; }
     if (a === '--help' || a === '-h') return { help: true };
     if (a === '--patterns') return { patterns: true };
     if (!a.startsWith('-')) { scope = a; continue; }
@@ -744,7 +799,7 @@ Rubric: ${RUBRIC_VERSION}
 Source: ${RUBRIC_SOURCE}
 
 Usage:
-  node scripts/harness-audit.js [scope] [--format text|json]
+  node scripts/harness-audit.js [scope] [--compact|--full|--format compact|text|json]
   node scripts/harness-audit.js --patterns    # list all 12 patterns
 
 Scopes:
@@ -761,7 +816,9 @@ Scopes:
   commands    Pattern 11, max 10
 
 Options:
-  --format text | json     Output format (default: text)
+  --compact                Compact decision-grade output (default)
+  --full                   Full text report
+  --format compact|text|json
   --patterns               List the 12 patterns and exit
   -h, --help               Show this help`);
 }
@@ -789,6 +846,8 @@ function main() {
   const result = runAudit(parsed.scope);
   if (parsed.format === 'json') {
     console.log(JSON.stringify(result, null, 2));
+  } else if (parsed.format === 'compact') {
+    console.log(formatCompact(result));
   } else {
     console.log(formatText(result));
   }
