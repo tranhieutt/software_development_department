@@ -25,6 +25,14 @@ git branch --show-current
 
 **If you're on `main` or `master`, confirm with the user before committing directly** — it is usually better to commit on a feature branch. Do not create a branch without user confirmation.
 
+Before claiming the change is ready to commit, use
+`verification-before-completion`:
+
+- Identify the exact readiness claim for the commit.
+- Run the relevant project checks, or state exactly why they cannot be run.
+- Inspect `git diff --stat` / changed files so the commit scope is known.
+- Do not say "ready to commit" if verification is partial or failed.
+
 ## Format
 
 ```
@@ -157,6 +165,10 @@ Reason: Caused performance regression in production.
 ## References
 
 - [Conventional Commits](https://www.conventionalcommits.org/)
+
+## Related Skills
+
+- `verification-before-completion` - Required before commit readiness claims.
 
 ## When to Use
 
