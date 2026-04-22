@@ -111,6 +111,10 @@ For each task:
 Do not dispatch multiple implementation subagents in parallel from this workflow.
 Parallel implementation belongs to `fork-join`.
 
+Before marking any task complete or moving to the next task, use
+`verification-before-completion` with the task's acceptance criteria, implementer
+summary, changed files, verification output, and both review-gate verdicts.
+
 ### 4. Final Verification
 
 After all tasks pass:
@@ -192,6 +196,10 @@ If spec compliance fails, send the exact gaps back to the implementer. Re-run
 this gate after fixes. Do not start code quality review until spec compliance
 passes.
 
+When the gaps include spec ambiguity or implementation reality contradicts the
+approved plan/spec, pause the task and route through `spec-evolution` before
+asking the implementer to change behavior.
+
 ## Code Quality Review Gate
 
 After spec compliance approves, dispatch a fresh code quality reviewer or use
@@ -220,6 +228,10 @@ Return:
 
 If quality review fails, send the findings back to the implementer. Re-run the
 quality gate after fixes.
+
+Use `receiving-code-review` to triage multi-item review feedback before sending
+fix instructions back to the implementer. Do not forward unclassified comments
+as a vague "address review feedback" task.
 
 ## Status Handling
 
@@ -282,7 +294,8 @@ user.
 - `using-sdd` - Routes approved implementation plans into this workflow.
 - `planning-and-task-breakdown` - Produces the plan this workflow executes.
 - `test-driven-development` - Required for implementer behavior changes.
+- `verification-before-completion` - Required before marking each task complete
+  and before the final completion claim.
 - `code-review` - Used for the code quality gate or final review.
 - `orchestrate` - Use instead for cross-domain specialist waves.
 - `fork-join` - Use instead for independent parallel workstreams.
-

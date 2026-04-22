@@ -33,10 +33,13 @@ skill and follow its gates.
 | Vague product idea, ideation, product direction | `brainstorm` |
 | User wants structured requirements or says "ask me", "don't assume", "interview" | `deep-interview` |
 | New feature, behavior change, architectural change | `spec-driven-development` |
+| Existing spec needs readiness review before planning or implementation | `review-spec` |
+| Approved spec conflicts with code, tests, review findings, user feedback, or platform reality | `spec-evolution` |
 | Epic, multi-step work, large prompt, many files | `planning-and-task-breakdown` |
 | Implementation of one approved task | `test-driven-development` |
 | Execution of approved multi-task sequential plan with review gates | `subagent-driven-development` |
-| Bug, failing test, unexpected behavior with unclear cause | `diagnose` |
+| Bug, failing test, build failure, CI failure, performance regression, or unexpected behavior | `systematic-debugging` |
+| Complex, intermittent, unfamiliar, or repeatedly failed bug investigation | `diagnose` |
 | Simple obvious bug with clear cause | `test-driven-development` with a regression test |
 | Coordinated multi-agent work across domains | `orchestrate` |
 | Independent parallel workstreams | `fork-join` |
@@ -44,8 +47,10 @@ skill and follow its gates.
 | API contract or endpoint design | `api-design` |
 | Architecture decision with durable consequences | `architecture-decision-records` |
 | Code quality, PR review, merge readiness | `code-review` or `code-review-checklist` |
+| Review comments, PR feedback, CHANGES_REQUIRED verdict, or reviewer questions need response | `receiving-code-review` |
 | Phase transition or readiness review | `gate-check` |
 | Release or launch preparation | `release-checklist` or `launch-checklist` |
+| Completion claim, success claim, task done, fixed, passing, ready, clean, merge-ready | `verification-before-completion` |
 | Commit requested | `commit` |
 | Save reusable lesson or preference | `learner` or `annotate` |
 | Context is too large or stale | `context-engineering` or `save-state` |
@@ -53,11 +58,13 @@ skill and follow its gates.
 When multiple skills apply, use process skills before implementation skills:
 
 1. Requirements and design: `brainstorm`, `deep-interview`,
-   `spec-driven-development`
+   `spec-driven-development`, `review-spec`, `spec-evolution`
 2. Planning and coordination: `planning-and-task-breakdown`,
    `subagent-driven-development`, `orchestrate`, `fork-join`
-3. Execution: `test-driven-development`, domain implementation skills
-4. Review and release: `code-review`, `gate-check`, `release-checklist`
+3. Investigation and execution: `systematic-debugging`,
+   `test-driven-development`, domain implementation skills
+4. Review and release: `verification-before-completion`, `code-review`,
+   `receiving-code-review`, `gate-check`, `release-checklist`
 
 ## Mandatory Gates
 
@@ -75,6 +82,8 @@ Do not write implementation code until one of these gate paths is satisfied:
 | --- | --- | --- |
 | Fast Gate | Small, explicit, low-risk edit; one obvious file; no behavior ambiguity | State the exact file, exact change, risk check, and verification command/check |
 | Spec Gate | New feature, behavior change, UI flow, API change, data change, or unclear side effects | Use `spec-driven-development`; present spec and task sequence; get explicit user approval |
+| Spec Review Gate | Existing spec is the source of truth for a plan, review, or implementation | Use `review-spec`; proceed only if verdict is `APPROVED` or the plan carries non-blocking notes |
+| Spec Evolution Gate | Approved spec and implementation reality disagree | Use `spec-evolution`; get explicit approval for the selected evolution path before code or plan changes continue |
 | Plan Gate | Multi-step work, multiple files, cross-domain changes, or an epic | Use `planning-and-task-breakdown`; produce atomic tasks; get explicit approval for Task 1 |
 | Interview Gate | Vague goal, hidden assumptions, or user asks not to assume | Use `deep-interview` until requirements are clear enough for a spec |
 | Override Gate | User explicitly says to skip planning | Restate the skipped gate, name the risk, and get acknowledgment before code |
@@ -85,6 +94,21 @@ clarification instead of editing files.
 For any new feature or behavior change, default to:
 
 `spec-driven-development` -> `planning-and-task-breakdown` -> `test-driven-development`
+
+For work from an existing spec, default to:
+
+`review-spec` -> `planning-and-task-breakdown` -> `test-driven-development`
+
+If implementation evidence contradicts the approved spec, pause and route to:
+
+`spec-evolution` -> `review-spec` -> `planning-and-task-breakdown` or `test-driven-development`
+
+For bug fixes and failing tests, default to:
+
+`systematic-debugging` -> `test-driven-development` -> `verification-before-completion`
+
+If `systematic-debugging` cannot establish root cause quickly, escalates to
+`diagnose`.
 
 ### Pre-Code Checklist
 
@@ -135,10 +159,24 @@ Execution mode selection for approved plans:
 
 ### Before Completion Claims
 
-Do not say work is done, fixed, passing, safe, ready, merged, or clean unless you
-have fresh evidence from the relevant command or file check.
+Use `verification-before-completion` before saying work is done, fixed, passing,
+safe, ready, merged, or clean.
+
+Do not make the claim unless you have fresh evidence from the relevant command
+or file check in the current completion context.
 
 If verification cannot be run, say exactly what was not verified and why.
+
+### After Review Feedback
+
+Use `receiving-code-review` after any review returns comments, questions, or a
+`CHANGES_REQUIRED` verdict.
+
+Do not fix review feedback until each finding is classified as fix, reject,
+defer, needs clarification, or route to `spec-evolution`.
+
+Do not mark a review thread resolved until the specific finding has fresh
+verification evidence.
 
 ## Anti-Rationalizations
 
@@ -151,7 +189,7 @@ If verification cannot be run, say exactly what was not verified and why.
 | "I can ask clarification first." | Check routing first; some skills define how to ask. |
 | "I can write code and test after." | Use `test-driven-development`. |
 | "The plan is obvious." | For multi-step work, write the plan and get approval. |
-| "The agent/reviewer said it passed." | Verify independently before claiming completion. |
+| "The agent/reviewer said it passed." | Use `verification-before-completion` and verify independently before claiming completion. |
 
 ## Minimal Response Pattern
 

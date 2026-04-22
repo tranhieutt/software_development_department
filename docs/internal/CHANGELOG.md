@@ -6,6 +6,145 @@ Tài liệu này ghi lại lịch sử cập nhật tài liệu và source code 
 
 ## 🗓️ Lịch sử cập nhật
 
+### [v1.50.0] - 2026-04-22
+
+**Chu de:** SDD systematic debugging - root cause before fixes
+
+Dot cap nhat nay them workflow debugging co ky luat de ngan fix doan mo. Moi bug,
+failing test, build failure, CI failure, performance regression, hoac unexpected
+behavior phai qua root-cause investigation truoc khi de xuat/sua code.
+
+#### New - `systematic-debugging`
+
+- Them `.claude/skills/systematic-debugging/SKILL.md`.
+- Dinh nghia Iron Law: khong fix truoc khi co root-cause investigation.
+- Them 9-phase workflow: capture symptom, reproduce/bound failure, check recent
+  changes, trace failure boundary, compare working patterns, form one
+  falsifiable hypothesis, minimally test hypothesis, implement after confirmed
+  cause, va close with evidence.
+- Dinh nghia escalation sang `diagnose` khi root cause van unclear, intermittent,
+  unfamiliar, hoac repeated fixes failed.
+
+#### Integration - `using-sdd`
+
+- Route bug/failing test/build/CI/performance/unexpected behavior sang
+  `systematic-debugging`.
+- Giu `diagnose` cho complex/intermittent/unfamiliar/repeated-failure bugs.
+- Them default bug-fix chain:
+  `systematic-debugging` -> `test-driven-development` ->
+  `verification-before-completion`.
+
+#### Documentation
+
+- Cap nhat `docs/reference/DANH_SACH_LENH.md` de them slash command moi.
+
+---
+
+### [v1.49.0] - 2026-04-22
+
+**Chu de:** SDD review feedback discipline - receiving code review workflow
+
+Dot cap nhat nay them workflow xu ly feedback sau code review de ngan agent sua
+tat ca comment mot cach may moc, bo qua blocker, hoac mark resolved khi chua co
+bang chung verify.
+
+#### New - `receiving-code-review`
+
+- Them `.claude/skills/receiving-code-review/SKILL.md`.
+- Bat buoc normalize tung finding voi severity, category, va disposition:
+  `fix`, `reject`, `defer`, `needs-clarification`, hoac
+  `route-to-spec-evolution`.
+- Dinh nghia response plan truoc khi edit va yeu cau verification rieng cho
+  tung finding da fix.
+- Route spec/acceptance-criteria conflicts sang `spec-evolution`, behavior fixes
+  sang `test-driven-development`, va completion claims sang
+  `verification-before-completion`.
+
+#### Integration - `using-sdd` and `subagent-driven-development`
+
+- Route review comments, PR feedback, reviewer questions, va
+  `CHANGES_REQUIRED` verdict sang `receiving-code-review`.
+- Them review feedback discipline vao review/release workflow order.
+- `subagent-driven-development` dung `receiving-code-review` de triage multi-item
+  review feedback truoc khi gui fix instructions cho implementer.
+
+#### Documentation
+
+- Cap nhat `docs/reference/DANH_SACH_LENH.md` de them slash command moi.
+
+---
+
+### [v1.48.0] - 2026-04-22
+
+**Chu de:** SDD spec evolution - spec readiness review and drift resolution
+
+Dot cap nhat nay them hai workflow de giu spec la source of truth song: review
+spec truoc khi lap plan/implementation, va xu ly co kiem soat khi spec khong
+con khop voi code, test, review finding, user feedback, hoac platform reality.
+
+#### New - `review-spec`
+
+- Them `.claude/skills/review-spec/SKILL.md`.
+- Review spec theo readiness matrix: objective, scope, behavior, contracts,
+  architecture, dependencies, verification, rollback, va handoff readiness.
+- Them verdict contract: `APPROVED`, `APPROVED WITH NOTES`,
+  `CHANGES REQUIRED`, `ROUTE TO SPEC-EVOLUTION`.
+
+#### New - `spec-evolution`
+
+- Them `.claude/skills/spec-evolution/SKILL.md`.
+- Dinh nghia spec evolution gate: dung execution khi approved spec va evidence
+  thuc te mau thuan.
+- Phan loai mismatch: Spec Gap, Spec Error, Code Drift, Reality Change, Scope
+  Change, Architecture Drift.
+- Bat buoc de xuat options va xin approval truoc khi sua spec/code/plan neu
+  mismatch anh huong behavior, architecture, data, security, release policy, hoac
+  acceptance criteria.
+
+#### Integration - `using-sdd`
+
+- Route existing spec readiness review sang `review-spec`.
+- Route spec/code/test/review/user-feedback/platform mismatch sang
+  `spec-evolution`.
+- Them Spec Review Gate va Spec Evolution Gate vao pre-code gate matrix.
+- Cap nhat default workflow cho work from existing spec va drift resolution.
+
+#### Documentation
+
+- Cap nhat `docs/reference/DANH_SACH_LENH.md` de them slash command moi.
+
+---
+
+### [v1.47.0] - 2026-04-22
+
+**Chu de:** SDD completion discipline - verification-before-completion gate
+
+Dot cap nhat nay tach completion verification thanh workflow rieng de ngan
+false-completion claims. Agent phai co fresh evidence truoc khi noi task done,
+fixed, passing, ready, clean, merge-ready, hoac truoc khi commit/PR/advance task.
+
+#### New - `verification-before-completion`
+
+- Them `.claude/skills/verification-before-completion/SKILL.md`.
+- Dinh nghia Iron Law: khong claim complete neu khong co fresh verification
+  evidence trong completion context hien tai.
+- Them claim-to-proof matrix cho tests, build, lint, bug fix, regression test,
+  requirements, agent completion, merge/PR readiness, docs, va manual/visual
+  outcomes.
+- Them verdict contract: `VERIFIED`, `PARTIAL`, `NOT VERIFIED`, `FAILED`.
+
+#### Integration - `using-sdd`
+
+- Route cac completion/success claims sang `verification-before-completion`.
+- Cap nhat review/release workflow order de chay verification gate truoc code
+  review, gate-check, va release checks khi claim readiness.
+
+#### Documentation
+
+- Cap nhat `docs/reference/DANH_SACH_LENH.md` de them slash command moi.
+
+---
+
 ### [v1.46.0] - 2026-04-21
 
 **Chu de:** SDD workflow discipline - using-sdd router, pre-code gates, agent-ready planning, subagent-driven execution
