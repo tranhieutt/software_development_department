@@ -6,6 +6,28 @@ Tài liệu này ghi lại lịch sử cập nhật tài liệu và source code 
 
 ## 🗓️ Lịch sử cập nhật
 
+### [v1.51.0] - 2026-04-23
+
+**Chủ đề:** Harness Audit — Readiness Diagnostics Engine
+
+#### Enhanced - `scripts/harness-audit.js`
+
+- Thêm module `buildReadinessDiagnostics()` vào harness audit output.
+- Thêm các hàm chẩn đoán chuyên biệt: `diagnoseHooks()`, `diagnoseSkillsAndAgents()`,
+  `diagnoseMcp()`, `diagnosePermissions()`.
+- Audit giờ trả về trường `readiness` với level (`ready | warning | blocked`),
+  summary counts, và chi tiết issues theo từng category.
+- Format `text` và `compact` hiển thị readiness level và danh sách issues.
+- Helpers `issue()`, `maxReadinessLevel()`, `parseJsonFile()`, `extractHookScriptRefs()`
+  được tách riêng để dễ test và mở rộng.
+
+#### Added - `report_upgrade_for_codex_v1.md`
+
+- Kế hoạch nâng cấp SDD để tương thích Codex (mục tiêu: dùng được cả Claude Code
+  và Codex mà không làm yếu runtime path hiện tại).
+
+---
+
 ### [v1.50.0] - 2026-04-22
 
 **Chu de:** SDD systematic debugging - root cause before fixes

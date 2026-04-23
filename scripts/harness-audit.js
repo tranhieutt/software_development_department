@@ -655,10 +655,323 @@ function runAudit(scope) {
     scope,
     overall_score: overall,
     max_score: max,
+    readiness: buildReadinessDiagnostics(failed),
     patterns: patternResults,
     failed_checks: failed,
     top_actions: topActions(failed),
     suggested_skills: suggestSkills(failedByPattern),
+  };
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// READINESS DIAGNOSTICS
+// ═══════════════════════════════════════════════════════════════════════════
+
+function issue(severity, id, message, meta = {}) {
+  return { severity, id, message, ...meta };
+}
+
+function maxReadinessLevel(issues) {
+  if (issues.some((i) => i.severity === 'blocked')) return 'blocked';
+  if (issues.some((i) => i.severity === 'warning')) return 'warning';
+  return 'ready';
+}
+
+function parseJsonFile(rel) {
+  if (!exists(rel)) {
+    return { ok: false, missing: true, value: null, error: `Missing ${rel}` };
+  }
+  try {
+    return { ok: true, missing: false, value: JSON.parse(fs.readFileSync(P(rel), 'utf8')), error: '' };
+  } catch (e) {
+    return { ok: false, missing: false, value: null, error: e.message || String(e) };
+  }
+}
+
+function extractHookScriptRefs(command) {
+  const refs = [];
+  const regex = /(?:^|\s)(\.claude[\\/]+hooks[\\/]+[A-Za-z0-9._-]+(?:\.(?:sh|ps1|js))?)/g;
+  let match;
+  while ((match = regex.exec(command)) !== null) {
+    refs.push(match[1].replace(/\\/g, '/'));
+  }
+  return refs;
+}
+
+function diagnoseHooks(settingsParse) {
+  const items = [];
+  if (!settingsParse.ok) {
+    items.push(issue(
+      'blocked',
+      settingsParse.missing ? 'hooks.settings_missing' : 'hooks.settings_invalid_json',
+      settingsParse.error,
+      { path: '.claude/settings.json' },
+    ));
+    return items;
+  }
+
+  const hooks = settingsParse.value.hooks || {};
+  if (!hooks || typeof hooks !== 'object' || Array.isArray(hooks)) {
+    items.push(issue('blocked', 'hooks.schema_invalid', 'settings.hooks must be an object', {
+      path: '.claude/settings.json',
+    }));
+    return items;
+  }
+
+  for (const [eventName, groups] of Object.entries(hooks)) {
+    if (!Array.isArray(groups)) {
+      items.push(issue('blocked', 'hooks.event_not_array', `${eventName} hooks must be an array`, {
+        event: eventName,
+        path: '.claude/settings.json',
+      }));
+      continue;
+    }
+    groups.forEach((group, groupIndex) => {
+      const hookDefs = group && Array.isArray(group.hooks) ? group.hooks : null;
+      if (!hookDefs) {
+        items.push(issue('blocked', 'hooks.group_missing_hooks', `${eventName}[${groupIndex}] is missing hooks[]`, {
+          event: eventName,
+          group_index: groupIndex,
+          path: '.claude/settings.json',
+        }));
+        return;
+      }
+      hookDefs.forEach((hook, hookIndex) => {
+        const base = {
+          event: eventName,
+          group_index: groupIndex,
+          hook_index: hookIndex,
+          path: '.claude/settings.json',
+        };
+        if (!hook || hook.type !== 'command') {
+          items.push(issue('blocked', 'hooks.unsupported_type', `${eventName}[${groupIndex}].hooks[${hookIndex}] must be a command hook`, base));
+          return;
+        }
+        if (typeof hook.command !== 'string' || !hook.command.trim()) {
+          items.push(issue('blocked', 'hooks.missing_command', `${eventName}[${groupIndex}].hooks[${hookIndex}] is missing command`, base));
+          return;
+        }
+        if (hook.timeout !== undefined && (!Number.isFinite(hook.timeout) || hook.timeout < 1 || hook.timeout > 600)) {
+          items.push(issue('warning', 'hooks.timeout_suspicious', `${eventName}[${groupIndex}].hooks[${hookIndex}] has suspicious timeout`, {
+            ...base,
+            timeout: hook.timeout,
+          }));
+        }
+        const refs = extractHookScriptRefs(hook.command);
+        refs.forEach((ref) => {
+          if (!isFile(ref)) {
+            items.push(issue('blocked', 'hooks.script_missing', `Referenced hook script is missing: ${ref}`, {
+              ...base,
+              hook_file: ref,
+            }));
+          }
+        });
+      });
+    });
+  }
+  return items;
+}
+
+function diagnoseSkillsAndAgents() {
+  const items = [];
+  const skillRequired = ['name', 'description', 'user-invocable', 'allowed-tools', 'effort'];
+  const skillRecommended = ['type', 'when_to_use'];
+
+  for (const rel of enumerateSkills().skillFiles) {
+    const fm = readFrontmatter(rel);
+    if (!Object.keys(fm).length) {
+      items.push(issue('warning', 'skill.frontmatter_missing', 'Skill missing YAML frontmatter', { path: rel }));
+      continue;
+    }
+    const type = fm.type || 'workflow';
+    const missing = skillRequired.filter((field) => fm[field] === undefined || fm[field] === '');
+    if (type === 'workflow' && (fm['argument-hint'] === undefined || fm['argument-hint'] === '')) {
+      missing.push('argument-hint');
+    }
+    if (missing.length) {
+      items.push(issue('warning', 'skill.required_schema_missing', `Skill missing required schema fields: ${missing.join(', ')}`, {
+        path: rel,
+        missing_fields: missing,
+      }));
+    }
+    const missingRecommended = skillRecommended.filter((field) => fm[field] === undefined || fm[field] === '');
+    if (missingRecommended.length) {
+      items.push(issue('warning', 'skill.recommended_schema_missing', `Skill missing recommended fields: ${missingRecommended.join(', ')}`, {
+        path: rel,
+        missing_fields: missingRecommended,
+      }));
+    }
+  }
+
+  const agentRequired = ['name', 'description', 'tools'];
+  const agentRecommended = ['model', 'maxTurns', 'skills'];
+  for (const agentFile of enumerateAgents()) {
+    const rel = path.join('.claude/agents', agentFile);
+    const fm = readFrontmatter(rel);
+    if (!Object.keys(fm).length) {
+      items.push(issue('blocked', 'agent.frontmatter_missing', 'Agent missing YAML frontmatter', { path: rel }));
+      continue;
+    }
+    const missing = agentRequired.filter((field) => fm[field] === undefined || fm[field] === '');
+    if (missing.length) {
+      items.push(issue('blocked', 'agent.required_schema_missing', `Agent missing required schema fields: ${missing.join(', ')}`, {
+        path: rel,
+        missing_fields: missing,
+      }));
+    }
+    const missingRecommended = agentRecommended.filter((field) => fm[field] === undefined || fm[field] === '');
+    if (missingRecommended.length) {
+      items.push(issue('warning', 'agent.recommended_schema_missing', `Agent missing recommended fields: ${missingRecommended.join(', ')}`, {
+        path: rel,
+        missing_fields: missingRecommended,
+      }));
+    }
+  }
+  return items;
+}
+
+function diagnoseMcp() {
+  const items = [];
+  if (!exists('.mcp.json')) return items;
+  const parsed = parseJsonFile('.mcp.json');
+  if (!parsed.ok) {
+    items.push(issue('blocked', 'mcp.invalid_json', parsed.error, { path: '.mcp.json' }));
+    return items;
+  }
+  const servers = parsed.value.mcpServers;
+  if (!servers || typeof servers !== 'object' || Array.isArray(servers)) {
+    items.push(issue('blocked', 'mcp.schema_invalid', '.mcp.json must contain an mcpServers object', {
+      path: '.mcp.json',
+    }));
+    return items;
+  }
+  for (const [name, cfg] of Object.entries(servers)) {
+    const meta = { server: name, path: '.mcp.json' };
+    if (!cfg || typeof cfg !== 'object' || Array.isArray(cfg)) {
+      items.push(issue('blocked', 'mcp.server_invalid', `MCP server ${name} must be an object`, meta));
+      continue;
+    }
+    const type = cfg.type || (cfg.url ? 'http' : 'stdio');
+    if (type === 'stdio') {
+      if (typeof cfg.command !== 'string' || !cfg.command.trim()) {
+        items.push(issue('warning', 'mcp.stdio_missing_command', `MCP server ${name} uses stdio but has no command`, meta));
+      }
+      if (cfg.args !== undefined && !Array.isArray(cfg.args)) {
+        items.push(issue('blocked', 'mcp.args_not_array', `MCP server ${name} args must be an array`, meta));
+      }
+    } else if (type === 'http' || type === 'ws') {
+      if (typeof cfg.url !== 'string' || !/^(https?|wss?):\/\//.test(cfg.url)) {
+        items.push(issue('blocked', 'mcp.url_invalid', `MCP server ${name} has invalid ${type} url`, meta));
+      }
+    } else {
+      items.push(issue('blocked', 'mcp.type_unknown', `MCP server ${name} has unknown type: ${type}`, meta));
+    }
+  }
+  return items;
+}
+
+function diagnosePermissions(settingsParse) {
+  const items = [];
+  if (!settingsParse.ok) return items;
+  const permissions = settingsParse.value.permissions || {};
+  const allow = Array.isArray(permissions.allow) ? permissions.allow : [];
+  const deny = Array.isArray(permissions.deny) ? permissions.deny : [];
+  if (!Array.isArray(permissions.allow)) {
+    items.push(issue('blocked', 'permissions.allow_not_array', 'permissions.allow must be an array', {
+      path: '.claude/settings.json',
+    }));
+  }
+  if (!Array.isArray(permissions.deny)) {
+    items.push(issue('blocked', 'permissions.deny_not_array', 'permissions.deny must be an array', {
+      path: '.claude/settings.json',
+    }));
+  }
+
+  const dangerousAllowChecks = [
+    { id: 'permissions.allow_all_bash', pattern: /^Bash\(\*\)$/, message: 'Bash(*) allows arbitrary shell commands' },
+    { id: 'permissions.allow_all_tools', pattern: /^\*$/, message: '* allows every tool' },
+    { id: 'permissions.allow_force_push', pattern: /^Bash\(git push .*--force.*\)$/, message: 'force push is allowed' },
+    { id: 'permissions.allow_git_reset_hard', pattern: /^Bash\(git reset --hard.*\)$/, message: 'git reset --hard is allowed' },
+    { id: 'permissions.allow_rm_rf', pattern: /^Bash\(rm -rf.*\)$/, message: 'rm -rf is allowed' },
+    { id: 'permissions.allow_env_read', pattern: /^Read\(\*\*\/\.env.*\)$/, message: '.env reads are allowed' },
+  ];
+  allow.forEach((entry) => {
+    dangerousAllowChecks.forEach((check) => {
+      if (typeof entry === 'string' && check.pattern.test(entry)) {
+        items.push(issue(check.id.includes('allow_all') ? 'blocked' : 'warning', check.id, check.message, {
+          path: '.claude/settings.json',
+          permission: entry,
+        }));
+      }
+    });
+  });
+
+  const sensitiveDenyPatterns = [
+    '.ssh',
+    '.aws',
+    '.config/gcloud',
+    '.azure',
+    '.gnupg',
+    '.docker/config.json',
+    '.kube/config',
+  ];
+  sensitiveDenyPatterns.forEach((needle) => {
+    if (!deny.some((entry) => typeof entry === 'string' && entry.includes(needle))) {
+      items.push(issue('warning', 'permissions.sensitive_path_not_denied', `Sensitive credential path is not denied: ${needle}`, {
+        path: '.claude/settings.json',
+        sensitive_path: needle,
+      }));
+    }
+  });
+  return items;
+}
+
+function buildReadinessDiagnostics(patternFailures) {
+  const settingsParse = parseJsonFile('.claude/settings.json');
+  const hooks = diagnoseHooks(settingsParse);
+  const schema = diagnoseSkillsAndAgents();
+  const mcp = diagnoseMcp();
+  const permissions = diagnosePermissions(settingsParse);
+  const patternIssues = patternFailures.map((f) => issue(
+    ['pte', 'crc', 'dlh', 'pcc'].includes(f.patKey) ? 'warning' : 'warning',
+    `pattern.${f.id}`,
+    `Pattern check failed: ${f.id}`,
+    { pattern: f.patLabel, path: f.path || '' },
+  ));
+
+  const all = [...hooks, ...schema, ...mcp, ...permissions, ...patternIssues];
+  return {
+    level: maxReadinessLevel(all),
+    summary: {
+      blocked: all.filter((i) => i.severity === 'blocked').length,
+      warning: all.filter((i) => i.severity === 'warning').length,
+      ready_checks: all.length === 0 ? 1 : 0,
+    },
+    hooks: {
+      level: maxReadinessLevel(hooks),
+      issue_count: hooks.length,
+      issues: hooks,
+    },
+    schema: {
+      level: maxReadinessLevel(schema),
+      issue_count: schema.length,
+      issues: schema,
+    },
+    mcp: {
+      level: maxReadinessLevel(mcp),
+      issue_count: mcp.length,
+      issues: mcp,
+    },
+    permissions: {
+      level: maxReadinessLevel(permissions),
+      issue_count: permissions.length,
+      issues: permissions,
+    },
+    pattern_failures: {
+      level: maxReadinessLevel(patternIssues),
+      issue_count: patternIssues.length,
+      issues: patternIssues,
+    },
   };
 }
 
@@ -672,6 +985,7 @@ function formatText(result) {
   const lines = [];
   lines.push(`Harness Audit (${result.scope}): ${result.overall_score}/${result.max_score} · rubric ${result.rubric_version}`);
   lines.push(`Source: ${result.rubric_source}`);
+  lines.push(`Readiness: ${result.readiness.level} (${result.readiness.summary.blocked} blocked, ${result.readiness.summary.warning} warning)`);
   lines.push('');
 
   // Group by category
@@ -698,6 +1012,21 @@ function formatText(result) {
     }
     if (result.failed_checks.length > 25) {
       lines.push(`  ... and ${result.failed_checks.length - 25} more`);
+    }
+  }
+
+  const readinessIssues = [
+    ...result.readiness.hooks.issues,
+    ...result.readiness.schema.issues,
+    ...result.readiness.mcp.issues,
+    ...result.readiness.permissions.issues,
+  ];
+  if (readinessIssues.length) {
+    lines.push('');
+    lines.push(`Readiness Issues (${readinessIssues.length}):`);
+    for (const item of readinessIssues) {
+      const where = item.path ? ` (${item.path})` : '';
+      lines.push(`  [${item.severity}] ${item.id}: ${item.message}${where}`);
     }
   }
 
@@ -730,12 +1059,23 @@ function formatCompact(result) {
     .slice(0, 5);
 
   lines.push(`SDD Harness Audit: ${result.overall_score}/${result.max_score} (${result.scope})`);
+  lines.push(`Readiness: ${result.readiness.level} (${result.readiness.summary.blocked} blocked, ${result.readiness.summary.warning} warning)`);
   lines.push('');
 
   lines.push('Critical:');
-  if (critical.length === 0) {
+  const blockedReadiness = [
+    ...result.readiness.hooks.issues,
+    ...result.readiness.schema.issues,
+    ...result.readiness.mcp.issues,
+    ...result.readiness.permissions.issues,
+  ].filter((i) => i.severity === 'blocked');
+  if (critical.length === 0 && blockedReadiness.length === 0) {
     lines.push('- none');
   } else {
+    for (const item of blockedReadiness.slice(0, 5)) {
+      const path = item.path ? ` (${item.path})` : '';
+      lines.push(`- ${item.id}: ${item.message}${path}`);
+    }
     for (const f of critical) {
       const path = f.path ? ` (${f.path})` : '';
       lines.push(`- ${f.id}: ${CHECK_HINTS[f.id] || 'Fix failed check'}${path}`);
@@ -744,23 +1084,40 @@ function formatCompact(result) {
 
   lines.push('');
   lines.push('Warnings:');
-  if (warnings.length === 0) {
+  const readinessWarnings = [
+    ...result.readiness.hooks.issues,
+    ...result.readiness.schema.issues,
+    ...result.readiness.mcp.issues,
+    ...result.readiness.permissions.issues,
+  ].filter((i) => i.severity === 'warning');
+  if (warnings.length === 0 && readinessWarnings.length === 0) {
     lines.push('- none');
   } else {
+    for (const item of readinessWarnings.slice(0, 7)) {
+      const path = item.path ? ` (${item.path})` : '';
+      lines.push(`- ${item.id}: ${item.message}${path}`);
+    }
     for (const f of warnings) {
       const path = f.path ? ` (${f.path})` : '';
       lines.push(`- ${f.id}: ${CHECK_HINTS[f.id] || 'Fix failed check'}${path}`);
     }
-    if (failed.length > critical.length + warnings.length) {
-      lines.push(`- ${failed.length - critical.length - warnings.length} more failed check(s); run --full for details.`);
+    const hiddenFailed = failed.length - critical.length - warnings.length;
+    const hiddenReadiness = result.readiness.summary.warning - Math.min(readinessWarnings.length, 7);
+    if (hiddenFailed + hiddenReadiness > 0) {
+      lines.push(`- ${hiddenFailed + hiddenReadiness} more issue(s); run --full or --format json for details.`);
     }
   }
 
   lines.push('');
   lines.push('Next:');
   if (result.top_actions.length === 0) {
-    lines.push('1. No harness action required.');
-    lines.push('2. Run --full only when auditing pattern-level evidence.');
+    if (result.readiness.level === 'ready') {
+      lines.push('1. No harness action required.');
+      lines.push('2. Run --full only when auditing pattern-level evidence.');
+    } else {
+      lines.push('1. Run: node scripts/harness-audit.js --format json');
+      lines.push('2. Fix blocked items first, then warnings by category.');
+    }
   } else {
     result.top_actions.slice(0, 3).forEach((a, i) => {
       const path = a.path ? ` (${a.path})` : '';
