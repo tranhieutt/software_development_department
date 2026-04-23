@@ -1,10 +1,13 @@
 ﻿---
 name: save-state
+type: workflow
 description: "Saves current working context to production/session-state/active.md AND writes an atomic per-task checkpoint to .tasks/checkpoints/[task_id].md. Run before any major context reset, when context usage exceeds 60%, or when ending a work session."
 argument-hint: "[task_id] [optional note]"
 user-invocable: true
 allowed-tools: Read, Write, Glob, Bash
+context: main
 effort: 3
+agent: technical-director
 when_to_use: "Use before any major context reset, when context usage exceeds 60%, or when ending a session. If a task_id is provided, also writes an atomic checkpoint to .tasks/checkpoints/ for fine-grained recovery via /resume-from."
 ---
 

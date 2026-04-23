@@ -33,6 +33,7 @@ skill and follow its gates.
 
 | User intent or situation | Required SDD workflow |
 | --- | --- |
+| Codex environment, Codex setup, AGENTS.md, .codex, Claude-to-Codex tool mapping, or SDD outside Claude Code | `codex-sdd` then route through `using-sdd` |
 | First session, unclear project state | `start` |
 | Vague product idea, ideation, product direction | `brainstorm` |
 | User wants structured requirements or says "ask me", "don't assume", "interview" | `deep-interview` |

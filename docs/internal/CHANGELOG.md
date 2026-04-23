@@ -6,6 +6,49 @@ Tài liệu này ghi lại lịch sử cập nhật tài liệu và source code 
 
 ## 🗓️ Lịch sử cập nhật
 
+### [v1.53.0] - 2026-04-23
+
+**Chu de:** Codex compatibility adapter - additive SDD support without Claude runtime changes
+
+Dot cap nhat nay them lop adapter de SDD co the duoc dung trong Codex trong khi
+van giu `.claude/` va `CLAUDE.md` la source of truth cho Claude Code.
+
+#### Added - Phase 1 Codex adapter
+
+- Them `AGENTS.md` lam entrypoint cho Codex.
+- Them `.codex/INSTALL.md` huong dan tao junction skill discovery toi
+  `.claude/skills`.
+- Them `docs/codex-compatibility.md` voi parity matrix, tool mapping, manual
+  hook equivalents, va verification checklist.
+
+#### Added - Phase 2 `codex-sdd`
+
+- Them `.claude/skills/codex-sdd/SKILL.md`.
+- Route cac tinh huong Codex/Codex setup/Claude-to-Codex mapping tu
+  `using-sdd` sang `codex-sdd`.
+- Cap nhat `.claude/docs/skills-reference.md`.
+
+#### Added - Phase 3 Codex preflight
+
+- Them `scripts/codex-preflight.ps1`.
+- Them `scripts/codex-preflight.sh`.
+- Preflight kiem tra required files, git visibility, circuit-state schema,
+  skill validation, harness audit, va trace integrity.
+
+#### Enhanced - Phase 4 core metadata
+
+- Them metadata backward-compatible cho `save-state`.
+- Validator giam warning tu `58` xuong `57`.
+
+#### Documentation - Phase 5
+
+- Cap nhat `README.md` voi Codex compatibility section.
+- Cap nhat README stats theo repo hien tai: `28` agents, `126` skills,
+  `29` hook files.
+- Bo sung Phase 5 checklist vao `docs/codex-compatibility.md`.
+
+---
+
 ### [v1.52.0] - 2026-04-23
 
 **Chu de:** Agent Skills synthesis - source verification, simplification, and lifecycle navigation
