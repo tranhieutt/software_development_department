@@ -6,6 +6,54 @@ Tài liệu này ghi lại lịch sử cập nhật tài liệu và source code 
 
 ## 🗓️ Lịch sử cập nhật
 
+### [v1.54.0] - 2026-04-23
+
+**Chu de:** Shared-state adoption layer - source-of-truth governance before Coordination Engineering
+
+Dot cap nhat nay chap nhan Tier 2 Shared State Adoption lam buoc tiep theo
+cua SDD, uu tien consolidation/adoption truoc khi build Coordination
+Engineering day du.
+
+#### Added - Source-of-truth registry
+
+- Them `docs/technical/SOURCE_OF_TRUTH_REGISTRY.md`.
+- Dang ky authority cho runtime, coordination policy, ADR, specs, UI specs,
+  API docs, database docs, tasks, handoffs, ledger, memory, Codex adapter,
+  `.claude/agents/*.md`, va `.claude/skills/*/SKILL.md`.
+- Them authority levels moi: `agent-definition` va `runtime-state`.
+- Danh dau `docs/technical/API.md`, `docs/technical/DATABASE.md`, va
+  `docs/ui-spec/*` la planned/missing de tranh over-claim hien trang.
+- Khoa rule conflict cho spec vs contract, contract vs implemented API,
+  memory vs repo, va Codex adapter vs Claude runtime.
+
+#### Accepted - ADR-006 Shared State Adoption
+
+- Them `docs/internal/adr/ADR-006-shared-state-adoption.md` voi status
+  `Accepted`.
+- Chon Tier 2 Shared State Adoption & Source-of-Truth Consolidation thay vi
+  nhay thang sang Tier 3 Coordination Engineering.
+- Giu shared state la read layer, khong phai decide layer; decision authority
+  van theo human/producer/technical-director va Rule 3 escalation.
+- Dinh nghia trigger de chi xem xet Tier 3 khi co du lieu thuc te ve conflict,
+  negotiation, hoac orchestrator complexity.
+
+#### Documentation - analysis and rebuttal
+
+- Them `docs/internal/harness-to-coordination-engineering.md` Revision 2.
+- Them `docs/internal/harness-to-coordination-engineering-rebuttal.md`.
+- Sua cac risk da review: contract store source of truth, trace-history factual
+  gap, authority boundary, readiness over-claim, va premature audit tooling.
+- Hoan `coordination-audit.js` cho den khi Tier 2 adoption va drift data du
+  de justify automation.
+
+#### Verification
+
+- `git diff --check` pass cho package shared-state.
+- `scripts/validate-skills.ps1` pass: 126/126, 57 warning nen.
+- `scripts/harness-audit.js --compact` pass: 120/120, readiness warning nen.
+
+---
+
 ### [v1.53.0] - 2026-04-23
 
 **Chu de:** Codex compatibility adapter - additive SDD support without Claude runtime changes
