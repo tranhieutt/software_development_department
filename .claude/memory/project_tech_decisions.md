@@ -27,3 +27,11 @@ type: project
 - **Hook timeout budget:** 5s default, 10s max cho validate hooks
 - **jq required:** Tất cả hook parse JSON phải require jq (exit 1 nếu thiếu); không dùng regex fallback
 
+
+## 2026-04-23 — From ADR-006-shared-state-adoption.md
+**Source:** PostToolUse/write on `ADR-006-shared-state-adoption.md`
+### Three-tier coordination model
+- Tier 1 Harness Engineering is complete: agents can exist, route, recover, and persist state.
+- Tier 2 is the next direction: Shared State Adoption & Source-of-Truth Consolidation so agents share truth through bounded authority.
+- Tier 3 Coordination Engineering is deferred until measurable conflict/negotiation/orchestrator-complexity triggers justify it.
+- Shared state is a read layer, not a decide layer; human/producer/technical-director approval and Rule 3 escalation remain authoritative.
