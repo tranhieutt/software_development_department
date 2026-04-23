@@ -6,6 +6,57 @@ Tài liệu này ghi lại lịch sử cập nhật tài liệu và source code 
 
 ## 🗓️ Lịch sử cập nhật
 
+### [v1.52.0] - 2026-04-23
+
+**Chu de:** Agent Skills synthesis - source verification, simplification, and lifecycle navigation
+
+Dot cap nhat nay hap thu cac pattern cot loi tu bo Agent Skills theo cach
+additive, khong thay doi Claude Code runtime path hien co.
+
+#### New - `source-driven-development`
+
+- Them `.claude/skills/source-driven-development/SKILL.md`.
+- Dinh nghia workflow kiem chung technical decisions bang tai lieu chinh thuc
+  cho framework, library, external API, platform behavior, migration, va
+  deprecation.
+- Xac lap ranh gioi voi `spec-driven-development`: spec quyet dinh "xay gi",
+  source-driven-development kiem chung "pattern ky thuat co dung theo source
+  chinh thuc hay khong".
+- Khi official docs mau thuan voi approved spec, route sang `spec-evolution`
+  thay vi tu sua spec/code am tham.
+
+#### New - `code-simplification`
+
+- Them `.claude/skills/code-simplification/SKILL.md`.
+- Dinh nghia workflow behavior-preserving cleanup: giam complexity, cai thien
+  readability, giu nguyen input/output/error/side-effect behavior.
+- Them preconditions: target scope ro rang, behavior contract ro, verification
+  path ro, va khong drive-by refactor.
+- Neu cleanup lam thay doi behavior/public contract thi dung va route sang
+  `spec-evolution` hoac workflow implementation phu hop.
+
+#### New - `docs/technical/SDD_LIFECYCLE_MAP.md`
+
+- Them lifecycle map 6 pha de dieu huong SDD hang ngay:
+  `DEFINE -> PLAN -> BUILD -> VERIFY -> REVIEW -> SHIP`.
+- Map tung pha sang skill chinh, exit evidence, va forbidden actions.
+- Them cac path mau cho new feature, bug fix, review feedback, va
+  documentation/ADR work.
+- Tai lieu nay la navigation layer; `CONTROL_PLANE_MAP.md`, runtime hooks, va
+  skill files van la source of truth chi tiet.
+
+#### Integration - `using-sdd` and skills reference
+
+- Cap nhat `.claude/skills/using-sdd/SKILL.md` de route:
+  - latest/official/best-practice/version-sensitive technical decisions sang
+    `source-driven-development`.
+  - behavior-preserving cleanup/readability refactor sang
+    `code-simplification`.
+- Them lifecycle map reference vao `using-sdd`.
+- Cap nhat `.claude/docs/skills-reference.md` voi hai skill moi.
+
+---
+
 ### [v1.51.0] - 2026-04-23
 
 **Chủ đề:** Harness Audit — Readiness Diagnostics Engine

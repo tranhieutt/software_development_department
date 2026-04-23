@@ -17,6 +17,10 @@ when_to_use: "Use at the start of every SDD session and before any non-trivial r
 Department. It does not replace specialist skills. It decides which SDD workflow
 must govern the current request before the agent acts.
 
+For phase orientation, use `docs/technical/SDD_LIFECYCLE_MAP.md`
+(`DEFINE -> PLAN -> BUILD -> VERIFY -> REVIEW -> SHIP`). For detailed runtime
+stage rules, use `docs/technical/CONTROL_PLANE_MAP.md`.
+
 ## Core Rule
 
 Before answering, asking clarifying questions, editing files, spawning agents, or
@@ -35,6 +39,7 @@ skill and follow its gates.
 | New feature, behavior change, architectural change | `spec-driven-development` |
 | Existing spec needs readiness review before planning or implementation | `review-spec` |
 | Approved spec conflicts with code, tests, review findings, user feedback, or platform reality | `spec-evolution` |
+| Framework, library, external API, platform behavior, deprecation, migration, or "latest/official/best practice" correctness matters | `source-driven-development` |
 | Epic, multi-step work, large prompt, many files | `planning-and-task-breakdown` |
 | Implementation of one approved task | `test-driven-development` |
 | Execution of approved multi-task sequential plan with review gates | `subagent-driven-development` |
@@ -47,6 +52,7 @@ skill and follow its gates.
 | API contract or endpoint design | `api-design` |
 | Architecture decision with durable consequences | `architecture-decision-records` |
 | Code quality, PR review, merge readiness | `code-review` or `code-review-checklist` |
+| Behavior-preserving cleanup, simplification, readability refactor, or complexity reduction after tests pass | `code-simplification` |
 | Review comments, PR feedback, CHANGES_REQUIRED verdict, or reviewer questions need response | `receiving-code-review` |
 | Phase transition or readiness review | `gate-check` |
 | Release or launch preparation | `release-checklist` or `launch-checklist` |
@@ -58,13 +64,15 @@ skill and follow its gates.
 When multiple skills apply, use process skills before implementation skills:
 
 1. Requirements and design: `brainstorm`, `deep-interview`,
-   `spec-driven-development`, `review-spec`, `spec-evolution`
+   `spec-driven-development`, `review-spec`, `source-driven-development`,
+   `spec-evolution`
 2. Planning and coordination: `planning-and-task-breakdown`,
    `subagent-driven-development`, `orchestrate`, `fork-join`
 3. Investigation and execution: `systematic-debugging`,
    `test-driven-development`, domain implementation skills
 4. Review and release: `verification-before-completion`, `code-review`,
-   `receiving-code-review`, `gate-check`, `release-checklist`
+   `code-simplification`, `receiving-code-review`, `gate-check`,
+   `release-checklist`
 
 ## Mandatory Gates
 
@@ -95,6 +103,13 @@ For any new feature or behavior change, default to:
 
 `spec-driven-development` -> `planning-and-task-breakdown` -> `test-driven-development`
 
+When the spec or implementation depends on framework, library, platform, or
+external API behavior that may be version-sensitive or documented externally,
+insert `source-driven-development` after the spec/review step and before
+planning or code:
+
+`spec-driven-development` -> `source-driven-development` -> `planning-and-task-breakdown`
+
 For work from an existing spec, default to:
 
 `review-spec` -> `planning-and-task-breakdown` -> `test-driven-development`
@@ -102,6 +117,11 @@ For work from an existing spec, default to:
 If implementation evidence contradicts the approved spec, pause and route to:
 
 `spec-evolution` -> `review-spec` -> `planning-and-task-breakdown` or `test-driven-development`
+
+For behavior-preserving cleanup after working implementation or review feedback,
+use:
+
+`test-driven-development` -> `code-simplification` -> `verification-before-completion`
 
 For bug fixes and failing tests, default to:
 

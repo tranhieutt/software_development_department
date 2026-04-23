@@ -6,7 +6,9 @@
 | `/save-state` | Save current working context to `production/session-state/active.md` — run before `/clear`, context resets, or ending a session |
 | `/design-review` | Review a design document, PRD, or specification for completeness and consistency |
 | `/code-review` | Architectural code review for a file or changeset |
+| `/code-simplification` | Simplify working code for clarity while preserving exact behavior and requiring fresh verification |
 | `/api-design` | Design and review REST/GraphQL API contracts, endpoint schemas, and error handling |
+| `/source-driven-development` | Verify framework, library, external API, platform, migration, or deprecation decisions against official documentation before planning or implementation |
 | `/db-review` | Review database schema, migrations, indexing strategy, and query performance |
 | `/sprint-plan` | Generate or update a sprint plan |
 | `/bug-report` | Create a structured bug report |
