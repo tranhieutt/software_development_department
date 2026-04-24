@@ -1,5 +1,6 @@
----
+﻿---
 name: postmortem-writing
+type: workflow
 description: "Writes blameless postmortems with root cause analysis, incident timelines, contributing factors, and action items. Use when conducting incident reviews or when the user mentions postmortem, root cause analysis, or blameless review."
 when_to_use: "When conducting incident reviews, writing blameless postmortems, or documenting root cause analysis after production incidents"
 allowed-tools: Read, Glob, Grep, Bash
@@ -12,9 +13,9 @@ effort: 3
 
 ## Blameless mindset: the non-obvious part
 
-> "Blame-focused: Who caused this? → Blameless: What conditions allowed this?"
+> "Blame-focused: Who caused this? â†’ Blameless: What conditions allowed this?"
 
-Engineers don't fail — systems create conditions where failures become inevitable. The goal is improving systems, not punishing people.
+Engineers don't fail â€” systems create conditions where failures become inevitable. The goal is improving systems, not punishing people.
 
 ## Triggers (when to write one)
 
@@ -23,7 +24,7 @@ Engineers don't fail — systems create conditions where failures become inevita
 - Data loss or security incident
 - Novel failure modes worth sharing
 
-## Timeline: Day 0 → Day 7
+## Timeline: Day 0 â†’ Day 7
 
 ```
 Day 0:   Incident occurs
@@ -64,11 +65,11 @@ Week 2+: Action item completion
 [Technical description of failure]
 
 ### 5 Whys
-- Why did service fail? → DB connections exhausted
-- Why exhausted? → Each request opened new connection
-- Why new connections? → Code bypassed connection pool
-- Why bypassed? → Developer unfamiliar with DB patterns
-- Why unfamiliar? → No documentation on connection management
+- Why did service fail? â†’ DB connections exhausted
+- Why exhausted? â†’ Each request opened new connection
+- Why new connections? â†’ Code bypassed connection pool
+- Why bypassed? â†’ Developer unfamiliar with DB patterns
+- Why unfamiliar? â†’ No documentation on connection management
 
 ### Contributing factors
 - Code review missed the infrastructure change
@@ -100,8 +101,8 @@ Week 2+: Action item completion
 # Quick Postmortem: [Title]
 **Date**: YYYY-MM-DD | **Duration**: 12 min | **Severity**: SEV3
 
-**What happened**: Cache flush caused thundering herd — all requests missed cache simultaneously.
-**Timeline**: 10:00 flush → 10:02 alerts → 10:05 identified → 10:08 warming enabled → 10:12 normal
+**What happened**: Cache flush caused thundering herd â€” all requests missed cache simultaneously.
+**Timeline**: 10:00 flush â†’ 10:02 alerts â†’ 10:05 identified â†’ 10:08 warming enabled â†’ 10:12 normal
 **Root cause**: Full flush used for minor config update.
 **Fixes**: Immediate: enabled warming. Long-term: partial invalidation (ENG-999).
 **Lesson**: Never full-flush production cache; use targeted invalidation.
@@ -109,17 +110,17 @@ Week 2+: Action item completion
 
 ## Meeting structure (60 min)
 
-1. **Opening** (5 min) — state blameless norms explicitly
-2. **Timeline review** (15 min) — chronological walkthrough
-3. **Analysis** (20 min) — what failed, why, what conditions allowed it
-4. **Action items** (15 min) — brainstorm → prioritize → assign owners
-5. **Close** (5 min) — confirm owners, schedule follow-up
+1. **Opening** (5 min) â€” state blameless norms explicitly
+2. **Timeline review** (15 min) â€” chronological walkthrough
+3. **Analysis** (20 min) â€” what failed, why, what conditions allowed it
+4. **Action items** (15 min) â€” brainstorm â†’ prioritize â†’ assign owners
+5. **Close** (5 min) â€” confirm owners, schedule follow-up
 
 ## Anti-patterns
 
 | Anti-pattern | Why it fails |
 |---|---|
-| "Human error" as root cause | Always dig deeper — why did the system allow it? |
+| "Human error" as root cause | Always dig deeper â€” why did the system allow it? |
 | Shallow analysis (1 why) | Doesn't prevent recurrence |
 | No action items | Meeting was a waste of time |
 | Unrealistic actions | Never completed |

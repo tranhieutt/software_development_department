@@ -1,4 +1,4 @@
----
+﻿---
 name: source-driven-development
 type: workflow
 description: "Grounds framework, library, API, and platform-specific technical decisions in official documentation before implementation. Use when current docs, version-specific behavior, best practices, deprecations, or external API correctness matter."

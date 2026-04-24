@@ -1,10 +1,12 @@
----
+﻿---
 name: ui-spec
+type: workflow
 description: "Guidelines and procedures for creating comprehensive UI Specifications from PRDs and prototypes."
 user-invocable: true
 allowed-tools: Read, Glob, Grep, Write
 effort: 3
 argument-hint: "[prd, prototype, or feature name]"
+when_to_use: "Use when translating a PRD, prototype, or feature brief into a concrete UI specification with components, states, and interactions."
 ---
 
 # Skill: /ui-spec

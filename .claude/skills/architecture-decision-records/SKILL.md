@@ -1,5 +1,6 @@
----
+﻿---
 name: architecture-decision-records
+type: workflow
 description: "Manages the ADR (Architecture Decision Record) registry. Use when recording tech-stack choices, design patterns, or infrastructure decisions with context, alternatives, and rationale. Supports listing, searching, or creating formal ADR documents."
 context: fork
 agent: technical-director
@@ -37,12 +38,12 @@ when_to_use: "When needing to make a formal technology decision and record the u
 ## ADR lifecycle
 
 ```
-Proposed → Accepted → Deprecated → Superseded
-              ↓
+Proposed â†’ Accepted â†’ Deprecated â†’ Superseded
+              â†“
            Rejected
 ```
 
-## Template (MADR format — use this)
+## Template (MADR format â€” use this)
 
 ```markdown
 # ADR-NNN: [Title]
@@ -61,7 +62,7 @@ or state "No relevant prior high-risk decisions found."]
 - [Must/Should/Could requirement]
 
 ## Considered Options
-### Option 1: [Name] — [one-line summary]
+### Option 1: [Name] â€” [one-line summary]
 Pros: ... | Cons: ...
 
 ### Option 2: [Name]
@@ -112,8 +113,8 @@ accepting **we manage Kong infrastructure ourselves**.
 
 ```
 docs/internal/adr/
-├── ADR-0001-use-postgresql.md
-└── ADR-0003-mongodb-deprecated.md  # [SUPERSEDED by ADR-0020]
+â”œâ”€â”€ ADR-0001-use-postgresql.md
+â””â”€â”€ ADR-0003-mongodb-deprecated.md  # [SUPERSEDED by ADR-0020]
 ```
 
 ## Index table (maintain in docs/technical/DECISIONS.md)
@@ -125,11 +126,11 @@ docs/internal/adr/
 
 ## Key rules
 
-- **Never modify accepted ADRs** — write a new one to supersede
-- **Write early** — before implementation starts, not after
-- **Max 1-2 pages** — if longer, decision scope is too broad
-- **State real cons** — an ADR without honest tradeoffs has no value
-- **Update status** — mark deprecated when superseded; link the new ADR
+- **Never modify accepted ADRs** â€” write a new one to supersede
+- **Write early** â€” before implementation starts, not after
+- **Max 1-2 pages** â€” if longer, decision scope is too broad
+- **State real cons** â€” an ADR without honest tradeoffs has no value
+- **Update status** â€” mark deprecated when superseded; link the new ADR
 
 ## Automation
 

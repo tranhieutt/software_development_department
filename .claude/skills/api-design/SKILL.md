@@ -1,5 +1,6 @@
 ﻿---
 name: api-design
+type: workflow
 description: "Defines REST and GraphQL API contracts including endpoints, request/response schemas, auth flows, and versioning strategy. Use when designing a new API, reviewing an API spec, or when the user mentions API design, OpenAPI, or endpoint contracts."
 argument-hint: "[path-to-api-spec-or-route-files]"
 user-invocable: true

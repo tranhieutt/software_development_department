@@ -1,4 +1,4 @@
----
+﻿---
 name: code-simplification
 type: workflow
 description: "Simplifies working code while preserving exact behavior. Use after tests pass, during review feedback, or when code is harder to read, maintain, or verify than it needs to be without changing product behavior."

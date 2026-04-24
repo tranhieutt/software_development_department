@@ -1,5 +1,6 @@
 ﻿---
 name: design-review
+type: workflow
 description: "Reviews UI/UX designs, wireframes, and design systems for usability, accessibility, consistency, and implementation feasibility. Use when reviewing design specs or when the user mentions design review, UX review, or design feedback."
 argument-hint: "[path-to-design-doc]"
 user-invocable: true

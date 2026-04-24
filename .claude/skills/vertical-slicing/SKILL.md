@@ -1,4 +1,4 @@
----
+﻿---
 name: vertical-slicing
 type: workflow
 description: "Guidelines and procedures for planning and implementing end-to-end functional slices for fullstack features."
@@ -6,6 +6,7 @@ user-invocable: true
 allowed-tools: Read, Glob, Grep, Write
 effort: 3
 argument-hint: "[feature, epic, or PRD name]"
+when_to_use: "Use when planning a fullstack feature that should be delivered as end-to-end user-value slices instead of separate backend and frontend layers."
 ---
 
 # Skill: /vertical-slice

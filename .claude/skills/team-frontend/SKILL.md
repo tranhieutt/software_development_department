@@ -1,5 +1,6 @@
 ﻿---
 name: team-frontend
+type: workflow
 description: "Orchestrates the frontend team of ux-designer, ux-researcher, frontend-developer, and accessibility-specialist to design, implement, and validate a UI feature from research to launch. Use when a UI feature needs coordinated design and engineering delivery."
 argument-hint: "[UI feature or screen description]"
 user-invocable: true

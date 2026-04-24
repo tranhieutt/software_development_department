@@ -1,5 +1,6 @@
----
+﻿---
 name: code-review-checklist
+type: workflow
 description: "Provides a comprehensive code review checklist for pull requests covering security, performance, maintainability, and testing. Use as a reference during code reviews or when the user asks for a review checklist."
 allowed-tools: Read, Glob, Grep, Bash
 argument-hint: "[file path or PR number]"
@@ -12,7 +13,7 @@ when_to_use: "Quick self-check before committing, when a full review is not need
 
 ## Pre-review (always start here)
 
-- [ ] Read PR description and linked issue — understand the *why*
+- [ ] Read PR description and linked issue â€” understand the *why*
 - [ ] Check CI passes before spending time on review
 - [ ] Pull branch locally if logic is complex
 
@@ -25,33 +26,33 @@ when_to_use: "Quick self-check before committing, when a full review is not need
 
 ## Security (block if any fail)
 
-- [ ] No SQL injection — use parameterized queries, not string concat
-- [ ] No XSS — escape all user-controlled output in DOM
-- [ ] No hardcoded secrets — use environment variables
+- [ ] No SQL injection â€” use parameterized queries, not string concat
+- [ ] No XSS â€” escape all user-controlled output in DOM
+- [ ] No hardcoded secrets â€” use environment variables
 - [ ] Authentication required on all protected routes
 - [ ] Authorization checks presence AND ownership (not just auth)
 - [ ] File uploads validated: type, size, content
 
 ```javascript
-// ❌ SQL injection
+// âŒ SQL injection
 const q = `SELECT * FROM users WHERE email = '${email}'`;
 
-// ✅ Parameterized
+// âœ… Parameterized
 db.query("SELECT * FROM users WHERE email = $1", [email]);
 
-// ❌ Hardcoded secret
+// âŒ Hardcoded secret
 const KEY = "sk_live_abc123";
 
-// ✅ Env variable
+// âœ… Env variable
 const KEY = process.env.API_KEY;
 if (!KEY) throw new Error("API_KEY is required");
 ```
 
 ## Performance
 
-- [ ] No N+1 queries — check ORM calls inside loops
+- [ ] No N+1 queries â€” check ORM calls inside loops
 - [ ] Database queries use indexes for filter/sort columns
-- [ ] No unbounded queries — always paginate or limit
+- [ ] No unbounded queries â€” always paginate or limit
 - [ ] No blocking main thread with sync I/O (Node.js)
 - [ ] Caching used for repeated expensive operations
 
@@ -60,7 +61,7 @@ if (!KEY) throw new Error("API_KEY is required");
 - [ ] Names describe intent (`calculateTotalPrice` not `calc`)
 - [ ] Functions have single responsibility (< ~30 lines is a signal)
 - [ ] No dead code or commented-out blocks
-- [ ] DRY — no copy-paste of more than 3 lines
+- [ ] DRY â€” no copy-paste of more than 3 lines
 - [ ] Follows existing project conventions and patterns
 
 ## Tests
@@ -87,8 +88,8 @@ if (!KEY) throw new Error("API_KEY is required");
 
 ## Verdict
 
-- **APPROVED** — all sections pass
-- **APPROVED WITH CONDITIONS** — minor items, non-blocking
-- **CHANGES REQUIRED** — blocking security, correctness, or test coverage issues
+- **APPROVED** â€” all sections pass
+- **APPROVED WITH CONDITIONS** â€” minor items, non-blocking
+- **CHANGES REQUIRED** â€” blocking security, correctness, or test coverage issues
 
 Output: checklist score (X/Y passing) + blocking items with file:line refs + verdict

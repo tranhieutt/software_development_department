@@ -1,5 +1,6 @@
 ﻿---
 name: update-codemap
+type: workflow
 description: "Updates docs/technical/CODEMAP.md by scanning the current codebase structure. Run after a significant feature merge, refactor, or when CODEMAP feels stale."
 argument-hint: "[optional: specific module or area to update]"
 user-invocable: true

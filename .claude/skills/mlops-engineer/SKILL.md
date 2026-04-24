@@ -1,4 +1,4 @@
----
+﻿---
 name: mlops-engineer
 type: reference
 description: "Provides MLOps patterns for ML CI/CD pipelines, model registries, monitoring, and data drift detection. Use when setting up ML infrastructure or when the user mentions MLOps, model deployment, ML pipeline, or model monitoring."
@@ -147,11 +147,11 @@ if check_drift(ref, prod)["drift_detected"]:
 
 ## Critical rules (non-obvious)
 
-- **Separate training and serving environments** — training deps (torch, cuda) bloat serving images by 10x; use multi-stage Dockerfiles or separate images
-- **Pin all dependencies** — ML stack changes break reproducibility; pin Python + all packages, freeze with `pip freeze` not just `requirements.txt`
-- **Log everything before filtering** — never decide what metrics to log during training; log all, filter in dashboards
-- **Separate model config from code** — `params.yaml` (DVC) or `config.yaml` for hyperparameters; never hardcode in training scripts
-- **Shadow mode before cutover** — run new model version in parallel (shadow traffic), compare outputs before switching production
+- **Separate training and serving environments** â€” training deps (torch, cuda) bloat serving images by 10x; use multi-stage Dockerfiles or separate images
+- **Pin all dependencies** â€” ML stack changes break reproducibility; pin Python + all packages, freeze with `pip freeze` not just `requirements.txt`
+- **Log everything before filtering** â€” never decide what metrics to log during training; log all, filter in dashboards
+- **Separate model config from code** â€” `params.yaml` (DVC) or `config.yaml` for hyperparameters; never hardcode in training scripts
+- **Shadow mode before cutover** â€” run new model version in parallel (shadow traffic), compare outputs before switching production
 
 ## DVC pipeline (dvc.yaml)
 

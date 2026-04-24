@@ -1,11 +1,11 @@
----
+﻿---
 name: startup-business
+type: reference
 description: "Entry point for startup-business subskills covering idea validation, MVP planning, pricing, growth, and early operating foundations."
 user-invocable: true
 allowed-tools: Read, Glob, Grep
 effort: 2
 argument-hint: "[startup topic or business stage]"
-type: reference
 when_to_use: "Use when you need to choose the right startup-business subskill before working on validation, MVP, pricing, marketing, or early growth."
 context: project
 ---

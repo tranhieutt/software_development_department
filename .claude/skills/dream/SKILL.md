@@ -1,5 +1,6 @@
 ﻿---
 name: dream
+type: workflow
 description: "Consolidates and prunes the memory directory through a 4-phase reflective pass: Orient, Gather, Consolidate, Prune. Run after intensive sessions, when memories feel duplicated, or when MEMORY.md approaches the 200-line limit."
 argument-hint: "[optional: topic keyword to focus on, e.g. 'feedback' or 'project']"
 user-invocable: true

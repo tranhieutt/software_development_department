@@ -1,5 +1,6 @@
 ﻿---
 name: map-systems
+type: workflow
 description: "Creates a visual and textual map of the project systems, services, data flows, and integration boundaries. Use when documenting system architecture or when the user mentions system map, architecture diagram, or service boundaries."
 argument-hint: "[optional: 'next' to pick highest-priority undesigned system, or a system name to hand off to /design-system]"
 user-invocable: true

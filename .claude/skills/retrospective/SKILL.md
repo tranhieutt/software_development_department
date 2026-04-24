@@ -1,5 +1,6 @@
 ﻿---
 name: retrospective
+type: workflow
 description: "Generates a sprint or milestone retrospective analyzing completed work, velocity, blockers, and patterns to produce actionable insights. Use when ending a sprint or milestone, or when the user mentions retrospective, retro, or sprint review."
 argument-hint: "[sprint-N|milestone-name]"
 user-invocable: true

@@ -1,5 +1,6 @@
 ﻿---
 name: team-mobile
+type: workflow
 description: "Orchestrates the mobile team of ux-designer, mobile-developer, qa-tester, accessibility-specialist, and release-manager to design, implement, and ship a mobile feature from concept to app store release. Use when a mobile feature needs full-team delivery."
 argument-hint: "[mobile feature or screen description]"
 user-invocable: true

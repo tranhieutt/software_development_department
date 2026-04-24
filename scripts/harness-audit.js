@@ -67,7 +67,16 @@ const P = (...parts) => path.join(ROOT, ...parts);
 function exists(rel) { try { return fs.existsSync(P(rel)); } catch { return false; } }
 function isDir(rel)  { try { return fs.statSync(P(rel)).isDirectory(); } catch { return false; } }
 function isFile(rel) { try { return fs.statSync(P(rel)).isFile(); } catch { return false; } }
-function readText(rel) { try { return fs.readFileSync(P(rel), 'utf8'); } catch { return ''; } }
+function stripBom(text) {
+  return text.charCodeAt(0) === 0xFEFF ? text.slice(1) : text;
+}
+function readText(rel) {
+  try {
+    return stripBom(fs.readFileSync(P(rel), 'utf8'));
+  } catch {
+    return '';
+  }
+}
 function readJSON(rel) { try { return JSON.parse(fs.readFileSync(P(rel), 'utf8')); } catch { return null; } }
 function listDir(rel) { try { return fs.readdirSync(P(rel)); } catch { return []; } }
 function listDirRecursive(rel, out = []) {

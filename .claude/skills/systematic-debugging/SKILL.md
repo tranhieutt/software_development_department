@@ -1,4 +1,4 @@
----
+﻿---
 name: systematic-debugging
 type: workflow
 description: "Investigates bugs, failing tests, build failures, performance issues, and unexpected behavior with root-cause discipline before any fix is proposed or implemented."

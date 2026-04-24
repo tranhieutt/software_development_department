@@ -1,5 +1,6 @@
 ﻿---
 name: project-stage-detect
+type: workflow
 description: "Analyzes existing project artifacts to detect development stage, identify documentation gaps, and recommend next steps. Use when starting a new session on an existing project, or when the user mentions project analysis, stage detection, or gap analysis."
 argument-hint: "[optional: role filter like 'programmer' or 'designer']"
 user-invocable: true

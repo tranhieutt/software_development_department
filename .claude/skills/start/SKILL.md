@@ -1,5 +1,6 @@
 ﻿---
 name: start
+type: workflow
 description: "Guides first-time onboarding by asking where the user is in their project journey, then routing them to the right workflow. Use at the beginning of a new session without context, or when the user runs /start for the first time."
 argument-hint: "[no arguments]"
 user-invocable: true

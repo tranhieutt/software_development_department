@@ -1,5 +1,6 @@
----
+﻿---
 name: gate-check
+type: workflow
 description: "Validates a software product, service, or feature against readiness gates before advancing to the next delivery phase. Use when planning a phase transition or when the user mentions gate check, phase review, or readiness validation."
 argument-hint: "[target-phase: systems-design | technical-setup | pre-production | production | polish | release]"
 user-invocable: true

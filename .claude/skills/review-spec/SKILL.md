@@ -1,4 +1,4 @@
----
+﻿---
 name: review-spec
 type: workflow
 description: "Reviews a product, technical, API, UI, or implementation spec for completeness, testability, architectural fit, and readiness before planning or implementation."

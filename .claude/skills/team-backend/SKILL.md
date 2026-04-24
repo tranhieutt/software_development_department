@@ -1,5 +1,6 @@
 ﻿---
 name: team-backend
+type: workflow
 description: "Orchestrates the backend team of technical-director, backend-developer, data-engineer, and security-engineer to design, implement, and review a backend system end-to-end. Use when a backend feature needs coordinated multi-specialist delivery."
 argument-hint: "[backend feature or system description]"
 user-invocable: true

@@ -1,5 +1,6 @@
 ﻿---
 name: team-release
+type: workflow
 description: "Orchestrates the release team of release-manager, qa-lead, devops-engineer, and producer to execute a release from candidate to production deployment. Use when coordinating a release across QA, DevOps, and release management."
 argument-hint: "[version number or 'next']"
 user-invocable: true

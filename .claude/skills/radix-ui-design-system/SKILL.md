@@ -1,4 +1,4 @@
----
+﻿---
 name: radix-ui-design-system
 type: reference
 description: "Provides Radix UI patterns for building accessible design systems with headless components, theming, and compound component architecture. Use when building UI with Radix UI primitives or when the user mentions Radix UI, headless components, or accessible component libraries."
@@ -13,11 +13,11 @@ effort: 3
 
 ## Critical rules (non-obvious)
 
-- **Always use `asChild`** on Trigger/Close — prevents nested `<button>` inside `<button>` DOM errors
-- **Always include `<Dialog.Title>` and `<Dialog.Description>`** — screen readers require them; omitting causes a11y violations
-- **Never mix controlled + uncontrolled** — don't use both `defaultValue` and `value` on same component
-- **Animations need `forceMount`** — without it Portal unmounts instantly, killing Framer Motion exit animations
-- **Dropdown positioning off?** — parent has `overflow: hidden` or CSS transform; always wrap in `<Portal>`
+- **Always use `asChild`** on Trigger/Close â€” prevents nested `<button>` inside `<button>` DOM errors
+- **Always include `<Dialog.Title>` and `<Dialog.Description>`** â€” screen readers require them; omitting causes a11y violations
+- **Never mix controlled + uncontrolled** â€” don't use both `defaultValue` and `value` on same component
+- **Animations need `forceMount`** â€” without it Portal unmounts instantly, killing Framer Motion exit animations
+- **Dropdown positioning off?** â€” parent has `overflow: hidden` or CSS transform; always wrap in `<Portal>`
 
 ## Core pattern: Dialog
 
@@ -91,11 +91,11 @@ const button = cva("base-styles", {
 
 | Component    | Key parts |
 |---|---|
-| Dialog       | Root · Trigger · Portal · Overlay · Content · Title · Description · Close |
-| DropdownMenu | Root · Trigger · Portal · Content · Item · Separator · CheckboxItem · RadioGroup · Sub |
-| Tabs         | Root · List · Trigger · Content |
-| Tooltip      | Provider · Root · Trigger · Portal · Content · Arrow |
-| Select       | Root · Trigger · Value · Icon · Portal · Content · Viewport · Item · ItemText · ItemIndicator |
+| Dialog       | Root Â· Trigger Â· Portal Â· Overlay Â· Content Â· Title Â· Description Â· Close |
+| DropdownMenu | Root Â· Trigger Â· Portal Â· Content Â· Item Â· Separator Â· CheckboxItem Â· RadioGroup Â· Sub |
+| Tabs         | Root Â· List Â· Trigger Â· Content |
+| Tooltip      | Provider Â· Root Â· Trigger Â· Portal Â· Content Â· Arrow |
+| Select       | Root Â· Trigger Â· Value Â· Icon Â· Portal Â· Content Â· Viewport Â· Item Â· ItemText Â· ItemIndicator |
 
 ## shadcn vs raw Radix
 

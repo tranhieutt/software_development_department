@@ -1,4 +1,4 @@
----
+﻿---
 name: aws-serverless
 type: reference
 description: "Provides AWS serverless architecture patterns for Lambda, API Gateway, DynamoDB, SQS, and SAM/CDK. Use when working with AWS serverless files (serverless.yml, CDK stacks) or when the user mentions Lambda, API Gateway, serverless, or AWS SAM."
@@ -13,11 +13,11 @@ when_to_use: "When building or deploying serverless applications on AWS with Lam
 
 ## Critical rules (non-obvious)
 
-- **Initialize clients OUTSIDE handler** — Lambda reuses execution environments across invocations; creating clients inside costs 100-500ms per cold start
-- **`context.callbackWaitsForEmptyEventLoop = false`** — prevents Node.js from hanging on open async handles (DB connections, etc.)
-- **SQS `VisibilityTimeout` = 6× Lambda timeout** — if Lambda takes 30s, set 180s; otherwise messages return to queue mid-processing
-- **`FunctionResponseTypes: [ReportBatchItemFailures]`** — partial batch failure; without this, any single failure retries the entire batch
-- **Never use `*` in `Access-Control-Allow-Origin` with `credentials: true`** — browsers block it; use explicit origin
+- **Initialize clients OUTSIDE handler** â€” Lambda reuses execution environments across invocations; creating clients inside costs 100-500ms per cold start
+- **`context.callbackWaitsForEmptyEventLoop = false`** â€” prevents Node.js from hanging on open async handles (DB connections, etc.)
+- **SQS `VisibilityTimeout` = 6Ã— Lambda timeout** â€” if Lambda takes 30s, set 180s; otherwise messages return to queue mid-processing
+- **`FunctionResponseTypes: [ReportBatchItemFailures]`** â€” partial batch failure; without this, any single failure retries the entire batch
+- **Never use `*` in `Access-Control-Allow-Origin` with `credentials: true`** â€” browsers block it; use explicit origin
 
 ## Lambda handler pattern
 
@@ -154,7 +154,7 @@ exports.handler = async (event) => {
 | Timeout without response | High | Always set explicit timeout < Lambda timeout in downstream calls |
 | Memory = CPU allocation | High | 1792MB = 1 full vCPU; increase memory for CPU-bound tasks |
 | VPC cold start adds 1-10s | Medium | Use VPC Endpoints instead of public NAT to reduce ENI setup |
-| Infinite Lambda→SQS loop | High | Never write to same SQS queue that triggers Lambda without a dead-letter |
+| Infinite Lambdaâ†’SQS loop | High | Never write to same SQS queue that triggers Lambda without a dead-letter |
 | S3 trigger infinite loop | High | Use separate source/destination buckets or prefix filters |
 
 ## Commands

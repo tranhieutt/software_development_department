@@ -1,5 +1,6 @@
 ﻿---
 name: orchestrate
+type: workflow
 description: "Analyzes task dependencies, builds a wave execution plan, and runs specialist agents in parallel and sequential waves to complete a complex multi-agent task. Use when a task spans multiple domains and needs coordinated multi-agent execution."
 argument-hint: "<task description>"
 user-invocable: true

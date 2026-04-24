@@ -1,5 +1,6 @@
----
+﻿---
 name: backend-architect
+type: workflow
 description: "Designs scalable backend architectures covering microservices, event-driven systems, API gateways, and data stores. Use when designing a backend system or when the user mentions backend architecture, scalability, or distributed systems."
 paths: ["**/src/**/*.ts", "**/src/**/*.js", "**/package.json"]
 effort: 5
@@ -20,7 +21,7 @@ when_to_use: "When designing new backend services, defining service boundaries, 
 5. **Build in resilience**: Circuit breakers, retries, timeouts, graceful degradation
 6. **Design observability**: structured logging, RED metrics, distributed tracing
 7. **Security**: Auth/Z strategy, rate limiting, secrets management
-8. **Caching**: Layer strategy (app → API → CDN) with invalidation plan
+8. **Caching**: Layer strategy (app â†’ API â†’ CDN) with invalidation plan
 9. **Document**: Service diagram (Mermaid), ADRs, trade-offs
 
 ## API design decision matrix
@@ -36,17 +37,17 @@ when_to_use: "When designing new backend services, defining service boundaries, 
 
 ## Service boundary rules (non-obvious)
 
-- **Bounded context = 1 database** — shared DB across services creates hidden coupling; eventual consistency is the price of independence
-- **Sync calls create latency chains** — A → B → C means P99(A) = P99(A) + P99(B) + P99(C); use async for non-blocking flows
-- **Saga over 2PC** — distributed transactions via saga (choreography or orchestration); 2PC blocks and creates distributed deadlocks
-- **Stateless for horizontal scale** — session state in Redis/DynamoDB, not in memory
-- **Database per service, not schema per service** — separate schemas in shared DB = shared schema migrations = coupling still exists
+- **Bounded context = 1 database** â€” shared DB across services creates hidden coupling; eventual consistency is the price of independence
+- **Sync calls create latency chains** â€” A â†’ B â†’ C means P99(A) = P99(A) + P99(B) + P99(C); use async for non-blocking flows
+- **Saga over 2PC** â€” distributed transactions via saga (choreography or orchestration); 2PC blocks and creates distributed deadlocks
+- **Stateless for horizontal scale** â€” session state in Redis/DynamoDB, not in memory
+- **Database per service, not schema per service** â€” separate schemas in shared DB = shared schema migrations = coupling still exists
 
 ## Resilience patterns (always include these)
 
 ```
-Circuit Breaker: CLOSED → [failures > threshold] → OPEN → [timeout] → HALF-OPEN → [success] → CLOSED
-Retry: exponential backoff with jitter — base_delay * 2^attempt + random(0, base_delay)
+Circuit Breaker: CLOSED â†’ [failures > threshold] â†’ OPEN â†’ [timeout] â†’ HALF-OPEN â†’ [success] â†’ CLOSED
+Retry: exponential backoff with jitter â€” base_delay * 2^attempt + random(0, base_delay)
 Timeout: always set; propagate deadline via context/headers
 Bulkhead: separate thread pools per dependency; one slow dep shouldn't starve others
 Idempotency: every mutating operation needs idempotency key; store result, return on duplicate
@@ -57,7 +58,7 @@ Idempotency: every mutating operation needs idempotency key; store result, retur
 ```
 Logs:  structured JSON, always include: traceId, userId, duration, status
 Metrics (RED): Rate (req/s), Errors (%), Duration (p50/p95/p99)
-Traces: OpenTelemetry → Jaeger/Tempo; trace every cross-service call
+Traces: OpenTelemetry â†’ Jaeger/Tempo; trace every cross-service call
 Alerts: error rate > 1%, p99 latency > SLO, queue depth > threshold
 ```
 
@@ -69,7 +70,7 @@ Alerts: error rate > 1%, p99 latency > SLO, queue depth > threshold
 | API | CDN (CloudFront) | Read-through | Cache-Control headers |
 | DB reads | Read replica | Direct query | N/A (replica lag) |
 
-Cache-aside rule: **read → cache miss → DB → cache set → return**. Never write to cache directly on writes — let TTL or event invalidate.
+Cache-aside rule: **read â†’ cache miss â†’ DB â†’ cache set â†’ return**. Never write to cache directly on writes â€” let TTL or event invalidate.
 
 ## Auth patterns
 
@@ -89,7 +90,7 @@ Cache-aside rule: **read → cache miss → DB → cache set → return**. Never
 
 ## Scope boundaries
 
-- Database schema design → `database-architect`
-- Infrastructure + cloud services → `cloud-architect`
-- Comprehensive security audit → `security-auditor`
-- System-wide performance optimization → `performance-engineer`
+- Database schema design â†’ `database-architect`
+- Infrastructure + cloud services â†’ `cloud-architect`
+- Comprehensive security audit â†’ `security-auditor`
+- System-wide performance optimization â†’ `performance-engineer`

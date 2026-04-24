@@ -1,5 +1,6 @@
 ﻿---
 name: tech-debt
+type: workflow
 description: "Scans the codebase for technical debt indicators, categorizes and prioritizes findings, and maintains a debt register with repayment recommendations. Use when assessing codebase health, planning refactoring, or when the user mentions technical debt or code quality."
 argument-hint: "[scan|add|prioritize|report]"
 user-invocable: true

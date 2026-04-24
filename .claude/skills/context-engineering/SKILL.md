@@ -1,4 +1,4 @@
----
+﻿---
 name: context-engineering
 type: workflow
 description: Strictly enforce context engineering principles to avoid context stuffing, optimize memory architecture, and manage the Research-Plan-Reset-Implement cycle.

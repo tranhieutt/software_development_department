@@ -1,5 +1,6 @@
 ﻿---
 name: patch-notes
+type: workflow
 description: "Generates user-facing patch notes from git history and internal changelogs, translating technical changes into clear user communication. Use when preparing patch notes or when the user mentions patch notes or user-facing changelog."
 argument-hint: "[version] [--style brief|detailed|full]"
 user-invocable: true

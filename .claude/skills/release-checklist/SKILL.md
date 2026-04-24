@@ -1,5 +1,6 @@
----
+﻿---
 name: release-checklist
+type: workflow
 description: "Generates a comprehensive pre-release validation checklist for software versions covering build verification, deployment readiness, and release risk. Use when preparing to release a product version or when the user mentions release checklist or pre-release validation."
 argument-hint: "[surface: web|api|desktop|mobile|all]"
 user-invocable: true

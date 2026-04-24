@@ -1,4 +1,4 @@
----
+﻿---
 name: planning-and-task-breakdown
 type: workflow
 description: "When dealing with a complex issue, epic, or multi-step feature request, break it down into executable, testable, agent-ready tasks before writing code."

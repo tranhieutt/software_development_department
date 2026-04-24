@@ -1,5 +1,6 @@
 ﻿---
 name: annotate
+type: workflow
 description: "Records unexpected API behaviors, undocumented caveats, version bugs, or non-obvious workarounds into .claude/memory/annotations.md. Use immediately when an undocumented behavior or surprising caveat is discovered during development."
 argument-hint: "<service-or-library> <what-you-discovered>"
 user-invocable: true

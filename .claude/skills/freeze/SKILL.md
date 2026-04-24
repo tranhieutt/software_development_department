@@ -1,5 +1,6 @@
----
+﻿---
 name: freeze
+type: workflow
 description: "Locks the codebase to prevent unintended writes during a freeze period such as before a release or during an incident. Use when the user mentions freezing, code lock, or release lockdown."
 argument-hint: "[reason]"
 user-invocable: true
@@ -43,7 +44,7 @@ BRANCH=[current branch from git rev-parse --abbrev-ref HEAD]
 Display:
 
 ```
-🔒 CODEBASE FROZEN
+ðŸ”’ CODEBASE FROZEN
 Reason : [reason]
 Time   : [timestamp]
 Branch : [branch]
@@ -54,9 +55,9 @@ To unlock: /unfreeze
 
 ### 5. Suggested Next Steps
 
-- `/release-checklist` — Run the full release checklist
-- `/guard` — Check the freeze status at any time
-- `/unfreeze` — Unlock after the release is complete
+- `/release-checklist` â€” Run the full release checklist
+- `/guard` â€” Check the freeze status at any time
+- `/unfreeze` â€” Unlock after the release is complete
 
 ## Edge Cases
 
@@ -65,7 +66,7 @@ To unlock: /unfreeze
 
 ## Related Skills
 
-- `/guard` — Check freeze status before merge/deploy
-- `/unfreeze` — Remove freeze after release
-- `/release-checklist` — Full release workflow
-- `/hotfix` — Deploy urgent fixes during a freeze
+- `/guard` â€” Check freeze status before merge/deploy
+- `/unfreeze` â€” Remove freeze after release
+- `/release-checklist` â€” Full release workflow
+- `/hotfix` â€” Deploy urgent fixes during a freeze

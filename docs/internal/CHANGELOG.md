@@ -6,6 +6,44 @@ Tài liệu này ghi lại lịch sử cập nhật tài liệu và source code 
 
 ## 🗓️ Lịch sử cập nhật
 
+### [v1.59.0] - 2026-04-24
+
+**Chu de:** Finalize Codex adapter baseline and metadata hardening
+
+Dot cap nhat nay chot baseline cho Codex adapter theo huong additive, giu
+nguyen Claude-native runtime va khong sua `.claude/settings.json` chi de phuc
+vu Codex.
+
+#### Changed - Codex adapter docs and report
+
+- Cap nhat `AGENTS.md` de dua `scripts/codex-preflight.ps1` vao verification
+  path uu tien cho thay doi lien quan SDD/Codex.
+- Viet lai `docs/codex-compatibility.md` tu trang thai "Phase 1" sang status
+  thuc te cua adapter, tach ro phan da xong va backlog con lai.
+- Cap nhat `report_upgrade_for_codex_v1.md` thanh status report moi va danh dau
+  cac hang muc da done bang gach ngang.
+
+#### Changed - Metadata and audit hardening
+
+- Bo sung `type` frontmatter cho cac skill con thieu va them `when_to_use` cho
+  cac skill con gap metadata.
+- Them `skills` metadata cho 6 agent con warning schema:
+  `accessibility-specialist`, `analytics-engineer`, `network-programmer`,
+  `performance-analyst`, `ux-designer`, `ux-researcher`.
+- Cap nhat `.mcp.json` de MCP server `gitnexus` khai bao ro `command: "npx"`.
+- Sua `scripts/harness-audit.js` de parser bo qua UTF-8 BOM trong `SKILL.md`,
+  loai bo false positive frontmatter warning.
+
+#### Verification
+
+- `powershell -ExecutionPolicy Bypass -File scripts/validate-skills.ps1` pass:
+  `126 pass`, `0 fail`, `0 warn`.
+- `node scripts/harness-audit.js --compact` pass: `120/120`, `0 blocked`,
+  con `7 warning` do deny pattern trong `.claude/settings.json`.
+- `powershell -ExecutionPolicy Bypass -File scripts/codex-preflight.ps1` pass;
+  chi con warning vi working tree dang co thay doi chua commit.
+- `git diff --check` sach loi diff; chi con LF/CRLF normalization warnings tu Git.
+
 ### [v1.58.0] - 2026-04-24
 
 **Chu de:** Clean stale Tier 2 architecture docs after Sprint 4 scaffold

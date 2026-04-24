@@ -71,6 +71,7 @@ Preserve these boundaries:
 For SDD repo changes, prefer these checks:
 
 ```powershell
+powershell -ExecutionPolicy Bypass -File scripts\codex-preflight.ps1
 powershell -ExecutionPolicy Bypass -File scripts\validate-skills.ps1
 node scripts\harness-audit.js --compact
 ```

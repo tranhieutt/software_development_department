@@ -1,5 +1,6 @@
 ﻿---
 name: ml-engineer
+type: workflow
 description: "Provides machine learning engineering patterns for model training pipelines, feature engineering, experiment tracking, and model serving. Use when working with ML code or when the user mentions ML engineering, model training, or feature pipelines."
 paths: ["**/*.py", "**/*.ipynb", "**/requirements*.txt", "**/setup.py"]
 effort: 3

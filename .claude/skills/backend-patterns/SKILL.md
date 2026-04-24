@@ -1,4 +1,4 @@
----
+﻿---
 name: backend-patterns
 type: reference
 description: "Applies production backend patterns: middleware, error handling, auth, database integration, and API design. Use when working with backend service files or when the user mentions Express, Fastify, NestJS, backend patterns, or service architecture."
@@ -19,7 +19,7 @@ when_to_use: "When building Node.js backend services with Express, Fastify, or s
 - **Never trust `req.body` size**: set `limit` on body-parser; default 100kb is too large for some, too small for others
 - **`process.env` access at import time**: if accessed before `dotenv.config()`, value is undefined; call config() first in entry file
 - **Connection pool misconfiguration**: default pool size (10) will exhaust under load; set `pool.max` based on `(num_cores * 2) + effective_spindle_count`
-- **`res.json()` after `res.send()`**: causes "Cannot set headers after they are sent" — always `return` after sending response
+- **`res.json()` after `res.send()`**: causes "Cannot set headers after they are sent" â€” always `return` after sending response
 
 ## Express: production setup
 
@@ -39,10 +39,10 @@ app.use(rateLimit({ windowMs: 15 * 60 * 1000, max: 100 }));
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/products", productRouter);
 
-// 404 handler — must come after all routes
+// 404 handler â€” must come after all routes
 app.use((req, res) => res.status(404).json({ error: "Not found" }));
 
-// Global error handler — must have 4 params
+// Global error handler â€” must have 4 params
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   const status = err instanceof AppError ? err.statusCode : 500;
   res.status(status).json({ error: err.message });

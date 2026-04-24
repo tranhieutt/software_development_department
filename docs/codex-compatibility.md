@@ -1,6 +1,6 @@
 # Codex Compatibility
 
-> Status: Phase 1 adapter documentation.
+> Status: Adapter baseline implemented; metadata hardening and warning reduction remain in progress.
 > Source of truth: `CLAUDE.md` and `.claude/`.
 > Constraint: Codex support must not change Claude Code runtime behavior.
 
@@ -163,68 +163,45 @@ Manual Claude regression check:
 
 ---
 
-## 8. Phase 1 Boundary
+## 8. Current Adapter Status
 
-Phase 1 is documentation and entrypoint only:
+The additive Codex adapter baseline is already present in the repo:
 
-- Add `AGENTS.md`.
-- Add `.codex/INSTALL.md`.
-- Add `docs/codex-compatibility.md`.
-
-It intentionally does not add preflight scripts, metadata cleanup, or README
-changes. Those belong to later phases.
-
-## 9. Phase 2 Adapter Skill
-
-Phase 2 adds:
-
+- `AGENTS.md`
+- `.codex/INSTALL.md`
+- `docs/codex-compatibility.md`
 - `.claude/skills/codex-sdd/SKILL.md`
-
-This skill is a Codex-facing adapter and routing aid. It does not replace
-`using-sdd`; it tells Codex how to preserve Claude-native behavior while using
-the existing SDD workflows.
-
-## 10. Phase 3 Preflight Scripts
-
-Phase 3 adds:
-
 - `scripts/codex-preflight.ps1`
 - `scripts/codex-preflight.sh`
+- README guidance for Codex users
 
-These scripts approximate Claude hook checks for Codex by validating required
-adapter files, git state visibility, circuit-state readability, skill schema,
-harness audit status, and trace integrity. They do not replace Claude hooks and
-are run manually before risky Codex work or completion claims.
+This means Codex now has:
 
-## 11. Phase 4 Core Skill Metadata
+- a repo entrypoint,
+- a documented skill discovery path,
+- Claude-to-Codex tool mapping,
+- manual replacements for Claude hook behavior,
+- and a single preflight command for risky work and completion claims.
 
-Phase 4 hardens metadata for the highest-priority SDD skills used by Codex and
-Claude:
+These changes are additive and do not require changing `.claude/settings.json`,
+hook wiring, skill names, or Claude workflow command semantics.
 
-1. `using-sdd`
-2. `planning-and-task-breakdown`
-3. `spec-driven-development`
-4. `test-driven-development`
-5. `verification-before-completion`
-6. `subagent-driven-development`
-7. `systematic-debugging`
-8. `code-review`
-9. `commit`
-10. `save-state`
+## 9. Remaining Backlog
 
-The first nine already had the recommended `type` metadata. Phase 4 adds
-backward-compatible workflow metadata to `save-state`, reducing validator noise
-without changing Claude runtime hooks or command behavior.
+The remaining work is hardening rather than missing baseline functionality:
 
-## 12. Phase 5 Documentation and Verification
+1. Reduce schema and audit warnings so Codex skill discovery has cleaner
+   metadata.
+2. Keep the status docs in sync with the actual repo state as the adapter
+   evolves.
+3. Preserve the current boundary that Claude hooks remain Claude-only and Codex
+   continues to use manual/preflight checks.
+4. Treat optional user-local setup such as the `~/.agents/skills/sdd` junction
+   as install-time work, not a repo-enforced runtime dependency.
 
-Phase 5 closes the adapter pass with documentation and verification:
+## 10. Ongoing Verification Contract
 
-- Add README guidance for Codex users.
-- Keep the README explicit that SDD remains Claude-native.
-- Keep Codex instructions routed through `AGENTS.md`, `.codex/INSTALL.md`,
-  this compatibility document, `codex-sdd`, and `codex-preflight`.
-- Run the regression checks:
+After Codex adapter changes, run:
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File scripts\codex-preflight.ps1
@@ -233,5 +210,8 @@ node scripts\harness-audit.js --compact
 git diff --check
 ```
 
-Phase 5 does not require changes to `.claude/settings.json`, hooks, or Claude
-workflow command semantics.
+Manual verification still matters for:
+
+- Codex behavior inside an actual Codex session
+- Claude-native hook execution inside Claude Code
+- the optional local skill junction under `~/.agents/skills/sdd`

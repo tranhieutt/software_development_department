@@ -1,5 +1,6 @@
 ﻿---
 name: team-feature
+type: workflow
 description: "Orchestrates a cross-functional feature team of product-manager, ux-designer, frontend-developer, backend-developer, and qa-tester to deliver a complete feature from specification to tested implementation. Use when a feature requires full-stack coordinated delivery."
 argument-hint: "[feature description or user story]"
 user-invocable: true

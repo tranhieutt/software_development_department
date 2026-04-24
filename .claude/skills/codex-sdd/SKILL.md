@@ -1,4 +1,4 @@
----
+﻿---
 name: codex-sdd
 type: workflow
 description: "Adapts SDD for Codex while preserving Claude Code behavior. Use when working in Codex, setting up Codex compatibility, mapping Claude tools to Codex tools, or explaining how SDD should run outside Claude Code."

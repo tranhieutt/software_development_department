@@ -1,5 +1,6 @@
----
+﻿---
 name: unfreeze
+type: workflow
 description: "Unlocks the codebase after a release freeze or incident freeze period to resume normal development. Use when a freeze period ends or when the user mentions unfreezing or lifting the code freeze."
 argument-hint: "[no arguments]"
 user-invocable: true
@@ -18,12 +19,12 @@ Remove the code freeze, allowing merges and development to continue.
 ### 1. Check Status
 
 Read `.freeze`. If it does not exist, notify and stop:
-> "✅ Codebase is not currently frozen. Unfreeze is not needed."
+> "âœ… Codebase is not currently frozen. Unfreeze is not needed."
 
 ### 2. Display Current Freeze Information
 
 ```
-🔒 Current Freeze:
+ðŸ”’ Current Freeze:
 Reason     : [REASON from .freeze]
 Frozen at  : [FROZEN_AT]
 Branch     : [BRANCH]
@@ -46,7 +47,7 @@ Use Bash to delete the file: `rm .freeze`
 Append to `production/session-state/active.md` (if it exists):
 
 ```markdown
-## Unfreeze Log — [timestamp]
+## Unfreeze Log â€” [timestamp]
 - Unfrozen at: [timestamp]
 - Was frozen for: [duration]
 - Reason was: [reason]
@@ -55,7 +56,7 @@ Append to `production/session-state/active.md` (if it exists):
 ### 6. Notification
 
 ```
-✅ CODEBASE UNFROZEN
+âœ… CODEBASE UNFROZEN
 Development can resume normally.
 All merges and deployments are now permitted.
 ```
@@ -67,6 +68,6 @@ All merges and deployments are now permitted.
 
 ## Related Skills
 
-- `/freeze` — Lock the codebase
-- `/guard` — Check the current status
-- `/release-checklist` — Full release workflow
+- `/freeze` â€” Lock the codebase
+- `/guard` â€” Check the current status
+- `/release-checklist` â€” Full release workflow

@@ -1,5 +1,6 @@
 ﻿---
 name: reverse-document
+type: workflow
 description: "Generates missing design or architecture documentation by working backwards from existing code or prototypes. Use when documentation is missing for existing code or when the user mentions documenting existing implementation or reverse engineering docs."
 argument-hint: "<type> <path> (e.g., 'design src/api/auth' or 'architecture src/core')"
 user-invocable: true

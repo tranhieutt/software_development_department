@@ -1,5 +1,6 @@
 ﻿---
 name: milestone-review
+type: workflow
 description: "Conducts a structured milestone review analyzing delivered features, metrics, blockers, and readiness for the next phase. Use when completing a milestone or when the user mentions milestone review or phase gate."
 argument-hint: "[milestone-name|current]"
 user-invocable: true

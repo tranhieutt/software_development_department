@@ -1,4 +1,4 @@
----
+﻿---
 name: spec-evolution
 type: workflow
 description: "Resolves mismatches between an approved spec and implementation reality by proposing controlled spec changes before code or plan changes continue."

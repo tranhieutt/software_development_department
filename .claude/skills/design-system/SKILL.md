@@ -1,4 +1,4 @@
----
+﻿---
 name: design-system
 type: reference
 description: "Decomposes a product concept into architectural components, domain systems, data models, and integration boundaries. Use when starting system architecture or when the user mentions system design or component breakdown."
@@ -22,24 +22,24 @@ Ask before designing:
 ## Capacity estimation shortcuts
 
 ```
-1M users/day active → ~12 req/s avg, ~120 req/s peak (10x)
-1KB per request → 1M req/day = ~1GB/day = ~365GB/year
-Read:write ratio 10:1 (typical social) → optimize read path first
+1M users/day active â†’ ~12 req/s avg, ~120 req/s peak (10x)
+1KB per request â†’ 1M req/day = ~1GB/day = ~365GB/year
+Read:write ratio 10:1 (typical social) â†’ optimize read path first
 1 server handles ~1000 req/s (rule of thumb for I/O-bound services)
 ```
 
 ## Component breakdown template
 
 ```
-Client layer  → Web / Mobile / API consumers
-CDN           → Static assets, edge caching
-API Gateway   → Rate limiting, auth, routing, SSL termination
-Services      → Domain-specific services (User, Order, Payment, Notification)
-Cache         → Redis for hot data (sessions, rate limits, computed results)
-Database      → Primary DB + Read replicas
-Message queue → Async operations, event-driven decoupling
-Storage       → Object storage for files (S3/GCS)
-Monitoring    → Metrics, logs, traces, alerts
+Client layer  â†’ Web / Mobile / API consumers
+CDN           â†’ Static assets, edge caching
+API Gateway   â†’ Rate limiting, auth, routing, SSL termination
+Services      â†’ Domain-specific services (User, Order, Payment, Notification)
+Cache         â†’ Redis for hot data (sessions, rate limits, computed results)
+Database      â†’ Primary DB + Read replicas
+Message queue â†’ Async operations, event-driven decoupling
+Storage       â†’ Object storage for files (S3/GCS)
+Monitoring    â†’ Metrics, logs, traces, alerts
 ```
 
 ## Database selection guide
@@ -57,9 +57,9 @@ Monitoring    → Metrics, logs, traces, alerts
 ## Caching strategies
 
 ```
-Cache-aside (read):  App checks cache → miss → DB → write to cache
+Cache-aside (read):  App checks cache â†’ miss â†’ DB â†’ write to cache
 Write-through:        Write to cache AND DB simultaneously (consistent, slower writes)
-Write-behind:         Write to cache → async flush to DB (fast writes, risk of loss)
+Write-behind:         Write to cache â†’ async flush to DB (fast writes, risk of loss)
 Read-through:         Cache handles DB reads automatically
 
 TTL guidelines:
@@ -73,10 +73,10 @@ TTL guidelines:
 
 ```
 When to use queues:
-✓ Async processing (email, PDF generation, notifications)
-✓ Rate-limiting downstream services
-✓ Decoupling services (order → payment → shipping)
-✓ Fan-out (1 event → multiple consumers)
+âœ“ Async processing (email, PDF generation, notifications)
+âœ“ Rate-limiting downstream services
+âœ“ Decoupling services (order â†’ payment â†’ shipping)
+âœ“ Fan-out (1 event â†’ multiple consumers)
 
 Queue selection:
 - RabbitMQ: complex routing, request-reply, low latency
@@ -97,11 +97,11 @@ WebSocket: Real-time bidirectional (chat, live updates, collaborative tools)
 ## Scaling patterns
 
 ```
-Vertical (scale up):   More CPU/RAM — quick, limited ceiling
-Horizontal (scale out): More instances — requires stateless services
+Vertical (scale up):   More CPU/RAM â€” quick, limited ceiling
+Horizontal (scale out): More instances â€” requires stateless services
 Database read replicas: Offload read traffic (good for 80%+ read workloads)
-Database sharding:      Shard by user_id, geography — last resort, complex
-CQRS:                   Separate read/write models — when read/write patterns diverge heavily
+Database sharding:      Shard by user_id, geography â€” last resort, complex
+CQRS:                   Separate read/write models â€” when read/write patterns diverge heavily
 ```
 
 ## Common design mistakes

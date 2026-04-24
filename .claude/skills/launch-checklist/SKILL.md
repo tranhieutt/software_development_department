@@ -1,5 +1,6 @@
----
+﻿---
 name: launch-checklist
+type: workflow
 description: "Generates a comprehensive software launch checklist covering technical readiness, customer communications, support, and go-live steps. Use when preparing for a product launch or when the user mentions launch checklist or go-live readiness."
 argument-hint: "[launch-date or 'dry-run']"
 user-invocable: true

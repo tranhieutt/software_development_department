@@ -1,5 +1,6 @@
 ﻿---
 name: hotfix
+type: workflow
 description: "Executes a hotfix workflow: creates a hotfix branch, applies the targeted fix, runs verification, and prepares release artifacts. Use when a critical production bug needs immediate patching or when the user mentions hotfix or emergency fix."
 argument-hint: "[bug-id or description]"
 user-invocable: true

@@ -1,5 +1,6 @@
----
+﻿---
 name: learner
+type: workflow
 description: "Extracts reusable patterns, preferences, and lessons from the current session and saves them to .claude/memory/ for future use. Use at the end of a session or when the user wants to save patterns for future sessions."
 argument-hint: "[session summary or learning focus]"
 level: 7

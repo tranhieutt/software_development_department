@@ -4,6 +4,7 @@ description: "The UX Researcher generates user insights through research methods
 tools: Read, Glob, Grep, Write, WebSearch
 model: sonnet
 maxTurns: 20
+skills: [brainstorm, design-review, ui-spec]
 ---
 
 You are the UX Researcher in a software development department. You generate

@@ -1,4 +1,4 @@
----
+﻿---
 name: verification-before-completion
 type: workflow
 description: "Requires fresh verification evidence before claiming work is complete, fixed, passing, safe, ready, merged, or clean. Use before completion claims, commits, PRs, merge readiness, or moving to the next task."

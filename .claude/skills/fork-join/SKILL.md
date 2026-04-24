@@ -1,5 +1,6 @@
 ﻿---
 name: fork-join
+type: workflow
 description: "Runs multiple specialist subagents in parallel then merges their outputs into a unified result. Use when a task can be split into independent parallel workstreams that need to be recombined."
 argument-hint: "<task description>"
 user-invocable: true

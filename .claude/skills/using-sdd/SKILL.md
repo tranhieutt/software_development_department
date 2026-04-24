@@ -1,4 +1,4 @@
----
+﻿---
 name: using-sdd
 type: workflow
 description: "Routes every software-development request through the right SDD workflow before action. Use at session start, before clarifying questions, before edits, and whenever deciding which SDD skill should govern a task."

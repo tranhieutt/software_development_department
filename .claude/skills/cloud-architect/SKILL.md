@@ -1,5 +1,6 @@
 ﻿---
 name: cloud-architect
+type: workflow
 description: "Designs multi-cloud and hybrid cloud architectures across AWS, GCP, and Azure. Use when designing cloud infrastructure or when the user mentions cloud architecture, AWS, GCP, Azure, or multi-cloud."
 paths: ["**/terraform/**", "**/pulumi/**", "**/infra/**", "**/*.tf"]
 effort: 5

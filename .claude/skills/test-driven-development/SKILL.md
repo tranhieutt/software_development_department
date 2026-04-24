@@ -1,4 +1,4 @@
----
+﻿---
 name: test-driven-development
 type: workflow
 description: "Forces the strict Red-Green-Refactor development cycle. Requires writing a failing test and running it in the terminal before writing any implementation code."
@@ -56,23 +56,23 @@ If no gate is satisfied, stop and request the missing approval or clarification.
 Your final response to the user MUST contain the evidence of your execution in the following format:
 
 ```markdown
-# 🧪 TDD Execution: [Feature/Task Name]
+# ðŸ§ª TDD Execution: [Feature/Task Name]
 
-## 🔴 RED Phase Evidence
+## ðŸ”´ RED Phase Evidence
 - **Test added**: `[test_function_name]`
 - **Terminal Output**:
 ```bash
 [Insert the failing test output trace here - do not fake this]
 ```
 
-## 🟢 GREEN Phase Evidence
+## ðŸŸ¢ GREEN Phase Evidence
 - **Implementation**: Modified `[file_name]`
 - **Terminal Output**:
 ```bash
 [Insert the passing test output trace here]
 ```
 
-**Status**: ✅ Code verified. Awaiting next command.
+**Status**: âœ… Code verified. Awaiting next command.
 ```
 
 ---
@@ -108,5 +108,5 @@ Do not conclude the turn unless you have:
 
 ## Related Skills
 
-- `planning-and-task-breakdown` — TDD is the engine used to execute the tasks planned by this skill.
-- `spec-driven-development` — TDD uses the spec as its single source of truth for what tests need to be written.
+- `planning-and-task-breakdown` â€” TDD is the engine used to execute the tasks planned by this skill.
+- `spec-driven-development` â€” TDD uses the spec as its single source of truth for what tests need to be written.

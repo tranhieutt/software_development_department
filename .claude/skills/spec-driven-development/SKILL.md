@@ -1,4 +1,4 @@
----
+﻿---
 name: spec-driven-development
 type: workflow
 description: "Enforces the creation of a clear, actionable specification before any implementation code is written. Prevents hallucinations and architectural drift."
@@ -85,5 +85,5 @@ Do not conclude your first interaction turn unless you have fulfilled the follow
 
 ## Related Skills
 
-- `test-driven-development` — Invoked immediately after the Spec is approved to implement Task 1 using the Red-Green-Refactor cycle.
-- `planning-and-task-breakdown` — Used for ultra-large epics that need more project management rather than technical specs.
+- `test-driven-development` â€” Invoked immediately after the Spec is approved to implement Task 1 using the Red-Green-Refactor cycle.
+- `planning-and-task-breakdown` â€” Used for ultra-large epics that need more project management rather than technical specs.

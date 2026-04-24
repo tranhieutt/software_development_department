@@ -1,5 +1,6 @@
 ﻿---
 name: mobile-review
+type: workflow
 description: "Reviews mobile app code and design for platform guidelines compliance, performance, accessibility, and offline behavior. Use when reviewing a mobile app feature or when the user mentions mobile review, iOS guidelines, or app store compliance."
 argument-hint: "[path-to-mobile-file-or-directory]"
 user-invocable: true

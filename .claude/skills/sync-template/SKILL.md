@@ -1,5 +1,6 @@
 ﻿---
 name: sync-template
+type: workflow
 description: "Syncs the .claude/ directory from an upstream template repository, showing a diff and applying new or modified files without overwriting local customizations. Use when updating SDD template files or when the user mentions template sync or upstream update."
 argument-hint: "[upstream-repo-url]"
 user-invocable: true

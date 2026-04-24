@@ -1,5 +1,6 @@
 ﻿---
 name: changelog
+type: workflow
 description: "Generates a structured changelog from git history following Keep a Changelog format and conventional commits. Use when creating a CHANGELOG.md, preparing release notes, or when the user mentions changelog or release history."
 argument-hint: "[version|sprint-number]"
 user-invocable: true

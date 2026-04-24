@@ -1,5 +1,6 @@
 ﻿---
 name: scope-check
+type: workflow
 description: "Analyzes a feature or sprint for scope creep by comparing current scope against the original plan, flagging additions and recommending cuts. Use when a sprint feels bloated or when the user mentions scope creep, scope check, or feature bloat."
 argument-hint: "[feature-name or sprint-N]"
 user-invocable: true

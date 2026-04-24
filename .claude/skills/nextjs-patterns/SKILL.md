@@ -1,4 +1,4 @@
----
+﻿---
 name: nextjs-patterns
 type: reference
 description: "Comprehensive Next.js development patterns for App Router, Server Components, TypeScript, and Tailwind CSS. Covers foundational principles, data fetching, routing, performance, and an 8-phase development workflow. Also includes Server Actions and Metadata patterns."

@@ -1,5 +1,6 @@
----
+﻿---
 name: devops-deploy
+type: workflow
 description: "Executes infrastructure deployment operations including Docker, CI/CD, AWS Lambda, SAM, Terraform, and GitHub Actions. Use when dockerizing applications, configuring CI/CD pipelines, or deploying to cloud infrastructure."
 paths: ["**/Dockerfile*", "**/k8s/**", "**/infra/**", "**/.github/workflows/**", "**/template.yaml"]
 effort: 3
@@ -13,12 +14,12 @@ allowed-tools: Read, Glob, Grep, Write, Edit, Bash
 
 ## Production checklist (always verify)
 
-- [ ] Env vars via Secrets Manager — never hardcoded
+- [ ] Env vars via Secrets Manager â€” never hardcoded
 - [ ] Health check endpoint responding
 - [ ] Structured JSON logs with `request_id`
 - [ ] Rate limiting configured
 - [ ] CORS restricted to authorized domains
-- [ ] Lambda timeout appropriate (10–30s)
+- [ ] Lambda timeout appropriate (10â€“30s)
 - [ ] CloudWatch alarms for errors and latency
 - [ ] Rollback plan documented
 - [ ] Load test before launch

@@ -1,5 +1,6 @@
 ﻿---
 name: db-review
+type: workflow
 description: "Reviews database schemas, queries, and migrations for correctness, performance, security, and best practices. Use when reviewing SQL migration files or when the user mentions database review, schema review, or query audit."
 argument-hint: "[path-to-schema-migration-or-query-files]"
 user-invocable: true

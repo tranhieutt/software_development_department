@@ -4,6 +4,7 @@ description: "The UX Designer owns user experience flows, interaction design, ac
 tools: Read, Glob, Grep, Write, Edit, WebSearch
 model: sonnet
 maxTurns: 20
+skills: [ui-spec, design-review, design-system, frontend-design]
 disallowedTools: Bash
 ---
 

@@ -1,4 +1,4 @@
----
+﻿---
 name: llm-app-patterns
 type: reference
 description: "Provides architectural patterns for LLM-powered applications and AI assistants, including prompt engineering, RAG, agent loops, conversation management, and evaluation. Use when building AI-based features, chatbots, or complex AI system architectures."
@@ -30,7 +30,7 @@ when_to_use: "When designing LLM applications, building AI assistants/chatbots, 
 
 ```python
 CHUNK_CONFIG = {
-    "chunk_size": 512,       # tokens — sweet spot for most docs
+    "chunk_size": 512,       # tokens â€” sweet spot for most docs
     "chunk_overlap": 50,     # prevents context loss at boundaries
     "separators": ["\n\n", "\n", ". ", " "],
 }

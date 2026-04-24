@@ -1,4 +1,4 @@
----
+﻿---
 name: subagent-driven-development
 type: workflow
 description: "Executes an approved implementation plan task-by-task with a fresh implementer subagent per task and two review gates. Use when a plan is approved, tasks are mostly sequential, and quality gates are needed without full orchestrate/fork-join overhead."

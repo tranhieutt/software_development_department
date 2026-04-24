@@ -1,4 +1,4 @@
----
+﻿---
 name: code-review
 type: workflow
 description: "Performs architectural and quality code review checking coding standards, SOLID principles, architectural compliance, and common software issues. Use when reviewing a file or directory before merge, or when the user mentions code review, PR review, or quality check."
@@ -29,7 +29,7 @@ When this skill is invoked:
    - [ ] Systems expose interfaces (not concrete class dependencies)
 
 5. **Check architectural compliance**:
-   - [ ] Correct dependency direction (infrastructure ← domain ← application)
+   - [ ] Correct dependency direction (infrastructure â† domain â† application)
    - [ ] No circular dependencies between modules
    - [ ] Proper layer separation (UI does not own business logic)
    - [ ] Events/messages used for cross-service communication
@@ -69,7 +69,7 @@ When this skill is invoked:
 [List web and software-specific issues found]
 
 ### Positive Observations
-[What is done well — always include this section]
+[What is done well â€” always include this section]
 
 ### Required Changes
 [Must-fix items before approval]
@@ -83,10 +83,10 @@ When this skill is invoked:
 ## Protocol
 
 - **Question**: Auto-starts from argument (file or directory path); no clarification needed
-- **Options**: Skip — single review path
-- **Decision**: Skip — verdict is advisory
+- **Options**: Skip â€” single review path
+- **Decision**: Skip â€” verdict is advisory
 - **Draft**: Full review shown in conversation only
-- **Approval**: Skip — read-only; no files written
+- **Approval**: Skip â€” read-only; no files written
 
 ## Output
 
@@ -94,6 +94,6 @@ Deliver exactly:
 
 - **Risk Tier** (Low / Medium / High) with one-sentence justification
 - **Standards & Architecture compliance** score (X/6, X/5)
-- **Blocking issues** — must fix before merge (or "None")
-- **Suggestions** — optional improvements, max 3
+- **Blocking issues** â€” must fix before merge (or "None")
+- **Suggestions** â€” optional improvements, max 3
 - **Verdict**: `APPROVED` / `APPROVED WITH SUGGESTIONS` / `CHANGES REQUIRED`

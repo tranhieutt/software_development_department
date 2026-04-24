@@ -1,5 +1,6 @@
 ﻿---
 name: deployment-engineer
+type: workflow
 description: "Provides deployment engineering patterns for CI/CD pipelines, containerization, infrastructure as code, and release automation. Use when working with Dockerfile or GitHub Actions files, or when the user mentions deployment, CI/CD, or release pipeline."
 effort: 3
 allowed-tools: Read, Glob, Grep, Write, Edit, Bash

@@ -1,5 +1,6 @@
 ﻿---
 name: perf-profile
+type: workflow
 description: "Identifies performance bottlenecks, measures against budgets, and generates prioritized optimization recommendations. Use when investigating slow performance or when the user mentions performance profiling, bottleneck, or optimization."
 argument-hint: "[system-name or 'full']"
 user-invocable: true
