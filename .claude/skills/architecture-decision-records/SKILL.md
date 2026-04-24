@@ -7,19 +7,23 @@ allowed-tools: Read, Glob, Grep, Write, Bash
 argument-hint: "[title or decision topic]"
 user-invocable: true
 effort: 4
-when_to_use: "When needing to make a formal technology decision and record the underlying reasoning in docs/architecture/."
+when_to_use: "When needing to make a formal technology decision and record the underlying reasoning in docs/internal/adr/."
 ---
 
 # Architecture Decision Records
 
 ## Workflow Protocol
 
-1. **Determine the next ADR number** by scanning `docs/architecture/` for existing ADRs.
-2. **Gather context** by reading related code and existing ADRs.
-3. **Guide the user through the decision** by asking clarifying questions if the title alone is insufficient.
-4. **Generate the ADR** following the template below.
-5. **Save the ADR** to `docs/architecture/adr-[NNNN]-[slug].md`.
-6. **Update the Index** Table in `docs/architecture/README.md` or `docs/technical/DECISIONS.md`.
+1. **Determine the next ADR number** by scanning `docs/internal/adr/` for existing ADRs.
+2. **Run the decision-ledger read gate** before drafting:
+   `/trace-history --risk High --last 20`.
+   Include relevant prior decisions, or state that no relevant high-risk prior
+   decision was found.
+3. **Gather context** by reading related code and existing ADRs.
+4. **Guide the user through the decision** by asking clarifying questions if the title alone is insufficient.
+5. **Generate the ADR** following the template below.
+6. **Save the ADR** to `docs/internal/adr/ADR-[NNN]-[slug].md`.
+7. **Update the Index** Table in `docs/technical/DECISIONS.md`.
 
 ## When to write an ADR vs skip
 
@@ -41,13 +45,17 @@ Proposed → Accepted → Deprecated → Superseded
 ## Template (MADR format — use this)
 
 ```markdown
-# ADR-NNNN: [Title]
+# ADR-NNN: [Title]
 
 ## Status
-Accepted | Proposed | Deprecated | Superseded by ADR-XXXX
+Accepted | Proposed | Deprecated | Superseded by ADR-NNN
 
 ## Context
 [Problem statement, current situation, constraints, scale]
+
+## Prior Decision Check
+[Result of `/trace-history --risk High --last 20`; cite relevant prior entries
+or state "No relevant prior high-risk decisions found."]
 
 ## Decision Drivers
 - [Must/Should/Could requirement]
@@ -68,7 +76,7 @@ We will use **[Option N]** because [key rationale].
 **Risks:** ... Mitigation: ...
 
 ## Related ADRs
-- ADR-XXXX: [relationship]
+- ADR-NNN: [relationship]
 ```
 
 ## Quick examples
@@ -103,14 +111,12 @@ accepting **we manage Kong infrastructure ourselves**.
 ## File structure
 
 ```
-docs/adr/
-├── README.md              # Index table
-├── template.md
-├── 0001-use-postgresql.md
-└── 0003-mongodb-deprecated.md  # [SUPERSEDED by 0020]
+docs/internal/adr/
+├── ADR-0001-use-postgresql.md
+└── ADR-0003-mongodb-deprecated.md  # [SUPERSEDED by ADR-0020]
 ```
 
-## Index table (maintain in README.md)
+## Index table (maintain in docs/technical/DECISIONS.md)
 
 | ADR | Title | Status | Date |
 |---|---|---|---|
@@ -128,9 +134,8 @@ docs/adr/
 ## Automation
 
 ```bash
-# With adr-tools
-adr init docs/adr
-adr new "Use PostgreSQL as Primary Database"
-adr new -s 3 "Deprecate MongoDB"   # -s supersedes ADR 3
-adr generate toc > docs/adr/README.md
+# Custom repo path:
+# 1. Create docs/internal/adr/ADR-[NNN]-[slug].md
+# 2. Append one summary row and one summary entry to docs/technical/DECISIONS.md
+# 3. Do not overwrite docs/technical/DECISIONS.md; it is append-only
 ```

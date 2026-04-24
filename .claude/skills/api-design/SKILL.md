@@ -12,6 +12,12 @@ When this skill is invoked:
 
 1. **Read the target API spec or route files** in full.
 
+   For API design in an existing domain, SHOULD also inspect
+   `docs/technical/API.md`, related `design/specs/*`, related
+   `design/contracts/*` if present, and recent relevant ledger entries via
+   `/trace-history`. This is advisory unless the change is an ADR,
+   coordination-rule change, high-risk retry, or protocol removal.
+
 2. **Identify the API type** (REST, GraphQL, WebSocket) and apply appropriate standards.
 
 3. **Evaluate REST design quality** (if REST):

@@ -1,5 +1,13 @@
 # Agent Coordination Rules
 
+**Coordination-policy read gate:** Before changing this file, weakening an
+existing coordination protocol, or removing a MUST/SHOULD rule, query prior
+blocked and failed decisions with `/trace-history --outcome blocked --last 20`
+and `/trace-history --outcome fail --last 20`. The PR or change note must cite
+the relevant history or state that no relevant prior blocked/failed decision was
+found. If `/trace-history` is unavailable, document the equivalent ledger query
+used instead.
+
 1. **Vertical Delegation**: Leadership agents delegate to department leads, who
    delegate to specialists. Never skip a tier for complex decisions.
 2. **Horizontal Consultation**: Agents at the same tier may consult each other
@@ -15,8 +23,14 @@
    agents must attempt recovery in this order - from least to most disruptive:
    1. Re-read the relevant files and retry with fresh context
    2. Delegate to a specialized subagent with the full diagnosis in the prompt
-   3. Run `/compact` if context may be stale, then retry once more
-   4. Only after all three fail -> surface to user with every attempted step documented
+   3. For High-risk retries after a failed orchestration or repeated blocked
+      attempt, query `/trace-history --outcome blocked --last 20` and
+      `/trace-history --outcome fail --last 20` before retrying. Record
+      `prior_blocked_query: true` and `prior_failed_query: true`, or an
+      equivalent note, in the retry ledger entry.
+   4. Run `/compact` if context may be stale, then retry once more
+   5. Only after all recovery steps fail -> surface to user with every attempted
+      step documented
 7. **Subagent Concurrency Classification**: Before spawning multiple subagents,
    classify each by its side-effect profile:
    - **Concurrent-safe** (read-only - no file writes, no commands): Explore, research,
@@ -120,6 +134,10 @@
     {"ts":"<ISO>","session":"<branch>","agent_id":"<agent>","task_id":"<id>","request":"<what was asked>","reasoning":"<why this choice>","choice":"<decision made>","outcome":"pass|fail|blocked|skipped","risk_tier":"High|Medium|Low","duration_s":<N>}
     ```
 
+    **Allowed extension fields:** High-risk retry entries may include
+    `prior_blocked_query: true` and `prior_failed_query: true` when the retry
+    followed the read gate in Rule 6.
+
     **What NOT to log:** Trivial style choices, obvious one-line fixes, read-only
     exploration steps. Keep the ledger focused on decisions worth auditing.
 
@@ -148,3 +166,8 @@
     > **Note (2026-04-21):** Downgraded from MUST to SHOULD — no handoff contracts were
     > generated across multiple sessions, indicating the full protocol has too much friction.
     > Lightweight text summaries achieve 80% of the value with near-zero overhead.
+
+    **Protocol removal/weaken gate:** Before deleting this rule, weakening its
+    scope further, or removing any existing protocol, query
+    `/trace-history --outcome blocked --last 20` and cite the adoption/failure
+    history in the PR or change note.

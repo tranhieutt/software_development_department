@@ -74,6 +74,9 @@ Read the minimum required context:
 - The code, test, review finding, user request, or runtime evidence that
   contradicts it
 - Any ADR, PRD, API contract, or README section that constrains the decision
+- For existing-domain evolution, SHOULD query recent related ledger entries via
+  `/trace-history` to avoid repeating or reversing prior decisions without
+  evidence
 
 Do not infer drift from memory. Cite the concrete file, section, test, command,
 or review finding.

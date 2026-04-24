@@ -26,6 +26,14 @@ Engineering day du.
 - Khoa rule conflict cho spec vs contract, contract vs implemented API,
   memory vs repo, va Codex adapter vs Claude runtime.
 
+#### Added - Sprint 0.5 API reference skeleton
+
+- Them `docs/technical/API.md` lam implemented API reference skeleton.
+- Dinh nghia endpoint index, endpoint template, schema conventions,
+  auth/authorization, error conventions, deprecation policy, va update rules.
+- Cap nhat `SOURCE_OF_TRUTH_REGISTRY.md` de danh dau `API.md` la skeleton exists,
+  endpoint inventory pending thay vi planned/missing.
+
 #### Accepted - ADR-006 Shared State Adoption
 
 - Them `docs/internal/adr/ADR-006-shared-state-adoption.md` voi status
@@ -36,6 +44,25 @@ Engineering day du.
   van theo human/producer/technical-director va Rule 3 escalation.
 - Dinh nghia trigger de chi xem xet Tier 3 khi co du lieu thuc te ve conflict,
   negotiation, hoac orchestrator complexity.
+
+#### Changed - Sprint 1 ledger read-gate adoption
+
+- Cap nhat `.claude/skills/architecture-decision-records/SKILL.md` de dung
+  `docs/internal/adr/` va bat buoc `/trace-history --risk High --last 20`
+  truoc khi draft ADR.
+- Cap nhat `.claude/docs/coordination-rules.md` voi read gate cho coordination
+  policy changes, high-risk retry, va protocol removal/weaken.
+- Cho phep ledger extension fields `prior_blocked_query` va
+  `prior_failed_query` cho High-risk retry entries.
+- Them SHOULD-tier ledger consult vao `.claude/skills/api-design/SKILL.md` va
+  `.claude/skills/spec-evolution/SKILL.md`.
+- Them checklist coordination policy vao `.github/PULL_REQUEST_TEMPLATE.md`.
+
+#### Fixed - ADR governance drift
+
+- Them ADR-006 vao `docs/technical/DECISIONS.md`.
+- Sua ADR documentation references tu `docs/architecture/` / `docs/adr/` sang
+  `docs/internal/adr/` va `docs/technical/DECISIONS.md`.
 
 #### Documentation - analysis and rebuttal
 
@@ -51,6 +78,8 @@ Engineering day du.
 - `git diff --check` pass cho package shared-state.
 - `scripts/validate-skills.ps1` pass: 126/126, 57 warning nen.
 - `scripts/harness-audit.js --compact` pass: 120/120, readiness warning nen.
+- `scripts/trace-integrity-check.js` pass: 23 ledger entries, 1 agent metric,
+  11 skill usage entries.
 
 ---
 

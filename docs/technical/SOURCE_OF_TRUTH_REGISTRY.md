@@ -88,7 +88,7 @@ Authority levels:
 | `docs/technical/DECISIONS.md` | ADR index and quick-reference decision log. | technical-director; cto for strategic ADRs | architecture-constraint | technical-director, cto, lead-programmer for append-only entries within domain. | New, deprecated, or superseded architecture decision. | Accepted ADR body wins over summary row. | Review index links and status values. | Operational |
 | `docs/internal/adr/ADR-*.md` | Durable internal architecture decisions and supersession records. | technical-director | architecture-constraint | technical-director with human approval for accepted decisions. | Architecture, coordination, runtime, or governance decision with durable consequences. | Latest accepted non-superseded ADR wins within its scope. | ADR status, related ADR links, and `DECISIONS.md` index review. | Operational |
 | `docs/technical/CODEMAP.md` | Codebase navigation and module map. | technical-director | impl-reference | technical-director via `/update-codemap`. | Significant feature merges or structural code changes. | Live code wins; stale codemap must be updated. | Run/update codemap after significant changes; direct spot check. | Operational if present; stale risk |
-| `docs/technical/API.md` | Implemented API reference: endpoints, request/response schemas, auth, errors, and deprecation policy. | backend-developer | impl-reference | backend-developer; tech-writer may improve examples only. | Endpoint surface, schema, auth, error, or deprecation changes. | Runtime implementation after review wins; then `API.md` must be updated. Stable contracts must reflect here after implementation. | Sprint 0.5 skeleton check; endpoint review against implementation/tests. | Planned; currently missing |
+| `docs/technical/API.md` | Implemented API reference: endpoints, request/response schemas, auth, errors, and deprecation policy. | backend-developer | impl-reference | backend-developer; tech-writer may improve examples only. | Endpoint surface, schema, auth, error, or deprecation changes. | Runtime implementation after review wins; then `API.md` must be updated. Stable contracts must reflect here after implementation. | Skeleton exists; endpoint review must compare entries against implementation/tests. | Skeleton exists; endpoint inventory pending |
 | `docs/technical/DATABASE.md` | Implemented database schema, migration notes, indexes, and data integrity rules. | data-engineer | impl-reference | data-engineer; backend-developer may propose. | Schema, migration, index, or data integrity changes. | Applied migrations/runtime schema win; then `DATABASE.md` must be updated. | Compare with migrations/schema files and data-engineer review. | Planned; currently missing |
 
 ### 3.3 Product, Feature, UI, and Contracts
@@ -206,8 +206,8 @@ Sprint 0 acceptance for this registry:
       task files, decision ledger, memory, proposed contracts.
 - [x] Every entry has owner, authority level, update trigger, conflict
       resolution, and verification.
-- [x] `docs/technical/API.md` is marked planned/missing until Sprint 0.5 creates
-      the skeleton.
+- [x] `docs/technical/API.md` skeleton exists for Sprint 0.5; endpoint inventory
+      remains pending until implemented APIs are reviewed.
 - [x] `design/contracts/*` is marked proposed and blocked from broad rollout
       until API skeleton and pilot criteria exist.
 - [x] Registry does not claim to override `CLAUDE.md`, `.claude/settings.json`,

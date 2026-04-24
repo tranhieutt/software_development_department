@@ -4,8 +4,10 @@
 > **Format**: Append-only — never delete or overwrite existing entries. Add new ADRs at the bottom.
 > **Purpose**: Quick-reference log for all architectural decisions. Read by `/orchestrate` in Phase 1 to understand prior constraints before planning execution.
 >
-> For full detailed ADRs (with alternatives, migration plans, validation criteria), see `docs/architecture/adr-NNNN-*.md`.
-> Both must be kept in sync: when `/architecture-decision` creates a detailed ADR file, a summary entry is appended here.
+> For full detailed ADRs (with alternatives, migration plans, validation
+> criteria), see `docs/internal/adr/ADR-*.md`.
+> Both must be kept in sync: when `/architecture-decision-records` creates a
+> detailed ADR file, a summary entry is appended here.
 
 ---
 
@@ -17,7 +19,7 @@
 **Date**: YYYY-MM-DD
 **Status**: Proposed | Accepted | Deprecated | Superseded by ADR-NNN
 **Deciders**: [Name(s) / @agent]
-**Detailed ADR**: [docs/architecture/adr-NNNN-slug.md](../architecture/adr-NNNN-slug.md)
+**Detailed ADR**: [docs/internal/adr/ADR-NNN-slug.md](../internal/adr/ADR-NNN-slug.md)
 
 ### Context
 [One paragraph: what situation or problem prompted this decision.]
@@ -38,6 +40,7 @@
 | --- | --- | --- | --- | --- |
 | 001 | ESM vs CJS Npm Package Compatibility | Accepted | 2026-04-03 | @technical-director |
 | 002 | Puppeteer Launch Config for Serverless | Accepted | 2026-04-03 | @devops-engineer |
+| 006 | Shared State Adoption as Tier 2 Evolution of SDD Coordination | Accepted | 2026-04-23 | User, @technical-director |
 
 ---
 
@@ -89,3 +92,32 @@ Khi deploy Puppeteer lên Google Cloud Run, gặp 3 vấn đề liên tiếp:
 ### Consequences
 - **Positive**: Mọi project cần scraping/automation có template sẵn, deploy xong chạy ngay lần đầu.
 - **Negative**: gen2 tốn tài nguyên hơn gen1; image Docker lớn hơn ~200MB do Chrome deps.
+
+---
+
+## ADR-006: Shared State Adoption as Tier 2 Evolution of SDD Coordination
+
+**Date**: 2026-04-23
+**Status**: Accepted
+**Deciders**: User, @technical-director
+**Detailed ADR**: [docs/internal/adr/ADR-006-shared-state-adoption.md](../internal/adr/ADR-006-shared-state-adoption.md)
+
+### Context
+SDD completed enough Tier 1 harness infrastructure for agents to exist, route,
+recover, and persist state, but shared operational truth remained fragmented
+across specs, coordination policy, ledgers, memory, and planned API documents.
+The earlier "Coordination Engineering" framing risked over-building autonomous
+negotiation before source-of-truth authority and adoption were clear.
+
+### Decision
+Adopt Tier 2 Shared State Adoption and Source-of-Truth Consolidation as the next
+SDD direction. Create authority clarity first, then adopt existing shared-state
+infrastructure, and defer full Coordination Engineering until measurable
+thresholds justify it.
+
+### Consequences
+- **Positive**: Gives SDD a bounded path from harness infrastructure to shared
+  truth without bypassing human, producer, technical-director, or Rule 3
+  authority.
+- **Negative**: Adds registry/API reference maintenance burden and defers Tier 3
+  coordination automation until adoption metrics support it.
