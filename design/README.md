@@ -6,6 +6,7 @@ Lưu trữ tất cả tài liệu thiết kế của dự án.
 design/
 ├── wireframes/       # Low/high-fidelity mockups (Figma exports, images, PDF)
 ├── specs/            # Interaction specs, component specs, design tokens
+├── contracts/        # Pre-implementation interface locks between layers/agents
 ├── research/         # User research reports, usability findings, interview notes
 └── flows/            # User flow diagrams, journey maps
 ```

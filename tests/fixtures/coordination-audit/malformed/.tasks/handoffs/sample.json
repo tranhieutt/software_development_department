@@ -1,0 +1,14 @@
+{
+  "from": "backend-developer",
+  "to": "qa-tester",
+  "task_id": "042",
+  "artifact": "src/api/example.ts",
+  "artifact_status": "complete",
+  "acceptance_criteria": [
+    "Example endpoint returns 201"
+  ],
+  "context_snapshot": null,
+  "risk_tier": "Medium",
+  "ts": "2026-04-24T00:00:00Z",
+  "session": "fixture-branch"
+}

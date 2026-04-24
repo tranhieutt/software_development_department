@@ -1,18 +1,18 @@
 ---
 name: handoff
-description: "Generates a standardized A2A (Agent-to-Agent) handoff contract and saves it to .tasks/handoffs/. Ensures no context is lost when work crosses agent domain boundaries."
-argument-hint: "<from-agent> <to-agent> <artifact> [task_id] [--risk Low|Medium|High] [--status complete|partial|draft] [--criteria \"crit1\" \"crit2\"]"
+description: "Generates the lightweight 3-field handoff summary for cross-domain work and optionally persists a formal handoff artifact for High-risk transfers."
+argument-hint: "<from-agent> <to-agent> <artifact> [task_id] [--risk Low|Medium|High] [--status complete|partial|draft] [--criteria \"crit1\" \"crit2\"] [--formal]"
 user-invocable: true
 allowed-tools: Read, Write, Bash
 effort: 1
-when_to_use: "Run whenever one agent completes its slice and passes work to another agent. Always run BEFORE the receiving agent starts work. Required for any handoff with risk_tier Medium or High (per coordination-rules.md Rule 16)."
+when_to_use: "Run when a cross-domain handoff needs an explicit 3-field summary, or when a High-risk transfer needs a durable handoff file in addition to the summary."
 ---
 
 # Handoff
 
-Generate a structured A2A handoff contract, save it to `.tasks/handoffs/`, and
-optionally append a ledger entry. The receiving agent reads this contract before
-starting work.
+Generate the lightweight handoff summary (`what was built`, `what's missing`,
+`acceptance criteria`) and, when needed, save a formal handoff artifact to
+`.tasks/handoffs/`. The receiver verifies the summary before starting work.
 
 ## Steps
 
@@ -32,6 +32,7 @@ Extract from `$ARGUMENTS`:
 | `--risk` | `Medium` | Risk tier: `Low`, `Medium`, `High` |
 | `--status` | `complete` | Artifact status: `complete`, `partial`, `draft` |
 | `--criteria` | prompt | Acceptance criteria strings (can be multi-value) |
+| `--formal` | off | Force writing a durable handoff file even when risk is not High |
 
 If `from-agent`, `to-agent`, or `artifact` are missing, print usage and stop:
 
@@ -39,7 +40,8 @@ If `from-agent`, `to-agent`, or `artifact` are missing, print usage and stop:
 Usage: /handoff <from-agent> <to-agent> <artifact> [task_id] \
                 [--risk Low|Medium|High] \
                 [--status complete|partial|draft] \
-                [--criteria "criterion 1" "criterion 2"]
+                [--criteria "criterion 1" "criterion 2"] \
+                [--formal]
 
 Example:
   /handoff backend-developer qa-tester src/api/auth.ts 042 \
@@ -86,9 +88,24 @@ Require at least 1 criterion. Reject vague criteria and ask for a rewrite:
 Run `git branch --show-current` to get the current branch for the `session` field.
 Get current ISO timestamp for `ts`.
 
-### 6. Generate contract
+### 6. Generate handoff summary
 
-Build the contract JSON per the schema in `.claude/docs/handoff-schema.md`:
+Build the 3-field summary per `.claude/docs/handoff-schema.md`:
+
+```markdown
+## Handoff Summary
+- What was built: <artifact> is available with its current behavior/status
+- What's missing: remaining gaps, partial work, or "Nothing blocking in current scope"
+- Acceptance criteria:
+  - <crit1>
+  - <crit2>
+```
+
+Also prepare the formal JSON payload only when:
+- `risk_tier` is `High` and the handoff crosses domains, or
+- the caller passes `--formal`
+
+When the formal artifact is needed, use this JSON:
 
 ```json
 {
@@ -105,26 +122,31 @@ Build the contract JSON per the schema in `.claude/docs/handoff-schema.md`:
 }
 ```
 
-### 7. Save contract
+### 7. Save formal contract when required
 
-Write to `.tasks/handoffs/<from-agent>-to-<to-agent>-<task_id>.json`.
-If `task_id` is null, use timestamp: `.tasks/handoffs/<from-agent>-to-<to-agent>-<ts-compact>.json`.
+If formal persistence is required, write to
+`.tasks/handoffs/<from-agent>-to-<to-agent>-<task_id>.json`.
+If `task_id` is null, use timestamp:
+`.tasks/handoffs/<from-agent>-to-<to-agent>-<ts-compact>.json`.
+
+If formal persistence is not required, do not create a file. The markdown
+handoff summary is the default artifact.
 
 ### 8. Ledger entry (Medium / High risk only)
 
 If `risk_tier` is `Medium` or `High`, append to `production/traces/decision_ledger.jsonl`:
 
 ```jsonl
-{"ts":"<ISO>","session":"<branch>","agent_id":"<from-agent>","task_id":"<task_id>","request":"Handoff to <to-agent>","reasoning":"Artifact <artifact> is <status> — transferring ownership","choice":"Handoff contract created","outcome":"pass","risk_tier":"<risk>","duration_s":0}
+{"ts":"<ISO>","session":"<branch>","agent_id":"<from-agent>","task_id":"<task_id>","request":"Handoff to <to-agent>","reasoning":"Artifact <artifact> is <status> — transferring ownership","choice":"Handoff summary prepared","outcome":"pass","risk_tier":"<risk>","duration_s":0}
 ```
 
 ### 9. Display and confirm
 
-Print the contract and a handoff summary:
+Print the summary first, then note whether a durable file was written:
 
 ```text
-🤝 Handoff Contract Generated
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🤝 Handoff Summary Generated
+━━━━━━━━━━━━━━━━━━━━━━━━━━
 
   From  : @<from-agent>
   To    : @<to-agent>
@@ -132,15 +154,21 @@ Print the contract and a handoff summary:
   File  : <artifact> [<status>]
   Risk  : <risk_tier>
 
+  What was built:
+    <one-line built summary>
+
+  What's missing:
+    <one-line gap summary>
+
   Acceptance Criteria:
-    ✓ <criterion 1>
-    ✓ <criterion 2>
+    - <criterion 1>
+    - <criterion 2>
 
   Context Snapshot: <path or "none">
-  Saved to: .tasks/handoffs/<filename>.json
+  [if formal]: Saved to .tasks/handoffs/<filename>.json
   [if Medium/High]: Ledger entry written.
 
-📨 Ready to hand off. @<to-agent> should read the contract above
+📨 Ready to hand off. @<to-agent> should verify the summary above
    before starting work on <artifact>.
 ```
 
@@ -150,7 +178,7 @@ Print the contract and a handoff summary:
 
 When an agent receives a handoff, it must:
 
-1. Read `.tasks/handoffs/<contract-file>.json`
+1. Read the 3-field summary (and the formal file if one exists)
 2. Verify each `acceptance_criterion` against the artifact
 3. If all criteria pass → begin work
 4. If any criterion fails → do NOT start work; reply to sender with:
@@ -177,6 +205,6 @@ When an agent receives a handoff, it must:
 
 # Draft handoff for review before final delivery
 /handoff data-engineer backend-developer src/db/migrations/004_add_users.sql 031 \
-  --status draft --risk High \
+  --status draft --risk High --formal \
   --criteria "Migration runs without error on empty DB" "Down migration restores schema"
 ```

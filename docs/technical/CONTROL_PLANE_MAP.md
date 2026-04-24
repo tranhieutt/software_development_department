@@ -108,7 +108,7 @@ The files that the control plane must touch to keep recovery and audit working. 
 | `production/session-state/active.md` | `session-start.sh` (bootstrap), implementing agent (status block), `session-stop.sh` (close) | On session start, after every significant milestone, and at session end | Crash recovery, `/compact` survival |
 | `.claude/memory/circuit-state.json` | `circuit-guard.sh`, `circuit-updater.sh` | Before / after every Task tool call | Circuit Breaker authoritative state |
 | `production/traces/decision_ledger.jsonl` | `decision-ledger-writer.sh`, `log-commit.sh` | On any Medium/High risk decision, Circuit Breaker transition, handoff, task outcome | Audit trail |
-| `.tasks/handoffs/<from>-to-<to>-<task_id>.json` | Sending agent via `/handoff` | Any cross-domain or Medium/High risk handoff | A2A contract (Rule 16) |
+| `.tasks/handoffs/<from>-to-<to>-<task_id>.json` | Sending agent via `/handoff` | High-risk cross-domain handoff or explicit durable handoff request | Optional durable A2A contract layered on top of the lightweight 3-field summary |
 | `docs/internal/adr/ADR-NNN-*.md` | Architecture decision author | Any architecture-level decision that constrains future work | Durable architectural record |
 | `.claude/memory/MEMORY.md` + Tier 2 files | `persist-memory.sh`, agent via `/annotate` | Whenever a non-obvious gotcha or durable preference is learned | Cross-session knowledge (auto memory system) |
 

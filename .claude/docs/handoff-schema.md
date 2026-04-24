@@ -1,144 +1,105 @@
-# A2A Handoff Schema
+# Lightweight Handoff Schema
 
-> **Purpose:** Standardize context transfer between agents so no information
-> is lost when work crosses domain boundaries.
-> **Owner:** All agents — written by the sender, read by the receiver.
-> **Storage:** `.tasks/handoffs/<from>-to-<to>-<task_id>.json`
-
----
-
-## Why Handoffs Matter
-
-When an agent finishes its slice and passes work to the next agent, two
-failure modes are common:
-
-1. **Context loss** — the receiving agent has no idea what decisions were made
-2. **Assumption mismatch** — the receiver assumes the artifact is complete when
-   it is only partially done
-
-A formal handoff contract prevents both by making the transfer explicit,
-structured, and verifiable.
+> **Purpose:** Keep cross-domain handoffs explicit without repeating the
+> friction of Rule 16's older full-contract workflow.
+> **Owner:** All agents — sender writes it, receiver verifies it.
+> **Default carrier:** `/orchestrate` prompt context between waves.
+> **Optional durable carrier:** `.tasks/handoffs/<from>-to-<to>-<task_id>.json`
+> for High-risk cross-domain transfers or when a formal artifact is explicitly
+> requested.
 
 ---
 
-## Contract Schema
+## Default 3-field schema
 
-```jsonc
-{
-  // Who is sending and who is receiving
-  "from": "<agent-name>",           // e.g. "backend-developer"
-  "to": "<agent-name>",             // e.g. "qa-tester"
+Every cross-domain handoff should carry exactly these three fields:
 
-  // What is being handed off
-  "task_id": "<task-id>",           // links back to .tasks/checkpoints/ and TODO.md
-  "artifact": "<file-or-path>",     // primary deliverable, e.g. "src/api/auth.ts"
-  "artifact_status": "complete | partial | draft",
+```markdown
+## Handoff Summary
+- What was built: <finished artifact or behavior now available>
+- What's missing: <known gaps, partial work, explicit risks, or "Nothing blocking in current scope">
+- Acceptance criteria:
+  - <concrete receiver check 1>
+  - <concrete receiver check 2>
+```
 
-  // What the receiver must verify before accepting
-  "acceptance_criteria": [
-    "<criterion 1>",                // e.g. "POST /auth returns 201 with valid JWT"
-    "<criterion 2>"                 // e.g. "Invalid credentials return 401"
-  ],
+This is the Tier 2 Sprint 3 default. Keep it narrow. Do not add extra required
+fields unless a later ADR changes the rule.
 
-  // Where the receiver can recover full context if needed
-  "context_snapshot": "<path>",     // e.g. ".tasks/checkpoints/auth-api-v1.md"
+---
 
-  // Risk assessment — governs ledger logging (Rule 15)
-  "risk_tier": "Low | Medium | High",
+## When to use which form
 
-  // Metadata
-  "ts": "<ISO timestamp>",
-  "session": "<git branch>"
-}
+| Situation | Required form |
+| :--- | :--- |
+| Cross-domain handoff in `/orchestrate` | 3-field summary in the downstream prompt |
+| Same-domain minor follow-up | Optional; plain text is enough |
+| High-risk cross-domain handoff | 3-field summary plus formal `/handoff` artifact |
+| User explicitly asks for durable handoff file | 3-field summary plus formal `/handoff` artifact |
+
+---
+
+## Field rules
+
+### What was built
+
+State the artifact or behavior that now exists. Name the endpoint, file, UI
+surface, schema change, or test coverage that is ready for the next agent.
+
+Good:
+- `POST /api/users now returns 201 with {id, email, created_at}`
+- `Login form renders, validates required fields, and submits to the new auth endpoint`
+
+Weak:
+- `Backend done`
+- `UI mostly ready`
+
+### What's missing
+
+State only the remaining gap or risk the next agent must know before starting.
+If nothing is blocking inside the approved scope, say that explicitly.
+
+Good:
+- `Rate limiting is not implemented yet`
+- `Happy path is complete; empty-state styling is still pending`
+- `Nothing blocking in current scope`
+
+Weak:
+- `Might need more work`
+- `See files`
+
+### Acceptance criteria
+
+List receiver-verifiable checks, not implementation trivia.
+
+Good:
+- `Frontend receives 201 and the created user id after valid submit`
+- `QA can trigger 401 on invalid credentials`
+- `Receiver sees no schema mismatch in docs/technical/API.md`
+
+Weak:
+- `Works correctly`
+- `Looks good`
+- `Should be fine`
+
+---
+
+## Example
+
+```markdown
+## Handoff Summary
+- What was built: `POST /api/users` validates email, creates the user, and returns `201 {id, email, created_at}`.
+- What's missing: Rate limiting is not implemented yet.
+- Acceptance criteria:
+  - Frontend receives `201` and a persisted `id` after a valid submit.
+  - Invalid email returns `400` with the documented error shape.
 ```
 
 ---
 
-## Field Guide
+## Formal artifact rule
 
-| Field | Required | Notes |
-| :--- | :--- | :--- |
-| `from` | yes | Must match a file in `.claude/agents/` |
-| `to` | yes | Must match a file in `.claude/agents/` |
-| `task_id` | yes | Used to look up checkpoint and task file |
-| `artifact` | yes | Primary file/path being handed off |
-| `artifact_status` | yes | `complete` = fully done; `partial` = more work needed; `draft` = needs review |
-| `acceptance_criteria` | yes | At least 1 item. Testable, not vague. |
-| `context_snapshot` | no | Path to checkpoint file — omit if no checkpoint exists |
-| `risk_tier` | yes | High → mandatory ledger entry; Medium → ledger entry; Low → optional |
-| `ts` | auto | Set by `/handoff` skill |
-| `session` | auto | Set by `/handoff` skill from `git branch` |
-
----
-
-## Acceptance Criteria Rules
-
-Strong criteria (use these):
-- `"POST /auth returns 201 with a signed JWT"`
-- `"All 12 unit tests in auth.test.ts pass"`
-- `"Button is keyboard-operable and has aria-label"`
-
-Weak criteria (avoid these):
-- `"Works correctly"` — not testable
-- `"Looks good"` — subjective
-- `"Should be fine"` — no verification path
-
----
-
-## Example: Backend → QA
-
-```json
-{
-  "from": "backend-developer",
-  "to": "qa-tester",
-  "task_id": "042",
-  "artifact": "src/api/auth.ts",
-  "artifact_status": "complete",
-  "acceptance_criteria": [
-    "POST /auth with valid credentials returns 201 and a signed JWT",
-    "POST /auth with invalid credentials returns 401",
-    "POST /auth with missing body returns 400"
-  ],
-  "context_snapshot": ".tasks/checkpoints/042.md",
-  "risk_tier": "Medium",
-  "ts": "2026-04-16T11:00:00Z",
-  "session": "main"
-}
-```
-
-## Example: Frontend → Lead Programmer (partial handoff)
-
-```json
-{
-  "from": "frontend-developer",
-  "to": "lead-programmer",
-  "task_id": "055",
-  "artifact": "src/components/LoginForm.tsx",
-  "artifact_status": "partial",
-  "acceptance_criteria": [
-    "Form renders without console errors",
-    "Submit button is disabled when fields are empty"
-  ],
-  "context_snapshot": null,
-  "risk_tier": "Low",
-  "ts": "2026-04-16T14:30:00Z",
-  "session": "feature/login-ui"
-}
-```
-
----
-
-## Handoff Lifecycle
-
-```
-Sender runs: /handoff [from] [to] [artifact] [task_id]
-  → skill generates contract JSON
-  → saves to .tasks/handoffs/<from>-to-<to>-<task_id>.json
-  → prints contract for user review
-  → if risk_tier Medium/High → appends entry to decision_ledger.jsonl
-
-Receiver starts work:
-  → reads .tasks/handoffs/<from>-to-<to>-<task_id>.json
-  → verifies each acceptance_criterion before starting
-  → if criteria not met → returns to sender with specific failures listed
-```
+The optional JSON contract remains available for High-risk cross-domain
+handoffs. When used, the formal artifact must still preserve the same three
+semantic fields above. The file exists to make the transfer durable, not to add
+new mandatory process.

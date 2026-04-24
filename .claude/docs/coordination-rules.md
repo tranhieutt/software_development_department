@@ -158,10 +158,11 @@ used instead.
     - Minor corrections passed back within the same agent turn
     - Read-only review requests with no artifact transfer
 
-    **Lightweight protocol (no tooling required):**
-    1. Sending agent states in plain text: what was built, what's missing, acceptance criteria
-    2. Receiving agent acknowledges before starting work
-    3. Formal contract file in `.tasks/handoffs/` is optional — use only for High-risk cross-domain work
+    **Lightweight protocol (default):**
+    1. Sending agent states exactly three fields: what was built, what's missing, acceptance criteria
+    2. `/orchestrate` should auto-carry this 3-field summary into the downstream cross-domain prompt
+    3. Receiving agent acknowledges and verifies the criteria before starting work
+    4. Formal contract file in `.tasks/handoffs/` is optional — use only for High-risk cross-domain work or when a durable artifact is explicitly requested
 
     > **Note (2026-04-21):** Downgraded from MUST to SHOULD — no handoff contracts were
     > generated across multiple sessions, indicating the full protocol has too much friction.

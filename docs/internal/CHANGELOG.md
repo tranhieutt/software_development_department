@@ -6,6 +6,121 @@ Tài liệu này ghi lại lịch sử cập nhật tài liệu và source code 
 
 ## 🗓️ Lịch sử cập nhật
 
+### [v1.58.0] - 2026-04-24
+
+**Chu de:** Clean stale Tier 2 architecture docs after Sprint 4 scaffold
+
+Dot cap nhat nay khong doi quyet dinh kien truc. Muc tieu la don lai cac tai lieu
+Tier 2 de phan biet ro:
+- phan scaffold da xong
+- phan adoption verification van pending
+- phan audit rollout van conditional
+
+#### Changed - Architecture docs cleanup
+
+- Viet gon lai `docs/internal/harness-to-coordination-engineering.md` thanh ban
+  tracker ngan, chi giu current status va backlog con lai.
+- Viet lai `docs/internal/adr/ADR-006-shared-state-adoption.md` de bo migration
+  steps da stale, giu nguyen decision, va chot ro remaining gates cua Tier 2.
+
+#### Verification
+
+- `git diff --check` pass cho 2 file docs da cleanup, chi con CRLF warnings.
+
+### [v1.57.0] - 2026-04-24
+
+**Chu de:** Sprint 4 manual coordination drift audit scaffold
+
+Dot cap nhat nay them `scripts/coordination-audit.js` o che do manual, report-only.
+No khong duoc noi vao CI, hook, hay preflight. Ly do: trigger adoption/drift trong
+ADR-006 van chua du de justify rollout blocking.
+
+#### Added - Coordination audit scaffold
+
+- Them `scripts/coordination-audit.js` de doc contract store, API reference,
+  formal handoff artifacts, va decision ledger nham bat drift co ban.
+- Initial checks hien co:
+  - contract `stable` / `implemented` nhung khong link feature spec
+  - contract `implemented` nhung khong duoc reflect vao `docs/technical/API.md`
+  - formal handoff `Medium` / `High` nhung khong co ledger entry khop
+- Them fixture va smoke test cho script tai
+  `tests/scripts/coordination-audit.test.js` va
+  `tests/fixtures/coordination-audit/malformed/`.
+
+#### Changed - Sprint 4 status clarified
+
+- Sprint 4 duoc implement o muc tooling scaffold, nhung rollout van la manual.
+- Chua claim trigger condition trong ADR da dat; audit script ton tai de phuc vu
+  drift review, khong de bu adoption thap.
+
+#### Verification
+
+- `node tests/scripts/coordination-audit.test.js` pass.
+- `node scripts/coordination-audit.js --fixtures tests/fixtures/coordination-audit/malformed` fail dung nhu ky vong va report drift.
+- `node scripts/coordination-audit.js` pass tren repo hien tai.
+- `scripts/validate-skills.ps1` pass: 126/126, 57 warning nen.
+- `scripts/harness-audit.js --compact` pass: 120/120, readiness warning nen.
+
+### [v1.56.0] - 2026-04-24
+
+**Chu de:** Sprint 3 lightweight handoff schema wired into orchestration flow
+
+Dot cap nhat nay khong mo rong Rule 16 tro lai thanh protocol nang. Muc tieu la
+dua handoff ve 3 field toi thieu va day no vao duong di thuc te nhat:
+`/orchestrate` prompt flow giua cac wave cross-domain.
+
+#### Changed - Lightweight handoff default
+
+- Cap nhat `.claude/skills/orchestrate/SKILL.md` de bat buoc mang theo block
+  `what was built`, `what's missing`, `acceptance criteria` trong prompt xuong
+  cac wave cross-domain.
+- Cap nhat `.claude/docs/coordination-rules.md` Rule 16 de chot 3-field summary
+  la default protocol, va formal handoff file chi con la optional cho handoff
+  High-risk cross-domain hoac khi can durable artifact.
+- Viet lai `.claude/docs/handoff-schema.md` thanh lightweight handoff schema,
+  bo trong tam "prompt-carried summary" va giu JSON file o vai tro optional.
+- Cap nhat `.claude/skills/handoff/SKILL.md` de uu tien generate 3-field summary
+  truoc, chi persist `.tasks/handoffs/*.json` khi High-risk hoac `--formal`.
+- Cap nhat `docs/technical/CONTROL_PLANE_MAP.md` de phan biet handoff summary
+  mac dinh voi durable handoff file optional.
+
+#### Verification
+
+- `git diff --check` pass cho package Sprint 3 docs/skill wiring.
+- `scripts/validate-skills.ps1` pass: 126/126, 57 warning nen.
+- `scripts/harness-audit.js --compact` pass: 120/120, readiness warning nen.
+- Chua the claim verify ADR Sprint 3 adoption target (`3 consecutive handoffs`,
+  `>= 70% adoption`) vi can du lieu van hanh thuc te sau sprint.
+
+### [v1.55.0] - 2026-04-24
+
+**Chu de:** Sprint 2 contract-store scaffold without broad rollout
+
+Dot cap nhat nay mo `design/contracts/` theo huong pilot nho, nhung giu pham vi
+chat de tranh over-claim contract adoption khi repo chua co `design/specs/*`
+feature specs cho mot pilot end-to-end.
+
+#### Added - Contract store scaffold
+
+- Them `design/contracts/README.md` de dinh nghia source-of-truth rule,
+  contract lifecycle, va current Sprint 2 scope.
+- Them `design/contracts/contract-template.md` lam khung contract toi thieu.
+- Them `design/contracts/decision-ledger-query-v1.contract.md` lam pilot contract
+  o trang thai `proposed`, gan voi PRD FR-021 va ADR-006.
+- Cap nhat `design/README.md` de dang ky subdirectory `contracts/`.
+
+#### Changed - Registry status for contract store
+
+- Cap nhat `docs/technical/SOURCE_OF_TRUTH_REGISTRY.md` de danh dau
+  `design/contracts/*` la pilot scaffold da ton tai, nhung broad rollout van bi
+  block.
+
+#### Verification
+
+- `git diff --check` pass cho package contract-store scaffold.
+- `scripts/validate-skills.ps1` pass: 126/126, 57 warning nen.
+- `scripts/harness-audit.js --compact` pass: 120/120, readiness warning nen.
+
 ### [v1.54.0] - 2026-04-23
 
 **Chu de:** Shared-state adoption layer - source-of-truth governance before Coordination Engineering

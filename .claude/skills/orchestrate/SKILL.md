@@ -219,11 +219,23 @@ You are being invoked as part of an orchestrated execution of the following task
 **Read these docs before starting** (prior agents have updated them):
 - [list specific files with a note on what changed]
 
+**Handoff summary**:
+- What was built: [required for any cross-domain dependency from a prior wave; if none, say "No cross-domain handoff summary"]
+- What's missing: [required for any cross-domain dependency from a prior wave; name remaining gaps, explicit risks, or "Nothing blocking in current scope"]
+- Acceptance criteria: [required for any cross-domain dependency from a prior wave; concrete bullet list the receiving agent can verify before continuing]
+
 **Your deliverable**:
 [Exact description of what "done" looks like]
 
 Follow your standard working protocol. Adhere to all CLAUDE.md conventions. Commit your work with Conventional Commits format when done.
 ```
+
+The handoff summary is mandatory whenever work moves across domains between
+waves, such as `backend-developer` -> `frontend-developer`,
+`frontend-developer` -> `qa-tester`, or `data-engineer` -> `backend-developer`.
+Keep it to exactly the three fields above. Do not expand it into a larger
+contract unless the handoff is High-risk and needs the separate `/handoff`
+artifact.
 
 ### 7b. Launch the wave
 
@@ -237,6 +249,8 @@ After each wave, summarise what each agent produced:
 - Files created or modified
 - Key decisions made (table names, endpoint paths, component names)
 - Any blockers or handoff notes flagged by the agent
+- For every cross-domain downstream dependency, prepare a 3-field handoff block:
+  what was built, what's missing, acceptance criteria
 
 Mark completed agents done in the TodoWrite list. Use this summary to build the "Context from prior waves" block for the next wave.
 
@@ -303,5 +317,8 @@ When all waves complete, present a consolidated report:
 - Only invoke agents listed in `.claude/docs/agent-roster.md`. Do not invent new agents.
 - PRD.md is read-only — reference it for FR numbers but never modify it.
 - Agents own their docs. Do not attempt to write to docs owned by another agent (see each agent's "Documents You Own" section).
+- For any cross-domain handoff, always carry the 3-field handoff summary into the
+  next wave prompt. Use formal `/handoff` files only for High-risk cross-domain
+  transfers or when the user explicitly asks for a durable handoff artifact.
 
 > **Routing table maintenance**: If new agents are added to the department, update the routing table in Phase 2 to include them.
