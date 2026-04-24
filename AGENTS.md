@@ -50,6 +50,26 @@ Preserve these boundaries:
 - Do not claim work is done without fresh evidence.
 - Do not commit or push unless the user explicitly asks.
 
+## Quick Start In Codex
+
+Codex does not have Claude slash commands, so the closest equivalent to
+Claude's `/start` is to begin the session with the prompt in:
+
+- `.codex/START.md`
+
+That prompt tells Codex to:
+
+1. use the Codex adapter in `.claude/skills/codex-sdd/SKILL.md`
+2. route through `.claude/skills/using-sdd/SKILL.md`
+3. follow `.claude/skills/start/SKILL.md`
+4. ask the same onboarding question Claude would ask before any edits
+
+If you do not want to open the file, paste this directly into Codex:
+
+```text
+Use codex-sdd, then route through using-sdd, then run the start workflow for this repo.
+```
+
 ## Tool Mapping
 
 | Claude-style tool | Codex equivalent |

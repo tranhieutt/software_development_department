@@ -35,10 +35,31 @@ does not change Claude Code runtime behavior.
 
 - Start with `AGENTS.md` when using Codex in this repo.
 - Install/discover SDD skills through `.codex/INSTALL.md`.
+- Use `.codex/START.md` as the recommended first prompt when you want the
+  Codex equivalent of Claude's `/start` workflow.
 - Use `docs/codex-compatibility.md` for the Claude-to-Codex tool mapping,
   manual hook equivalents, and verification checklist.
 - Run `powershell -ExecutionPolicy Bypass -File scripts\codex-preflight.ps1`
   before risky Codex work or completion claims.
+
+### Codex Session Start
+
+Codex does not support Claude slash commands directly. The closest equivalent
+to `/start` is the adapter prompt in `.codex/START.md`.
+
+Recommended flow:
+
+1. Open Codex in this repository.
+2. Paste the prompt from `.codex/START.md`.
+3. Let Codex route through `codex-sdd` -> `using-sdd` -> `start`.
+4. Answer the onboarding A/B/C/D question.
+5. Confirm the next workflow before Codex edits anything.
+
+Short form prompt:
+
+```text
+Use codex-sdd, then route through using-sdd, then run the start workflow for this repo.
+```
 
 ## The Problem
 
@@ -278,6 +299,26 @@ Run `/start` — the system asks where you are (new concept, existing codebase, 
 
 **Antigravity Platform**: Open the directory in Antigravity. The `.claude/` architecture loads automatically. All 123 workflows are available immediately — just assign tasks.
 
+### Setup (Codex)
+
+```powershell
+git clone https://github.com/tranhieutt/software_development_department.git my-project
+cd my-project
+```
+
+Optional local skill discovery:
+
+```powershell
+$repo = (Get-Location).Path
+New-Item -ItemType Directory -Force -Path "$env:USERPROFILE\.agents\skills"
+cmd /c mklink /J "$env:USERPROFILE\.agents\skills\sdd" "$repo\.claude\skills"
+```
+
+Then start Codex in the repo and paste the prompt from `.codex/START.md`.
+That gives you the Codex equivalent of `/start`: adapter bootstrap, repo-state
+inspection, the onboarding A/B/C/D question, and a routed next workflow
+without automatic edits.
+
 ### Entry Points
 
 | Situation | Command |
@@ -287,6 +328,8 @@ Run `/start` — the system asks where you are (new concept, existing codebase, 
 | Planning work from a backlog | `/sprint-plan` |
 | Coordinating multiple agents on a feature | `/orchestrate` |
 | Unsure where to begin | `/start` |
+
+For Codex, use the `.codex/START.md` prompt for the `/start` equivalent.
 
 ---
 

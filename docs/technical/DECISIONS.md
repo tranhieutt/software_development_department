@@ -41,6 +41,7 @@
 | 001 | ESM vs CJS Npm Package Compatibility | Accepted | 2026-04-03 | @technical-director |
 | 002 | Puppeteer Launch Config for Serverless | Accepted | 2026-04-03 | @devops-engineer |
 | 006 | Shared State Adoption as Tier 2 Evolution of SDD Coordination | Accepted | 2026-04-23 | User, @technical-director |
+| 007 | Shared SDD Core with Dual Execution Lanes for Claude and Codex | Accepted | 2026-04-24 | User, @technical-director |
 
 ---
 
@@ -121,3 +122,30 @@ thresholds justify it.
   authority.
 - **Negative**: Adds registry/API reference maintenance burden and defers Tier 3
   coordination automation until adoption metrics support it.
+
+---
+
+## ADR-007: Shared SDD Core with Dual Execution Lanes for Claude and Codex
+
+**Date**: 2026-04-24
+**Status**: Accepted
+**Deciders**: User, @technical-director
+**Detailed ADR**: [docs/internal/adr/ADR-007-shared-sdd-core-dual-execution-lanes.md](../internal/adr/ADR-007-shared-sdd-core-dual-execution-lanes.md)
+
+### Context
+The intended product-development model is to use both Claude and Codex in the
+same SDD-governed repository for CRM, SaaS, and AI Agent work. The challenge is
+to exploit each runtime's strengths without creating two divergent process
+systems or two competing sources of truth.
+
+### Decision
+Operate SDD as one shared core with two lanes: Claude as the default control
+plane for DEFINE/PLAN/REVIEW and high-risk escalation, and Codex as the default
+execution plane for scoped BUILD work, local verification, and terminal-heavy
+implementation.
+
+### Consequences
+- **Positive**: Preserves one source of truth while exploiting both runtimes'
+  strengths.
+- **Negative**: Requires explicit handoff discipline and continued Codex adapter
+  maintenance instead of a full native Codex runtime.

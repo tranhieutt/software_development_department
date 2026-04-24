@@ -58,6 +58,7 @@ $required = @(
     "AGENTS.md",
     "CLAUDE.md",
     ".codex/INSTALL.md",
+    ".codex/START.md",
     "docs/codex-compatibility.md",
     "docs/technical/SDD_LIFECYCLE_MAP.md",
     ".claude/settings.json",

@@ -20,6 +20,18 @@ Test-Path "$env:USERPROFILE\.agents\skills\sdd"
 Get-ChildItem "$env:USERPROFILE\.agents\skills\sdd" | Select-Object -First 5
 ```
 
+## First Session In Codex
+
+After the junction is installed, start Codex in this repository and use the
+prompt in:
+
+```text
+.codex/START.md
+```
+
+That file gives Codex the nearest equivalent to Claude's `/start` workflow:
+adapter bootstrap -> `using-sdd` routing -> `start` onboarding.
+
 ## Portable Template
 
 If the repository lives somewhere else:
@@ -41,6 +53,7 @@ Remove-Item "$env:USERPROFILE\.agents\skills\sdd"
 ## Notes
 
 - The junction makes Codex discover the same skills Claude uses.
+- `.codex/START.md` is the recommended first prompt for Codex onboarding.
 - Do not copy the skill files unless you intentionally want a detached fork.
 - Do not modify `.claude/settings.json` for Codex installation.
 - Claude Code hooks do not run automatically in Codex; use `AGENTS.md` and

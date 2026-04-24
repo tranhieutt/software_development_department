@@ -22,6 +22,7 @@ Claude Code
 Codex
   AGENTS.md
   .codex/INSTALL.md
+  .codex/START.md
   docs/codex-compatibility.md
   optional junction: ~/.agents/skills/sdd -> .claude/skills
 ```
@@ -50,6 +51,7 @@ Claude remains the runtime owner. Codex is a compatible client.
 | Agent definitions | `.claude/agents` | Readable as reference | Manual |
 | Hook registration | `.claude/settings.json` | Not executed automatically | Claude-only |
 | Permission model | Claude settings and hooks | Codex sandbox and approvals | Adapter |
+| Start workflow | `/start` | `.codex/START.md` -> `codex-sdd` -> `using-sdd` -> `start` | Adapter |
 | Pre-code gate | Hook + skill discipline | Stated manually before edits | Manual |
 | Skill validation | `scripts/validate-skills.*` | Same scripts | Native |
 | Harness audit | `scripts/harness-audit.js` | Same script | Native |
@@ -67,13 +69,14 @@ Codex should:
 
 1. Treat `.claude/` as the canonical SDD system.
 2. Use `.claude/skills/codex-sdd/SKILL.md` for Codex-specific adaptation.
-3. Read `.claude/skills/using-sdd/SKILL.md` before non-trivial work.
-4. Use `docs/technical/SDD_LIFECYCLE_MAP.md` for phase orientation.
-5. State the pre-code gate before implementation edits.
-6. Use `apply_patch` for edits.
-7. Use fresh verification before completion claims.
-8. Preserve unrelated user changes and untracked files.
-9. Avoid changing Claude runtime files for Codex-only reasons.
+3. Use `.codex/START.md` as the recommended first prompt when the goal is Claude-like onboarding.
+4. Read `.claude/skills/using-sdd/SKILL.md` before non-trivial work.
+5. Use `docs/technical/SDD_LIFECYCLE_MAP.md` for phase orientation.
+6. State the pre-code gate before implementation edits.
+7. Use `apply_patch` for edits.
+8. Use fresh verification before completion claims.
+9. Preserve unrelated user changes and untracked files.
+10. Avoid changing Claude runtime files for Codex-only reasons.
 
 Codex should not:
 
@@ -106,7 +109,7 @@ Codex should not:
 
 | Claude hook behavior | Codex equivalent today |
 | --- | --- |
-| Session bootstrap | Read `AGENTS.md`, `using-sdd`, lifecycle map, and relevant memory. |
+| Session bootstrap | Read `AGENTS.md`, `.codex/START.md`, `using-sdd`, lifecycle map, and relevant memory. |
 | Prompt context injection | Manually inspect relevant `.claude/memory` files when needed. |
 | Bash safety | Follow Codex sandbox and escalation rules. |
 | Pre-code gate | State the gate line before edits. |
@@ -125,6 +128,7 @@ After adapter changes:
 ```powershell
 Test-Path AGENTS.md
 Test-Path .codex\INSTALL.md
+Test-Path .codex\START.md
 Test-Path docs\codex-compatibility.md
 Test-Path scripts\codex-preflight.ps1
 powershell -ExecutionPolicy Bypass -File scripts\validate-skills.ps1
@@ -147,11 +151,13 @@ Get-ChildItem "$env:USERPROFILE\.agents\skills\sdd" | Select-Object -First 5
 Manual Codex behavior check:
 
 1. Start Codex in the SDD repo.
-2. Ask for a non-trivial software-development task.
-3. Confirm Codex routes through `using-sdd`.
-4. Confirm Codex states a pre-code gate before edits.
-5. Confirm Codex uses `apply_patch` for file edits.
-6. Confirm Codex reports fresh verification before completion.
+2. Paste the prompt from `.codex/START.md`.
+3. Confirm Codex routes through `codex-sdd` and then `using-sdd`.
+4. Confirm Codex asks the onboarding A/B/C/D question from `start`.
+5. Ask for a non-trivial software-development task.
+6. Confirm Codex states a pre-code gate before edits.
+7. Confirm Codex uses `apply_patch` for file edits.
+8. Confirm Codex reports fresh verification before completion.
 
 Manual Claude regression check:
 
@@ -169,6 +175,8 @@ The additive Codex adapter baseline is already present in the repo:
 
 - `AGENTS.md`
 - `.codex/INSTALL.md`
+- `.codex/START.md`
+- `docs/technical/CLAUDE_CODEX_OPERATING_MODEL.md`
 - `docs/codex-compatibility.md`
 - `.claude/skills/codex-sdd/SKILL.md`
 - `scripts/codex-preflight.ps1`
@@ -178,6 +186,7 @@ The additive Codex adapter baseline is already present in the repo:
 This means Codex now has:
 
 - a repo entrypoint,
+- a Codex session-start shortcut equivalent to Claude `/start`,
 - a documented skill discovery path,
 - Claude-to-Codex tool mapping,
 - manual replacements for Claude hook behavior,

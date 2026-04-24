@@ -20,7 +20,7 @@ Bạn có thể chọn một trong hai cách sau để khởi tạo môi trườ
 
 ### Cách A: Sử dụng Script tự động (Khuyên dùng)
 Đây là cách nhanh nhất và tránh sai sót:
-1.  **Mở Terminal** tại thư mục SDD (`E:\SDD`).
+1.  **Mở Terminal** tại thư mục SDD (`E:\SDD-Upgrade`).
 2.  **Chạy lệnh:**
     ```powershell
     .\init-sdd.ps1 -Path "D:\Đường_Dẫn_Dự_Án_Mới"
@@ -41,7 +41,7 @@ Nếu bạn muốn tự kiểm soát các file được copy:
 
 ### 4. 🎨 Tài liệu Trực quan (Diagrams)
 SDD hiện hỗ trợ vẽ sơ đồ kiến trúc tự động với chất lượng premium:
-- Xem sơ đồ kiến trúc mẫu của hệ thống: `E:\SDD\docs\visual-standards\sdd-architecture.png`.
+- Xem sơ đồ kiến trúc mẫu của hệ thống: `E:\SDD-Upgrade\docs\visual-standards\sdd-architecture.png`.
 - Tự vẽ sơ đồ cho tính năng mới bằng lệnh: `/visualize [mô tả sơ đồ]`.
 
 ---
