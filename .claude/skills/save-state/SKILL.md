@@ -30,7 +30,7 @@ Parse `$ARGUMENTS` to extract:
 Before writing anything, collect the following from the current conversation and working state:
 
 - **Current task**: What is the primary task being worked on right now?
-- **agent_id**: Which agent is currently executing (e.g. `backend-developer`, `qa-tester`)?
+- **agent_id**: Which agent is currently executing (e.g. `backend-developer`, `qa-engineer`)?
 - **Progress**: What has been completed in this session? List key milestones.
 - **Decisions made**: What architectural, design, or implementation decisions were made? (These are the most important to preserve.)
 - **Files modified**: Run `git diff --name-only && git diff --staged --name-only && git ls-files --others --exclude-standard` to get the current working tree state.

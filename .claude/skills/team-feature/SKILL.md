@@ -1,7 +1,7 @@
 ﻿---
 name: team-feature
 type: workflow
-description: "Orchestrates a cross-functional feature team of product-manager, ux-designer, frontend-developer, backend-developer, and qa-tester to deliver a complete feature from specification to tested implementation. Use when a feature requires full-stack coordinated delivery."
+description: "Orchestrates a cross-functional feature team of product-manager, ux-designer, frontend-developer, backend-developer, and qa-engineer to deliver a complete feature from specification to tested implementation. Use when a feature requires full-stack coordinated delivery."
 argument-hint: "[feature description or user story]"
 user-invocable: true
 allowed-tools: Read, Glob, Grep, Write, Edit, Bash, Task, AskUserQuestion, TodoWrite
@@ -21,7 +21,7 @@ The user must approve before moving to the next phase.
 - **ux-designer** — User flows, wireframes, interaction design
 - **backend-developer** — API design and implementation
 - **frontend-developer** — UI components and client-side integration
-- **qa-tester** — Test planning and validation
+- **qa-engineer** — Test planning and validation
 
 ## How to Delegate
 
@@ -30,7 +30,7 @@ Use the Task tool to spawn each team member as a subagent:
 - `subagent_type: ux-designer`
 - `subagent_type: backend-developer`
 - `subagent_type: frontend-developer`
-- `subagent_type: qa-tester`
+- `subagent_type: qa-engineer`
 
 Always provide full context in each agent's prompt (feature requirements, existing patterns, API conventions). Launch independent agents in parallel where the pipeline allows (e.g., backend + UX design can proceed in parallel after spec is approved).
 
@@ -64,7 +64,7 @@ Iterate until approved.
 Once backend is done, frontend-developer integrates with real API.
 
 ### Phase 5: QA
-Delegate to **qa-tester**:
+Delegate to **qa-engineer**:
 - Test against acceptance criteria
 - Cross-browser/cross-device testing if relevant
 - Regression testing on adjacent features

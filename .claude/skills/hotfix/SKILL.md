@@ -40,7 +40,7 @@ When this skill is invoked:
 
    ### Approvals
    - [ ] Fix reviewed by lead-programmer
-   - [ ] Regression test passed (qa-tester)
+   - [ ] Regression test passed (qa-engineer)
    - [ ] Release approved (producer)
 
    ### Rollback Plan
@@ -60,7 +60,7 @@ When this skill is invoked:
 
 6b. **Collect approvals** — Use the Task tool to request sign-off:
    - `subagent_type: lead-programmer` — Review the fix for correctness and side effects
-   - `subagent_type: qa-tester` — Run targeted regression tests on the affected system
+   - `subagent_type: qa-engineer` — Run targeted regression tests on the affected system
    - `subagent_type: producer` — Approve deployment timing and communication plan
 
 7. **Output a summary** with: severity, root cause, fix applied, testing status, and what approvals are still needed before deployment.

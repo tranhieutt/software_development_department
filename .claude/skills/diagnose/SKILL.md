@@ -39,14 +39,14 @@ when_to_use: "When a bug is reproducible but cause is unknown, when a 'fix' has 
   investigation.json      verification.json      solution.json          implementation
   (root_cause,           (status: confirmed |    (3 options:           (delegates to
    evidence[],            refuted | inconclusive, Quick/Strategic/     backend-developer,
-   confidence)            reproduction_steps)    Future-Proof)         qa-tester, etc.)
+   confidence)            reproduction_steps)    Future-Proof)         qa-engineer, etc.)
 ```
 
 Each stage produces a **required artifact** saved to `.investigations/<task_id>/` and a **handoff contract** (per Rule 16) to the next agent.
 
 ## Stage 1 â€” Investigation
 
-**Agent:** `investigator`
+**Agent:** `diagnostics` (Investigation role)
 **Goal:** Produce a falsifiable root-cause hypothesis backed by empirical evidence.
 
 ### Inputs
@@ -74,7 +74,8 @@ Each stage produces a **required artifact** saved to `.investigations/<task_id>/
     {"type": "code", "ref": "src/services/order.service.ts:142", "summary": "Unbounded .map+await"}
   ],
   "unknowns": ["Why only eu-west-1?", "When did this start?"],
-  "next_agent": "verifier"
+  "next_agent": "diagnostics",
+  "next_stage": "verification"
 }
 ```
 
@@ -85,7 +86,7 @@ Each stage produces a **required artifact** saved to `.investigations/<task_id>/
 
 ## Stage 2 â€” Verification
 
-**Agent:** `verifier`
+**Agent:** `diagnostics` (Verification role)
 **Goal:** Attempt to **refute** the hypothesis. Only confirmed if refutation fails.
 
 ### Inputs
@@ -107,20 +108,20 @@ Each stage produces a **required artifact** saved to `.investigations/<task_id>/
     "Network flaps (ruled out: no packet loss in window)"
   ],
   "confidence": "high",
-  "recommendation": "Proceed to solver â€” cause confirmed necessary AND sufficient"
+  "recommendation": "Proceed to Solution stage â€” cause confirmed necessary AND sufficient"
 }
 ```
 
 ### Decision flow
 | `status`       | Next action                                                          |
 | -------------- | -------------------------------------------------------------------- |
-| `confirmed`    | Hand off to `solver`                                                 |
-| `refuted`      | Return to `investigator` with counter-evidence. Max 2 round-trips.   |
-| `inconclusive` | STOP. Surface to user with all evidence. Do NOT proceed to solver.   |
+| `confirmed`    | Proceed to Solution stage (same `diagnostics` agent)                 |
+| `refuted`      | Return to Investigation stage with counter-evidence. Max 2 round-trips. |
+| `inconclusive` | STOP. Surface to user with all evidence. Do NOT proceed to Solution stage. |
 
 ## Stage 3 â€” Solution
 
-**Agent:** `solver`
+**Agent:** `diagnostics` (Solution role)
 **Goal:** Generate 3 solution options with explicit tradeoffs; never pick silently.
 
 ### Required output â€” `solution.json`
@@ -172,7 +173,7 @@ Each stage produces a **required artifact** saved to `.investigations/<task_id>/
    - Acceptance criteria derived from `investigation.hypothesis.falsifiable_by`
 4. Append ledger entry (Rule 15) to `production/traces/decision_ledger.jsonl`:
 ```jsonl
-{"ts":"2026-04-17T14:22:00Z","session":"main","agent_id":"lead-programmer","task_id":"BUG-417","request":"/diagnose BUG-417","reasoning":"Verified N+1 as necessary+sufficient; selected Strategic per solver recommendation","choice":"Strategic refactor of calculateTotal()","outcome":"pass","risk_tier":"Medium","duration_s":1840}
+{"ts":"2026-04-17T14:22:00Z","session":"main","agent_id":"lead-programmer","task_id":"BUG-417","request":"/diagnose BUG-417","reasoning":"Verified N+1 as necessary+sufficient; selected Strategic per Solution-stage recommendation","choice":"Strategic refactor of calculateTotal()","outcome":"pass","risk_tier":"Medium","duration_s":1840}
 ```
 
 ## Artifact storage
@@ -196,10 +197,10 @@ All intermediate reports MUST be saved to `.investigations/<task_id>/`:
 
 | Trigger                                           | Escalate to                                    |
 | ------------------------------------------------- | ---------------------------------------------- |
-| `investigator` fails 3Ã— (Rule 14 OPEN)            | Fallback to `solver` with raw symptom          |
-| `verifier` returns `inconclusive` twice           | Surface to user; request manual reproduction   |
-| `solver` cannot produce 3 distinct options        | Escalate to `technical-director` â€” scope unclear |
-| User rejects all 3 options                        | Return to `investigator`; hypothesis likely wrong |
+| `diagnostics` circuit OPEN in Investigation (Rule 14) | Surface raw symptom to user; skip pipeline, request manual triage |
+| Verification stage returns `inconclusive` twice   | Surface to user; request manual reproduction   |
+| Solution stage cannot produce 3 distinct options  | Escalate to `technical-director` â€” scope unclear |
+| User rejects all 3 options                        | Return to Investigation stage; hypothesis likely wrong |
 | Bug reoccurs after fix merges                     | Restart `/diagnose` with new `task_id`; link prior investigation in `unknowns[]` |
 
 ## Integration with coordination rules
@@ -216,27 +217,27 @@ All intermediate reports MUST be saved to `.investigations/<task_id>/`:
 ```
 /diagnose flaky-checkout-e2e
   â†“
-Stage 1 â†’ investigator
+Stage 1 â†’ Investigation (diagnostics)
   hypothesis: "Test clicks #submit before React hydration completes on slow CI runners"
   evidence: [CI traces showing hydration marker missing, local has DevTools overhead masking timing]
   confidence: medium (cannot reproduce locally)
   â†“
-Stage 2 â†’ verifier
+Stage 2 â†’ Verification (diagnostics)
   triangulation:
     - Inject 500ms delay before click â†’ test passes 50/50 runs âœ“
     - Remove delay â†’ fails 9/50 âœ—
     - Check for hydration marker instead of fixed delay â†’ passes 50/50 âœ“
   status: confirmed
   â†“
-Stage 3 â†’ solver
+Stage 3 â†’ Solution (diagnostics)
   Quick: add sleep(500ms)              [masks issue]
   Strategic: waitFor hydration marker  [addresses root cause]
   Future-Proof: custom test util that always waits for RSC boundary [reusable]
   recommendation: Strategic
   â†“
 Stage 4 â†’ lead-programmer
-  selects Strategic; assigns to qa-tester
-  handoff contract: "qa-tester updates checkout.e2e.test.ts to use waitFor(hydrationMarker)"
+  selects Strategic; assigns to qa-engineer
+  handoff contract: "qa-engineer updates checkout.e2e.test.ts to use waitFor(hydrationMarker)"
   acceptance_criteria: ["10 CI runs in a row pass", "no sleep() in test"]
   ledger entry written
 ```

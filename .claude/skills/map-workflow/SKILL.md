@@ -65,7 +65,7 @@ Using the pattern and agents, fill in the workflow schema from
 
 **Parallel:** First agent in list becomes the `orchestrate` node. Last agent
 becomes the `merge` node. All middle agents run in parallel from orchestrate
-to merge. A `qa-tester` node is appended after merge if not already in the list.
+to merge. A `qa-engineer` node is appended after merge if not already in the list.
 
 **Hierarchical:** First agent becomes the `plan` (supervisor) node.
 Remaining agents are parallel specialist nodes. First agent is also the final
@@ -132,7 +132,7 @@ After the user confirms, hand off to `@producer` with the instruction:
 ```bash
 # Simple 3-agent pipeline
 /map-workflow --pattern Sequential \
-  --agents "technical-director,backend-developer,qa-tester" \
+  --agents "technical-director,backend-developer,qa-engineer" \
   --task "Build JWT auth endpoint"
 
 # Parallel frontend + backend
@@ -142,11 +142,11 @@ After the user confirms, hand off to `@producer` with the instruction:
 
 # TDD loop, max 3 retries
 /map-workflow --pattern Iterative \
-  --agents "backend-developer,qa-tester" \
+  --agents "backend-developer,qa-engineer" \
   --task "Payment service" --max-iter 3
 
 # Save to .tasks/
 /map-workflow --pattern Hierarchical \
-  --agents "lead-programmer,backend-developer,frontend-developer,qa-tester" \
+  --agents "lead-programmer,backend-developer,frontend-developer,qa-engineer" \
   --task "Sprint 04 wave 1" --save sprint-04-wave-1
 ```

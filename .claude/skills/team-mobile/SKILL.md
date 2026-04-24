@@ -1,7 +1,7 @@
 ﻿---
 name: team-mobile
 type: workflow
-description: "Orchestrates the mobile team of ux-designer, mobile-developer, qa-tester, accessibility-specialist, and release-manager to design, implement, and ship a mobile feature from concept to app store release. Use when a mobile feature needs full-team delivery."
+description: "Orchestrates the mobile team of ux-designer, mobile-developer, qa-engineer, accessibility-specialist, and release-manager to design, implement, and ship a mobile feature from concept to app store release. Use when a mobile feature needs full-team delivery."
 argument-hint: "[mobile feature or screen description]"
 user-invocable: true
 allowed-tools: Read, Glob, Grep, Write, Edit, Bash, Task, AskUserQuestion, TodoWrite
@@ -18,7 +18,7 @@ When this skill is invoked, orchestrate the mobile team through a structured del
 - **ux-designer** — Mobile UX flows, wireframes, platform-specific interaction design
 - **mobile-developer** — Cross-platform or native implementation
 - **accessibility-specialist** — Mobile accessibility audit (VoiceOver / TalkBack)
-- **qa-tester** — Device and platform testing
+- **qa-engineer** — Device and platform testing
 - **release-manager** — Build signing, store submission, staged rollout
 
 ## Pipeline
@@ -80,7 +80,7 @@ Delegate to **accessibility-specialist** with mobile focus:
 
 ### Phase 5: QA & Device Testing
 
-Delegate to **qa-tester**:
+Delegate to **qa-engineer**:
 
 - Test on real devices (not just simulator/emulator):
   - iOS: iPhone SE (small), iPhone 15 (standard), iPad if tablet-targeted

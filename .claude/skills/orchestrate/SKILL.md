@@ -48,7 +48,7 @@ Apply this domain routing:
 | API endpoints, business logic, auth, background jobs, integrations | `backend-developer` |
 | UI components, pages, client-side state, styling, frontend performance | `frontend-developer` |
 | Full-stack features spanning frontend and backend | `fullstack-developer` |
-| E2E tests, test strategy, coverage, test cases | `qa-tester` |
+| E2E tests, test strategy, coverage, test cases | `qa-engineer` |
 | QA strategy sign-off, release quality gates | `qa-lead` |
 | User guide updates, README, API doc clarity, onboarding guides | `tech-writer` |
 | CI/CD pipelines, GitHub Actions, deployment automation | `devops-engineer` |
@@ -87,7 +87,7 @@ For each pair of identified agents, determine whether they are **sequential** (o
 
 7. **`technical-director` → `devops-engineer`** when the task involves new deployment environments or significant infrastructure changes.
 
-8. **`qa-tester` → `qa-lead`** when the task requires formal QA sign-off before synthesis.
+8. **`qa-engineer` → `qa-lead`** when the task requires formal QA sign-off before synthesis.
 
 ### Parallel-safe combinations — these can run simultaneously:
 
@@ -100,7 +100,7 @@ For each pair of identified agents, determine whether they are **sequential** (o
 
 ### Judgment calls:
 
-- **`qa-tester` timing**: default to running QA in parallel with implementation (TDD) for logic-heavy tasks (auth, payments, data processing); run QA after implementation for UI-heavy tasks. State your reasoning in the wave plan.
+- **`qa-engineer` timing**: default to running QA in parallel with implementation (TDD) for logic-heavy tasks (auth, payments, data processing); run QA after implementation for UI-heavy tasks. State your reasoning in the wave plan.
 
 ---
 
@@ -233,7 +233,7 @@ Follow your standard working protocol. Adhere to all CLAUDE.md conventions. Comm
 
 The handoff summary is mandatory whenever work moves across domains between
 waves, such as `backend-developer` -> `frontend-developer`,
-`frontend-developer` -> `qa-tester`, or `data-engineer` -> `backend-developer`.
+`frontend-developer` -> `qa-engineer`, or `data-engineer` -> `backend-developer`.
 Keep it to exactly the three fields above. Do not expand it into a larger
 contract unless the handoff is High-risk and needs the separate `/handoff`
 artifact.

@@ -24,7 +24,7 @@ Extract from `$ARGUMENTS`:
 | Positional | Required | Description |
 | :--- | :--- | :--- |
 | `<from-agent>` | yes | Sending agent name (e.g. `backend-developer`) |
-| `<to-agent>` | yes | Receiving agent name (e.g. `qa-tester`) |
+| `<to-agent>` | yes | Receiving agent name (e.g. `qa-engineer`) |
 | `<artifact>` | yes | Primary file or path being handed off |
 | `[task_id]` | no | Task ID to link checkpoint â€” auto-detected from active checkpoint if omitted |
 
@@ -45,7 +45,7 @@ Usage: /handoff <from-agent> <to-agent> <artifact> [task_id] \
                 [--formal]
 
 Example:
-  /handoff backend-developer qa-tester src/api/auth.ts 042 \
+  /handoff backend-developer qa-engineer src/api/auth.ts 042 \
            --risk Medium --criteria "POST /auth returns 201" "Invalid creds â†’ 401"
 
 Schema reference: .claude/docs/handoff-schema.md
@@ -197,7 +197,7 @@ When an agent receives a handoff, it must:
 
 ```bash
 # Basic handoff â€” backend to QA
-/handoff backend-developer qa-tester src/api/auth.ts 042
+/handoff backend-developer qa-engineer src/api/auth.ts 042
 
 # With explicit criteria and risk
 /handoff frontend-developer lead-programmer src/components/LoginForm.tsx 055 \

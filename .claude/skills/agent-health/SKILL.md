@@ -65,15 +65,15 @@ Agent                  Tasks  âœ… Done  âŒ Failed  â›” Blocked  Suc
 â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 backend-developer          8       7          1          0      87.5%   ðŸŸ¢ CLOSED
 frontend-developer         5       5          0          0     100.0%   ðŸŸ¢ CLOSED
-qa-tester                  6       4          2          0      66.7%   ðŸŸ¡ HALF-OPEN
+qa-engineer                  6       4          2          0      66.7%   ðŸŸ¡ HALF-OPEN
 data-engineer              2       2          0          0     100.0%   ðŸŸ¢ CLOSED
-investigator               1       0          1          0       0.0%   ðŸ”´ OPEN
+diagnostics                1       0          1          0       0.0%   ðŸ”´ OPEN
 â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 TOTAL                     22      18          4          0      81.8%
 
 âš ï¸  Agents needing attention:
-  ðŸ”´ investigator     â€” Circuit OPEN Â· fallback: solver
-  ðŸŸ¡ qa-tester        â€” Circuit HALF-OPEN Â· 2 failures this session
+  ðŸ”´ diagnostics      â€” Circuit OPEN Â· fallback: surface to user
+  ðŸŸ¡ qa-engineer        â€” Circuit HALF-OPEN Â· 2 failures this session
 ```
 
 Circuit state icons:
@@ -139,7 +139,7 @@ to recent sessions and avoid reading stale data from weeks ago.
 /agent-health
 
 # Check one agent across all time
-/agent-health --agent qa-tester
+/agent-health --agent qa-engineer
 
 # Log a fresh snapshot and view it
 /agent-health --log
