@@ -18,6 +18,8 @@
 ├── tests/                       # Test suites (unit, integration, e2e, performance)
 ├── infra/                       # Infrastructure as code (docker, terraform, k8s)
 ├── scripts/                     # Build, migration, and utility scripts
+├── tools/                       # Internal development tools and local utilities
+├── scratch/                     # Transient experiments and debug artifacts
 ├── prototypes/                  # Throwaway prototypes (isolated from src/)
 └── production/                  # Production management (sprints, milestones, releases)
     ├── session-state/           # Ephemeral session state (active.md — gitignored)

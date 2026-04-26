@@ -10,9 +10,7 @@
 | `ux-designer` | 2 — Leads | Sonnet | User flows, wireframes, interaction design | Accessibility, design systems |
 | `qa-engineer` | 2 — Leads | Sonnet | Test strategy, QA processes, quality gates, test execution | Test planning, risk-based testing, regression suites |
 | `release-manager` | 2 — Leads | Sonnet | Release planning, deployment, rollback | Versioning, release checklists |
-| `investigator` | 2 — Leads | Sonnet | Root cause analysis, execution tracing | Reverse engineering, evidence collection |
-| `verifier` | 2 — Leads | Sonnet | Hypothesis validation, reproduction | Devil's advocate, testing rigor |
-| `solver` | 2 — Leads | Sonnet | Solution design, tradeoff analysis | Surgical architecture, technical strategy |
+| `diagnostics` | 2 — Leads | Sonnet | Complex bug diagnosis, root cause analysis, solution design | Investigation, verification, surgical implementation planning |
 | `frontend-developer` | 3 — Specialists | Sonnet | UI components, client-side logic | React/Vue/Angular, CSS, accessibility |
 | `ui-spec-designer` | 3 — Specialists | Sonnet | UI Specifications, component decomposition | Component state matrices, EARS interactions |
 | `backend-developer` | 3 — Specialists | Sonnet | APIs, business logic, server-side | REST/GraphQL, auth, integrations |
@@ -28,13 +26,13 @@
 | `devops-engineer` | 3 — Specialists | Sonnet | CI/CD, infrastructure, deployment | Docker, K8s, GitHub Actions |
 | `analytics-engineer` | 3 — Specialists | Sonnet | Event tracking, dashboards, metrics | Analytics pipelines, reporting |
 | `security-engineer` | 3 — Specialists | Sonnet | Security reviews, threat modeling | OWASP, auth audits, pen testing |
-| `qa-tester` | 3 — Specialists | Haiku | Test execution, bug reporting | Manual testing, E2E automation |
+| `mobile-developer` | 3 — Specialists | Sonnet | iOS/Android app development | React Native, Flutter, Swift/Kotlin, mobile performance |
 | `accessibility-specialist` | 3 — Specialists | Sonnet | WCAG compliance, screen readers | Keyboard nav, ARIA, color contrast |
 | `prototyper` | 3 — Specialists | Haiku | Rapid prototyping, PoC builds | Fast iteration, throwaway code |
 | `community-manager` | 3 — Specialists | Sonnet | User community, support, feedback | Community platforms, user comms |
 
 ---
 
-**Total: 27 agents** across 3 tiers.
+**Total: 28 agents** across 3 tiers.
 
 See [agent-coordination-map.md](agent-coordination-map.md) for delegation and escalation paths.

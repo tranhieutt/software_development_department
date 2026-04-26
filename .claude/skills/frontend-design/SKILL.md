@@ -8,7 +8,7 @@ allowed-tools: Read, Glob, Grep, Write, Edit, Bash
 argument-hint: "[component or page to design]"
 user-invocable: true
 context: fork
-agent: frontend-designer
+agent: ux-designer
 when_to_use: "When building or styling web UIs, components, dashboards, or pages with distinctive production-grade aesthetics"
 ---
 

@@ -6,7 +6,7 @@ argument-hint: "[product type or problem hint, or 'open' for fully open brainsto
 user-invocable: true
 allowed-tools: Read, Glob, Grep, Write, WebSearch, AskUserQuestion
 context: fork
-agent: product-strategist
+agent: product-manager
 effort: 3
 when_to_use: "When starting a new product idea from scratch or needing structured creative ideation for a product concept"
 ---

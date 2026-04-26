@@ -103,7 +103,6 @@ used instead.
     | `frontend-developer` | `fullstack-developer` |
     | `qa-engineer` | `fullstack-developer` |
     | `data-engineer` | `backend-developer` |
-    | `diagnostics` | `investigator` *(legacy fallback — use `diagnostics` directly)* |
 
     **Routing semantics:**
     - Circuit Breaker activates **after** Rule 6 layered recovery is exhausted.

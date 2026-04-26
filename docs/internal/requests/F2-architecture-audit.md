@@ -10,23 +10,23 @@
 
 ## Executive Summary
 
-SDD ở trạng thái **functional nhưng có drift đáng kể** giữa documentation layer và runtime layer. 4 vấn đề H-risk có thể gây subagent dispatch failure trong production. 3 vấn đề M-risk gây sai lệch khi session mới onboard.
+F2 started from a functional SDD state with meaningful drift between documentation and runtime layers. All findings in the original F2 scope are now resolved on active runtime/reference surfaces.
 
-**Verdict:** `CHANGES_REQUIRED` — cần 1 sprint cleanup (~4-6h work) trước khi gọi SDD là production-stable.
+**Verdict:** `APPROVED WITH FOLLOW-UP` — F2 cleanup complete; legacy/onboarding/template drift còn lại được tách sang follow-up audit thay vì mở rộng scope F2.
 
 | Risk | Finding | Files affected | Fix effort |
 |------|---------|----------------|------------|
-| **H1** | Ghost agent `qa-lead` vẫn còn trong 4 skills + 1 agent + 3 docs | 8 | 30 min |
-| **H2** | Ghost agents `backend-architect`, `frontend-designer`, `product-strategist` trong skill frontmatter | 3 | 15 min |
-| **H3** | Rule 14 còn legacy fallback `investigator` dù ADR-005 đã supersede | 1 | 10 min |
-| **H4** | `agent-roster.md` lệch hoàn toàn với `.claude/agents/` (5 ghost, 3 missing) | 1 | 20 min |
-| **M1** | `rules-reference.md` lệch với `.claude/rules/` (2 ghost, 5 missing) | 1 | 15 min |
-| **M2** | `skills-reference.md` chỉ document 47/126 skills (~63% undocumented) | 1 | 1-2 h |
-| **M3** | ARCHITECTURE.md Mermaid diagrams reference `qa-lead` | 1 | 10 min |
-| **L1** | `directory-structure.md` bỏ qua `tools/` và `scratch/` top-level | 1 | 5 min |
-| **L2** | CLAUDE.md không `@-include` `skills-precedence.md` | 1 | 5 min |
+| ~~**H1**~~ | ~~Ghost agent `qa-lead` vẫn còn trong 4 skills + 1 agent + 3 docs~~ | ~~8~~ | ~~30 min~~ |
+| ~~**H2**~~ | ~~Ghost agents `backend-architect`, `frontend-designer`, `product-strategist` trong skill frontmatter~~ | ~~3~~ | ~~15 min~~ |
+| ~~**H3**~~ | ~~Rule 14 còn legacy fallback `investigator` dù ADR-005 đã supersede~~ | ~~1~~ | ~~10 min~~ |
+| ~~**H4**~~ | ~~`agent-roster.md` lệch hoàn toàn với `.claude/agents/` (5 ghost, 3 missing)~~ | ~~1~~ | ~~20 min~~ |
+| ~~**M1**~~ | ~~`rules-reference.md` lệch với `.claude/rules/` (2 ghost, 5 missing)~~ | ~~1~~ | ~~15 min~~ |
+| ~~**M2**~~ | ~~`skills-reference.md` chỉ document 47/126 skills (~63% undocumented)~~ | ~~1~~ | ~~1-2 h~~ |
+| ~~**M3**~~ | ~~ARCHITECTURE.md Mermaid diagrams reference `qa-lead`~~ | ~~1~~ | ~~10 min~~ |
+| ~~**L1**~~ | ~~`directory-structure.md` bỏ qua `tools/` và `scratch/` top-level~~ | ~~1~~ | ~~5 min~~ |
+| ~~**L2**~~ | ~~CLAUDE.md không `@-include` `skills-precedence.md`~~ | ~~1~~ | ~~5 min~~ |
 
-**Total cleanup:** ~3-4 hours (excluding M2 which is bigger).
+**Total cleanup:** complete for F2 scope.
 
 ---
 
@@ -45,7 +45,7 @@ CLAUDE.md `@`-include integrity: **9/9 OK** ✅
 
 ---
 
-## H1 — Ghost agent `qa-lead` (HIGH)
+## ~~H1 — Ghost agent `qa-lead` (HIGH)~~
 
 `qa-lead` does NOT exist in `.claude/agents/`. Actual agent is `qa-engineer` (per merger noted in agent file: *"Replaces qa-lead + qa-tester"*).
 
@@ -68,7 +68,7 @@ CLAUDE.md `@`-include integrity: **9/9 OK** ✅
 
 ---
 
-## H2 — Ghost agents trong skill frontmatter (HIGH)
+## ~~H2 — Ghost agents trong skill frontmatter (HIGH)~~
 
 3 skills declare `agent:` field pointing to non-existent agents:
 
@@ -84,7 +84,7 @@ CLAUDE.md `@`-include integrity: **9/9 OK** ✅
 
 ---
 
-## H3 — Rule 14 legacy fallback (HIGH)
+## ~~H3 — Rule 14 legacy fallback (HIGH)~~
 
 `coordination-rules.md:106`:
 ```
@@ -99,7 +99,7 @@ CLAUDE.md `@`-include integrity: **9/9 OK** ✅
 
 ---
 
-## H4 — `agent-roster.md` lệch hoàn toàn với runtime (HIGH)
+## ~~H4 — `agent-roster.md` lệch hoàn toàn với runtime (HIGH)~~
 
 | Roster (30 agents) | Actual `.claude/agents/` (28 agents) |
 |----|----|
@@ -113,7 +113,7 @@ CLAUDE.md `@`-include integrity: **9/9 OK** ✅
 
 ---
 
-## M1 — `rules-reference.md` ↔ `.claude/rules/` drift (MEDIUM)
+## ~~M1 — `rules-reference.md` ↔ `.claude/rules/` drift (MEDIUM)~~
 
 | Rules-reference declares | Actual rules/ |
 |---|---|
@@ -130,9 +130,13 @@ CLAUDE.md `@`-include integrity: **9/9 OK** ✅
 
 ---
 
-## M2 — `skills-reference.md` coverage gap (MEDIUM)
+## ~~M2 — `skills-reference.md` coverage gap (MEDIUM)~~
 
-47 skills documented / 126 actual = **62.7% undocumented**.
+Originally 47 skills documented / 126 actual = **62.7% undocumented**.
+
+Resolved: `skills-reference.md` is generated from `.claude/skills/*/SKILL.md` frontmatter and documents **126/126** local skills.
+
+Historical missing list below is kept as original audit context; it is no longer current after the 126/126 regeneration.
 
 Skills critical missing:
 - `using-sdd` (the router itself!)
@@ -151,7 +155,7 @@ Skills critical missing:
 
 ---
 
-## M3 — ARCHITECTURE.md Mermaid diagrams (MEDIUM)
+## ~~M3 — ARCHITECTURE.md Mermaid diagrams (MEDIUM)~~
 
 Lines 20, 56 hard-code `qa-lead` trong agent topology diagrams. Khi reader render diagram để hiểu kiến trúc, họ học sai naming.
 
@@ -159,16 +163,18 @@ Lines 20, 56 hard-code `qa-lead` trong agent topology diagrams. Khi reader rende
 
 ---
 
-## L1 — `directory-structure.md` thiếu directories (LOW)
+## ~~L1 — `directory-structure.md` thiếu directories (LOW)~~
 
 - Top-level thực tế có `tools/` và `scratch/`, không declare trong directory-structure.md
 - `src/` declare 7 subdirs (api, frontend, backend, ai, networking, ui, tools) nhưng thực tế trống — đây là placeholder hợp lý nếu intentional, cần note rõ.
 
 **Fix:** Add 2 dòng cho `tools/` (build/utility scripts) và `scratch/` (transient experiments). Note trên `src/` rằng subdirs là placeholder.
 
+Resolved: `directory-structure.md` now declares top-level `tools/` and `scratch/`.
+
 ---
 
-## L2 — CLAUDE.md không `@-include` skills-precedence (LOW)
+## ~~L2 — CLAUDE.md không `@-include` skills-precedence (LOW)~~
 
 CLAUDE.md có dòng tham chiếu `[skills-precedence.md](...)` nhưng không `@-include`, nghĩa là content không tự load vào session context. Khi precedence conflict xảy ra, agent phải tự tìm doc → fragile.
 
@@ -176,16 +182,18 @@ CLAUDE.md có dòng tham chiếu `[skills-precedence.md](...)` nhưng không `@-
 
 **Tradeoff:** Mỗi `@`-include tăng token cost cho mọi session. Skills-precedence chỉ cần khi có conflict — không phải mỗi turn. Có thể giữ as-link thay vì auto-load.
 
+Resolved: `CLAUDE.md` now includes `@.claude/docs/skills-precedence.md`.
+
 ---
 
 ## Cross-Layer Coherence Check
 
 | L1 ↔ L2 | ✅ CLAUDE.md CRITICAL RULES không mâu thuẫn coordination-rules |
-| L2 ↔ L4 | ⚠️ Rule 14 (coordination) vs ADR-005 (supersedes) — partially resolved |
-| L4 ↔ L5 | ❌ 4 skills point to ghost agents (H1, H2) |
+| L2 ↔ L4 | ~~⚠️ Rule 14 (coordination) vs ADR-005 (supersedes) — partially resolved~~ |
+| L4 ↔ L5 | ~~❌ 4 skills point to ghost agents (H1, H2)~~ |
 | L4 ↔ L6 | ✅ Skills không direct-reference rules; OK |
-| L5 ↔ docs | ❌ agent-roster, ARCHITECTURE.md drift (H4, M3) |
-| L6 ↔ docs | ❌ rules-reference drift (M1) |
+| L5 ↔ docs | ~~❌ agent-roster, ARCHITECTURE.md drift (H4, M3)~~ |
+| L6 ↔ docs | ~~❌ rules-reference drift (M1)~~ |
 | Hooks ↔ settings | ✅ 22 declared hooks all exist; 7 extra hook files (auto-dream, fork-join, sync hooks) called by other hooks |
 
 ---
@@ -193,22 +201,25 @@ CLAUDE.md có dòng tham chiếu `[skills-precedence.md](...)` nhưng không `@-
 ## Recommended Cleanup Sprint
 
 **Phase 1 — Ghost elimination (60 min):**
-- [ ] H1: sed-replace `qa-lead` → `qa-engineer` across 8 files; verify with `grep -r qa-lead .claude/`
-- [ ] H2: Fix 3 skill frontmatters
-- [ ] H3: Remove or rename diagnostics fallback row in Rule 14
-- [ ] H4: Regenerate `agent-roster.md` from `.claude/agents/`
+- [x] ~~H1: sed-replace `qa-lead` → `qa-engineer` across 8 files; verify with `grep -r qa-lead .claude/`~~
+- [x] ~~H2: Fix 3 skill frontmatters~~
+- [x] ~~H3: Remove or rename diagnostics fallback row in Rule 14~~
+- [x] ~~H4: Regenerate `agent-roster.md` from `.claude/agents/`~~
 
 **Phase 2 — Doc resync (30 min):**
-- [ ] M1: Sync `rules-reference.md` with `.claude/rules/`
-- [ ] M3: Fix ARCHITECTURE.md Mermaid blocks
-- [ ] L1: Add tools/ and scratch/ to directory-structure.md
+- [x] ~~M1: Sync `rules-reference.md` with `.claude/rules/`~~
+- [x] ~~M3: Fix ARCHITECTURE.md Mermaid blocks~~
+- [x] ~~L1: Add tools/ and scratch/ to directory-structure.md~~
 
 **Phase 3 — Skills coverage (1-2 h, separate sprint):**
-- [ ] M2: Generate skills-reference từ skill frontmatter, có thể tự động qua script
+- [x] ~~M2: Generate skills-reference từ skill frontmatter~~
 
 **Phase 4 — Preventive (optional):**
 - [ ] Add hook `validate-agent-refs.sh` — pre-commit check ngăn ghost references mới
-- [ ] L2: Decide on `@-include` of skills-precedence (yes/no based on token budget)
+- [x] ~~L2: Include `skills-precedence.md` in CLAUDE.md~~
+
+**Follow-up audit candidate (outside F2 original scope):**
+- [ ] F3: Reconcile legacy `qa-tester` and `investigator`/`verifier`/`solver` references in onboarding, templates, and `CONTROL_PLANE_MAP.md`.
 
 ---
 
@@ -225,7 +236,8 @@ CLAUDE.md có dòng tham chiếu `[skills-precedence.md](...)` nhưng không `@-
 ## Verification
 
 - Inventory: `ls .claude/{skills,agents,rules,hooks,docs}` — 126/28/13/29/25 confirmed
+- Skills reference: `.claude/docs/skills-reference.md` documents 126/126 local skills from frontmatter
 - Ghost search: `grep -r qa-lead .claude/` returned 8 files; `grep -r investigator .claude/docs/coordination-rules.md` returned 1 line
 - Roster diff: `diff <(ls .claude/agents/) <(grep ... agent-roster.md)` — 5 ghosts, 3 missing
 - Rules diff: `diff <(ls .claude/rules/) <(grep ... rules-reference.md)` — 2 ghosts, 5 missing
-- Skills count: `ls .claude/skills/ | wc -l` = 126 vs `grep -c ... skills-reference.md` = 47
+- Completion verification: `validate-skills.ps1` passed 126/126; `harness-audit.js --compact` passed 120/120 with 7 non-blocking permission warnings; `codex-preflight.ps1` passed with working-tree warning

@@ -64,6 +64,7 @@ If the user invokes these short commands, or if the task context implies them, Y
 ## Context Management
 
 @.claude/docs/context-management.md
+@.claude/docs/skills-precedence.md
 
 <!-- Deep-dive examples, misconceptions table, and startup order diagram:
      .claude/docs/context-management-guide.md (NOT injected — reference only) -->
