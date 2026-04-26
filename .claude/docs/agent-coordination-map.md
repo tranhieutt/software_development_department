@@ -15,8 +15,8 @@
         |                 |      |      |
    ux-designer     +------+------+      +------+------+------+
    ux-researcher   |      |      |      |             |      |
-                frontend backend  full investigator verifier solver
-                -devlpr -devlpr stack  (Tier 2 Leads for Diagnosis)
+                frontend backend  full diagnostics
+                -devlpr -devlpr stack  (Investigation, Verification, Solution roles)
                            |
                     ui-programmer
 
@@ -44,11 +44,9 @@
 | `product-manager` | `ux-designer`, `ux-researcher`, `ui-spec-designer`, `tech-writer`, `community-manager` |
 | `lead-programmer` | `frontend-developer`, `backend-developer`, `fullstack-developer`, `data-engineer`, `ai-programmer`, `network-programmer`, `tools-programmer`, `ui-programmer`, `ui-spec-designer` |
 | `release-manager` | `devops-engineer` (build/deploy), `qa-engineer` (release testing), `tech-writer` (release notes) |
-| `investigator` | `backend-developer`, `frontend-developer`, `qa-tester` (probes/logs) |
-| `verifier` | `qa-tester` (reproduction), `performance-analyst` |
-| `solver` | `backend-developer`, `frontend-developer`, `tech-writer` |
+| `diagnostics` | `backend-developer`, `frontend-developer`, `qa-engineer`, `performance-analyst`, `tech-writer` |
 | `security-engineer` | `lead-programmer` (secure patterns), `devops-engineer` (infra security) |
-| `accessibility-specialist` | `ux-designer` (accessible flows), `frontend-developer` (implementation), `qa-tester` (a11y testing) |
+| `accessibility-specialist` | `ux-designer` (accessible flows), `frontend-developer` (implementation), `qa-engineer` (a11y testing) |
 | `prototyper` | *(works independently, reports findings to leads)* |
 | `community-manager` | *(works with product-manager for approval, release-manager for timing)* |
 
@@ -107,36 +105,36 @@ Phase 8  — Synthesis report with PR suggestion
 4. lead-programmer    -- Designs API contracts and interfaces
 5. ux-designer        -- Creates UI/UX flows and wireframes (if UI involved)
 6. [specialist devs]  -- Implement frontend, backend, or fullstack
-7. qa-tester          -- Writes and executes test cases
+7. qa-engineer        -- Writes and executes test cases
 8. qa-engineer            -- Reviews test coverage and signs off
 9. lead-programmer    -- Code review
 10. devops-engineer   -- Deploys to staging / production
 11. producer          -- Marks feature complete
 ```
 
-### Pattern 2: Deep Bug Diagnosis (Investigator -> Verifier -> Solver)
+### Pattern 2: Deep Bug Diagnosis (Diagnostics roles)
 
 Use `/diagnose <bug-id>` for complex, non-obvious failures that require deep tracing.
 
 ```
-1. investigator       -- Maps execution path, builds evidence matrix, localized fault
-2. verifier           -- Attempts to refute findings, reproducing symptom via triangulation
-3. solver             -- Proposes 3-option solution design with surgical implementation plan
+1. diagnostics        -- Investigation role maps execution path and evidence matrix
+2. diagnostics        -- Verification role attempts to refute findings
+3. diagnostics        -- Solution role proposes 3-option solution design
 4. lead-programmer    -- Reviews solution and selects option
 5. [specialist dev]   -- Implements the surgical fix
-6. qa-tester          -- Verifies fix and runs regression
+6. qa-engineer        -- Verifies fix and runs regression
 ```
 
 ### Pattern 3: Standard Bug Fix
 
 ```
-1. qa-tester          -- Files bug report with /bug-report
+1. qa-engineer        -- Files bug report with /bug-report
 2. qa-engineer            -- Triages severity and priority
 3. producer           -- Assigns to sprint (if not P0/P1)
 4. lead-programmer    -- Identifies root cause, assigns to developer
 5. [developer]        -- Fixes the bug
 6. lead-programmer    -- Code review
-7. qa-tester          -- Verifies fix and runs regression
+7. qa-engineer        -- Verifies fix and runs regression
 8. qa-engineer            -- Closes bug
 ```
 
@@ -147,7 +145,7 @@ Use `/diagnose <bug-id>` for complex, non-obvious failures that require deep tra
 2. lead-programmer    -- Runs /api-design to define endpoint contracts
 2b. lead-programmer   -- Runs /gitnexus-impact-analysis on existing symbols being changed
 3. backend-developer  -- Implements API
-4. qa-tester          -- Tests API endpoints
+4. qa-engineer        -- Tests API endpoints
 5. tech-writer        -- Documents API in developer docs
 6. lead-programmer    -- Final code review
 ```
@@ -159,7 +157,7 @@ Use `/diagnose <bug-id>` for complex, non-obvious failures that require deep tra
 2. technical-director -- Reviews migration strategy
 3. data-engineer      -- Writes migration scripts
 4. backend-developer  -- Updates ORM models and queries
-5. qa-tester          -- Tests data integrity and migration
+5. qa-engineer        -- Tests data integrity and migration
 6. devops-engineer    -- Runs migration in staging, then production
 ```
 

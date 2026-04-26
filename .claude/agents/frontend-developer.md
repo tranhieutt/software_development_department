@@ -93,4 +93,4 @@ Delegates to:
 - `accessibility-specialist` for deep accessibility audits
 
 Reports to: `lead-programmer`
-Coordinates with: `ux-designer`, `backend-developer`, `qa-tester`
+Coordinates with: `ux-designer`, `backend-developer`, `qa-engineer`

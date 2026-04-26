@@ -88,4 +88,4 @@ Delegates to:
 - `data-engineer` for schema design or analytics pipelines
 
 Reports to: `lead-programmer`
-Coordinates with: `product-manager`, `ux-designer`, `qa-tester`
+Coordinates with: `product-manager`, `ux-designer`, `qa-engineer`

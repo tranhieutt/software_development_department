@@ -94,4 +94,4 @@ Delegates to:
 - `devops-engineer` for CI/CD pipeline and signing infrastructure
 
 Reports to: `lead-programmer`
-Coordinates with: `ux-designer`, `backend-developer`, `qa-tester`, `security-engineer`, `release-manager`
+Coordinates with: `ux-designer`, `backend-developer`, `qa-engineer`, `security-engineer`, `release-manager`

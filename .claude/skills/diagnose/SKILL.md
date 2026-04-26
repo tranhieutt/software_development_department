@@ -1,7 +1,7 @@
 ﻿---
 name: diagnose
 type: reference
-description: "Multi-agent diagnostic pipeline for complex/intermittent bugs. Orchestrates Investigator â†’ Verifier â†’ Solver â†’ Lead Programmer with enforced handoff contracts. Use ONLY for non-obvious failures (root cause unclear, reproduction unstable, fixes reverted). NOT for trivial bugs with known cause â€” fix them directly."
+description: "Diagnostic pipeline for complex/intermittent bugs. Uses diagnostics roles for Investigation, Verification, and Solution before Lead Programmer handoff. Use ONLY for non-obvious failures (root cause unclear, reproduction unstable, fixes reverted). NOT for trivial bugs with known cause â€” fix them directly."
 paths: []
 effort: 4
 allowed-tools: Read, Glob, Grep, Write, Edit, Bash, Task
@@ -9,11 +9,11 @@ user-invocable: true
 when_to_use: "When a bug is reproducible but cause is unknown, when a 'fix' has been reverted 2+ times, or when a symptom appears in unfamiliar code. Do NOT use for typos, obvious nulls, or one-line logic errors."
 ---
 
-# Skill: /diagnose â€” Complex Bug Diagnostic Pipeline
+# Skill: /diagnose — Complex Bug Diagnostic Pipeline
 
 ## When to invoke (and when NOT to)
 
-### âœ… Use `/diagnose` when:
+### Use `/diagnose` when:
 - Bug reproduces but **root cause is unclear** after one read-pass of the failing code
 - Previous fix attempts have been **reverted â‰¥ 2 times** (symptoms return)
 - Failure is **intermittent** (flaky test, race condition, timing-dependent)
@@ -21,7 +21,7 @@ when_to_use: "When a bug is reproducible but cause is unknown, when a 'fix' has 
 - User has explicitly requested `/diagnose` or "deep investigation"
 - Circuit Breaker (Rule 14) tripped on the specialist agent that normally handles this domain
 
-### âŒ Do NOT use `/diagnose` when:
+### Do NOT use `/diagnose` when:
 - Cause is obvious (null ref, typo, missing import, incorrect import path)
 - Fix is < 10 LOC and has a clear success check
 - Bug is in code you just wrote this session (read-pass + local reasoning is faster)
@@ -30,12 +30,9 @@ when_to_use: "When a bug is reproducible but cause is unknown, when a 'fix' has 
 ## Pipeline overview
 
 ```
-â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”     â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”     â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”     â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
-â”‚  Investigator   â”‚ â”€â”€â–º â”‚    Verifier     â”‚ â”€â”€â–º â”‚    Solver    â”‚ â”€â”€â–º â”‚ Lead Programmer  â”‚
-â”‚  (hypothesis)   â”‚     â”‚ (devil's adv.)  â”‚     â”‚  (tradeoffs) â”‚     â”‚  (assign + exec) â”‚
-â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜     â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜     â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜     â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
-       â”‚                       â”‚                       â”‚                       â”‚
-       â–¼                       â–¼                       â–¼                       â–¼
+Investigation -> Verification -> Solution -> Lead Programmer
+  (hypothesis)    (devil's adv.)   (tradeoffs)   (assign + exec)
+
   investigation.json      verification.json      solution.json          implementation
   (root_cause,           (status: confirmed |    (3 options:           (delegates to
    evidence[],            refuted | inconclusive, Quick/Strategic/     backend-developer,

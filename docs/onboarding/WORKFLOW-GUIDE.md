@@ -15,7 +15,7 @@ The department has **26 specialized agents** organized into three tiers:
 
 - **Tier 1 (Leadership)**: `cto`, `technical-director`, `producer`
 - **Tier 2 (Leads)**: `product-manager`, `lead-programmer`, `ux-designer`, `qa-engineer`, `release-manager`
-- **Tier 3 (Specialists)**: `frontend-developer`, `backend-developer`, `fullstack-developer`, `data-engineer`, `ai-programmer`, `network-programmer`, `tools-programmer`, `ui-programmer`, `ux-researcher`, `tech-writer`, `performance-analyst`, `devops-engineer`, `analytics-engineer`, `security-engineer`, `qa-tester`, `accessibility-specialist`, `prototyper`, `community-manager`
+- **Tier 3 (Specialists)**: `frontend-developer`, `backend-developer`, `fullstack-developer`, `data-engineer`, `ai-programmer`, `network-programmer`, `tools-programmer`, `ui-programmer`, `ux-researcher`, `tech-writer`, `performance-analyst`, `devops-engineer`, `analytics-engineer`, `security-engineer`, `mobile-developer`, `accessibility-specialist`, `prototyper`, `community-manager`
 
 Every agent follows the same collaboration protocol:
 1. **Ask** — understand the requirement before proposing
@@ -162,7 +162,7 @@ This orchestrates:
 3. `ux-designer` — creates UI/UX flows (if UI involved)
 4. `backend-developer` — implements API and business logic
 5. `frontend-developer` — implements UI components
-6. `qa-tester` — writes and executes test cases
+6. `qa-engineer` — writes and executes test cases
 7. `devops-engineer` — deploys to staging
 
 ### Step 4.2: Backend-Only Feature
@@ -171,7 +171,7 @@ This orchestrates:
 /team-backend --feature "payment processing"
 ```
 
-Orchestrates: `lead-programmer` + `backend-developer` + `data-engineer` + `security-engineer` + `qa-tester`
+Orchestrates: `technical-director` + `backend-developer` + `data-engineer` + `security-engineer`
 
 ### Step 4.3: Frontend-Only Feature
 
@@ -179,7 +179,7 @@ Orchestrates: `lead-programmer` + `backend-developer` + `data-engineer` + `secur
 /team-frontend --feature "dashboard redesign"
 ```
 
-Orchestrates: `ux-designer` + `frontend-developer` + `ui-programmer` + `accessibility-specialist` + `qa-tester`
+Orchestrates: `ux-designer` + `ux-researcher` + `frontend-developer` + `accessibility-specialist`
 
 ### Step 4.4: Individual Agent Work
 
@@ -246,7 +246,7 @@ When a bug is found:
 /bug-report
 ```
 
-The `qa-tester` agent creates a structured report with:
+The `qa-engineer` agent creates a structured report with:
 - Steps to reproduce
 - Expected vs actual behavior
 - Environment details
@@ -441,7 +441,7 @@ May I write this to docs/api/auth-service.md?
 | CI/CD pipelines | `devops-engineer` |
 | Security review | `security-engineer` |
 | Test strategy | `qa-engineer` |
-| Test execution | `qa-tester` |
+| Test execution | `qa-engineer` |
 | Performance analysis | `performance-analyst` |
 | UX flows and wireframes | `ux-designer` |
 | User research | `ux-researcher` |

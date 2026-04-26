@@ -52,7 +52,7 @@ workflow:
       on_pass: qa
       on_fail: stop
     - id: qa
-      agent: qa-tester
+      agent: qa-engineer
       task: "Run integration tests"
       depends_on: [backend]
       on_pass: done
@@ -98,7 +98,7 @@ workflow:
       on_pass: qa
       on_fail: stop
     - id: qa
-      agent: qa-tester
+      agent: qa-engineer
       task: "End-to-end test"
       depends_on: [merge]
       on_pass: done
@@ -138,7 +138,7 @@ workflow:
       on_pass: review
       on_fail: escalate
     - id: qa-setup
-      agent: qa-tester
+      agent: qa-engineer
       task: "Prepare test plan in parallel"
       depends_on: [plan]
       on_pass: review
@@ -173,7 +173,7 @@ workflow:
       on_pass: test
       on_fail: stop
     - id: test
-      agent: qa-tester
+      agent: qa-engineer
       task: "Run test suite"
       depends_on: [implement]
       on_pass: done
@@ -192,9 +192,9 @@ If exceeded, the workflow stops and surfaces a blocker to the user.
 Use `/map-workflow` to generate a graph interactively:
 
 ```
-/map-workflow --pattern Sequential --agents "technical-director,backend-developer,qa-tester" --task "Auth API"
+/map-workflow --pattern Sequential --agents "technical-director,backend-developer,qa-engineer" --task "Auth API"
 /map-workflow --pattern Parallel   --agents "backend-developer,frontend-developer" --task "Login UI + API"
-/map-workflow --pattern Iterative  --agents "backend-developer,qa-tester" --task "Payment module" --max-iter 3
+/map-workflow --pattern Iterative  --agents "backend-developer,qa-engineer" --task "Payment module" --max-iter 3
 ```
 
 The skill outputs the filled YAML schema above, ready to share with the team

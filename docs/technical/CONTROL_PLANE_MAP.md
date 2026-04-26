@@ -49,9 +49,9 @@ Used when something is already broken (prod bug, stuck test, regression).
 
 | # | Stage (command) | Primary skill | Owning agent(s) | Exit criteria | Fallback / escalation | State update |
 |---|---|---|---|---|---|---|
-| 1 | `/diagnose` — Investigate | `diagnose` | `investigator` | A reproducible failure path is documented: input → observed behavior → expected behavior. Evidence cited by file:line. | `investigator` circuit open → fallback to `solver` (Rule 14). | `active.md` "Open Questions" section updated. |
-| 2 | `/diagnose` — Verify | `diagnose` | `verifier` | Devil's-advocate check passed: root cause survives triangulation. False causes ruled out. | Verifier disagrees with investigator → surface both reports to user; do not proceed to solver. | Ledger entry (High risk). |
-| 3 | `/diagnose` — Solve | `diagnose` | `solver` | Fix proposed with tradeoffs listed. User chose an option. | If fix requires architecture change → `technical-director`. | Plan appended to `.tasks/…`. |
+| 1 | `/diagnose` — Investigate | `diagnose` | `diagnostics` (Investigation role) | A reproducible failure path is documented: input → observed behavior → expected behavior. Evidence cited by file:line. | `diagnostics` circuit open → surface to human or route to the owning specialist. | `active.md` "Open Questions" section updated. |
+| 2 | `/diagnose` — Verify | `diagnose` | `diagnostics` (Verification role) | Devil's-advocate check passed: root cause survives triangulation. False causes ruled out. | Verification disagrees with investigation → surface both reports to user; do not proceed to solution. | Ledger entry (High risk). |
+| 3 | `/diagnose` — Solve | `diagnose` | `diagnostics` (Solution role) | Fix proposed with tradeoffs listed. User chose an option. | If fix requires architecture change → `technical-director`. | Plan appended to `.tasks/…`. |
 | 4 | Return to `/tdd` | `test-driven-development` | implementing specialist | Regression test added first; then fix; then GREEN. | As stage 4 in §3. | Test diff + source diff. |
 
 ---
@@ -65,7 +65,7 @@ Maps incoming intent to the correct first stage.
 | Brand-new feature | `/plan` | plan → spec → vertical-slice → tdd → review → merge | Start from §3 row 1. |
 | Small enhancement | `/spec` | spec → tdd → review → merge | Skip `/plan` only for single-file, reversible edits. |
 | Bug fix (reproducible) | `/diagnose` | diagnose → tdd → review → merge | Use §4. |
-| Bug fix (flaky, intermittent) | `/diagnose` | diagnose (investigator + verifier) → solver → tdd | Verifier stage is non-optional here. |
+| Bug fix (flaky, intermittent) | `/diagnose` | diagnostics investigation → verification → solution → tdd | Verification stage is non-optional here. |
 | Architecture change | `/spec` | spec (with ADR) → affected slices → review → merge | ADR at `docs/internal/adr/` is a hard requirement. |
 | UI change | `/ui-spec` | ui-spec → tdd → review → merge | `ui-spec-designer` owns the spec; `frontend-developer` or `ui-programmer` implements. |
 | Refactor (5+ files) | `/plan` + worktree isolation (Rule 10) | plan → slice-by-slice tdd → review → merge | `isolation: worktree` is required. |
@@ -91,7 +91,7 @@ The order of operations when a stage does **not** meet its exit criteria.
    | `frontend-developer` | `fullstack-developer` |
    | `qa-engineer` | `fullstack-developer` |
    | `data-engineer` | `backend-developer` |
-   | `investigator` | `solver` |
+   | `diagnostics` | `fullstack-developer` |
 4. **Domain escalation (Rule 3)** — conflicts between equal-tier agents escalate to the shared parent (or `cto` for design, `technical-director` for technical).
 5. **Surface to human** — Rule 6 Layer 4. Every prior attempt must be documented in the report (Rule 8 — no withheld errors).
 

@@ -38,7 +38,7 @@ Current assessment:
 | Multi-Agent System | Hierarchical MAS with defined delegation and escalation paths | Direct | `docs/technical/ARCHITECTURE.md`, `.claude/docs/agent-coordination-map.md`, `.claude/docs/agent-roster.md` | This is a direct match. |
 | Swarm | Limited parallel workstreams, not self-organized swarm behavior | Weak | `.claude/skills/fork-join/SKILL.md`, `.claude/skills/orchestrate/SKILL.md` | SDD is coordinated and hierarchical, not swarm-native. |
 | Handoffs | Lightweight 3-field cross-domain handoff plus optional durable artifact | Direct | `.claude/skills/handoff/SKILL.md`, `.tasks/handoffs/*`, `production/traces/decision_ledger.jsonl` | Strong direct implementation with acceptance criteria. |
-| Agent Debate | Structured challenge and verification between roles | Partial | `investigator -> verifier -> solver`, code review, Rule 3 escalation | SDD supports adversarial validation, but not a generic debate engine. |
+| Agent Debate | Structured challenge and verification between roles | Partial | `diagnostics` investigation -> verification -> solution, code review, Rule 3 escalation | SDD supports adversarial validation, but not a generic debate engine. |
 
 ## Practical Interpretation
 
@@ -70,5 +70,5 @@ It is weaker or less explicit in:
 ## Current Gaps Worth Tracking
 
 1. If SDD wants stronger alignment with AI-agent terminology, it could add a short glossary doc formalizing how `Perception`, `Reasoning`, `Action`, and `Evaluation` map to existing SDD workflows.
-2. If debate is meant to become a first-class capability, it would need a reusable workflow beyond the current `investigator -> verifier -> solver` path.
+2. If debate is meant to become a first-class capability, it would need a reusable workflow beyond the current `diagnostics` staged path.
 3. If swarm-style execution is ever desired, it would require a new coordination policy because the current system is intentionally hierarchical.

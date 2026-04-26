@@ -215,7 +215,7 @@ a lightweight audit trail of what was delegated and what came back:
 |-------|--------------------|-------------------------------|---------------------|
 | 10:15 | security-engineer  | Review auth middleware        | PASSED — no issues  |
 | 10:22 | backend-developer  | Implement JWT refresh logic   | DONE — see jwt.ts   |
-| 10:45 | qa-tester          | Write auth test cases         | BLOCKED — needs DB  |
+| 10:45 | qa-engineer        | Write auth test cases         | BLOCKED — needs DB  |
 ```
 
 Outcome values: `DONE`, `PASSED`, `FAILED`, `BLOCKED`, `PARTIAL — <reason>`.

@@ -36,7 +36,7 @@ Ask yourself: "What role would handle this in a real software team?"
 | Design a database schema | `data-engineer` + `/db-review` |
 | Set up CI/CD | `devops-engineer` |
 | Review code quality | `lead-programmer` |
-| Write test cases | `qa-tester` |
+| Write test cases | `qa-engineer` |
 | Run a security review | `security-engineer` |
 | Check accessibility compliance | `accessibility-specialist` |
 | Write API or developer docs | `tech-writer` |

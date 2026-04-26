@@ -574,7 +574,7 @@ Skill (Coordinator):
  I'll now coordinate 3 agents:
  - backend-developer: JWT middleware + auth endpoints
  - frontend-developer: Login/register UI + token storage
- - qa-tester: Test cases for all auth flows
+ - qa-engineer: Test cases for all auth flows
 
  Each will show you their work before writing files. Proceed?"
 

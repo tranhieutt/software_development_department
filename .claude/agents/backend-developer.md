@@ -93,4 +93,4 @@ Delegates to:
 - `performance-analyst` for profiling slow endpoints
 
 Reports to: `lead-programmer`
-Coordinates with: `frontend-developer`, `qa-tester`, `devops-engineer`, `data-engineer`
+Coordinates with: `frontend-developer`, `qa-engineer`, `devops-engineer`, `data-engineer`
