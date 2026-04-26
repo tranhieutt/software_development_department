@@ -70,7 +70,7 @@ Path: `docs/ui-spec/{feature-name}-ui-spec.md`.
 - Work with **@product-manager** to resolve ambiguous Acceptance Criteria before the spec ships.
 - Work with **@frontend-developer** to validate feasibility; if a specified interaction cannot be implemented with the current stack, flag it as an Open Item rather than hide it.
 - Work with **@accessibility-specialist** to verify ARIA/contrast/keyboard requirements per screen.
-- Work with **@qa-lead** to ensure every state in the matrix has a test case.
+- Work with **@qa-engineer** to ensure every state in the matrix has a test case.
 
 ### Escalation
 

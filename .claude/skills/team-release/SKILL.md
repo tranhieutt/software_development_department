@@ -1,7 +1,7 @@
 ﻿---
 name: team-release
 type: workflow
-description: "Orchestrates the release team of release-manager, qa-lead, devops-engineer, and producer to execute a release from candidate to production deployment. Use when coordinating a release across QA, DevOps, and release management."
+description: "Orchestrates the release team of release-manager, qa-engineer, devops-engineer, and producer to execute a release from candidate to production deployment. Use when coordinating a release across QA, DevOps, and release management."
 argument-hint: "[version number or 'next']"
 user-invocable: true
 allowed-tools: Read, Glob, Grep, Write, Edit, Bash, Task, AskUserQuestion, TodoWrite
@@ -18,7 +18,7 @@ The user must approve before moving to the next phase.
 
 ## Team Composition
 - **release-manager** — Release branch, versioning, changelog, deployment
-- **qa-lead** — Test sign-off, regression suite, release quality gate
+- **qa-engineer** — Test sign-off, regression suite, release quality gate
 - **devops-engineer** — Build pipeline, artifacts, deployment automation
 - **producer** — Go/no-go decision, stakeholder communication, scheduling
 
@@ -26,7 +26,7 @@ The user must approve before moving to the next phase.
 
 Use the Task tool to spawn each team member as a subagent:
 - `subagent_type: release-manager` — Release branch, versioning, changelog, deployment
-- `subagent_type: qa-lead` — Test sign-off, regression suite, release quality gate
+- `subagent_type: qa-engineer` — Test sign-off, regression suite, release quality gate
 - `subagent_type: devops-engineer` — Build pipeline, artifacts, deployment automation
 - `subagent_type: producer` — Go/no-go decision, stakeholder communication
 
@@ -51,7 +51,7 @@ Delegate to **release-manager**:
 
 ### Phase 3: Quality Gate (parallel)
 Delegate in parallel:
-- **qa-lead**: Execute full regression test suite. Test all critical paths. Verify no S1/S2 bugs. Sign off on quality.
+- **qa-engineer**: Execute full regression test suite. Test all critical paths. Verify no S1/S2 bugs. Sign off on quality.
 - **devops-engineer**: Build release artifacts for all target platforms. Verify builds are clean and reproducible. Run automated tests in CI.
 
 ### Phase 4: Localization and Performance
@@ -62,7 +62,7 @@ Delegate (can run in parallel with Phase 3 if resources available):
 
 ### Phase 5: Go/No-Go
 Delegate to **producer**:
-- Collect sign-off from: qa-lead, release-manager, devops-engineer, technical-director
+- Collect sign-off from: qa-engineer, release-manager, devops-engineer, technical-director
 - Evaluate any open issues — are they blocking or can they ship?
 - Make the go/no-go call
 - Output: release decision with rationale
@@ -78,7 +78,7 @@ Delegate to **release-manager** + **devops-engineer**:
 ### Phase 7: Post-Release
 - **release-manager**: Generate release report (what shipped, what was deferred, metrics)
 - **producer**: Update milestone tracking, communicate to stakeholders
-- **qa-lead**: Monitor incoming bug reports for regressions
+- **qa-engineer**: Monitor incoming bug reports for regressions
 - Schedule post-release retrospective if issues occurred
 
 ## Output

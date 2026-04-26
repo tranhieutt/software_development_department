@@ -11,7 +11,7 @@
                  |               |               |
         +--------+        +------+------+    (coordinates all)
         |                 |      |      |
- product-manager    lead-programmer  qa-lead  release-manager
+ product-manager    lead-programmer  qa-engineer  release-manager
         |                 |      |      |
    ux-designer     +------+------+      +------+------+------+
    ux-researcher   |      |      |      |             |      |
@@ -43,8 +43,7 @@
 | `producer` | Any agent (task assignment within their domain only) |
 | `product-manager` | `ux-designer`, `ux-researcher`, `ui-spec-designer`, `tech-writer`, `community-manager` |
 | `lead-programmer` | `frontend-developer`, `backend-developer`, `fullstack-developer`, `data-engineer`, `ai-programmer`, `network-programmer`, `tools-programmer`, `ui-programmer`, `ui-spec-designer` |
-| `qa-lead` | `qa-tester` |
-| `release-manager` | `devops-engineer` (build/deploy), `qa-lead` (release testing), `tech-writer` (release notes) |
+| `release-manager` | `devops-engineer` (build/deploy), `qa-engineer` (release testing), `tech-writer` (release notes) |
 | `investigator` | `backend-developer`, `frontend-developer`, `qa-tester` (probes/logs) |
 | `verifier` | `qa-tester` (reproduction), `performance-analyst` |
 | `solver` | `backend-developer`, `frontend-developer`, `tech-writer` |
@@ -63,7 +62,7 @@
 | Cross-system integration conflict | `lead-programmer`, then `technical-director` |
 | Schedule conflict between teams | `producer` |
 | Scope exceeds capacity | `producer`, then `cto` for priority decisions |
-| Quality gate disagreement | `qa-lead`, then `technical-director` |
+| Quality gate disagreement | `qa-engineer`, then `technical-director` |
 | Performance regression | `performance-analyst` flags, `technical-director` decides |
 | Security vulnerability found | `security-engineer` leads, `technical-director` signs off |
 
@@ -109,7 +108,7 @@ Phase 8  — Synthesis report with PR suggestion
 5. ux-designer        -- Creates UI/UX flows and wireframes (if UI involved)
 6. [specialist devs]  -- Implement frontend, backend, or fullstack
 7. qa-tester          -- Writes and executes test cases
-8. qa-lead            -- Reviews test coverage and signs off
+8. qa-engineer            -- Reviews test coverage and signs off
 9. lead-programmer    -- Code review
 10. devops-engineer   -- Deploys to staging / production
 11. producer          -- Marks feature complete
@@ -132,13 +131,13 @@ Use `/diagnose <bug-id>` for complex, non-obvious failures that require deep tra
 
 ```
 1. qa-tester          -- Files bug report with /bug-report
-2. qa-lead            -- Triages severity and priority
+2. qa-engineer            -- Triages severity and priority
 3. producer           -- Assigns to sprint (if not P0/P1)
 4. lead-programmer    -- Identifies root cause, assigns to developer
 5. [developer]        -- Fixes the bug
 6. lead-programmer    -- Code review
 7. qa-tester          -- Verifies fix and runs regression
-8. qa-lead            -- Closes bug
+8. qa-engineer            -- Closes bug
 ```
 
 ### Pattern 3: API Design / Backend Feature
@@ -170,7 +169,7 @@ Use `/diagnose <bug-id>` for complex, non-obvious failures that require deep tra
 1. producer           -- Plans sprint with /sprint-plan new
 2. [All agents]       -- Execute assigned tasks
 3. producer           -- Daily status with /sprint-plan status
-4. qa-lead            -- Continuous testing during sprint
+4. qa-engineer            -- Continuous testing during sprint
 5. lead-programmer    -- Continuous code review during sprint
 6. producer           -- Sprint retrospective
 7. producer           -- Plans next sprint incorporating learnings
@@ -183,7 +182,7 @@ Use `/diagnose <bug-id>` for complex, non-obvious failures that require deep tra
 2. cto                -- Reviews technical health and architectural alignment
 3. product-manager    -- Reviews product goals and user feedback
 4. technical-director -- Reviews system stability and tech debt
-5. qa-lead            -- Reviews quality metrics
+5. qa-engineer            -- Reviews quality metrics
 6. producer           -- Facilitates go/no-go discussion
 7. [All leads]        -- Agree on scope adjustments if needed
 8. producer           -- Documents decisions and updates plans
@@ -195,7 +194,7 @@ Use `/diagnose <bug-id>` for complex, non-obvious failures that require deep tra
 1. producer             -- Declares release candidate, confirms milestone criteria met
 2. release-manager      -- Cuts release branch, generates /release-checklist
 2b. lead-programmer     -- Runs /gitnexus-pr-review on release branch vs main, attaches risk report to QA request
-3. qa-lead              -- Runs full regression against affected flows, signs off on quality
+3. qa-engineer              -- Runs full regression against affected flows, signs off on quality
 4. performance-analyst  -- Confirms performance benchmarks within targets
 5. security-engineer    -- Runs final security scan
 6. devops-engineer      -- Builds release artifacts, runs deployment pipeline
@@ -225,7 +224,7 @@ Use `/diagnose <bug-id>` for complex, non-obvious failures that require deep tra
 2. tech-writer          -- Ensures documentation is current
 3. devops-engineer      -- Validates development environment setup guide
 4. lead-programmer      -- Reviews coding standards and architecture overview
-5. qa-lead              -- Reviews test strategy and quality gates
+5. qa-engineer              -- Reviews test strategy and quality gates
 ```
 
 ## Cross-Domain Communication Protocols
@@ -234,7 +233,7 @@ Use `/diagnose <bug-id>` for complex, non-obvious failures that require deep tra
 
 When a PRD changes, the `product-manager` must notify:
 - `lead-programmer` (implementation impact assessment)
-- `qa-lead` (test plan update needed)
+- `qa-engineer` (test plan update needed)
 - `producer` (schedule impact)
 - `ux-designer` (UI/UX implications)
 
@@ -243,7 +242,7 @@ When a PRD changes, the `product-manager` must notify:
 When an ADR is created or modified, the `technical-director` must notify:
 - `lead-programmer` (code changes needed)
 - All affected specialist developers
-- `qa-lead` (testing strategy may change)
+- `qa-engineer` (testing strategy may change)
 - `producer` (schedule impact)
 
 ### Security Incident Notification

@@ -172,8 +172,7 @@ The `agents` folder defines specialist roles such as:
 - product-manager
 - producer
 - technical-director
-- qa-lead
-- qa-tester
+- qa-engineer
 - devops-engineer
 - ui-programmer
 - ux-designer

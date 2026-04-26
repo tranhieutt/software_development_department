@@ -48,8 +48,7 @@ Apply this domain routing:
 | API endpoints, business logic, auth, background jobs, integrations | `backend-developer` |
 | UI components, pages, client-side state, styling, frontend performance | `frontend-developer` |
 | Full-stack features spanning frontend and backend | `fullstack-developer` |
-| E2E tests, test strategy, coverage, test cases | `qa-engineer` |
-| QA strategy sign-off, release quality gates | `qa-lead` |
+| E2E tests, test strategy, coverage, test cases, QA sign-off, release quality gates | `qa-engineer` |
 | User guide updates, README, API doc clarity, onboarding guides | `tech-writer` |
 | CI/CD pipelines, GitHub Actions, deployment automation | `devops-engineer` |
 | Security reviews, threat modeling, auth design, OWASP | `security-engineer` |
@@ -86,8 +85,6 @@ For each pair of identified agents, determine whether they are **sequential** (o
 6. **All implementation agents → `tech-writer`** — documentation is always last, written after implementation is stable.
 
 7. **`technical-director` → `devops-engineer`** when the task involves new deployment environments or significant infrastructure changes.
-
-8. **`qa-engineer` → `qa-lead`** when the task requires formal QA sign-off before synthesis.
 
 ### Parallel-safe combinations — these can run simultaneously:
 

@@ -16,7 +16,7 @@ There are three tiers of agents:
   - `producer` — scheduling, coordination, risk management
 
 - **Tier 2 (Sonnet)**: Department leads who own their domain
-  - `product-manager`, `lead-programmer`, `ux-designer`, `qa-lead`, `release-manager`
+  - `product-manager`, `lead-programmer`, `ux-designer`, `qa-engineer`, `release-manager`
 
 - **Tier 3 (Sonnet/Haiku)**: Specialists who execute within their domain
   - Developers, engineers, researchers, testers, writers

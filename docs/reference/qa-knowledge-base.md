@@ -1,6 +1,6 @@
 # 🧪 QA Knowledge Base — Browser Automation Frameworks
 
-> **Owner:** `qa-tester`, `qa-lead`
+> **Owner:** `qa-engineer`
 > **Source:** Crawler Webgame Lessons #8, #4
 
 ---

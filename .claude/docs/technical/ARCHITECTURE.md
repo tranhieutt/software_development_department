@@ -17,7 +17,7 @@ graph TD
     subgraph Tier2 ["Tier 2: Tactical Leads"]
         PM["@product-manager"]
         LP["@lead-programmer"]
-        QA["@qa-lead"]
+        QA["@qa-engineer"]
         RM["@release-manager"]
     end
 
@@ -53,7 +53,7 @@ sequenceDiagram
     participant UI as @ui-spec-designer
     participant LP as @lead-programmer
     participant Dev as @specialist-dev
-    participant QA as @qa-lead
+    participant QA as @qa-engineer
 
     User->>PM: User Request
     PM->>PM: PRD Creation (Acceptance Criteria)

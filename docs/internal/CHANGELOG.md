@@ -6,6 +6,60 @@ Tài liệu này ghi lại lịch sử cập nhật tài liệu và source code 
 
 ## 🗓️ Lịch sử cập nhật
 
+### [v1.60.0] - 2026-04-26
+
+**Chu de:** Eliminate `qa-lead` ghost-agent references across active surfaces (F2 audit H1)
+
+F2 architecture audit phat hien `qa-lead` van con xuat hien o 24 vi tri sau
+merger `qa-lead + qa-tester -> qa-engineer`. Cac vi tri nay khien Task tool
+dispatch fail-hard khi skill chay `subagent_type: qa-lead`. Patch nay xoa toan
+bo refs trong file van con dang dung va giu nguyen file lich su.
+
+#### Fixed - Operational skills (Tier A)
+
+- `.claude/skills/verification-before-completion/SKILL.md`: frontmatter
+  `agent: qa-lead` -> `agent: qa-engineer`. Skill nay la mandatory completion
+  gate theo `using-sdd` router nen anh huong moi turn cua agent.
+- `.claude/skills/team-release/SKILL.md`: 6 dispatch refs (`subagent_type`,
+  team composition, phase delegation) -> `qa-engineer`.
+- `.claude/skills/orchestrate/SKILL.md`: gop row `qa-lead` (line 52) vao
+  `qa-engineer` row va xoa rule `qa-engineer -> qa-lead` (line 90) khong con
+  hop le sau merger.
+
+#### Fixed - Active docs and agents (Tier B)
+
+- 6 agent files cap nhat coordination block: `community-manager`,
+  `lead-programmer`, `ui-spec-designer`, `devops-engineer`, `release-manager`,
+  `product-manager`.
+- 11 docs cap nhat: `agent-roster.md`, `quick-start.md`, `skills-reference.md`,
+  `.claude/docs/technical/ARCHITECTURE.md`, `docs/technical/ARCHITECTURE.md`,
+  `ARCHITECTURE_SPEC_CLAUDE_SYSTEM.md`, `WORKFLOW-GUIDE.md`,
+  `DANH_SACH_LENH.md`, `qa-knowledge-base.md`, `README.md`, `README_vn.md`.
+
+#### Fixed - Edge cases
+
+- `.claude/docs/agent-coordination-map.md`: xoa merger row
+  `| qa-lead | qa-tester |` (delegation toi chinh minh sau merger), thay 12
+  ref khac.
+- `docs/technical/CONTROL_PLANE_MAP.md` line 92: replace stale fallback pair
+  `qa-tester -> qa-lead` bang Rule 14 hien tai `qa-engineer ->
+  fullstack-developer` (canonical theo `coordination-rules.md`).
+
+#### Preserved - Historical refs (intentional)
+
+- `docs/internal/CHANGELOG.md`: lich su merger.
+- `docs/internal/adr/ADR-005-resolve-rule14-vs-adr004-conflict.md`: snapshot
+  Rule 14 truoc merger.
+- `.claude/agents/qa-engineer.md`: mo ta merger trong description.
+- `docs/internal/requests/F2-architecture-audit.md`: bao cao audit goc.
+- `docs/archived/prototypes/harness-engineering.html`: prototype luu tru.
+
+#### Verification
+
+- `Grep qa-lead .` returns 24 hits, 100% in approved-preserve set (F2 audit
+  15, CHANGELOG 6, ADR-005 2, qa-engineer.md 1, archived prototype 1).
+- 18 active files updated voi 0 ref con sot trong dispatch path.
+
 ### [v1.59.0] - 2026-04-24
 
 **Chu de:** Finalize Codex adapter baseline and metadata hardening

@@ -34,7 +34,7 @@
 | `/team-backend` | Orchestrate backend team: lead-programmer + backend-developer + data-engineer + qa-tester |
 | `/team-frontend` | Orchestrate frontend team: ux-designer + frontend-developer + ui-programmer + qa-tester |
 | `/team-ui` | Orchestrate UI team: ux-designer + ui-programmer + accessibility-specialist |
-| `/team-release` | Orchestrate release team: release-manager + qa-lead + devops-engineer + producer |
+| `/team-release` | Orchestrate release team: release-manager + qa-engineer + devops-engineer + producer |
 | `/launch-checklist` | Complete launch readiness validation across all departments |
 | `/patch-notes` | Generate user-facing release notes from git history and internal data |
 | `/sync-template` | Sync `.claude/` from an upstream template repo — shows diff, confirms, applies new/modified files without deleting local customizations |

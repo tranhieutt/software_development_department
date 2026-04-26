@@ -98,7 +98,7 @@ Tier 1 — Executive (Opus)
 
 Tier 2 — Leads (Sonnet)
   product-manager     lead-programmer       ux-designer
-  qa-lead             release-manager
+  qa-engineer         release-manager
 
 Tier 3 — Specialists (Sonnet / Haiku)
   frontend-developer  backend-developer     fullstack-developer

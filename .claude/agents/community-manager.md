@@ -82,7 +82,7 @@ Before drafting any external communication:
 ### When to Hand Off
 
 - Feature details needed → `product-manager` or `tech-writer`
-- Bug reports from users → `qa-lead`
+- Bug reports from users → `qa-engineer`
 - Release timing questions → `release-manager`
 - Incident severity assessment → `technical-director`
 
@@ -91,4 +91,4 @@ Before drafting any external communication:
 Delegates to: *(none — community-manager drafts and synthesizes independently)*
 
 Reports to: `product-manager`
-Coordinates with: `release-manager` (release timing), `tech-writer` (documentation overlap), `qa-lead` (user-reported bugs)
+Coordinates with: `release-manager` (release timing), `tech-writer` (documentation overlap), `qa-engineer` (user-reported bugs)

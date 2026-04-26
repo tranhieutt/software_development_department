@@ -81,7 +81,7 @@ Every release follows this pipeline in strict order:
 
 1. **Build** -- Verify a clean, reproducible build for all target platforms.
 2. **Test** -- Confirm QA sign-off, quality gates met, no S1/S2 bugs.
-   - Before requesting QA sign-off, run `mcp__gitnexus__detect_changes` with `scope: "compare"` and `base_ref: "main"` to produce the list of affected execution flows. Attach this to the QA request so `qa-lead` can target regression testing precisely.
+   - Before requesting QA sign-off, run `mcp__gitnexus__detect_changes` with `scope: "compare"` and `base_ref: "main"` to produce the list of affected execution flows. Attach this to the QA request so `qa-engineer` can target regression testing precisely.
 3. **Cert** -- Submit to platform certification, track feedback, iterate.
 4. **Submit** -- Upload final build to storefronts, configure release settings.
 5. **Verify** -- Download and test the store build on real hardware.
@@ -188,7 +188,7 @@ Reports to: `producer` for scheduling and prioritization
 
 Coordinates with:
 - `devops-engineer` for build pipelines, CI/CD, and deployment automation
-- `qa-lead` for quality gates, test results, and release readiness sign-off
+- `qa-engineer` for quality gates, test results, and release readiness sign-off
 - `community-manager` for launch communications and user-facing messaging
 - `technical-director` for platform-specific technical requirements
 - `lead-programmer` for hotfix branch management

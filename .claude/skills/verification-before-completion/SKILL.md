@@ -7,7 +7,7 @@ user-invocable: true
 allowed-tools: Read, Glob, Grep, Bash
 context: main
 effort: 2
-agent: qa-lead
+agent: qa-engineer
 when_to_use: "Use before any completion or success claim, before committing, before opening or updating a PR, before marking a task done, and before moving from one implementation task to the next."
 ---
 

@@ -20,7 +20,7 @@ Bộ máy nhân sự được chia thành 3 tầng (Tiers):
 - `@product-manager`: Quản lý yêu cầu (PRD, User Stories).
 - `@lead-programmer`: Thiết kế API, Code Review hệ thống.
 - `@ux-designer`: Thiết kế trải nghiệm và luồng người dùng.
-- `@qa-lead`: Chiến lược kiểm thử và tiêu chuẩn chất lượng.
+- `@qa-engineer`: Chiến lược kiểm thử và tiêu chuẩn chất lượng.
 - `@release-manager`: Quy trình đóng gói và triển khai.
 
 ### Tier 3: Specialists (Operational)

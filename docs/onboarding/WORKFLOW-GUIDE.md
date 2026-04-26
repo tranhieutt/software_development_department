@@ -14,7 +14,7 @@ This guide walks through the complete workflow for using the Software Developmen
 The department has **26 specialized agents** organized into three tiers:
 
 - **Tier 1 (Leadership)**: `cto`, `technical-director`, `producer`
-- **Tier 2 (Leads)**: `product-manager`, `lead-programmer`, `ux-designer`, `qa-lead`, `release-manager`
+- **Tier 2 (Leads)**: `product-manager`, `lead-programmer`, `ux-designer`, `qa-engineer`, `release-manager`
 - **Tier 3 (Specialists)**: `frontend-developer`, `backend-developer`, `fullstack-developer`, `data-engineer`, `ai-programmer`, `network-programmer`, `tools-programmer`, `ui-programmer`, `ux-researcher`, `tech-writer`, `performance-analyst`, `devops-engineer`, `analytics-engineer`, `security-engineer`, `qa-tester`, `accessibility-specialist`, `prototyper`, `community-manager`
 
 Every agent follows the same collaboration protocol:
@@ -235,7 +235,7 @@ The `performance-analyst` agent measures, identifies bottlenecks, and recommends
 ### Step 6.1: Test Planning
 
 ```
-Ask the qa-lead agent to create a test plan for the user authentication feature,
+Ask the qa-engineer agent to create a test plan for the user authentication feature,
 using the template at .claude/docs/templates/test-plan.md
 ```
 
@@ -294,7 +294,7 @@ The `tech-writer` generates a structured changelog from git history.
 
 Orchestrates:
 1. `release-manager` — cuts release branch, validates checklist
-2. `qa-lead` — runs final regression
+2. `qa-engineer` — runs final regression
 3. `security-engineer` — final security scan
 4. `performance-analyst` — confirms benchmarks
 5. `devops-engineer` — builds and deploys artifacts
@@ -440,7 +440,7 @@ May I write this to docs/api/auth-service.md?
 | Database schema | `data-engineer` |
 | CI/CD pipelines | `devops-engineer` |
 | Security review | `security-engineer` |
-| Test strategy | `qa-lead` |
+| Test strategy | `qa-engineer` |
 | Test execution | `qa-tester` |
 | Performance analysis | `performance-analyst` |
 | UX flows and wireframes | `ux-designer` |

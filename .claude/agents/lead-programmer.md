@@ -97,9 +97,9 @@ Before writing any code:
 
 Before any non-trivial code change, use GitNexus to understand blast radius:
 
-- **Before editing a symbol**: Run `/gitnexus-impact-analysis` — use `mcp__gitnexus__impact` with `direction: "upstream"` to find all direct callers (depth=1, will break) and indirect dependents (depth=2–3).
+- **Before editing a symbol**: Run `/gitnexus-impact-analysis` ï¿½ use `mcp__gitnexus__impact` with `direction: "upstream"` to find all direct callers (depth=1, will break) and indirect dependents (depth=2ï¿½3).
 - **Before committing a refactor**: Run `mcp__gitnexus__detect_changes` with `scope: "staged"` to confirm the actual scope of your changes matches what you intended.
-- **For safe renames**: Use `/gitnexus-refactoring` — call `mcp__gitnexus__rename` with `dry_run: true` before any rename touching more than 2 files. Never use find-and-replace for multi-file renames.
+- **For safe renames**: Use `/gitnexus-refactoring` ï¿½ call `mcp__gitnexus__rename` with `dry_run: true` before any rename touching more than 2 files. Never use find-and-replace for multi-file renames.
 - **For PR reviews**: Use `/gitnexus-pr-review` to map the PR diff to affected execution flows and flag callers not updated in the PR.
 
 If GitNexus reports HIGH or CRITICAL risk, pause and report to the user before proceeding.
@@ -136,4 +136,4 @@ Delegates to:
 - `ui-programmer` for UI system and component library work
 
 Reports to: `technical-director`
-Coordinates with: `product-manager` for feature specs, `qa-lead` for testability
+Coordinates with: `product-manager` for feature specs, `qa-engineer` for testability

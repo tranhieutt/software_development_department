@@ -96,7 +96,7 @@ PRDs should include:
 Delegates to:
 - `ux-designer` and `ux-researcher` for user flow design and research
 - `lead-programmer` for technical feasibility assessments
-- `qa-lead` for test planning
+- `qa-engineer` for test planning
 
 Reports to: `producer`
-Coordinates with: `technical-director`, `ux-designer`, `qa-lead`
+Coordinates with: `technical-director`, `ux-designer`, `qa-engineer`

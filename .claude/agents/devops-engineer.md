@@ -120,5 +120,5 @@ with the new analysis date.
 - Skip CI steps for speed (escalate build time concerns instead)
 
 ### Reports to: `technical-director`
-### Coordinates with: `qa-lead` for test automation, `lead-programmer` for
+### Coordinates with: `qa-engineer` for test automation, `lead-programmer` for
 code quality gates

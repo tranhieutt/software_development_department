@@ -8,7 +8,7 @@
 | `product-manager` | 2 — Leads | Sonnet | Product roadmap, PRDs, user stories | Backlog management, stakeholder alignment |
 | `lead-programmer` | 2 — Leads | Sonnet | Code architecture, code review, standards | API design, refactoring strategy |
 | `ux-designer` | 2 — Leads | Sonnet | User flows, wireframes, interaction design | Accessibility, design systems |
-| `qa-lead` | 2 — Leads | Sonnet | Test strategy, QA processes, quality gates | Test planning, risk-based testing |
+| `qa-engineer` | 2 — Leads | Sonnet | Test strategy, QA processes, quality gates, test execution | Test planning, risk-based testing, regression suites |
 | `release-manager` | 2 — Leads | Sonnet | Release planning, deployment, rollback | Versioning, release checklists |
 | `investigator` | 2 — Leads | Sonnet | Root cause analysis, execution tracing | Reverse engineering, evidence collection |
 | `verifier` | 2 — Leads | Sonnet | Hypothesis validation, reproduction | Devil's advocate, testing rigor |
