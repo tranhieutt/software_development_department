@@ -88,6 +88,10 @@ The result is a system where:
 
 ## Architecture
 
+<p align="center">
+  <img src="docs/technical/sdd-architecture-overview.png" alt="SDD architecture overview" width="100%">
+</p>
+
 ### Department Hierarchy
 
 Three tiers. Clear escalation paths. No ambiguous authority.
