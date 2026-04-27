@@ -4,15 +4,15 @@
     Hệ thống agentic có cấu trúc — biến một session Claude Code đơn lẻ<br />
     thành một software engineering organization thực sự.
     <br /><br />
-    31 agents · 116 context-optimized skills · 10/12 agentic harness patterns · MAS Infrastructure · Steel Discipline · Runtime-proven harness
+    28 agents · 126 context-optimized skills · 10/12 agentic harness patterns · MAS Infrastructure · Steel Discipline · Runtime-proven harness
   </p>
 </p>
 
 <p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT License"></a>
-  <a href=".claude/agents"><img src="https://img.shields.io/badge/agents-31-blueviolet" alt="31 Agents"></a>
-  <a href=".claude/skills"><img src="https://img.shields.io/badge/skills-116-green" alt="116 Skills"></a>
-  <a href=".claude/hooks"><img src="https://img.shields.io/badge/hooks-20-orange" alt="20 Hooks"></a>
+  <a href=".claude/agents"><img src="https://img.shields.io/badge/agents-28-blueviolet" alt="28 Agents"></a>
+  <a href=".claude/skills"><img src="https://img.shields.io/badge/skills-126-green" alt="126 Skills"></a>
+  <a href=".claude/hooks"><img src="https://img.shields.io/badge/hooks-29-orange" alt="29 Hook Files"></a>
   <a href=".claude/rules"><img src="https://img.shields.io/badge/rules-13-red" alt="13 Rules"></a>
   <a href="https://docs.anthropic.com/en/docs/claude-code"><img src="https://img.shields.io/badge/built%20for-Claude%20Code-f5f5f5?logo=anthropic" alt="Built for Claude Code"></a>
 </p>
@@ -48,7 +48,7 @@ Kết quả:
 - **Process được enforced**: Spec trước implementation, plan trước code, tests trước merge — thực thi qua hooks và verification gates, không phải lời khuyên
 - **Memory tồn tại liên tục**: 5-layer durable memory architecture (Tier 1 index → Tier 2 topic files → Tier 3 cold archive → MCP Supermemory semantic store) sống qua từng session
 - **Context được dùng chính xác**: Incremental loading với 3-Question Relevance Gate ngăn chặn context stuffing; tối đa 3 Tier 2 files mỗi session
-- **Routing chính xác**: 117 skills với `paths:` triggers, `when_to_use:` semantics, và `effort:` scores cho phép AI tự route mà không cần người dùng điều hướng thủ công
+- **Routing chính xác**: 126 skills với `paths:` triggers, `when_to_use:` semantics, và `effort:` scores cho phép AI tự route mà không cần người dùng điều hướng thủ công
 
 ---
 
@@ -72,8 +72,8 @@ Tier 3 — Specialists (Sonnet / Haiku)
   tools-programmer    ui-programmer         data-engineer
   analytics-engineer  ux-researcher         tech-writer
   prototyper          performance-analyst   devops-engineer
-  security-engineer   qa-tester             accessibility-specialist
-  community-manager
+  security-engineer   diagnostics           accessibility-specialist
+  community-manager   ui-spec-designer
 ```
 
 ### Coordination Model
@@ -92,12 +92,12 @@ SDD triển khai **10 trong 12** patterns từ kiến trúc agentic harness nộ
 
 | Pattern | Trạng thái | Triển khai |
 |---|---|---|
-| #1 Structured Agent Definitions | ✅ | 31 agents với YAML frontmatter + domain ownership |
+| #1 Structured Agent Definitions | ✅ | 28 agents với YAML frontmatter + domain ownership |
 | #2 Path-Scoped Rules | ✅ | 13 rules tự động enforce theo file path |
 | #3 Tiered Memory | ✅ | 5 tầng: MEMORY.md → topic files → archive → Supermemory |
 | #4 Dream Consolidation | ✅ | `auto-dream.sh` — 5-phase consolidation tự động |
 | #6 Context: Fork | ✅ | 10 analysis skills nặng chạy trong subagent context độc lập |
-| #7 Skill Routing | ✅ | 117 skills với metadata `paths:`, `when_to_use:`, `effort:` |
+| #7 Skill Routing | ✅ | 126 skills với metadata `paths:`, `when_to_use:`, `effort:` |
 | #8 Fork-Join Parallelism | ✅ | `fork-join.sh` — git worktree lifecycle manager |
 | #10 Least Privilege Tools | ✅ | `allowed-tools:` per skill + 22-entry permission allow-list |
 | #11 Bash Guard | ✅ | `bash-guard.sh` chặn RCE patterns và các lệnh nguy hiểm |
@@ -205,7 +205,7 @@ Tier 5  CLAUDE.md @include chain     — Static universal context, luôn trong p
 
 ## Skill System
 
-### 116 Skills trên 7 Domain
+### 126 Skills trên 7 Domain
 
 | Domain | Skills tiêu biểu |
 |---|---|
@@ -227,7 +227,7 @@ Skills activate có điều kiện dựa trên file bạn đang mở:
 Đang edit Dockerfile, *.tf      → Skills DevOps, Kubernetes, AWS activate
 ```
 
-Gõ `/` trong Claude Code — bạn thấy cái relevant, không phải cả 123.
+Gõ `/` trong Claude Code — bạn thấy cái relevant, không phải cả 126.
 
 ---
 
@@ -235,9 +235,9 @@ Gõ `/` trong Claude Code — bạn thấy cái relevant, không phải cả 123
 
 | Thành phần | Số lượng | Mô tả |
 |---|---|---|
-| **Agents** | 31 | Agents chuyên biệt cho product, engineering, design, QA, data, operations |
-| **Skills** | 116 | Core workflows và technology frameworks với context-aware routing |
-| **Hooks** | 20 | Automated validation: commits, pushes, asset changes, session lifecycle, circuit breaker, skill telemetry, decision ledger, bash guard, fork-join |
+| **Agents** | 28 | Agents chuyên biệt cho product, engineering, design, QA, data, operations |
+| **Skills** | 126 | Core workflows và technology frameworks với context-aware routing |
+| **Hooks** | 29 | Automated validation: commits, pushes, asset changes, session lifecycle, circuit breaker, skill telemetry, decision ledger, bash guard, fork-join |
 | **Rules** | 13 | Coding standards tự động enforce theo file path |
 | **Templates** | 22+ | PRDs, API designs, system architecture, ADRs, mobile, incident response, postmortem |
 
@@ -262,7 +262,7 @@ claude
 
 Chạy `/start` — hệ thống hỏi bạn đang ở đâu (ý tưởng mới, codebase có sẵn, hoặc task cụ thể) và hướng dẫn từ đó.
 
-**Antigravity Platform**: Mở thư mục trong Antigravity. Kiến trúc `.claude/` tự động load. Toàn bộ 123 workflows sẵn sàng ngay — chỉ cần giao việc.
+**Antigravity Platform**: Mở thư mục trong Antigravity. Kiến trúc `.claude/` tự động load. Toàn bộ 126 workflows sẵn sàng ngay — chỉ cần giao việc.
 
 ### Entry Point phù hợp với từng tình huống
 
@@ -284,9 +284,9 @@ PRD.md                              # Product requirements document
 TODO.md                             # Living backlog (quản lý bởi @producer)
 .claude/
   settings.json                     # Permissions, deny rules, hook registration
-  agents/                           # 31 agent definitions với domain ownership
-  skills/                           # 123 skills (mỗi subdirectory một skill)
-  hooks/                            # 15 hook scripts
+  agents/                           # 28 agent definitions với domain ownership
+  skills/                           # 126 skills (mỗi subdirectory một skill)
+  hooks/                            # 29 hook scripts
   rules/                            # 13 path-scoped coding standards
   memory/                           # 5-layer durable memory system
   docs/

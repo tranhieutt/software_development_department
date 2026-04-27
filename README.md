@@ -106,8 +106,8 @@ Tier 3 — Specialists (Sonnet / Haiku)
   tools-programmer    ui-programmer         data-engineer
   analytics-engineer  ux-researcher         tech-writer
   prototyper          performance-analyst   devops-engineer
-  security-engineer   qa-tester             accessibility-specialist
-  community-manager
+  security-engineer   diagnostics           accessibility-specialist
+  community-manager   ui-spec-designer
 ```
 
 ### Coordination Model
@@ -262,7 +262,7 @@ Editing *.py, manage.py       → Django, FastAPI, ML skills surface
 Editing Dockerfile, *.tf      → DevOps, Kubernetes, AWS skills activate
 ```
 
-Type `/` in Claude Code — you see what's relevant, not all 123.
+Type `/` in Claude Code — you see what's relevant, not all 126.
 
 ---
 
@@ -270,9 +270,9 @@ Type `/` in Claude Code — you see what's relevant, not all 123.
 
 | Category | Count | Description |
 |---|---|---|
-| **Agents** | 31 | Specialized subagents across product, engineering, design, QA, data, and operations |
+| **Agents** | 28 | Specialized subagents across product, engineering, design, QA, data, and operations |
 | **Skills** | 126 | Core workflows and technology frameworks with context-aware routing |
-| **Hooks** | 20 | Automated validation: commits, pushes, asset changes, session lifecycle, circuit breaker, skill telemetry, decision ledger, bash guard, fork-join |
+| **Hooks** | 29 | Automated validation: commits, pushes, asset changes, session lifecycle, circuit breaker, skill telemetry, decision ledger, bash guard, fork-join |
 | **Rules** | 13 | Path-scoped coding standards enforced automatically by file location |
 | **Templates** | 22+ | PRDs, API designs, system architecture, ADRs, mobile, incident response, postmortem |
 
@@ -297,7 +297,7 @@ claude
 
 Run `/start` — the system asks where you are (new concept, existing codebase, or specific task) and guides you from there.
 
-**Antigravity Platform**: Open the directory in Antigravity. The `.claude/` architecture loads automatically. All 123 workflows are available immediately — just assign tasks.
+**Antigravity Platform**: Open the directory in Antigravity. The `.claude/` architecture loads automatically. All 126 workflows are available immediately — just assign tasks.
 
 ### Setup (Codex)
 
@@ -341,9 +341,9 @@ PRD.md                              # Product requirements document
 TODO.md                             # Living backlog (governed by @producer)
 .claude/
   settings.json                     # Permissions, deny rules, hook registration
-  agents/                           # 31 agent definitions with domain ownership
+  agents/                           # 28 agent definitions with domain ownership
   skills/                           # 126 skills (one subdirectory each)
-  hooks/                            # 15 hook scripts
+  hooks/                            # 29 hook scripts
   rules/                            # 13 path-scoped coding standards
   memory/                           # 5-layer durable memory system
   docs/

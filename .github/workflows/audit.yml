@@ -11,6 +11,9 @@ jobs:
         with:
           node-version: '20'
 
+      - name: Validate README Sync
+        run: node scripts/validate-readme-sync.js
+
       - name: Install dependencies
         run: npm install -g ajv-cli
 

@@ -37,12 +37,14 @@ run_checked() {
 
 SKIP_SKILL_VALIDATION=0
 SKIP_HARNESS_AUDIT=0
+SKIP_README_SYNC=0
 SKIP_TRACE_CHECK=0
 
 for arg in "$@"; do
   case "$arg" in
     --skip-skill-validation) SKIP_SKILL_VALIDATION=1 ;;
     --skip-harness-audit) SKIP_HARNESS_AUDIT=1 ;;
+    --skip-readme-sync) SKIP_README_SYNC=1 ;;
     --skip-trace-check) SKIP_TRACE_CHECK=1 ;;
     *)
       fail "unknown argument: $arg"
@@ -65,6 +67,7 @@ required_files=(
   ".claude/skills/using-sdd/SKILL.md"
   ".claude/skills/codex-sdd/SKILL.md"
   "scripts/validate-skills.sh"
+  "scripts/validate-readme-sync.js"
   "scripts/harness-audit.js"
 )
 
@@ -118,6 +121,11 @@ fi
 if [ "$SKIP_HARNESS_AUDIT" -eq 0 ]; then
   section "Harness Audit"
   run_checked "harness audit" node scripts/harness-audit.js --compact
+fi
+
+if [ "$SKIP_README_SYNC" -eq 0 ]; then
+  section "README Sync"
+  run_checked "README sync" node scripts/validate-readme-sync.js
 fi
 
 if [ "$SKIP_TRACE_CHECK" -eq 0 ]; then

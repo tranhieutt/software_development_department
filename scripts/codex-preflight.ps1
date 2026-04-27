@@ -1,6 +1,7 @@
 param(
     [switch]$SkipSkillValidation,
     [switch]$SkipHarnessAudit,
+    [switch]$SkipReadmeSync,
     [switch]$SkipTraceCheck
 )
 
@@ -65,6 +66,7 @@ $required = @(
     ".claude/skills/using-sdd/SKILL.md",
     ".claude/skills/codex-sdd/SKILL.md",
     "scripts/validate-skills.ps1",
+    "scripts/validate-readme-sync.js",
     "scripts/harness-audit.js"
 )
 
@@ -116,6 +118,11 @@ if (-not $SkipSkillValidation) {
 if (-not $SkipHarnessAudit) {
     Write-Section "Harness Audit"
     Invoke-Checked "harness audit" "node" @("scripts\harness-audit.js", "--compact")
+}
+
+if (-not $SkipReadmeSync) {
+    Write-Section "README Sync"
+    Invoke-Checked "README sync" "node" @("scripts\validate-readme-sync.js")
 }
 
 if (-not $SkipTraceCheck) {
