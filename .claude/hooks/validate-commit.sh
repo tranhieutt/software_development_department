@@ -38,11 +38,41 @@ fi
 
 WARNINGS=""
 
+# Returns 0 when file starts with YAML frontmatter block, otherwise 1.
+has_frontmatter() {
+    local file="$1"
+    [ -f "$file" ] || return 1
+    local first_line
+    first_line=$(head -n 1 "$file" 2>/dev/null)
+    [ "$first_line" = "---" ] || return 1
+    awk 'NR>1 { if ($0=="---") { found=1; exit } } END { exit found?0:1 }' "$file"
+}
+
 # Check design documents for required sections
 DESIGN_FILES=$(echo "$STAGED" | grep -E '^design/specs/')
 if [ -n "$DESIGN_FILES" ]; then
     while IFS= read -r file; do
         if [[ "$file" == *.md ]] && [ -f "$file" ]; then
+            if ! has_frontmatter "$file"; then
+                echo "BLOCKED: $file missing YAML frontmatter. Add frontmatter with stage, tier, spec_id before commit." >&2
+                exit 2
+            fi
+
+            FRONTMATTER=$(awk 'BEGIN{in=0} NR==1 && $0=="---" {in=1; next} in==1 && $0=="---" {exit} in==1 {print}' "$file")
+            for key in stage tier spec_id; do
+                if ! echo "$FRONTMATTER" | grep -qiE "^[[:space:]]*$key[[:space:]]*:[[:space:]]*.+"; then
+                    echo "BLOCKED: $file frontmatter missing required field '$key'." >&2
+                    exit 2
+                fi
+            done
+
+            for bdd in "Given" "When" "Then"; do
+                if ! grep -qiE "^[[:space:]]*[-*]?[[:space:]]*$bdd\b" "$file"; then
+                    echo "BLOCKED: $file missing BDD keyword '$bdd' in acceptance criteria." >&2
+                    exit 2
+                fi
+            done
+
             for section in "Overview" "User Value" "Detailed" "Formulas" "Edge Cases" "Dependencies" "Configuration" "Acceptance Criteria"; do
                 if ! grep -qi "$section" "$file"; then
                     WARNINGS="$WARNINGS\nDESIGN: $file missing required section: $section"

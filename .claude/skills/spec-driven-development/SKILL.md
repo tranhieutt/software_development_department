@@ -71,6 +71,12 @@ For large, architecture-impacting, or multi-session work, propose a persistent
 spec file before implementation. Do not write it without user approval.
 
 ```markdown
+---
+stage: [discovery|planning|implementation|verification|release]
+tier: [T0|T1|T2|T3]
+spec_id: SPEC-YYYYMMDD-XXX
+---
+
 # Spec: [Feature or Change Name]
 
 ## Objective
@@ -81,6 +87,11 @@ spec file before implementation. Do not write it without user approval.
 
 ## Success Criteria
 - [Specific, testable condition.]
+
+## BDD Acceptance
+- Given [initial context]
+- When [action or event]
+- Then [expected outcome]
 
 ## Project Context
 - Commands: [full commands with flags]
@@ -105,6 +116,9 @@ spec file before implementation. Do not write it without user approval.
 ## Open Questions
 - [Question that must be answered before implementation, or "None."]
 ```
+
+- Frontmatter is mandatory for persistent specs and must include `stage`, `tier`, and `spec_id`.
+- BDD acceptance is mandatory for persistent specs and must include at least one `Given/When/Then` chain.
 
 ### 4. Task Breakdown
 - Break the feature into granular, atomic checklist items ordered by dependency:
