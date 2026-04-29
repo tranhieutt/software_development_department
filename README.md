@@ -140,8 +140,8 @@ SDD implements **10 of 12** patterns from Claude Code's internal agentic harness
 | #10 Least Privilege Tools | ✅ | `allowed-tools:` per skill + 22-entry permission allow-list |
 | #11 Bash Guard | ✅ | `bash-guard.sh` blocks RCE patterns, destructive commands |
 | #12 Annotation System | ✅ | `/annotate` skill + `annotations.md` persistent gotcha store |
-| #5 Multi-Stage Context Compaction | ⚠️ | Requires platform-level conversation control (HISTORY_SNIP, Microcompact, CONTEXT_COLLAPSE, Autocompact) — not accessible from project scope |
-| #9 Progressive Tool Expansion | ⚠️ | Requires harness-level tool activation logic — the default tool set is determined by the Claude Code platform, not configurable per-project |
+| #5 Multi-Stage Context Compaction | ⚠️ Partial / platform-bound | Project-level recovery is supported through `pre-compact.sh`, `/save-state`, and `active.md`; true platform controls (HISTORY_SNIP, Microcompact, CONTEXT_COLLAPSE, Autocompact) are not accessible from project scope |
+| #9 Progressive Tool Expansion | ⚠️ Partial / platform-bound | Project defines bounded tool policy through `permissions.allow` / `permissions.deny`, skill `allowed-tools:`, agent `tools:`, and guard hooks; true dynamic tool activation is controlled by the Claude Code platform and is not configurable per-project |
 
 ---
 

@@ -102,8 +102,8 @@ SDD triển khai **10 trong 12** patterns từ kiến trúc agentic harness nộ
 | #10 Least Privilege Tools | ✅ | `allowed-tools:` per skill + 22-entry permission allow-list |
 | #11 Bash Guard | ✅ | `bash-guard.sh` chặn RCE patterns và các lệnh nguy hiểm |
 | #12 Annotation System | ✅ | Skill `/annotate` + `annotations.md` lưu gotchas vĩnh viễn |
-| #5 Multi-Stage Context Compaction | ⚠️ | Cần platform-level control (HISTORY_SNIP, Microcompact, CONTEXT_COLLAPSE, Autocompact) — không thể thực hiện từ project scope |
-| #9 Progressive Tool Expansion | ⚠️ | Cần harness-level tool activation logic — default tool set do Claude Code platform quyết định, không configure được từ project |
+| #5 Multi-Stage Context Compaction | ⚠️ Một phần / phụ thuộc platform | Project hỗ trợ recovery qua `pre-compact.sh`, `/save-state`, và `active.md`; các platform controls thật sự (HISTORY_SNIP, Microcompact, CONTEXT_COLLAPSE, Autocompact) không thể truy cập từ project scope |
+| #9 Progressive Tool Expansion | ⚠️ Một phần / phụ thuộc platform | Project định nghĩa tool policy có giới hạn qua `permissions.allow` / `permissions.deny`, skill `allowed-tools:`, agent `tools:`, và guard hooks; dynamic tool activation thật sự do Claude Code platform kiểm soát và không configure được từ project |
 
 ---
 
