@@ -17,6 +17,19 @@ Brief description of what this PR does.
 -
 -
 
+## P1 Evidence (Required)
+
+- Spec ID:
+- Stage/Tier:
+- Test result:
+- Lint result:
+- Build result:
+- Risk:
+- Rollback/Fallback:
+- Given:
+- When:
+- Then:
+
 ## Checklist
 
 - [ ] I've tested this in a Claude Code session

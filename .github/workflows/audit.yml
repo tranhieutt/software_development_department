@@ -26,6 +26,9 @@ jobs:
       - name: Validate Skills
         run: bash scripts/validate-skills.sh
 
+      - name: P1 Quality Gates
+        run: node scripts/p1-quality-gates.js
+
       - name: ShellCheck Hooks
         run: |
           sudo apt-get update && sudo apt-get install -y shellcheck
