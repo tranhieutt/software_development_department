@@ -1,7 +1,7 @@
 ﻿---
 name: test-driven-development
 type: workflow
-description: "Forces the strict Red-Green-Refactor development cycle. Requires writing a failing test and running it in the terminal before writing any implementation code."
+description: "Forces the strict Red-Green-Refactor development cycle. Requires one failing behavior test through a public interface before each implementation slice."
 argument-hint: "[task-description-or-file]"
 user-invocable: true
 allowed-tools: Read, Glob, Grep, RunCommand
@@ -16,6 +16,12 @@ when_to_use: "When implementing ANY approved feature, bug fix, algorithmic logic
 ## Purpose
 
 TDD acts as the ultimate truth verifier. It prevents Agents from blindly inserting implementation code based on assumptions. By strictly enforcing the **RED-GREEN-REFACTOR** cycle, we guarantee that all code changes are demonstrably functional and logically sound before moving on to the next task.
+
+Good tests verify observable behavior through the system's public interface:
+commands, APIs, UI interactions, exported functions, or other supported entry
+points. They must not couple to private helpers, internal call order, temporary
+data structures, or implementation-only collaborators. A refactor that preserves
+behavior should not break the test.
 
 ---
 
@@ -36,18 +42,35 @@ If no gate is satisfied, stop and request the missing approval or clarification.
 
 ### 1. RED Phase (Write the Failing Test)
 - Read the specification for the current atomic task.
-- Create or modify the appropriate test file (e.g., `*.test.ts`, `*_test.go`, `test_*.py`) to assert the expected behavior.
+- Select exactly one behavior for the next vertical slice. Do not write a batch
+  of tests for imagined future behavior.
+- Create or modify the appropriate test file (e.g., `*.test.ts`, `*_test.go`, `test_*.py`) to assert the expected behavior through the public interface.
 - **EXECUTE**: Use the terminal to run the test suite.
 - **GATE**: Capture the terminal output. You MUST see the test **FAIL**. If the test passes immediately, your test is flawed or asserting the wrong state.
 
 ### 2. GREEN Phase (Make it Pass)
 - Write the absolute *minimum* amount of source code necessary to fulfill the test requirement. Do not over-engineer or add "nice-to-have" features yet.
+- Do not anticipate later slices. The only acceptable implementation is the
+  smallest change that makes the current behavior test pass.
 - **EXECUTE**: Use the terminal to run the test suite again.
 - **GATE**: Capture the terminal output. You MUST see the test **PASS**. 
 
 ### 3. REFACTOR Phase (Clean it Up)
 - Optimize your implementation code (clean up naming, extract duplicate logic, improve types/interfaces) without altering behavior.
 - **EXECUTE**: Run the test suite a final time to ensure your refactoring did not break the green state.
+
+### 4. Repeat Vertically
+
+Repeat RED -> GREEN -> REFACTOR for the next behavior only after the previous
+slice is green. This tracer-bullet pattern keeps each test tied to real behavior
+learned from the previous implementation step.
+
+Do not use horizontal slicing:
+
+```text
+Wrong: RED all tests -> GREEN all implementation
+Right: RED one behavior -> GREEN one behavior -> REFACTOR -> repeat
+```
 
 ---
 
@@ -87,6 +110,8 @@ Be aware of lazy logic that an Agent typically uses to skip testing. If a though
 | "The project doesn't seem to have a test framework set up, so I will just skip TDD and do a console.log." | **REJECTED.** `console.log` is not an automated test. If a test runner (Jest, PyTest, Go test, Vitest) is missing, STOP working and ask the User for permission to install and configure one immediately. |
 | "I don't need to run the final terminal command to check if it's green. I can read the logic and I know it works." | **REJECTED.** Code does not exist until the compiler/test-runner proves it exists. You cannot hallucinate terminal outputs. Run the actual command. |
 | "Writing the failing test is safe before approval." | **REJECTED.** RED tests are execution. Confirm the pre-code gate before editing tests. |
+| "I'll write all RED tests first, then implement them together." | **REJECTED.** Bulk RED is horizontal slicing. Write one behavior test, make it pass, then continue. |
+| "Testing private helpers is faster than going through the public API." | **REJECTED.** Private-helper tests couple to implementation. Test the supported interface unless no behavior seam exists; if no seam exists, report that design problem. |
 
 ---
 
@@ -96,6 +121,8 @@ Do not conclude the turn unless you have:
 - [ ] Confirmed the `using-sdd` pre-code gate before editing tests or production code.
 - [ ] Executed the test runner during the **RED** phase and captured a definitive FAILING state log.
 - [ ] Executed the test runner during the **GREEN** phase and captured a PASSING log.
+- [ ] Verified the test exercises observable behavior through a public interface.
+- [ ] Avoided horizontal slicing by completing only one RED -> GREEN behavior cycle at a time.
 - [ ] Displayed both terminal outputs (Red & Green) as indisputable evidence to the User.
 
 ---

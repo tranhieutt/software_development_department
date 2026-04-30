@@ -30,26 +30,59 @@ when_to_use: "When a bug is reproducible but cause is unknown, when a 'fix' has 
 ## Pipeline overview
 
 ```
-Investigation -> Verification -> Solution -> Lead Programmer
-  (hypothesis)    (devil's adv.)   (tradeoffs)   (assign + exec)
+Feedback Loop -> Investigation -> Verification -> Solution -> Lead Programmer
+  (signal)         (hypothesis)    (devil's adv.)   (tradeoffs)   (assign + exec)
 
-  investigation.json      verification.json      solution.json          implementation
-  (root_cause,           (status: confirmed |    (3 options:           (delegates to
-   evidence[],            refuted | inconclusive, Quick/Strategic/     backend-developer,
-   confidence)            reproduction_steps)    Future-Proof)         qa-engineer, etc.)
+  repro/check command      investigation.json      verification.json      solution.json          implementation
+  (fast deterministic      (root_cause,           (status: confirmed |    (3 options:           (delegates to
+   pass/fail signal)       evidence[],            refuted | inconclusive, Quick/Strategic/     backend-developer,
+                           confidence)            reproduction_steps)    Future-Proof)         qa-engineer, etc.)
 ```
 
 Each stage produces a **required artifact** saved to `.investigations/<task_id>/` and a **handoff contract** (per Rule 16) to the next agent.
 
+## Stage 0 — Feedback Loop
+
+**Goal:** Build the fastest reliable pass/fail signal for the exact symptom
+before explaining the cause.
+
+The feedback loop is the highest-leverage part of diagnosis. Do not proceed to
+root-cause analysis until there is a loop that can reproduce the user's symptom
+or a documented reason why no loop is possible.
+
+Try these in roughly this order:
+
+1. Failing test at the seam that reaches the bug.
+2. CLI or script invocation with fixture input and expected output.
+3. Curl/HTTP request against a running service.
+4. Headless browser script with DOM, console, or network assertions.
+5. Replay of a captured payload, event, HAR, log, or trace.
+6. Throwaway harness that calls the affected code path in isolation.
+7. Property/fuzz loop for broad wrong-output symptoms.
+8. Bisection or differential loop between known-good and known-bad states.
+
+Improve the loop before investigating:
+
+- Faster: remove unrelated setup and narrow the command.
+- Sharper: assert the specific symptom, not merely "does not crash".
+- More deterministic: pin time, seed randomness, isolate filesystem/network, or
+  raise intermittent reproduction frequency with stress runs.
+
+If no credible loop can be built, stop and report what was tried. Ask for access
+to the reproducing environment, a captured artifact, or permission to add
+temporary instrumentation. Do not proceed on a vibe.
+
 ## Stage 1 — Investigation
 
 **Agent:** `diagnostics` (Investigation role)
-**Goal:** Produce a falsifiable root-cause hypothesis backed by empirical evidence.
+**Goal:** Produce ranked falsifiable root-cause hypotheses backed by empirical evidence.
 
 ### Inputs
 - Symptom description (from user or TODO.md bug ID)
 - Reproduction steps (or "cannot reproduce" + environment)
 - Relevant log lines, stack traces, error IDs
+- Feedback loop command/check from Stage 0, or a documented reason no loop can
+  currently be built
 
 ### Required output — `investigation.json`
 ```json
@@ -61,6 +94,23 @@ Each stage produces a **required artifact** saved to `.investigations/<task_id>/
     "frequency": "100% | intermittent (~30%) | once",
     "environment": "staging-eu-west-1"
   },
+  "feedback_loop": {
+    "command": "npm test -- checkout.e2e.test.ts",
+    "signal": "Fails with timeout before hydration marker appears",
+    "reliable": true
+  },
+  "ranked_hypotheses": [
+    {
+      "rank": 1,
+      "cause": "Test clicks #submit before React hydration completes on slow CI runners",
+      "prediction": "Waiting for the hydration marker will make the failure disappear without adding a fixed sleep"
+    },
+    {
+      "rank": 2,
+      "cause": "Submit button selector matches a hidden stale node",
+      "prediction": "Asserting the visible button count will expose multiple matching nodes"
+    }
+  ],
   "hypothesis": {
     "root_cause": "OrderService.calculateTotal() N+1 query exhausts pool when cart.items.length > 9",
     "confidence": "high | medium | low",
@@ -77,6 +127,10 @@ Each stage produces a **required artifact** saved to `.investigations/<task_id>/
 ```
 
 ### Quality gate (Lead Programmer rejects if):
+- `feedback_loop` is missing and no blocked-loop explanation exists
+- `ranked_hypotheses` has fewer than 3 items unless the evidence makes a single
+  cause unavoidable
+- Any hypothesis lacks a falsifiable prediction
 - `hypothesis.falsifiable_by` is vague ("check if it works")
 - `evidence` has fewer than 2 items (unverifiable)
 - `unknowns` is empty but `confidence: low` (contradictory)
@@ -89,6 +143,7 @@ Each stage produces a **required artifact** saved to `.investigations/<task_id>/
 ### Inputs
 - `investigation.json` (from Stage 1)
 - Access to staging/test environment
+- The Stage 0 feedback loop, rerun before and after each meaningful probe
 
 ### Required output — `verification.json`
 ```json
@@ -156,6 +211,8 @@ Each stage produces a **required artifact** saved to `.investigations/<task_id>/
 - All 3 options must have distinct scope (not three flavors of the same fix)
 - `tradeoff` must state what is **sacrificed**, not just "takes longer"
 - `recommendation` must cite a criterion (time budget, risk tier, blast radius)
+- The selected option's acceptance criteria must include rerunning the original
+  feedback loop from Stage 0 and a regression test when a correct seam exists
 
 ## Stage 4 — Finalization
 
@@ -243,8 +300,9 @@ Stage 4 → lead-programmer
 
 | Pitfall                                       | Fix                                                                         |
 | --------------------------------------------- | --------------------------------------------------------------------------- |
+| Hypothesizing before building a loop           | Return to Stage 0. A diagnosis without a signal is speculation.             |
 | Skipping Verification ("cause is obvious")    | Verifier exists specifically to catch "obvious but wrong" hypotheses        |
-| Investigator produces only 1 hypothesis       | Reject — require `counter_hypotheses_ruled_out[]` list in Stage 2           |
+| Investigator produces only 1 hypothesis       | Reject unless evidence makes alternatives impossible; require ranked hypotheses and predictions |
 | Solver picks Quick fix without naming tradeoff| Reject — all 3 options required for explicit tradeoff comparison            |
 | No artifact written to `.investigations/`     | Reject — verbal diagnosis is not auditable                                  |
 | Running `/diagnose` in parallel on same bug   | Only one active investigation per `task_id`; concurrent runs create race   |

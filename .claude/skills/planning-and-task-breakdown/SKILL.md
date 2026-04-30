@@ -23,6 +23,11 @@ This is a Plan Gate under `using-sdd`. A plan is not permission to execute. The
 user must approve the plan before RED tests, production edits, or implementation
 subagents begin.
 
+Prefer tracer-bullet vertical slices: each task should deliver the thinnest
+complete path that is independently verifiable. Avoid horizontal tasks that only
+build one layer unless that layer is a prerequisite contract, migration, or
+bounded infrastructure step with its own verification.
+
 ## Workflow
 
 ### 1. Establish Inputs
@@ -70,11 +75,16 @@ verify independently.
 A valid task:
 
 - Touches one logical behavior or one infrastructure step
+- Delivers a tracer-bullet vertical slice when user-facing behavior crosses
+  multiple layers
 - Lists exact files, or a bounded discovery step if the exact file is unknown
 - Includes TDD RED/GREEN/REFACTOR steps for behavior changes
 - Includes exact commands and expected outcomes
 - Has clear acceptance criteria
 - Can be reviewed independently
+- Is marked `AFK` when an agent can execute it without more human judgment, or
+  `HITL` when it requires human approval, design choice, external access, manual
+  review, or unresolved tradeoff
 
 Invalid tasks:
 
@@ -83,6 +93,20 @@ Invalid tasks:
 - "Write tests for the above"
 - "Implement similar logic"
 - Any task spanning DB, API, UI, docs, and deployment at once
+- Any horizontal slice that cannot be demonstrated or verified without a later
+  task, unless it is explicitly a contract or setup task
+
+### 4a. AFK/HITL Classification
+
+Classify each task before presenting the plan:
+
+| Classification | Meaning | Typical examples |
+| --- | --- | --- |
+| `AFK` | Agent-ready. Requirements, files, acceptance criteria, and verification are clear enough to execute without more human decisions. | Narrow bug fix, approved behavior slice, mechanical docs update, isolated test coverage |
+| `HITL` | Human-in-the-loop. Work is blocked on judgment, access, design approval, or a durable tradeoff. | Architecture choice, UX decision, credentials, release approval, ADR acceptance |
+
+Default to `HITL` when the task contains unresolved product, security, release,
+or architecture judgment. Do not hide uncertainty inside an `AFK` task.
 
 ### 5. Dependency Mapping
 
@@ -116,6 +140,7 @@ Use this structure exactly. Keep it concise, but do not omit required fields.
 **Pre-Code Gate:** Plan Gate required because [multi-step / multi-file / cross-domain reason]
 **Approval Required Before:** RED tests, production edits, implementation subagents
 **Execution Mode Recommendation:** [Inline TDD | subagent-driven-development | orchestrate | fork-join] because [reason]
+**Slice Strategy:** [Tracer-bullet vertical slices | Contract/setup tasks first, then vertical slices] because [reason]
 
 ## Architecture Summary
 
@@ -132,6 +157,7 @@ fits existing patterns.]
 
 ### Task 1: [Atomic Outcome]
 
+**Classification:** [AFK | HITL] because [why the agent can proceed alone or what human decision is required]
 **Purpose:** [Why this task exists]
 **Dependencies:** None / Task N
 **Files:**
@@ -142,6 +168,7 @@ fits existing patterns.]
 **Acceptance Criteria:**
 - [ ] [Concrete observable result]
 - [ ] [Edge case or failure behavior]
+- [ ] [Independent verification/demo result for this slice]
 
 - [ ] **Step 1: RED - write the failing test**
 
@@ -226,6 +253,9 @@ Before presenting the plan, review it yourself:
 - [ ] Every task has files, acceptance criteria, RED/GREEN or explicit non-code
       verification, and expected command output
 - [ ] No task mixes unrelated architectural domains
+- [ ] Every task is classified `AFK` or `HITL` with a concrete reason
+- [ ] User-facing behavior is decomposed into tracer-bullet vertical slices
+      unless a contract/setup task is required first
 - [ ] No placeholders or vague instructions remain
 - [ ] Names, paths, and interfaces are consistent across tasks
 - [ ] Execution mode recommendation matches dependencies

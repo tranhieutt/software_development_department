@@ -8,6 +8,50 @@ Tài liệu này ghi lại lịch sử cập nhật tài liệu và source code 
 
 ### [Unreleased] - 2026-04-30
 
+**Chu de:** Upgrade SDD execution skills from external skill review
+
+Danh gia `mattpocock/skills` va cherry-pick 3 discipline patterns phu hop voi
+SDD ma khong import nguyen bo repo ngoai. Thay doi chi cap nhat skill
+instructions, khong doi Claude runtime hooks, agents, hay settings.
+
+#### Changed - TDD behavior discipline
+
+- `.claude/skills/test-driven-development/SKILL.md`: yeu cau moi implementation
+  slice bat dau bang mot behavior test qua public interface.
+- Bo sung tracer-bullet loop `RED -> GREEN -> REFACTOR -> repeat`, tranh bulk
+  RED/horizontal slicing.
+- Them anti-rationalizations cho private-helper testing va viet tat ca RED tests
+  truoc khi implement.
+
+#### Changed - Diagnose feedback loop
+
+- `.claude/skills/diagnose/SKILL.md`: them Stage 0 Feedback Loop de tao pass/fail
+  signal nhanh, ro, lap lai duoc truoc khi dua root-cause hypothesis.
+- Them `feedback_loop` va `ranked_hypotheses` vao investigation artifact, yeu cau
+  prediction falsifiable cho tung hypothesis.
+- Verification va solution acceptance criteria phai rerun original feedback loop
+  va them regression test khi co seam dung.
+
+#### Changed - Planning task readiness
+
+- `.claude/skills/planning-and-task-breakdown/SKILL.md`: them tracer-bullet
+  vertical-slice guidance cho user-facing behavior.
+- Them `AFK` / `HITL` classification cho moi task de phan biet agent-ready work
+  voi task can human judgment, access, design approval, release/ADR decision.
+- Them `Slice Strategy` va independent verification/demo result vao required plan
+  template.
+
+#### Verification
+
+- `powershell -ExecutionPolicy Bypass -File scripts\validate-skills.ps1`: PASS
+  126 / 126, 0 fail, 0 warn.
+- `node scripts\harness-audit.js --compact`: PASS 120 / 120; readiness ready,
+  0 blocked, 0 warning.
+- `powershell -ExecutionPolicy Bypass -File scripts\codex-preflight.ps1`: PASS
+  voi 1 warning vi working tree co uncommitted changes/untracked memory archives.
+- `node scripts\validate-readme-sync.js`: PASS.
+- `node scripts\trace-integrity-check.js`: PASS.
+
 **Chu de:** Fix Windows parity for `bash-guard` and PreToolUse hook registration
 
 Windows review phat hien `tests/hooks/bash-guard.test.js` luon chay
