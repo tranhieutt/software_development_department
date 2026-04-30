@@ -13,11 +13,11 @@ when_to_use: "When building Angular applications or working with RxJS streams"
 
 ## Critical rules (non-obvious)
 
-- **Always unsubscribe** from Observables in `ngOnDestroy` â€” use `takeUntilDestroyed()` (Angular 16+) or `Subject` + `takeUntil`
-- **`ChangeDetectionStrategy.OnPush`**: component only updates when input reference changes or async pipe emits â€” use for all leaf components
+- **Always unsubscribe** from Observables in `ngOnDestroy` — use `takeUntilDestroyed()` (Angular 16+) or `Subject` + `takeUntil`
+- **`ChangeDetectionStrategy.OnPush`**: component only updates when input reference changes or async pipe emits — use for all leaf components
 - **Never mutate input objects/arrays**: OnPush won't detect mutation; create new reference instead
-- **`trackBy` is mandatory on `*ngFor`** with dynamic lists â€” without it, every change re-renders all DOM nodes
-- **`async` pipe auto-unsubscribes** â€” prefer it over manual subscription in templates
+- **`trackBy` is mandatory on `*ngFor`** with dynamic lists — without it, every change re-renders all DOM nodes
+- **`async` pipe auto-unsubscribes** — prefer it over manual subscription in templates
 
 ## Component with OnPush + signals (Angular 17+)
 
@@ -83,19 +83,19 @@ provideHttpClient(withInterceptors([authInterceptor]))
 ## RxJS: key operators (non-obvious behavior)
 
 ```typescript
-// switchMap: cancels previous â€” good for search, bad for saves
+// switchMap: cancels previous — good for search, bad for saves
 search$.pipe(
   debounceTime(300),
   distinctUntilChanged(),
   switchMap(term => this.api.search(term))  // cancels in-flight request on new input
 )
 
-// exhaustMap: ignores new while processing â€” good for login button
+// exhaustMap: ignores new while processing — good for login button
 loginClick$.pipe(
   exhaustMap(() => this.auth.login(credentials))  // prevents double-submit
 )
 
-// mergeMap: parallel â€” good for independent operations
+// mergeMap: parallel — good for independent operations
 ids$.pipe(mergeMap(id => this.api.fetch(id), 3))  // 3 concurrent max
 
 // combineLatest vs withLatestFrom:

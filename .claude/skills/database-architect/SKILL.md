@@ -39,12 +39,12 @@ when_to_use: "When selecting database technologies, designing schemas from scrat
 
 ## Non-obvious rules
 
-- **Normalize first, denormalize with evidence** â€” premature denormalization creates update anomalies; measure before optimizing
-- **Index on access patterns, not columns** â€” index the query, not the table; one slow-query explain plan is worth more than any speculation
-- **Foreign keys always** â€” letting the application enforce referential integrity is a data corruption waiting to happen
-- **JSONB for flexible attributes, not as a schema escape hatch** â€” use JSONB when fields are genuinely variable; not to avoid schema discipline
-- **Partition late** â€” partition tables only once you have row counts >50M or explicit I/O pressure; early partitioning adds complexity with zero benefit
-- **UUID v7 over v4** â€” v7 is time-ordered (k-sortable), avoids index fragmentation, same uniqueness guarantees
+- **Normalize first, denormalize with evidence** — premature denormalization creates update anomalies; measure before optimizing
+- **Index on access patterns, not columns** — index the query, not the table; one slow-query explain plan is worth more than any speculation
+- **Foreign keys always** — letting the application enforce referential integrity is a data corruption waiting to happen
+- **JSONB for flexible attributes, not as a schema escape hatch** — use JSONB when fields are genuinely variable; not to avoid schema discipline
+- **Partition late** — partition tables only once you have row counts >50M or explicit I/O pressure; early partitioning adds complexity with zero benefit
+- **UUID v7 over v4** — v7 is time-ordered (k-sortable), avoids index fragmentation, same uniqueness guarantees
 
 ## Schema design patterns
 
@@ -102,7 +102,7 @@ ALTER TABLE users ALTER COLUMN phone SET NOT NULL;
 ALTER TABLE users DROP COLUMN old_phone;
 ```
 
-**Zero-downtime rule**: Never add a NOT NULL column without a default in a single migration on a live table â€” it acquires an ACCESS EXCLUSIVE lock.
+**Zero-downtime rule**: Never add a NOT NULL column without a default in a single migration on a live table — it acquires an ACCESS EXCLUSIVE lock.
 
 ## Caching architecture
 
@@ -115,7 +115,7 @@ ALTER TABLE users DROP COLUMN old_phone;
 
 ## Scope
 
-- Query tuning on existing system â†’ `database-optimizer`
-- Database operations, backups, maintenance â†’ `database-admin`
-- System-wide performance â†’ `performance-engineer`
-- ORM-specific patterns â†’ `prisma-expert` / `drizzle-orm-expert`
+- Query tuning on existing system → `database-optimizer`
+- Database operations, backups, maintenance → `database-admin`
+- System-wide performance → `performance-engineer`
+- ORM-specific patterns → `prisma-expert` / `drizzle-orm-expert`

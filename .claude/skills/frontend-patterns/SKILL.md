@@ -1,12 +1,12 @@
 ﻿---
 name: frontend-patterns
 type: reference
-description: "Framework-agnostic React/Vue patterns â€” component composition, hooks, TanStack Query, memoization, error boundaries. Use for generic React/Vue work (Vite, CRA, Storybook). For Next.js App Router / Server Components specifically, use `senior-frontend` instead."
+description: "Framework-agnostic React/Vue patterns — component composition, hooks, TanStack Query, memoization, error boundaries. Use for generic React/Vue work (Vite, CRA, Storybook). For Next.js App Router / Server Components specifically, use `senior-frontend` instead."
 paths: ["**/*.tsx", "**/*.jsx", "**/*.vue", "**/components/**"]
 effort: 3
 allowed-tools: Read, Glob, Grep, Write, Edit, Bash
 user-invocable: true
-when_to_use: "When building React/Vue components, hooks, state management, or client-side performance â€” NOT for Next.js App Router (see `senior-frontend`)"
+when_to_use: "When building React/Vue components, hooks, state management, or client-side performance — NOT for Next.js App Router (see `senior-frontend`)"
 ---
 
 # Frontend Patterns
@@ -14,7 +14,7 @@ when_to_use: "When building React/Vue components, hooks, state management, or cl
 ## Critical rules (non-obvious)
 
 - **Stale closure in `useEffect`**: always list all dependencies; use `useRef` for values that shouldn't trigger re-run
-- **`useEffect` with `async`**: never make the callback `async` directly â€” create inner async fn and call it
+- **`useEffect` with `async`**: never make the callback `async` directly — create inner async fn and call it
 - **Object/array as dependency**: memoize with `useMemo`/`useCallback` or use primitive values; otherwise infinite loop
 - **Key prop on lists**: use stable IDs, never `index` when list can reorder or items get deleted
 - **`React.memo` is not free**: only wrap components with expensive renders and stable prop references
@@ -55,7 +55,7 @@ Tabs.Content = function TabsContent({ value, children }: { value: string; childr
 ```tsx
 // Fetch
 const { data, isLoading, error } = useQuery({
-  queryKey: ["products", filters],   // filters in key â†’ auto-refetch on change
+  queryKey: ["products", filters],   // filters in key → auto-refetch on change
   queryFn: () => api.getProducts(filters),
   staleTime: 5 * 60 * 1000,          // don't refetch for 5 min
 });

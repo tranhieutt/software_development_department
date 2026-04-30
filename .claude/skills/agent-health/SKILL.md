@@ -32,13 +32,13 @@ Get current branch: `git branch --show-current`.
 
 Read both files in parallel:
 
-- `production/traces/agent-metrics.jsonl` â€” historical metrics per agent per session
-- `production/session-state/circuit-state.json` â€” live circuit breaker states
+- `production/traces/agent-metrics.jsonl` — historical metrics per agent per session
+- `production/session-state/circuit-state.json` — live circuit breaker states
 
 If `agent-metrics.jsonl` contains only the schema header line (no actual entries):
 
 ```text
-ðŸ“­ No agent metrics recorded yet for this session.
+📭 No agent metrics recorded yet for this session.
    Metrics are written when agents use /agent-health --log
    or at the end of a session via /save-state.
 
@@ -58,28 +58,28 @@ For each agent, compute across the filtered entries:
 ### 4. Render health table
 
 ```text
-ðŸ¥ Agent Health Report â€” session: <branch> Â· <date range>
-â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
+🏥 Agent Health Report — session: <branch> · <date range>
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-Agent                  Tasks  âœ… Done  âŒ Failed  â›” Blocked  Success%  Circuit
-â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-backend-developer          8       7          1          0      87.5%   ðŸŸ¢ CLOSED
-frontend-developer         5       5          0          0     100.0%   ðŸŸ¢ CLOSED
-qa-engineer                  6       4          2          0      66.7%   ðŸŸ¡ HALF-OPEN
-data-engineer              2       2          0          0     100.0%   ðŸŸ¢ CLOSED
-diagnostics                1       0          1          0       0.0%   ðŸ”´ OPEN
-â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+Agent                  Tasks  ✅ Done  ❌ Failed  ⛔ Blocked  Success%  Circuit
+──────────────────────────────────────────────────────────────────────────────
+backend-developer          8       7          1          0      87.5%   🟢 CLOSED
+frontend-developer         5       5          0          0     100.0%   🟢 CLOSED
+qa-engineer                  6       4          2          0      66.7%   🟡 HALF-OPEN
+data-engineer              2       2          0          0     100.0%   🟢 CLOSED
+diagnostics                1       0          1          0       0.0%   🔴 OPEN
+──────────────────────────────────────────────────────────────────────────────
 TOTAL                     22      18          4          0      81.8%
 
-âš ï¸  Agents needing attention:
-  ðŸ”´ diagnostics      â€” Circuit OPEN Â· fallback: surface to user
-  ðŸŸ¡ qa-engineer        â€” Circuit HALF-OPEN Â· 2 failures this session
+⚠️  Agents needing attention:
+  🔴 diagnostics      — Circuit OPEN · fallback: surface to user
+  🟡 qa-engineer        — Circuit HALF-OPEN · 2 failures this session
 ```
 
 Circuit state icons:
-- `ðŸŸ¢ CLOSED` â€” healthy
-- `ðŸŸ¡ HALF-OPEN` â€” recovering, monitor closely
-- `ðŸ”´ OPEN` â€” bypassed, routed to fallback
+- `🟢 CLOSED` — healthy
+- `🟡 HALF-OPEN` — recovering, monitor closely
+- `🔴 OPEN` — bypassed, routed to fallback
 
 Flag agents as needing attention if:
 - `circuit_state` is `OPEN` or `HALF-OPEN`
@@ -96,14 +96,14 @@ If `--log` flag was passed, append one entry per active agent to
 ```
 
 Get `circuit_state` from `circuit-state.json`. Estimate `avg_tokens_est` from
-decision ledger entry count Ã— 800 tokens (rough estimate per entry) if no exact
+decision ledger entry count × 800 tokens (rough estimate per entry) if no exact
 token data is available. Note this is an estimate and mark with `_est` suffix.
 
 Print after logging:
 
 ```text
-âœ… Metrics snapshot logged â†’ production/traces/agent-metrics.jsonl
-   [N] agents recorded Â· <date>
+✅ Metrics snapshot logged → production/traces/agent-metrics.jsonl
+   [N] agents recorded · <date>
 ```
 
 ### 6. Suggest actions
@@ -111,10 +111,10 @@ Print after logging:
 After the table, if any agents need attention:
 
 ```text
-ðŸ’¡ Suggested actions:
-  â€¢ /resume-from <task_id>        â€” recover failed task checkpoint
-  â€¢ /trace-history --risk High    â€” audit high-risk decisions
-  â€¢ Check circuit-state.json      â€” update OPEN agents once issue resolved
+💡 Suggested actions:
+  • /resume-from <task_id>        — recover failed task checkpoint
+  • /trace-history --risk High    — audit high-risk decisions
+  • Check circuit-state.json      — update OPEN agents once issue resolved
 ```
 
 ---

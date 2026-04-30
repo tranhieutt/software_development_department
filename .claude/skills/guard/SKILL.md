@@ -21,7 +21,7 @@ Check the freeze status of the codebase. Use as a gate check before any operatio
 **If it does not exist:**
 
 ```
-âœ… CLEAR â€” No active freeze.
+✅ CLEAR — No active freeze.
 Development and merging can proceed normally.
 ```
 
@@ -32,14 +32,14 @@ Stop here.
 ### 2. Display Freeze Warning
 
 ```
-ðŸ”’ CODEBASE IS FROZEN
+🔒 CODEBASE IS FROZEN
 
 Reason  : [REASON from .freeze]
 Since   : [FROZEN_AT]
 Branch  : [BRANCH]
 Duration: [calculated from FROZEN_AT to current time]
 
-âš ï¸  Non-critical merges are blocked during a freeze period.
+⚠️  Non-critical merges are blocked during a freeze period.
 ```
 
 ### 3. Categorize the Request
@@ -47,22 +47,22 @@ Duration: [calculated from FROZEN_AT to current time]
 Ask:
 > "What type of operation is this?"
 >
-> **A) Urgent Hotfix** â€” production bug, security patch
-> **B) Release Artifact** â€” changelog, version bump, release notes
-> **C) Non-critical** â€” feature, refactor, chore, normal docs
+> **A) Urgent Hotfix** — production bug, security patch
+> **B) Release Artifact** — changelog, version bump, release notes
+> **C) Non-critical** — feature, refactor, chore, normal docs
 
 **If A or B:** Allow to proceed with a note:
-> "âš ï¸ Permitted to proceed. Note that this is a freeze period â€” execute only necessary operations."
+> "⚠️ Permitted to proceed. Note that this is a freeze period — execute only necessary operations."
 
 **If C:** Block and instruct:
-> "ðŸš« Non-critical changes must wait until after `/unfreeze`.
+> "🚫 Non-critical changes must wait until after `/unfreeze`.
 > Save your work and continue after the release is complete."
 
 ### 4. Suggestions
 
-- `/unfreeze` â€” If the release is finished
-- `/release-checklist` â€” If currently in the release process
-- `/hotfix` â€” If an urgent fix deployment is needed
+- `/unfreeze` — If the release is finished
+- `/release-checklist` — If currently in the release process
+- `/hotfix` — If an urgent fix deployment is needed
 
 ## Edge Cases
 
@@ -71,7 +71,7 @@ Ask:
 
 ## Related Skills
 
-- `/freeze` â€” Lock codebase
-- `/unfreeze` â€” Remove freeze
-- `/hotfix` â€” Urgent deployment during freeze
-- `/release-checklist` â€” Full release workflow
+- `/freeze` — Lock codebase
+- `/unfreeze` — Remove freeze
+- `/hotfix` — Urgent deployment during freeze
+- `/release-checklist` — Full release workflow

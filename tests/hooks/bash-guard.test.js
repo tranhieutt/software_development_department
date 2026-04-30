@@ -8,18 +8,28 @@
  * Test naming: [category]_[scenario]_[expected]
  */
 
-const { execSync } = require('child_process');
+const { execFileSync } = require('child_process');
 const path = require('path');
 
-// settings.json hardcodes `bash .claude/hooks/*.sh` on all platforms,
-// so we always test the .sh file via git bash (available on Windows too).
-const hookPath = path.join(__dirname, '../../.claude/hooks/bash-guard.sh');
+const isWindows = process.platform === 'win32';
+const hookPath = path.join(
+    __dirname,
+    isWindows ? '../../.claude/hooks/bash-guard.ps1' : '../../.claude/hooks/bash-guard.sh'
+);
+const hookRunner = isWindows
+    ? {
+        command: 'powershell.exe',
+        args: ['-NoProfile', '-NonInteractive', '-ExecutionPolicy', 'Bypass', '-File', hookPath]
+    }
+    : {
+        command: 'bash',
+        args: [hookPath]
+    };
 
 function runHook(command, toolName = 'Bash') {
     const input = { tool_name: toolName, tool_input: { command } };
     try {
-        const cmd = `bash "${hookPath}"`;
-        const stdout = execSync(cmd, {
+        const stdout = execFileSync(hookRunner.command, hookRunner.args, {
             input: JSON.stringify(input),
             encoding: 'utf8',
             stdio: ['pipe', 'pipe', 'pipe']
@@ -29,7 +39,7 @@ function runHook(command, toolName = 'Bash') {
         return {
             status: error.status,
             stdout: error.stdout || '',
-            stderr: error.stderr || ''
+            stderr: error.stderr || error.message || ''
         };
     }
 }

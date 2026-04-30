@@ -19,12 +19,12 @@ Remove the code freeze, allowing merges and development to continue.
 ### 1. Check Status
 
 Read `.freeze`. If it does not exist, notify and stop:
-> "âœ… Codebase is not currently frozen. Unfreeze is not needed."
+> "✅ Codebase is not currently frozen. Unfreeze is not needed."
 
 ### 2. Display Current Freeze Information
 
 ```
-ðŸ”’ Current Freeze:
+🔒 Current Freeze:
 Reason     : [REASON from .freeze]
 Frozen at  : [FROZEN_AT]
 Branch     : [BRANCH]
@@ -47,7 +47,7 @@ Use Bash to delete the file: `rm .freeze`
 Append to `production/session-state/active.md` (if it exists):
 
 ```markdown
-## Unfreeze Log â€” [timestamp]
+## Unfreeze Log — [timestamp]
 - Unfrozen at: [timestamp]
 - Was frozen for: [duration]
 - Reason was: [reason]
@@ -56,7 +56,7 @@ Append to `production/session-state/active.md` (if it exists):
 ### 6. Notification
 
 ```
-âœ… CODEBASE UNFROZEN
+✅ CODEBASE UNFROZEN
 Development can resume normally.
 All merges and deployments are now permitted.
 ```
@@ -68,6 +68,6 @@ All merges and deployments are now permitted.
 
 ## Related Skills
 
-- `/freeze` â€” Lock the codebase
-- `/guard` â€” Check the current status
-- `/release-checklist` â€” Full release workflow
+- `/freeze` — Lock the codebase
+- `/guard` — Check the current status
+- `/release-checklist` — Full release workflow

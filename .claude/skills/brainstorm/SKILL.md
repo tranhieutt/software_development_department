@@ -21,7 +21,7 @@ When this skill is invoked:
    - Read `design/docs/product-pillars.md` if it exists (build on established pillars)
 
 3. **Run through ideation phases** interactively, asking the user questions at
-   each phase. Do NOT generate everything silently â€” the goal is **collaborative
+   each phase. Do NOT generate everything silently — the goal is **collaborative
    exploration** where the AI acts as a product thinking facilitator, not a
    replacement for the human's vision.
 
@@ -35,11 +35,11 @@ When this skill is invoked:
    to capture the decision with concise labels.
 
    Professional product brainstorming principles to follow:
-   - Withhold judgment â€” no idea is bad during exploration
-   - Encourage unusual ideas â€” outside-the-box thinking sparks better products
-   - Build on each other â€” "yes, and..." responses, not "but..."
-   - Use constraints as creative fuel â€” limitations often produce the best ideas
-   - Time-box each phase â€” keep momentum, don't over-deliberate early
+   - Withhold judgment — no idea is bad during exploration
+   - Encourage unusual ideas — outside-the-box thinking sparks better products
+   - Build on each other — "yes, and..." responses, not "but..."
+   - Use constraints as creative fuel — limitations often produce the best ideas
+   - Time-box each phase — keep momentum, don't over-deliberate early
 
 ---
 
@@ -64,7 +64,7 @@ conversationally (not as a checklist):
 - First product or experienced builder?
 - Revenue model in mind? (SaaS, open source, freemium, one-time purchase?)
 
-**Synthesize** the answers into a **Product Brief** â€” a 3-5 sentence
+**Synthesize** the answers into a **Product Brief** — a 3-5 sentence
 summary of the person's goals, experience context, and constraints.
 Read the brief back and confirm it captures their intent.
 
@@ -91,24 +91,24 @@ the unique hook. (e.g., "developers + financial compliance", "designers + data p
 
 For each concept, present:
 - **Working Title**
-- **Elevator Pitch** (1-2 sentences â€” must pass the "10-second test")
+- **Elevator Pitch** (1-2 sentences — must pass the "10-second test")
 - **Core User Action** (the single most frequent thing a user does)
 - **Core Value Promise** (the outcome users pay/sign-up for)
 - **Unique Angle** (passes the "AND ALSO" test: "Like X, AND ALSO Y")
-- **Target User** (who specifically? Not "developers" â€” "backend engineers at 50-person startups")
+- **Target User** (who specifically? Not "developers" — "backend engineers at 50-person startups")
 - **Estimated Scope** (small / medium / large)
 - **Why It Could Work** (1 sentence on market/timing fit)
 - **Biggest Risk** (1 sentence on the hardest unanswered question)
 
 Present all three. Ask the user to pick one, combine elements, or request
-new concepts. Never pressure toward a choice â€” let them sit with it.
+new concepts. Never pressure toward a choice — let them sit with it.
 
 ---
 
 ### Phase 3: Core User Flow Design
 
 For the chosen concept, use structured questioning to build the core user flow.
-The core flow is the beating heart of the product â€” if it isn't valuable in
+The core flow is the beating heart of the product — if it isn't valuable in
 isolation, no amount of features or polish will save the product.
 
 **First-Use Flow** (the critical first 5 minutes):
@@ -147,7 +147,7 @@ Collaboratively define **3-5 pillars**:
 - Each pillar has a **name** and **one-sentence definition**
 - Each pillar has a **design test**: "If we're choosing between feature X and Y,
   this pillar says we build __"
-- Pillars should create productive tension â€” if all pillars agree on everything,
+- Pillars should create productive tension — if all pillars agree on everything,
   they're not doing enough work
 
 Then define **3+ anti-pillars** (what this product is NOT):
@@ -161,11 +161,11 @@ Then define **3+ anti-pillars** (what this product is NOT):
 
 Using Jobs-to-be-Done and user motivation frameworks, validate who this product is for:
 
-- **Primary user segment**: Who will LOVE this product? Be specific â€” role, company size,
+- **Primary user segment**: Who will LOVE this product? Be specific — role, company size,
   workflow context, pain level
 - **Secondary appeal**: Who else might find value in it?
 - **Who is this NOT for**: Being clear about who won't benefit is as important as knowing
-  who will â€” it prevents building for everyone and delighting no one
+  who will — it prevents building for everyone and delighting no one
 - **Market validation**: Are there successful products serving adjacent user needs?
   What can we learn from their growth path?
 - **Willingness to pay**: Is this a "must have" or "nice to have" for the target user?
@@ -176,15 +176,15 @@ Using Jobs-to-be-Done and user motivation frameworks, validate who this product 
 
 Ground the concept in reality:
 
-- **Tech stack recommendation** â€” Language, Framework, Database, Cloud provider â€” with
+- **Tech stack recommendation** — Language, Framework, Database, Cloud provider — with
   reasoning based on the concept's requirements, team expertise, and scalability needs
-- **Build vs. Buy decisions** â€” auth (Clerk/Supabase/custom?), payments (Stripe?),
+- **Build vs. Buy decisions** — auth (Clerk/Supabase/custom?), payments (Stripe?),
   search (Algolia?), email (SendGrid?), analytics (PostHog?)
-- **MVP definition** â€” the absolute minimum feature set that validates:
+- **MVP definition** — the absolute minimum feature set that validates:
   "Does this solve the user's pain better than what they use today?"
-- **Infrastructure scope** â€” monolith vs. microservices, serverless vs. dedicated,
+- **Infrastructure scope** — monolith vs. microservices, serverless vs. dedicated,
   multi-tenant vs. per-customer
-- **Biggest risks** â€” technical risks, design risks, market risks, regulatory risks
+- **Biggest risks** — technical risks, design risks, market risks, regulatory risks
 - **Scope tiers**:
   - **MVP** (weeks): Validates core hypothesis with minimum code
   - **v1** (months): Shippable, complete product for early adopters
@@ -211,7 +211,7 @@ Before finalizing, challenge the concept using this 6-dimension framework. Ident
 
 5. **Save to** `design/docs/product-concept.md`, creating directories as needed.
 
-6. **Suggest next steps** (in this order â€” this is the professional product
+6. **Suggest next steps** (in this order — this is the professional product
    pre-production pipeline):
 
    - "Run `/design-review design/docs/product-concept.md` to validate completeness"
@@ -245,7 +245,7 @@ Before finalizing, challenge the concept using this 6-dimension framework. Ident
 Deliver exactly:
 
 - **Concept document** saved to `design/docs/product-concept.md`
-- **Elevator pitch** â€” 1 sentence
-- **MVP definition** â€” 1 sentence
-- **Biggest risk** â€” 1 item
-- **Next skill** â€” `/map-systems` (if concept approved) or `/prototype [core-feature]`
+- **Elevator pitch** — 1 sentence
+- **MVP definition** — 1 sentence
+- **Biggest risk** — 1 item
+- **Next skill** — `/map-systems` (if concept approved) or `/prototype [core-feature]`

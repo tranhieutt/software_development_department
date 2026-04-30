@@ -44,7 +44,7 @@ BRANCH=[current branch from git rev-parse --abbrev-ref HEAD]
 Display:
 
 ```
-ðŸ”’ CODEBASE FROZEN
+🔒 CODEBASE FROZEN
 Reason : [reason]
 Time   : [timestamp]
 Branch : [branch]
@@ -55,9 +55,9 @@ To unlock: /unfreeze
 
 ### 5. Suggested Next Steps
 
-- `/release-checklist` â€” Run the full release checklist
-- `/guard` â€” Check the freeze status at any time
-- `/unfreeze` â€” Unlock after the release is complete
+- `/release-checklist` — Run the full release checklist
+- `/guard` — Check the freeze status at any time
+- `/unfreeze` — Unlock after the release is complete
 
 ## Edge Cases
 
@@ -66,7 +66,7 @@ To unlock: /unfreeze
 
 ## Related Skills
 
-- `/guard` â€” Check freeze status before merge/deploy
-- `/unfreeze` â€” Remove freeze after release
-- `/release-checklist` â€” Full release workflow
-- `/hotfix` â€” Deploy urgent fixes during a freeze
+- `/guard` — Check freeze status before merge/deploy
+- `/unfreeze` — Remove freeze after release
+- `/release-checklist` — Full release workflow
+- `/hotfix` — Deploy urgent fixes during a freeze

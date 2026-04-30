@@ -51,5 +51,5 @@ mcp__gitnexus__impact(target: "symbolName", direction: "upstream")
 ```
 
 This returns all callers of the symbol. Write new tests to cover d=1 callers
-(direct callers) first — these are the ones that will break silently if the
+(direct callers) first -- these are the ones that will break silently if the
 symbol's contract changes.

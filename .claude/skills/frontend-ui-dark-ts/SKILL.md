@@ -14,9 +14,9 @@ when_to_use: "When implementing dark mode, designing accessible color systems, o
 ## Critical rules (non-obvious)
 
 - **WCAG contrast minimums**: text on bg requires 4.5:1 (AA) or 7:1 (AAA); UI elements (borders, icons) require 3:1
-- **Never use `prefers-color-scheme` media query alone** â€” users need a toggle; sync with `localStorage` to avoid flash on hydration
-- **HSL for dark themes**: use `hsl(220 15% 10%)` not `#1a1a2e` â€” HSL lets you programmatically adjust lightness
-- **Avoid pure black (`#000`)** for dark backgrounds â€” causes eye strain; use `hsl(220 15% 8%)` instead
+- **Never use `prefers-color-scheme` media query alone** — users need a toggle; sync with `localStorage` to avoid flash on hydration
+- **HSL for dark themes**: use `hsl(220 15% 10%)` not `#1a1a2e` — HSL lets you programmatically adjust lightness
+- **Avoid pure black (`#000`)** for dark backgrounds — causes eye strain; use `hsl(220 15% 8%)` instead
 - **`color-scheme: dark`** on `:root` makes browser UI (scrollbars, inputs) follow dark theme
 
 ## CSS variable token system
@@ -24,7 +24,7 @@ when_to_use: "When implementing dark mode, designing accessible color systems, o
 ```css
 /* globals.css */
 :root {
-  /* HSL values only (no hsl() wrapper) â€” allows opacity modifiers */
+  /* HSL values only (no hsl() wrapper) — allows opacity modifiers */
   --bg-base:        222 47% 8%;
   --bg-surface:     222 47% 12%;
   --bg-elevated:    222 47% 16%;
@@ -74,7 +74,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   );
 }
 
-// Prevent flash â€” add to <head> before React hydrates
+// Prevent flash — add to <head> before React hydrates
 const themeScript = `
   (function() {
     var t = localStorage.getItem('theme') || 'dark';
@@ -125,7 +125,7 @@ function token(variable: string, alpha?: number): string {
     : `hsl(var(--${variable}))`;
 }
 
-// Usage: token("brand", 0.2) â†’ "hsl(var(--brand) / 0.2)"
+// Usage: token("brand", 0.2) → "hsl(var(--brand) / 0.2)"
 ```
 
 ## Tailwind dark theme config (v3)
@@ -158,15 +158,15 @@ export default {
 ```typescript
 // Quick WCAG contrast ratio check
 function getContrastRatio(fg: string, bg: string): number {
-  // parse HSL â†’ luminance â†’ ratio
+  // parse HSL → luminance → ratio
   // Use online tool: https://webaim.org/resources/contrastchecker/
   // Or: colord(fg).contrast(colord(bg))
 }
 
 // Minimum ratios:
-// 4.5:1 â†’ AA normal text
-// 3.0:1 â†’ AA large text (18pt+ or 14pt bold), UI components
-// 7.0:1 â†’ AAA normal text
+// 4.5:1 → AA normal text
+// 3.0:1 → AA large text (18pt+ or 14pt bold), UI components
+// 7.0:1 → AAA normal text
 ```
 
 ## Common pitfalls
@@ -176,5 +176,5 @@ function getContrastRatio(fg: string, bg: string): number {
 | Flash of wrong theme on page load | Add inline script to `<head>` before hydration |
 | Using `opacity` for text variants | Use separate CSS token with correct contrast ratio |
 | Dark text (`gray-900`) on dark bg | Always test contrast; use `--text-primary` token |
-| Hover states not visible in dark mode | Ensure hover has â‰¥3:1 contrast vs default state |
+| Hover states not visible in dark mode | Ensure hover has ≥3:1 contrast vs default state |
 | `currentColor` for icons | Verify icon color passes 3:1 contrast vs background |

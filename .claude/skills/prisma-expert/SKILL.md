@@ -13,10 +13,10 @@ effort: 3
 
 ## Critical rules (non-obvious)
 
-- **Never use `migrate dev` in production** â€” use `migrate deploy`; `migrate dev` can reset data
-- **Singleton client in serverless** â€” new `PrismaClient()` per request exhausts connections; use global singleton
+- **Never use `migrate dev` in production** — use `migrate deploy`; `migrate dev` can reset data
+- **Singleton client in serverless** — new `PrismaClient()` per request exhausts connections; use global singleton
 - **`include` vs `select`**: `include: { posts: true }` fetches ALL post fields; use `select` to limit
-- **`$queryRaw` returns unknown[]** â€” you must cast with `as` or validate; Prisma can't infer raw query types
+- **`$queryRaw` returns unknown[]** — you must cast with `as` or validate; Prisma can't infer raw query types
 - **Missing `@relation` on both sides** causes "The relation is not defined on both sides" runtime error
 
 ## Schema: canonical model structure
@@ -53,16 +53,16 @@ enum Role { USER ADMIN MODERATOR }
 ## Query optimization: N+1 fix
 
 ```typescript
-// âŒ N+1
+// ❌ N+1
 const users = await prisma.user.findMany();
 for (const user of users) {
   const posts = await prisma.post.findMany({ where: { authorId: user.id } });
 }
 
-// âœ… Include (fetches all post fields)
+// ✅ Include (fetches all post fields)
 const users = await prisma.user.findMany({ include: { posts: true } });
 
-// âœ…âœ… Select (fetch only needed fields â€” best for performance)
+// ✅✅ Select (fetch only needed fields — best for performance)
 const users = await prisma.user.findMany({
   select: {
     id: true, email: true,
@@ -70,7 +70,7 @@ const users = await prisma.user.findMany({
   },
 });
 
-// âœ… Complex aggregations â†’ use raw
+// ✅ Complex aggregations → use raw
 const result = await prisma.$queryRaw<{ id: string; count: number }[]>`
   SELECT u.id, COUNT(p.id)::int as count
   FROM users u LEFT JOIN posts p ON p.author_id = u.id

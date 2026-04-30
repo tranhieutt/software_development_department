@@ -17,7 +17,7 @@ timeline of agent decisions.
 ## Execution
 
 The rendering and filtering logic is implemented in `scripts/trace-history.sh`.
-This skill delegates to that script â€” do NOT re-implement parsing here.
+This skill delegates to that script — do NOT re-implement parsing here.
 
 ### 1. Run the backing script
 
@@ -45,15 +45,15 @@ stdout verbatim to the user.
 
 ### 3. Output format
 
-**Pretty (default):** timeline with risk badges (ðŸ”´ðŸŸ¡ðŸŸ¢) and outcome emojis
-(âœ…âŒâ›”â­ï¸), grouped with separators and totals. Failed/blocked entries trigger
+**Pretty (default):** timeline with risk badges (🔴🟡🟢) and outcome emojis
+(✅❌⛔⏭️), grouped with separators and totals. Failed/blocked entries trigger
 a `/resume-from` hint automatically.
 
-**JSON:** raw matching entries as a JSON array â€” use when piping to another tool.
+**JSON:** raw matching entries as a JSON array — use when piping to another tool.
 
 ### 4. Empty or no-match
 
-The script emits `ðŸ“­` messages for an empty ledger or zero-match filter. Return
+The script emits `📭` messages for an empty ledger or zero-match filter. Return
 those messages as-is; do not fabricate data.
 
 ---
@@ -72,7 +72,7 @@ Agents append one JSON line per significant decision to `production/traces/decis
 
 - Any decision with `risk_tier` Medium or High
 - Any decision that was disputed or required fallback
-- Any Circuit Breaker state transition (CLOSED â†’ OPEN â†’ HALF-OPEN)
+- Any Circuit Breaker state transition (CLOSED → OPEN → HALF-OPEN)
 - Any cross-agent handoff with a non-trivial acceptance criteria
 - Task completion or failure (final outcome of a checkpoint)
 

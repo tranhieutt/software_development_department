@@ -22,9 +22,9 @@ Extract from `$ARGUMENTS`:
 
 | Flag | Required | Default | Description |
 | :--- | :--- | :--- | :--- |
-| `--pattern` | yes | â€” | `Sequential`, `Parallel`, `Hierarchical`, or `Iterative` |
-| `--agents` | yes | â€” | Comma-separated agent names in execution order |
-| `--task` | yes | â€” | One-sentence description of what this workflow delivers |
+| `--pattern` | yes | — | `Sequential`, `Parallel`, `Hierarchical`, or `Iterative` |
+| `--agents` | yes | — | Comma-separated agent names in execution order |
+| `--task` | yes | — | One-sentence description of what this workflow delivers |
 | `--max-iter` | no | `3` | Max loop iterations (Iterative pattern only) |
 | `--save` | no | none | If set, write the graph to `.tasks/[filename].workflow.md` |
 
@@ -37,10 +37,10 @@ Usage: /map-workflow --pattern <Sequential|Parallel|Hierarchical|Iterative> \
                      [--max-iter <N>] [--save <filename>]
 
 Patterns:
-  Sequential   â€” linear pipeline, one agent after another
-  Parallel     â€” fan-out to multiple agents simultaneously, then merge
-  Hierarchical â€” supervisor delegates to specialists
-  Iterative    â€” test-driven loop until quality gate passes
+  Sequential   — linear pipeline, one agent after another
+  Parallel     — fan-out to multiple agents simultaneously, then merge
+  Hierarchical — supervisor delegates to specialists
+  Iterative    — test-driven loop until quality gate passes
 
 Reference: docs/templates/workflow-graph.md
 ```
@@ -51,7 +51,7 @@ For each agent name in `--agents`, verify it exists in `.claude/agents/`.
 If an agent is not found, warn but continue:
 
 ```text
-âš ï¸  Agent "foo-developer" not found in .claude/agents/ â€” check spelling.
+⚠️  Agent "foo-developer" not found in .claude/agents/ — check spelling.
     Proceeding with remaining agents.
 ```
 
@@ -71,8 +71,8 @@ to merge. A `qa-engineer` node is appended after merge if not already in the lis
 Remaining agents are parallel specialist nodes. First agent is also the final
 `review` node. All specialists must complete before review.
 
-**Iterative:** Exactly 2 agents required â€” first is the implementer,
-second is the tester. Loop: implementer â†’ tester â†’ [failâ†’implementer | passâ†’done].
+**Iterative:** Exactly 2 agents required — first is the implementer,
+second is the tester. Loop: implementer → tester → [fail→implementer | pass→done].
 Cap at `--max-iter` iterations.
 
 ### 4. Display the graph
@@ -80,17 +80,17 @@ Cap at `--max-iter` iterations.
 Show the filled YAML schema and an ASCII flow diagram:
 
 ```text
-ðŸ—ºï¸  Workflow Graph â€” [pattern] Â· [task]
-â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
+🗺️  Workflow Graph — [pattern] · [task]
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-[YAML schema â€” filled in]
+[YAML schema — filled in]
 
 Flow:
 [ASCII diagram derived from nodes]
 
 Agents dispatched: [N]
-Estimated turns:   [N Ã— 5 turns per agent, rough estimate]
-Max iterations:    [N â€” Iterative only, else omit]
+Estimated turns:   [N × 5 turns per agent, rough estimate]
+Max iterations:    [N — Iterative only, else omit]
 
 Verification criteria per node:
   [node-id] (@agent): [on_pass condition description]
@@ -99,7 +99,7 @@ Verification criteria per node:
 ### 5. Ask for approval
 
 ```text
-âœ‹ Does this workflow look correct?
+✋ Does this workflow look correct?
    Reply "yes" to confirm and begin dispatching agents.
    Reply "edit [node-id] [field] [value]" to adjust a node.
    Reply "no" to cancel.
@@ -113,14 +113,14 @@ After approval, if `--save <filename>` was passed, write the graph to
 `.tasks/<filename>.workflow.md` and print:
 
 ```text
-âœ… Workflow saved â†’ .tasks/<filename>.workflow.md
+✅ Workflow saved → .tasks/<filename>.workflow.md
 ```
 
 ### 7. Dispatch (after approval)
 
 After the user confirms, hand off to `@producer` with the instruction:
 
-> "Execute workflow `[id]` â€” dispatch agents in the order defined by the graph.
+> "Execute workflow `[id]` — dispatch agents in the order defined by the graph.
 >  For each node: run the agent, check the outcome, follow on_pass/on_fail edges.
 >  Write a ledger entry to `production/traces/decision_ledger.jsonl` at each
 >  node completion. Save a checkpoint via `/save-state [task_id]` if any node fails."
@@ -138,7 +138,7 @@ After the user confirms, hand off to `@producer` with the instruction:
 # Parallel frontend + backend
 /map-workflow --pattern Parallel \
   --agents "backend-developer,frontend-developer" \
-  --task "Login feature â€” API and UI"
+  --task "Login feature — API and UI"
 
 # TDD loop, max 3 retries
 /map-workflow --pattern Iterative \

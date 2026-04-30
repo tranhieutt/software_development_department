@@ -4,7 +4,7 @@ type: workflow
 description: "Creates and formats pull request titles, descriptions, and linked issue references following conventional commit standards. Use when creating or updating a pull request or when the user mentions PR description, pull request, or opening a PR."
 context: fork
 agent: lead-programmer
-when_to_use: "When creating or updating pull requests � generates PR title, description, and issue references following conventional commit format"
+when_to_use: "When creating or updating pull requests -- generates PR title, description, and issue references following conventional commit format"
 allowed-tools: Read, Glob, Grep, Write, Bash
 argument-hint: "[PR title or empty for auto-generate from commits]"
 user-invocable: true

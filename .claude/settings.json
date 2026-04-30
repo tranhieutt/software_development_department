@@ -62,6 +62,27 @@
       "Read(**/.env)",
       "Read(**/.env.*)",
       "Read(**/.env*)",
+      "Read(**/.ssh/**)",
+      "Read(**/.aws/**)",
+      "Read(**/.config/gcloud/**)",
+      "Read(**/.azure/**)",
+      "Read(**/.gnupg/**)",
+      "Read(**/.docker/config.json)",
+      "Read(**/.kube/config)",
+      "Bash(cat */.ssh/*)",
+      "Bash(cat */.aws/*)",
+      "Bash(cat */.config/gcloud/*)",
+      "Bash(cat */.azure/*)",
+      "Bash(cat */.gnupg/*)",
+      "Bash(cat */.docker/config.json)",
+      "Bash(cat */.kube/config)",
+      "Bash(type */.ssh/*)",
+      "Bash(type */.aws/*)",
+      "Bash(type */.config/gcloud/*)",
+      "Bash(type */.azure/*)",
+      "Bash(type */.gnupg/*)",
+      "Bash(type */.docker/config.json)",
+      "Bash(type */.kube/config)",
       "Bash(curl *|*sh*)",
       "Bash(curl *|*bash*)",
       "Bash(wget *|*sh*)",
@@ -125,17 +146,17 @@
         "hooks": [
           {
             "type": "command",
-            "command": "pwsh -NoProfile -NonInteractive -File .claude/hooks/bash-guard.ps1 || bash .claude/hooks/bash-guard.sh",
+            "command": "powershell -NoProfile -NonInteractive -ExecutionPolicy Bypass -File .claude/hooks/bash-guard.ps1 || bash .claude/hooks/bash-guard.sh",
             "timeout": 5
           },
           {
             "type": "command",
-            "command": "pwsh -NoProfile -NonInteractive -File .claude/hooks/validate-commit.ps1 || bash .claude/hooks/validate-commit.sh",
+            "command": "powershell -NoProfile -NonInteractive -ExecutionPolicy Bypass -File .claude/hooks/validate-commit.ps1 || bash .claude/hooks/validate-commit.sh",
             "timeout": 30
           },
           {
             "type": "command",
-            "command": "pwsh -NoProfile -NonInteractive -File .claude/hooks/validate-push.ps1 || bash .claude/hooks/validate-push.sh",
+            "command": "powershell -NoProfile -NonInteractive -ExecutionPolicy Bypass -File .claude/hooks/validate-push.ps1 || bash .claude/hooks/validate-push.sh",
             "timeout": 10
           }
         ]

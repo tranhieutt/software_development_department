@@ -1,43 +1,43 @@
 ﻿---
 name: fastapi-pro
 type: reference
-description: "Production FastAPI patterns â€” async endpoints, SQLAlchemy 2.0 async, Pydantic V2, dependency injection, JWT auth, testing. Use for Python 3.11+ FastAPI backends. NOT for Django (â†’ `django-patterns`) or Node.js (â†’ `backend-patterns`)."
+description: "Production FastAPI patterns — async endpoints, SQLAlchemy 2.0 async, Pydantic V2, dependency injection, JWT auth, testing. Use for Python 3.11+ FastAPI backends. NOT for Django (→ `django-patterns`) or Node.js (→ `backend-patterns`)."
 paths: ["**/*.py", "**/requirements*.txt", "**/pyproject.toml", "**/main.py", "**/app/**/*.py"]
 effort: 3
 allowed-tools: Read, Glob, Grep, Write, Edit, Bash
 user-invocable: true
-when_to_use: "When building async FastAPI APIs with SQLAlchemy 2.0 async + Pydantic V2 â€” endpoints, auth, DB session handling, testing, deployment"
+when_to_use: "When building async FastAPI APIs with SQLAlchemy 2.0 async + Pydantic V2 — endpoints, auth, DB session handling, testing, deployment"
 ---
 
 # FastAPI Production Patterns
 
 ## Critical rules (non-obvious)
 
-- **`async def` endpoint blocking sync DB call** â†’ blocks entire event loop. Either use `async` DB driver (asyncpg/aiomysql) throughout OR switch endpoint to plain `def` (FastAPI runs it in threadpool).
-- **Pydantic V2 `model_config = ConfigDict(...)` replaces V1 `class Config`**. Forgetting this silently loses settings like `from_attributes=True` needed for ORM â†’ DTO conversion.
-- **`Depends()` caches per-request**: same dependency called twice in one request returns same instance. Don't rely on this for cross-request state â€” use app state / Redis instead.
-- **SQLAlchemy 2.0 async session must not leak across requests**: always scope via `Depends` with `async with AsyncSession(...)` â€” raw module-level session causes `GreenletError` under load.
+- **`async def` endpoint blocking sync DB call** → blocks entire event loop. Either use `async` DB driver (asyncpg/aiomysql) throughout OR switch endpoint to plain `def` (FastAPI runs it in threadpool).
+- **Pydantic V2 `model_config = ConfigDict(...)` replaces V1 `class Config`**. Forgetting this silently loses settings like `from_attributes=True` needed for ORM → DTO conversion.
+- **`Depends()` caches per-request**: same dependency called twice in one request returns same instance. Don't rely on this for cross-request state — use app state / Redis instead.
+- **SQLAlchemy 2.0 async session must not leak across requests**: always scope via `Depends` with `async with AsyncSession(...)` — raw module-level session causes `GreenletError` under load.
 - **`BackgroundTasks` runs AFTER response sent in the same worker process**: if worker dies mid-task the work is lost. For durable background jobs use Celery / Dramatiq / ARQ.
-- **Uvicorn `--workers N` forks processes â€” can't share in-memory state**. Use Redis or DB for any shared state (rate-limit counters, cache).
+- **Uvicorn `--workers N` forks processes — can't share in-memory state**. Use Redis or DB for any shared state (rate-limit counters, cache).
 
 ## Project layout
 
 ```
 app/
-â”œâ”€â”€ main.py               # FastAPI() instance + lifespan
-â”œâ”€â”€ api/
-â”‚   â”œâ”€â”€ deps.py           # shared Depends (get_db, get_current_user)
-â”‚   â””â”€â”€ v1/
-â”‚       â”œâ”€â”€ users.py      # APIRouter
-â”‚       â””â”€â”€ products.py
-â”œâ”€â”€ core/
-â”‚   â”œâ”€â”€ config.py         # Pydantic Settings
-â”‚   â”œâ”€â”€ security.py       # JWT encode/decode, password hashing
-â”‚   â””â”€â”€ db.py             # engine + AsyncSession factory
-â”œâ”€â”€ models/               # SQLAlchemy ORM models
-â”œâ”€â”€ schemas/              # Pydantic DTOs (Request/Response)
-â”œâ”€â”€ services/             # business logic (no framework coupling)
-â””â”€â”€ tests/
+├── main.py               # FastAPI() instance + lifespan
+├── api/
+│   ├── deps.py           # shared Depends (get_db, get_current_user)
+│   └── v1/
+│       ├── users.py      # APIRouter
+│       └── products.py
+├── core/
+│   ├── config.py         # Pydantic Settings
+│   ├── security.py       # JWT encode/decode, password hashing
+│   └── db.py             # engine + AsyncSession factory
+├── models/               # SQLAlchemy ORM models
+├── schemas/              # Pydantic DTOs (Request/Response)
+├── services/             # business logic (no framework coupling)
+└── tests/
 ```
 
 ## Pydantic V2 settings + config
@@ -247,7 +247,7 @@ async def test_create_user(client: AsyncClient):
 ## Production deployment (Uvicorn + Gunicorn)
 
 ```bash
-# Dockerfile CMD â€” recommended for production
+# Dockerfile CMD — recommended for production
 gunicorn app.main:app \
   --workers 4 \
   --worker-class uvicorn.workers.UvicornWorker \
@@ -257,7 +257,7 @@ gunicorn app.main:app \
   --access-logfile -
 ```
 
-Workers = `(2 Ã— CPU) + 1` for CPU-bound; lower for IO-heavy async (async workers share event loop already).
+Workers = `(2 × CPU) + 1` for CPU-bound; lower for IO-heavy async (async workers share event loop already).
 
 ## Common pitfalls
 
@@ -265,12 +265,12 @@ Workers = `(2 Ã— CPU) + 1` for CPU-bound; lower for IO-heavy async (async wor
 |---|---|
 | `async def` + sync `psycopg2`/`pymysql` | Use `asyncpg` / `aiomysql` OR drop `async` on endpoint |
 | `BaseSettings` V1 pattern (`class Config`) | V2 uses `model_config = SettingsConfigDict(...)` |
-| `from_attributes=True` missing â†’ validation error from ORM instance | Add to `ConfigDict` on every DTO reading from ORM |
-| Forgetting `await` on SQLAlchemy 2.0 async query | Linter â€” use `sqlalchemy[asyncio]` type stubs + mypy |
-| Returning ORM object â†’ leaks relationships (N+1 on serialize) | Always `model_validate(orm_obj)` to scoped Pydantic DTO |
+| `from_attributes=True` missing → validation error from ORM instance | Add to `ConfigDict` on every DTO reading from ORM |
+| Forgetting `await` on SQLAlchemy 2.0 async query | Linter — use `sqlalchemy[asyncio]` type stubs + mypy |
+| Returning ORM object → leaks relationships (N+1 on serialize) | Always `model_validate(orm_obj)` to scoped Pydantic DTO |
 | `BackgroundTasks` for durable work | Switch to Celery / Dramatiq / ARQ |
-| `CORSMiddleware` added AFTER auth middleware | CORS must be OUTERMOST â€” added first |
-| `response_model` + return extra fields â†’ silently stripped | Use `response_model_exclude_unset=True` consciously |
+| `CORSMiddleware` added AFTER auth middleware | CORS must be OUTERMOST — added first |
+| `response_model` + return extra fields → silently stripped | Use `response_model_exclude_unset=True` consciously |
 
 ## Observability hooks
 
@@ -293,4 +293,4 @@ async def log_requests(request: Request, call_next):
 
 - Add `prometheus-fastapi-instrumentator` for `/metrics`.
 - Health check: GET `/healthz` returns `{"status": "ok"}` + DB `SELECT 1`.
-- Request ID: `X-Request-ID` header middleware â†’ bind to contextvars for logging.
+- Request ID: `X-Request-ID` header middleware → bind to contextvars for logging.

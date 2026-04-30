@@ -11,7 +11,7 @@ when_to_use: "Use after an agent crash, session restart, or context compaction w
 
 # Resume From Checkpoint
 
-Restore the working context of a specific task from its atomic checkpoint at `.tasks/checkpoints/[task_id].md`, then continue execution from the exact next step â€” without re-running completed work.
+Restore the working context of a specific task from its atomic checkpoint at `.tasks/checkpoints/[task_id].md`, then continue execution from the exact next step — without re-running completed work.
 
 ## Steps
 
@@ -20,7 +20,7 @@ Restore the working context of a specific task from its atomic checkpoint at `.t
 `$ARGUMENTS` must contain a `task_id`. If missing or empty:
 
 ```text
-âŒ Usage: /resume-from <task_id>
+❌ Usage: /resume-from <task_id>
    Example: /resume-from 042
    Example: /resume-from auth-api
 
@@ -37,7 +37,7 @@ Read `.tasks/checkpoints/[task_id].md`.
 If the file does not exist:
 
 ```text
-âŒ No checkpoint found for task: [task_id]
+❌ No checkpoint found for task: [task_id]
    Expected: .tasks/checkpoints/[task_id].md
 
 Available checkpoints:
@@ -53,24 +53,24 @@ Stop here if file is missing.
 Extract the following fields from the checkpoint and display them clearly:
 
 ```text
-ðŸ” Resuming task: [task_id]
+🔁 Resuming task: [task_id]
    Agent:         [agent_id]
    Saved at:      [saved_at]
    Retry count:   [retry_count]
 
-ðŸ“„ Output Snapshot (last known state):
+📄 Output Snapshot (last known state):
    [output_snapshot content]
 
-âœ… Completed Steps:
+✅ Completed Steps:
    [completed steps list]
 
-â­ï¸  Next Step:
+⏭️  Next Step:
    [next_step content]
 
-â“ Open Questions:
-   [open_questions content â€” or "None" if empty]
+❓ Open Questions:
+   [open_questions content — or "None" if empty]
 
-ðŸ“ Files Modified So Far:
+📁 Files Modified So Far:
    [files_modified list]
 ```
 
@@ -78,14 +78,14 @@ Extract the following fields from the checkpoint and display them clearly:
 
 Check `retry_count` in the checkpoint frontmatter:
 
-- `retry_count = 0` â†’ proceed immediately, no wait
-- `retry_count = 1` â†’ wait 2s before continuing
-- `retry_count = 2` â†’ wait 4s before continuing
-- `retry_count = 3` â†’ wait 8s before continuing
-- `retry_count >= 4` â†’ surface a warning:
+- `retry_count = 0` → proceed immediately, no wait
+- `retry_count = 1` → wait 2s before continuing
+- `retry_count = 2` → wait 4s before continuing
+- `retry_count = 3` → wait 8s before continuing
+- `retry_count >= 4` → surface a warning:
 
 ```text
-âš ï¸  This task has failed [retry_count] times.
+⚠️  This task has failed [retry_count] times.
     Continuing, but consider escalating to a senior agent or the user
     if the same error recurs.
 ```
@@ -96,7 +96,7 @@ Then increment `retry_count` and update `backoff_next_s` (double the previous va
 
 Hand off context to the appropriate agent (`agent_id` from checkpoint) with the following instruction:
 
-> "You are resuming task `[task_id]`. The completed steps and output snapshot above are already done â€” do NOT repeat them. Your only job is to execute the **Next Step** listed above and continue from there."
+> "You are resuming task `[task_id]`. The completed steps and output snapshot above are already done — do NOT repeat them. Your only job is to execute the **Next Step** listed above and continue from there."
 
 ### 6. Update checkpoint on success
 
@@ -109,8 +109,8 @@ When the task completes successfully, update `.tasks/checkpoints/[task_id].md`:
 Print:
 
 ```text
-âœ… Task [task_id] completed successfully.
-   Checkpoint updated â†’ .tasks/checkpoints/[task_id].md (status: completed)
+✅ Task [task_id] completed successfully.
+   Checkpoint updated → .tasks/checkpoints/[task_id].md (status: completed)
 ```
 
 ---
@@ -118,10 +118,10 @@ Print:
 ## Checkpoint lifecycle
 
 ```
-/save-state [task_id]   â†’ creates  .tasks/checkpoints/[task_id].md (status: in_progress)
-/resume-from [task_id]  â†’ reads checkpoint, increments retry_count, resumes
-                        â†’ on success: sets status: completed
+/save-state [task_id]   → creates  .tasks/checkpoints/[task_id].md (status: in_progress)
+/resume-from [task_id]  → reads checkpoint, increments retry_count, resumes
+                        → on success: sets status: completed
 ```
 
-Completed checkpoints are kept for audit â€” they are never auto-deleted.
+Completed checkpoints are kept for audit — they are never auto-deleted.
 To list all checkpoints: `ls .tasks/checkpoints/`

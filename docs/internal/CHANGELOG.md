@@ -6,6 +6,50 @@ Tài liệu này ghi lại lịch sử cập nhật tài liệu và source code 
 
 ## 🗓️ Lịch sử cập nhật
 
+### [Unreleased] - 2026-04-30
+
+**Chu de:** Fix Windows parity for `bash-guard` and PreToolUse hook registration
+
+Windows review phat hien `tests/hooks/bash-guard.test.js` luon chay
+`.claude/hooks/bash-guard.sh` qua `bash`, trong khi tren may Windows hien tai
+`bash.exe` tro toi WSL va WSL bi `E_ACCESSDENIED`. Dieu nay lam smoke test fail
+34/34 du repo da co PowerShell hook parity.
+
+#### Fixed - Windows bash-guard parity
+
+- `tests/hooks/bash-guard.test.js`: tren Windows chay
+  `.claude/hooks/bash-guard.ps1` bang `powershell.exe`; tren Unix tiep tuc chay
+  `.claude/hooks/bash-guard.sh`.
+- `.claude/hooks/bash-guard.ps1`: chuyen stdin parser sang
+  `[Console]::In.ReadToEnd()` de nhan JSON on dinh tu Node child process.
+- `.claude/hooks/bash-guard.ps1`: rewrite warning path bang ASCII-safe
+  PowerShell, giu parity hard-block va soft-warning voi hook `.sh`.
+- `.claude/settings.json`: PreToolUse hooks co file `.ps1` gio uu tien
+  `powershell -NoProfile -NonInteractive -ExecutionPolicy Bypass -File ...`,
+  fallback sang `bash ...` neu PowerShell path khong kha dung.
+
+#### Verification
+
+- `node tests\hooks\bash-guard.test.js`: PASS, 34 passed / 0 failed
+  (chay escalated do sandbox chan Node spawn `powershell.exe`).
+- `powershell -ExecutionPolicy Bypass -File scripts\codex-preflight.ps1`: PASS
+  voi warning working tree dirty.
+- `powershell -ExecutionPolicy Bypass -File scripts\validate-skills.ps1`: PASS
+  126 / 126.
+- `node scripts\harness-audit.js --compact`: PASS 120 / 120; con 7 warning
+  credential deny paths da ton tai truoc fix nay.
+- `node scripts\p1-quality-gates.js`: PASS.
+
+#### Fixed - Encoding cleanup
+
+- Sua mojibake trong 35 active `.claude/skills/*` files bang detector
+  Windows-1252 -> UTF-8 theo tung non-ASCII run, khong rewrite Unicode hop le.
+- Sua thu cong cac byte replacement con lai trong `lead-programmer`,
+  `security-engineer`, `test-standards`, va `pr-writer`.
+- Verification: `fixableMojibakeFiles=0`, replacement-char scan khong con hit,
+  `scripts\validate-skills.ps1` PASS 126 / 126, `harness-audit.js --compact`
+  PASS 120 / 120 voi readiness ready.
+
 ### [v1.60.0] - 2026-04-26
 
 **Chu de:** Eliminate `qa-lead` ghost-agent references across active surfaces (F2 audit H1)

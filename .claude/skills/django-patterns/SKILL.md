@@ -19,19 +19,19 @@ when_to_use: "When building Django 5.x applications requiring async support, bac
 
 ## Critical rules (non-obvious)
 
-- **N+1 queries**: always use `select_related` (FK) / `prefetch_related` (M2M) â€” never iterate and query inside loops
+- **N+1 queries**: always use `select_related` (FK) / `prefetch_related` (M2M) — never iterate and query inside loops
 - **`get_or_create` race condition**: wrap in `transaction.atomic()` in concurrent environments
-- **Never call `save()` inside `pre_save` signal** â€” causes infinite recursion; use `update_fields`
-- **`bulk_create` skips signals and `save()`** â€” don't use when signal logic is required
+- **Never call `save()` inside `pre_save` signal** — causes infinite recursion; use `update_fields`
+- **`bulk_create` skips signals and `save()`** — don't use when signal logic is required
 - **Migrations on large tables**: use `RunSQL` with `CONCURRENTLY` index creation to avoid locks
 
 ## ORM: select_related vs prefetch_related
 
 ```python
-# FK / OneToOne â†’ select_related (JOIN)
+# FK / OneToOne → select_related (JOIN)
 books = Book.objects.select_related("author", "author__publisher").all()
 
-# M2M / reverse FK â†’ prefetch_related (separate query)
+# M2M / reverse FK → prefetch_related (separate query)
 authors = Author.objects.prefetch_related("books", "books__tags").all()
 
 # Custom prefetch with queryset
@@ -57,12 +57,12 @@ Author.objects.annotate(
 ## ORM: F expressions (avoid race conditions)
 
 ```python
-# BAD â€” race condition
+# BAD — race condition
 product = Product.objects.get(pk=pk)
 product.stock -= quantity
 product.save()
 
-# GOOD â€” atomic at DB level
+# GOOD — atomic at DB level
 Product.objects.filter(pk=pk).update(stock=F("stock") - quantity)
 ```
 
@@ -151,7 +151,7 @@ def send_order_email(self, order_id: int):
     except Exception as exc:
         raise self.retry(exc=exc)
 
-# Dispatch after DB commit â€” avoids race condition
+# Dispatch after DB commit — avoids race condition
 def create_order(data):
     with transaction.atomic():
         order = Order.objects.create(**data)

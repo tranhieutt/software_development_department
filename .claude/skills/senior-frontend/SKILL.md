@@ -1,7 +1,7 @@
 ﻿---
 name: senior-frontend
 type: reference
-description: "Next.js App Router specific patterns â€” Server Components, Client Components boundary, parallel fetching, bundle analysis, a11y. Use ONLY for Next.js 13+ App Router projects. For generic React/Vue patterns, use `frontend-patterns` instead."
+description: "Next.js App Router specific patterns — Server Components, Client Components boundary, parallel fetching, bundle analysis, a11y. Use ONLY for Next.js 13+ App Router projects. For generic React/Vue patterns, use `frontend-patterns` instead."
 paths: ["**/app/**/*.tsx", "**/app/**/*.jsx", "**/next.config.*", "**/app/layout.tsx"]
 when_to_use: "When building Next.js 13+ App Router applications with Server Components, NOT for generic React/Vue (see `frontend-patterns`)"
 allowed-tools: Read, Glob, Grep, Write, Edit, Bash
@@ -13,16 +13,16 @@ effort: 3
 
 ## Critical rules (non-obvious)
 
-- **Always `return` in server components before client boundary** â€” mixing async server + client state without boundaries causes hydration mismatches
-- **`priority` on LCP images only** â€” adding `priority` everywhere defeats preload budgets
-- **`use client` at the leaf, not the root** â€” push client boundary as deep as possible to maximize RSC tree
+- **Always `return` in server components before client boundary** — mixing async server + client state without boundaries causes hydration mismatches
+- **`priority` on LCP images only** — adding `priority` everywhere defeats preload budgets
+- **`use client` at the leaf, not the root** — push client boundary as deep as possible to maximize RSC tree
 - **Parallel data fetching in Server Components**: use `Promise.all([...])` at the page level, not sequential awaits
-- **Bundle heavy deps**: `moment` (290KB) â†’ `dayjs` (2KB); `lodash` â†’ `lodash-es` with tree-shaking; `axios` â†’ native `fetch`
+- **Bundle heavy deps**: `moment` (290KB) → `dayjs` (2KB); `lodash` → `lodash-es` with tree-shaking; `axios` → native `fetch`
 
 ## Next.js: server vs client boundary
 
 ```tsx
-// Server Component (default) â€” fetch directly, no hooks
+// Server Component (default) — fetch directly, no hooks
 async function ProductPage({ params }: { params: { id: string } }) {
   const [product, reviews] = await Promise.all([  // parallel fetch
     getProduct(params.id),
@@ -39,7 +39,7 @@ async function ProductPage({ params }: { params: { id: string } }) {
   );
 }
 
-// Client Component â€” only where interactivity needed
+// Client Component — only where interactivity needed
 "use client";
 function AddToCartButton({ productId }: { productId: string }) {
   const [adding, setAdding] = useState(false);
@@ -114,12 +114,12 @@ npx vite-bundle-visualizer
 ## Accessibility essentials
 
 ```tsx
-// Skip link â€” place before main nav
+// Skip link — place before main nav
 <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4">
   Skip to main content
 </a>
 
-// Icon button â€” always label
+// Icon button — always label
 <button type="button" aria-label="Close dialog" className="focus-visible:ring-2">
   <XIcon aria-hidden="true" />
 </button>
@@ -131,19 +131,19 @@ npx vite-bundle-visualizer
 
 ```
 app/
-â”œâ”€â”€ layout.tsx          # Root layout: fonts, providers, metadata
-â”œâ”€â”€ page.tsx
-â”œâ”€â”€ (auth)/             # Route group â€” no URL segment
-â”‚   â”œâ”€â”€ login/page.tsx
-â”‚   â””â”€â”€ register/page.tsx
-â””â”€â”€ api/
-    â””â”€â”€ [route]/route.ts
+├── layout.tsx          # Root layout: fonts, providers, metadata
+├── page.tsx
+├── (auth)/             # Route group — no URL segment
+│   ├── login/page.tsx
+│   └── register/page.tsx
+└── api/
+    └── [route]/route.ts
 components/
-â”œâ”€â”€ ui/                 # Button, Input, Card (reusable primitives)
-â””â”€â”€ features/           # Domain-specific composites
+├── ui/                 # Button, Input, Card (reusable primitives)
+└── features/           # Domain-specific composites
 hooks/                  # useDebounce, useLocalStorage, useMediaQuery
 lib/
-â”œâ”€â”€ utils.ts            # cn(), formatDate()
-â””â”€â”€ api.ts              # API client
+├── utils.ts            # cn(), formatDate()
+└── api.ts              # API client
 types/                  # Shared TypeScript types
 ```

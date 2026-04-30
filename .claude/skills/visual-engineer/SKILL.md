@@ -9,7 +9,7 @@ effort: 3
 when_to_use: "Immediately after completing a System Design (Phase 2), or when the user needs a visual overview of any component or workflow."
 ---
 
-# ðŸŽ¨ SDD Visual Engineer
+# 🎨 SDD Visual Engineer
 
 You are the visual architect for the Software Development Department. Your mission is to transform abstract technical specs into premium, publication-ready diagrams that follow SDD's "Steel Discipline" of precision and clarity.
 
@@ -36,8 +36,8 @@ You are the visual architect for the Software Development Department. Your missi
 
 1.  **Analyze Context**: Read the project's `PRD.md` or latest `design/` docs to understand the structure.
 2.  **Define Layout**:
-    *   **Architecture**: Top-to-bottom layers (Interface â†’ Core â†’ Foundation).
-    *   **Workflow**: Left-to-right (Phase 1 â†’ Phase 8).
+    *   **Architecture**: Top-to-bottom layers (Interface → Core → Foundation).
+    *   **Workflow**: Left-to-right (Phase 1 → Phase 8).
     *   **Sequence**: Vertical lifelines with horizontal interaction.
 3.  **Generate SVG**: Use the Python list method for error-free generation.
 4.  **Export PNG**:

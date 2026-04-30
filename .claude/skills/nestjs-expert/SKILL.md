@@ -13,11 +13,11 @@ when_to_use: "When building NestJS backend APIs, microservices, or guards/interc
 
 ## Critical rules (non-obvious)
 
-- **Circular dependencies**: use `forwardRef(() => ServiceB)` in both modules; better â€” restructure to avoid
+- **Circular dependencies**: use `forwardRef(() => ServiceB)` in both modules; better — restructure to avoid
 - **Global modules**: use `@Global()` sparingly; prefer explicit imports to keep modules testable
 - **`APP_GUARD` / `APP_INTERCEPTOR`**: registered in AppModule providers, not in individual modules
-- **Lifecycle hooks order**: `onModuleInit` â†’ `onApplicationBootstrap` â†’ ready; `onModuleDestroy` â†’ `beforeApplicationShutdown` â†’ `onApplicationShutdown`
-- **Never use `req.user` without type assertion** â€” it's `any` from Passport; extend `Express.Request`
+- **Lifecycle hooks order**: `onModuleInit` → `onApplicationBootstrap` → ready; `onModuleDestroy` → `beforeApplicationShutdown` → `onApplicationShutdown`
+- **Never use `req.user` without type assertion** — it's `any` from Passport; extend `Express.Request`
 
 ## Module structure
 

@@ -1,7 +1,7 @@
 ﻿---
 name: diagnose
 type: reference
-description: "Diagnostic pipeline for complex/intermittent bugs. Uses diagnostics roles for Investigation, Verification, and Solution before Lead Programmer handoff. Use ONLY for non-obvious failures (root cause unclear, reproduction unstable, fixes reverted). NOT for trivial bugs with known cause â€” fix them directly."
+description: "Diagnostic pipeline for complex/intermittent bugs. Uses diagnostics roles for Investigation, Verification, and Solution before Lead Programmer handoff. Use ONLY for non-obvious failures (root cause unclear, reproduction unstable, fixes reverted). NOT for trivial bugs with known cause — fix them directly."
 paths: []
 effort: 4
 allowed-tools: Read, Glob, Grep, Write, Edit, Bash, Task
@@ -15,7 +15,7 @@ when_to_use: "When a bug is reproducible but cause is unknown, when a 'fix' has 
 
 ### Use `/diagnose` when:
 - Bug reproduces but **root cause is unclear** after one read-pass of the failing code
-- Previous fix attempts have been **reverted â‰¥ 2 times** (symptoms return)
+- Previous fix attempts have been **reverted ≥ 2 times** (symptoms return)
 - Failure is **intermittent** (flaky test, race condition, timing-dependent)
 - Failure occurs in **unfamiliar code** (agent has no prior context)
 - User has explicitly requested `/diagnose` or "deep investigation"
@@ -41,7 +41,7 @@ Investigation -> Verification -> Solution -> Lead Programmer
 
 Each stage produces a **required artifact** saved to `.investigations/<task_id>/` and a **handoff contract** (per Rule 16) to the next agent.
 
-## Stage 1 â€” Investigation
+## Stage 1 — Investigation
 
 **Agent:** `diagnostics` (Investigation role)
 **Goal:** Produce a falsifiable root-cause hypothesis backed by empirical evidence.
@@ -51,11 +51,11 @@ Each stage produces a **required artifact** saved to `.investigations/<task_id>/
 - Reproduction steps (or "cannot reproduce" + environment)
 - Relevant log lines, stack traces, error IDs
 
-### Required output â€” `investigation.json`
+### Required output — `investigation.json`
 ```json
 {
   "task_id": "BUG-417",
-  "symptom": "POST /api/orders returns 500 when cart has â‰¥10 items",
+  "symptom": "POST /api/orders returns 500 when cart has ≥10 items",
   "reproduction": {
     "steps": ["...", "..."],
     "frequency": "100% | intermittent (~30%) | once",
@@ -81,7 +81,7 @@ Each stage produces a **required artifact** saved to `.investigations/<task_id>/
 - `evidence` has fewer than 2 items (unverifiable)
 - `unknowns` is empty but `confidence: low` (contradictory)
 
-## Stage 2 â€” Verification
+## Stage 2 — Verification
 
 **Agent:** `diagnostics` (Verification role)
 **Goal:** Attempt to **refute** the hypothesis. Only confirmed if refutation fails.
@@ -90,7 +90,7 @@ Each stage produces a **required artifact** saved to `.investigations/<task_id>/
 - `investigation.json` (from Stage 1)
 - Access to staging/test environment
 
-### Required output â€” `verification.json`
+### Required output — `verification.json`
 ```json
 {
   "task_id": "BUG-417",
@@ -98,14 +98,14 @@ Each stage produces a **required artifact** saved to `.investigations/<task_id>/
   "triangulation": [
     {"method": "reproduce_with_fix_applied", "result": "Error gone with pool_size=50"},
     {"method": "reproduce_without_fix", "result": "Error returns at 10 items"},
-    {"method": "adjacent_test_case", "result": "9 items = OK, 10 items = fail â†’ threshold confirmed"}
+    {"method": "adjacent_test_case", "result": "9 items = OK, 10 items = fail → threshold confirmed"}
   ],
   "counter_hypotheses_ruled_out": [
     "DB slowness (ruled out: p99 < 50ms)",
     "Network flaps (ruled out: no packet loss in window)"
   ],
   "confidence": "high",
-  "recommendation": "Proceed to Solution stage â€” cause confirmed necessary AND sufficient"
+  "recommendation": "Proceed to Solution stage — cause confirmed necessary AND sufficient"
 }
 ```
 
@@ -116,19 +116,19 @@ Each stage produces a **required artifact** saved to `.investigations/<task_id>/
 | `refuted`      | Return to Investigation stage with counter-evidence. Max 2 round-trips. |
 | `inconclusive` | STOP. Surface to user with all evidence. Do NOT proceed to Solution stage. |
 
-## Stage 3 â€” Solution
+## Stage 3 — Solution
 
 **Agent:** `diagnostics` (Solution role)
 **Goal:** Generate 3 solution options with explicit tradeoffs; never pick silently.
 
-### Required output â€” `solution.json`
+### Required output — `solution.json`
 ```json
 {
   "task_id": "BUG-417",
   "options": [
     {
       "name": "Quick",
-      "description": "Increase pool_size from 20 â†’ 50 in db.ts",
+      "description": "Increase pool_size from 20 → 50 in db.ts",
       "scope_loc": 1,
       "risk_tier": "Low",
       "tradeoff": "Masks root cause; higher RAM; future growth hits same wall"
@@ -148,7 +148,7 @@ Each stage produces a **required artifact** saved to `.investigations/<task_id>/
       "tradeoff": "Eliminates entire class of N+1 bugs; 2-3 day refactor; needs ADR"
     }
   ],
-  "recommendation": "Strategic â€” best risk/value ratio. Quick only if release is < 24h."
+  "recommendation": "Strategic — best risk/value ratio. Quick only if release is < 24h."
 }
 ```
 
@@ -157,16 +157,16 @@ Each stage produces a **required artifact** saved to `.investigations/<task_id>/
 - `tradeoff` must state what is **sacrificed**, not just "takes longer"
 - `recommendation` must cite a criterion (time budget, risk tier, blast radius)
 
-## Stage 4 â€” Finalization
+## Stage 4 — Finalization
 
 **Agent:** `lead-programmer`
 **Goal:** Select option, assign specialist, track execution.
 
 ### Actions
 1. Review `solution.json` with user (if `risk_tier: High` or `scope_loc > 100`)
-2. Select option â†’ write selection to `.investigations/<task_id>/decision.md`
+2. Select option → write selection to `.investigations/<task_id>/decision.md`
 3. Create A2A handoff contract (Rule 16) via `/handoff`:
-   - `lead-programmer â†’ backend-developer` (or `frontend-developer`, `data-engineer`)
+   - `lead-programmer → backend-developer` (or `frontend-developer`, `data-engineer`)
    - Acceptance criteria derived from `investigation.hypothesis.falsifiable_by`
 4. Append ledger entry (Rule 15) to `production/traces/decision_ledger.jsonl`:
 ```jsonl
@@ -179,13 +179,13 @@ All intermediate reports MUST be saved to `.investigations/<task_id>/`:
 
 ```
 .investigations/
-â””â”€â”€ BUG-417/
-    â”œâ”€â”€ investigation.json     # Stage 1 output
-    â”œâ”€â”€ verification.json      # Stage 2 output
-    â”œâ”€â”€ solution.json          # Stage 3 output
-    â”œâ”€â”€ decision.md            # Stage 4 â€” human-readable rationale
-    â”œâ”€â”€ evidence/              # logs, screenshots, traces referenced in reports
-    â””â”€â”€ handoffs/              # A2A contracts (copied from .tasks/handoffs/)
+└── BUG-417/
+    ├── investigation.json     # Stage 1 output
+    ├── verification.json      # Stage 2 output
+    ├── solution.json          # Stage 3 output
+    ├── decision.md            # Stage 4 — human-readable rationale
+    ├── evidence/              # logs, screenshots, traces referenced in reports
+    └── handoffs/              # A2A contracts (copied from .tasks/handoffs/)
 ```
 
 **Retention:** Keep until bug is closed + 30 days, then archive to `.investigations/archive/`.
@@ -196,7 +196,7 @@ All intermediate reports MUST be saved to `.investigations/<task_id>/`:
 | ------------------------------------------------- | ---------------------------------------------- |
 | `diagnostics` circuit OPEN in Investigation (Rule 14) | Surface raw symptom to user; skip pipeline, request manual triage |
 | Verification stage returns `inconclusive` twice   | Surface to user; request manual reproduction   |
-| Solution stage cannot produce 3 distinct options  | Escalate to `technical-director` â€” scope unclear |
+| Solution stage cannot produce 3 distinct options  | Escalate to `technical-director` — scope unclear |
 | User rejects all 3 options                        | Return to Investigation stage; hypothesis likely wrong |
 | Bug reoccurs after fix merges                     | Restart `/diagnose` with new `task_id`; link prior investigation in `unknowns[]` |
 
@@ -205,34 +205,34 @@ All intermediate reports MUST be saved to `.investigations/<task_id>/`:
 - **Rule 6 (Layered Recovery):** If any stage fails once, retry with fresh context before escalating
 - **Rule 14 (Circuit Breaker):** Read `production/session-state/circuit-state.json` before invoking each agent
 - **Rule 15 (Decision Ledger):** Every stage transition logs to `decision_ledger.jsonl`
-- **Rule 16 (A2A Handoff):** Stage 1â†’2, 2â†’3, 3â†’4 each require a handoff contract in `.tasks/handoffs/`
+- **Rule 16 (A2A Handoff):** Stage 1→2, 2→3, 3→4 each require a handoff contract in `.tasks/handoffs/`
 
-## Concrete example â€” "Flaky checkout test"
+## Concrete example — "Flaky checkout test"
 
 **Symptom:** `checkout.e2e.test.ts` fails ~20% of CI runs; local always passes.
 
 ```
 /diagnose flaky-checkout-e2e
-  â†“
-Stage 1 â†’ Investigation (diagnostics)
+  ↓
+Stage 1 → Investigation (diagnostics)
   hypothesis: "Test clicks #submit before React hydration completes on slow CI runners"
   evidence: [CI traces showing hydration marker missing, local has DevTools overhead masking timing]
   confidence: medium (cannot reproduce locally)
-  â†“
-Stage 2 â†’ Verification (diagnostics)
+  ↓
+Stage 2 → Verification (diagnostics)
   triangulation:
-    - Inject 500ms delay before click â†’ test passes 50/50 runs âœ“
-    - Remove delay â†’ fails 9/50 âœ—
-    - Check for hydration marker instead of fixed delay â†’ passes 50/50 âœ“
+    - Inject 500ms delay before click → test passes 50/50 runs ✓
+    - Remove delay → fails 9/50 ✗
+    - Check for hydration marker instead of fixed delay → passes 50/50 ✓
   status: confirmed
-  â†“
-Stage 3 â†’ Solution (diagnostics)
+  ↓
+Stage 3 → Solution (diagnostics)
   Quick: add sleep(500ms)              [masks issue]
   Strategic: waitFor hydration marker  [addresses root cause]
   Future-Proof: custom test util that always waits for RSC boundary [reusable]
   recommendation: Strategic
-  â†“
-Stage 4 â†’ lead-programmer
+  ↓
+Stage 4 → lead-programmer
   selects Strategic; assigns to qa-engineer
   handoff contract: "qa-engineer updates checkout.e2e.test.ts to use waitFor(hydrationMarker)"
   acceptance_criteria: ["10 CI runs in a row pass", "no sleep() in test"]
@@ -244,14 +244,14 @@ Stage 4 â†’ lead-programmer
 | Pitfall                                       | Fix                                                                         |
 | --------------------------------------------- | --------------------------------------------------------------------------- |
 | Skipping Verification ("cause is obvious")    | Verifier exists specifically to catch "obvious but wrong" hypotheses        |
-| Investigator produces only 1 hypothesis       | Reject â€” require `counter_hypotheses_ruled_out[]` list in Stage 2           |
-| Solver picks Quick fix without naming tradeoff| Reject â€” all 3 options required for explicit tradeoff comparison            |
-| No artifact written to `.investigations/`     | Reject â€” verbal diagnosis is not auditable                                  |
+| Investigator produces only 1 hypothesis       | Reject — require `counter_hypotheses_ruled_out[]` list in Stage 2           |
+| Solver picks Quick fix without naming tradeoff| Reject — all 3 options required for explicit tradeoff comparison            |
+| No artifact written to `.investigations/`     | Reject — verbal diagnosis is not auditable                                  |
 | Running `/diagnose` in parallel on same bug   | Only one active investigation per `task_id`; concurrent runs create race   |
 
 ## Output to user
 
-After Stage 4 completes, summarize in â‰¤ 5 lines:
+After Stage 4 completes, summarize in ≤ 5 lines:
 
 ```
 /diagnose BUG-417 complete.
