@@ -60,14 +60,14 @@ if [ -n "$DESIGN_FILES" ]; then
 
             FRONTMATTER=$(awk 'BEGIN{in=0} NR==1 && $0=="---" {in=1; next} in==1 && $0=="---" {exit} in==1 {print}' "$file")
             for key in stage tier spec_id; do
-                if ! echo "$FRONTMATTER" | grep -qiE "^[[:space:]]*$key[[:space:]]*:[[:space:]]*.+"; then
+                if ! echo "$FRONTMATTER" | grep -qiE "^[[:space:]]*${key}[[:space:]]*:[[:space:]]*.+"; then
                     echo "BLOCKED: $file frontmatter missing required field '$key'." >&2
                     exit 2
                 fi
             done
 
             for bdd in "Given" "When" "Then"; do
-                if ! grep -qiE "^[[:space:]]*[-*]?[[:space:]]*$bdd\b" "$file"; then
+                if ! grep -qiE "^[[:space:]]*[-*]?[[:space:]]*${bdd}\b" "$file"; then
                     echo "BLOCKED: $file missing BDD keyword '$bdd' in acceptance criteria." >&2
                     exit 2
                 fi
