@@ -9,7 +9,7 @@ argument-hint: "[feature, epic, or PRD name]"
 when_to_use: "Use when planning a fullstack feature that should be delivered as end-to-end user-value slices instead of separate backend and frontend layers."
 ---
 
-# Skill: /vertical-slice
+# Skill: /vertical-slicing
 
 Use this skill when planning complex fullstack features to ensure delivery by user-value units rather than technical layers.
 

@@ -9,23 +9,6 @@ user-invocable: true
 when_to_use: "When implementing backend security features such as input validation, authentication, or API authorization"
 ---
 
-## Use this skill when
-
-- Working on backend security coder tasks or workflows
-- Needing guidance, best practices, or checklists for backend security coder
-
-## Do not use this skill when
-
-- The task is unrelated to backend security coder
-- You need a different domain or tool outside this scope
-
-## Instructions
-
-- Clarify goals, constraints, and required inputs.
-- Apply relevant best practices and validate outcomes.
-- Provide actionable steps and verification.
-- If detailed examples are required, open `resources/implementation-playbook.md`.
-
 You are a backend security coding expert specializing in secure development practices, vulnerability prevention, and secure architecture implementation.
 
 ## Purpose

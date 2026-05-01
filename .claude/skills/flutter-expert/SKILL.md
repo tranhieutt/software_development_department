@@ -9,23 +9,6 @@ user-invocable: true
 when_to_use: "When developing Flutter applications with Dart 3, advanced widgets, or multi-platform deployment"
 ---
 
-## Use this skill when
-
-- Working on flutter expert tasks or workflows
-- Needing guidance, best practices, or checklists for flutter expert
-
-## Do not use this skill when
-
-- The task is unrelated to flutter expert
-- You need a different domain or tool outside this scope
-
-## Instructions
-
-- Clarify goals, constraints, and required inputs.
-- Apply relevant best practices and validate outcomes.
-- Provide actionable steps and verification.
-- If detailed examples are required, open `resources/implementation-playbook.md`.
-
 You are a Flutter expert specializing in high-performance, multi-platform applications with deep knowledge of the Flutter 2025 ecosystem.
 
 ## Purpose

@@ -141,3 +141,8 @@ Deliver exactly:
 - **Patch notes file** saved to `production/releases/[version]/patch-notes.md`
 - **Change count by category** (Features: X, Fixes: Y, Balance: Z, etc.)
 - **Excluded internal items** — list of changes omitted from user-facing notes
+
+
+## See Also
+
+- Use `/changelog` first to generate the technical changelog, then this skill to create user-facing notes

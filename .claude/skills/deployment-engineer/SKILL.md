@@ -1,173 +1,194 @@
-﻿---
+---
 name: deployment-engineer
 type: workflow
-description: "Provides deployment engineering patterns for CI/CD pipelines, containerization, infrastructure as code, and release automation. Use when working with Dockerfile or GitHub Actions files, or when the user mentions deployment, CI/CD, or release pipeline."
+description: "Designs and implements CI/CD pipelines, GitOps workflows, and deployment automation. Use when building or improving CI/CD pipelines, containerization, or release automation."
 effort: 3
 allowed-tools: Read, Glob, Grep, Write, Edit, Bash
 argument-hint: "[environment: dev|staging|prod]"
 user-invocable: true
 when_to_use: "When designing or improving CI/CD pipelines, implementing GitOps workflows, or automating deployments"
 ---
-You are a deployment engineer specializing in modern CI/CD pipelines, GitOps workflows, and advanced deployment automation.
 
-## Use this skill when
+# Deployment Engineer
+
+Designs and implements CI/CD pipelines, GitOps workflows, container build strategies, and release automation with progressive delivery.
+
+## When to Use
 
 - Designing or improving CI/CD pipelines and release workflows
 - Implementing GitOps or progressive delivery patterns
 - Automating deployments with zero-downtime requirements
-- Integrating security and compliance checks into deployment flows
+- Integrating security scanning into deployment flows
 
-## Do not use this skill when
+## When NOT to Use
 
-- You only need local development automation
-- The task is application feature work without deployment changes
-- There is no deployment or release pipeline involved
+- Executing a deployment (use deployment-procedures instead)
+- Simple dev setup without pipeline changes
+- Infrastructure architecture decisions (use backend-architect or cloud-architect)
 
-## Instructions
+---
 
-1. Gather release requirements, risk tolerance, and environments.
-2. Design pipeline stages with quality gates and approvals.
-3. Implement deployment strategy with rollback and observability.
-4. Document runbooks and validate in staging before production.
+## Workflow
 
-## Safety
+### 1. Gather Requirements
 
-- Avoid production rollouts without approvals and rollback plans.
-- Validate secrets, permissions, and target environments before running pipelines.
+Ask before designing:
+- Target environments (dev/staging/prod)?
+- Current CI/CD platform (GitHub Actions, GitLab CI, Azure DevOps, Jenkins)?
+- Container strategy (Docker, Podman, buildpacks)?
+- Zero-downtime requirement? Database migrations involved?
+- Compliance requirements (SOX, PCI-DSS, HIPAA)?
+- Team prefers GitOps (declarative) or imperative deployment?
 
-## Purpose
-Expert deployment engineer with comprehensive knowledge of modern CI/CD practices, GitOps workflows, and container orchestration. Masters advanced deployment strategies, security-first pipelines, and platform engineering approaches. Specializes in zero-downtime deployments, progressive delivery, and enterprise-scale automation.
+### 2. Design Pipeline Stages
 
-## Capabilities
+Standard pipeline structure:
 
-### Modern CI/CD Platforms
-- **GitHub Actions**: Advanced workflows, reusable actions, self-hosted runners, security scanning
-- **GitLab CI/CD**: Pipeline optimization, DAG pipelines, multi-project pipelines, GitLab Pages
-- **Azure DevOps**: YAML pipelines, template libraries, environment approvals, release gates
-- **Jenkins**: Pipeline as Code, Blue Ocean, distributed builds, plugin ecosystem
-- **Platform-specific**: AWS CodePipeline, GCP Cloud Build, Tekton, Argo Workflows
-- **Emerging platforms**: Buildkite, CircleCI, Drone CI, Harness, Spinnaker
+\`\`\`
+[Build] -> [Test] -> [Security Scan] -> [Package] -> [Deploy Staging] -> [Integration Test] -> [Approval] -> [Deploy Prod] -> [Verify]
+\`\`\`
 
-### GitOps & Continuous Deployment
-- **GitOps tools**: ArgoCD, Flux v2, Jenkins X, advanced configuration patterns
-- **Repository patterns**: App-of-apps, mono-repo vs multi-repo, environment promotion
-- **Automated deployment**: Progressive delivery, automated rollbacks, deployment policies
-- **Configuration management**: Helm, Kustomize, Jsonnet for environment-specific configs
-- **Secret management**: External Secrets Operator, Sealed Secrets, vault integration
+Design each stage:
 
-### Container Technologies
-- **Docker mastery**: Multi-stage builds, BuildKit, security best practices, image optimization
-- **Alternative runtimes**: Podman, containerd, CRI-O, gVisor for enhanced security
-- **Image management**: Registry strategies, vulnerability scanning, image signing
-- **Build tools**: Buildpacks, Bazel, Nix, ko for Go applications
-- **Security**: Distroless images, non-root users, minimal attack surface
+| Stage | Actions | Failure Policy |
+|-------|---------|----------------|
+| Build | Compile, lint, type-check | Block |
+| Test | Unit + integration tests | Block |
+| Security | SAST, dependency scan, container scan | Block on Critical/High |
+| Package | Docker build, push to registry, sign image | Block |
+| Deploy Staging | Apply manifests/Helm, run smoke tests | Block |
+| Integration Test | E2E tests, performance baseline | Block |
+| Approval | Manual gate for production | Require approval |
+| Deploy Prod | Progressive rollout | Auto-rollback on failure |
+| Verify | Health checks, metrics validation | Auto-rollback |
 
-### Kubernetes Deployment Patterns
-- **Deployment strategies**: Rolling updates, blue/green, canary, A/B testing
-- **Progressive delivery**: Argo Rollouts, Flagger, feature flags integration
-- **Resource management**: Resource requests/limits, QoS classes, priority classes
-- **Configuration**: ConfigMaps, Secrets, environment-specific overlays
-- **Service mesh**: Istio, Linkerd traffic management for deployments
+### 3. Implement Container Strategy
 
-### Advanced Deployment Strategies
-- **Zero-downtime deployments**: Health checks, readiness probes, graceful shutdowns
-- **Database migrations**: Automated schema migrations, backward compatibility
-- **Feature flags**: LaunchDarkly, Flagr, custom feature flag implementations
-- **Traffic management**: Load balancer integration, DNS-based routing
-- **Rollback strategies**: Automated rollback triggers, manual rollback procedures
+Dockerfile best practices:
+\`\`\`dockerfile
+# Multi-stage build
+FROM node:20-alpine AS builder
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci --only=production
 
-### Security & Compliance
-- **Secure pipelines**: Secret management, RBAC, pipeline security scanning
-- **Supply chain security**: SLSA framework, Sigstore, SBOM generation
-- **Vulnerability scanning**: Container scanning, dependency scanning, license compliance
-- **Policy enforcement**: OPA/Gatekeeper, admission controllers, security policies
-- **Compliance**: SOX, PCI-DSS, HIPAA pipeline compliance requirements
+FROM gcr.io/distroless/nodejs20-debian12
+COPY --from=builder /app /app
+USER nonroot
+CMD ["app/index.js"]
+\`\`\`
 
-### Testing & Quality Assurance
-- **Automated testing**: Unit tests, integration tests, end-to-end tests in pipelines
-- **Performance testing**: Load testing, stress testing, performance regression detection
-- **Security testing**: SAST, DAST, dependency scanning in CI/CD
-- **Quality gates**: Code coverage thresholds, security scan results, performance benchmarks
-- **Testing in production**: Chaos engineering, synthetic monitoring, canary analysis
+Checklist:
+- Multi-stage build to minimize image size
+- Distroless or minimal base image
+- Non-root user
+- No secrets in image layers
+- .dockerignore excludes unnecessary files
+- Image scanning in pipeline (Trivy, Grype)
+- Image signing (Cosign/Sigstore)
 
-### Infrastructure Integration
-- **Infrastructure as Code**: Terraform, CloudFormation, Pulumi integration
-- **Environment management**: Environment provisioning, teardown, resource optimization
-- **Multi-cloud deployment**: Cross-cloud deployment strategies, cloud-agnostic patterns
-- **Edge deployment**: CDN integration, edge computing deployments
-- **Scaling**: Auto-scaling integration, capacity planning, resource optimization
+### 4. Configure Deployment Strategy
 
-### Observability & Monitoring
-- **Pipeline monitoring**: Build metrics, deployment success rates, MTTR tracking
-- **Application monitoring**: APM integration, health checks, SLA monitoring
-- **Log aggregation**: Centralized logging, structured logging, log analysis
-- **Alerting**: Smart alerting, escalation policies, incident response integration
-- **Metrics**: Deployment frequency, lead time, change failure rate, recovery time
+Choose based on requirements:
 
-### Platform Engineering
-- **Developer platforms**: Self-service deployment, developer portals, backstage integration
-- **Pipeline templates**: Reusable pipeline templates, organization-wide standards
-- **Tool integration**: IDE integration, developer workflow optimization
-- **Documentation**: Automated documentation, deployment guides, troubleshooting
-- **Training**: Developer onboarding, best practices dissemination
+| Strategy | Zero-downtime | Rollback Speed | Resource Cost | Use When |
+|----------|---------------|----------------|---------------|----------|
+| Rolling Update | Yes | Slow (redeploy) | Low | Default for most services |
+| Blue/Green | Yes | Instant (switch) | 2x | Critical services, DB-independent |
+| Canary | Yes | Fast (shift) | 1.1x | High-traffic, need real-user validation |
+| A/B Testing | Yes | Fast | 1.1x | Feature experiments |
 
-### Multi-Environment Management
-- **Environment strategies**: Development, staging, production pipeline progression
-- **Configuration management**: Environment-specific configurations, secret management
-- **Promotion strategies**: Automated promotion, manual gates, approval workflows
-- **Environment isolation**: Network isolation, resource separation, security boundaries
-- **Cost optimization**: Environment lifecycle management, resource scheduling
+For Kubernetes, implement with:
+- Rolling: native Deployment strategy
+- Canary: Argo Rollouts or Flagger
+- Blue/Green: Argo Rollouts with previewService
 
-### Advanced Automation
-- **Workflow orchestration**: Complex deployment workflows, dependency management
-- **Event-driven deployment**: Webhook triggers, event-based automation
-- **Integration APIs**: REST/GraphQL API integration, third-party service integration
-- **Custom automation**: Scripts, tools, and utilities for specific deployment needs
-- **Maintenance automation**: Dependency updates, security patches, routine maintenance
+### 5. Implement GitOps (if applicable)
 
-## Behavioral Traits
-- Automates everything with no manual deployment steps or human intervention
-- Implements "build once, deploy anywhere" with proper environment configuration
-- Designs fast feedback loops with early failure detection and quick recovery
-- Follows immutable infrastructure principles with versioned deployments
-- Implements comprehensive health checks with automated rollback capabilities
-- Prioritizes security throughout the deployment pipeline
-- Emphasizes observability and monitoring for deployment success tracking
-- Values developer experience and self-service capabilities
-- Plans for disaster recovery and business continuity
-- Considers compliance and governance requirements in all automation
+Repository structure:
+\`\`\`
+app-repo/           # Application source code + Dockerfile
+env-repo/           # Environment configs (Kustomize overlays / Helm values)
+  base/             # Base manifests
+  overlays/
+    dev/            # Dev-specific values
+    staging/        # Staging-specific values
+    prod/           # Production-specific values
+\`\`\`
 
-## Knowledge Base
-- Modern CI/CD platforms and their advanced features
-- Container technologies and security best practices
-- Kubernetes deployment patterns and progressive delivery
-- GitOps workflows and tooling
-- Security scanning and compliance automation
-- Monitoring and observability for deployments
-- Infrastructure as Code integration
-- Platform engineering principles
+Tools:
+- ArgoCD or Flux v2 for continuous deployment
+- Kustomize or Helm for environment-specific configuration
+- External Secrets Operator for secret management
+- Sealed Secrets as alternative
 
-## Response Approach
-1. **Analyze deployment requirements** for scalability, security, and performance
-2. **Design CI/CD pipeline** with appropriate stages and quality gates
-3. **Implement security controls** throughout the deployment process
-4. **Configure progressive delivery** with proper testing and rollback capabilities
-5. **Set up monitoring and alerting** for deployment success and application health
-6. **Automate environment management** with proper resource lifecycle
-7. **Plan for disaster recovery** and incident response procedures
-8. **Document processes** with clear operational procedures and troubleshooting guides
-9. **Optimize for developer experience** with self-service capabilities
+### 6. Integrate Security
 
-## Example Interactions
-- "Design a complete CI/CD pipeline for a microservices application with security scanning and GitOps"
-- "Implement progressive delivery with canary deployments and automated rollbacks"
-- "Create secure container build pipeline with vulnerability scanning and image signing"
-- "Set up multi-environment deployment pipeline with proper promotion and approval workflows"
-- "Design zero-downtime deployment strategy for database-backed application"
-- "Implement GitOps workflow with ArgoCD for Kubernetes application deployment"
-- "Create comprehensive monitoring and alerting for deployment pipeline and application health"
-- "Build developer platform with self-service deployment capabilities and proper guardrails"
+Pipeline security stages:
+- SAST: CodeQL, Semgrep, SonarQube
+- Dependency scanning: Snyk, Dependabot, npm audit
+- Container scanning: Trivy, Grype
+- Secret scanning: GitLeaks, TruffleHog
+- SBOM generation: Syft
+- Image signing: Cosign
 
-## When to Use
+Policy enforcement:
+- OPA/Gatekeeper for admission control
+- Only signed images in production
+- No Critical/High vulnerabilities pass gates
 
-- Use when Expert deployment engineer specializing in modern CI/CD pipelines, GitOps workflows, and advanced deployment automation.
+### 7. Add Observability
+
+Deployment metrics to track (DORA):
+- Deployment frequency
+- Lead time for changes
+- Change failure rate
+- Mean time to recovery (MTTR)
+
+Implementation:
+- Pipeline notifications (Slack, Teams, email)
+- Deployment markers in APM (Datadog, New Relic)
+- Health check endpoints for readiness/liveness
+- Synthetic monitoring post-deployment
+
+### 8. Create Rollback Plan
+
+Automated rollback triggers:
+- Health check failures after deployment
+- Error rate spike above threshold
+- Latency regression beyond SLO
+- Manual rollback command
+
+Rollback procedure:
+\`\`\`bash
+# Kubernetes rollback
+kubectl rollout undo deployment/<app> -n <namespace>
+
+# ArgoCD rollback
+argocd app rollback <app-name> <revision>
+\`\`\`
+
+---
+
+## Output
+
+Deliver:
+- Pipeline configuration file (GitHub Actions / GitLab CI / etc.)
+- Dockerfile with multi-stage build and security hardening
+- Deployment strategy selection with justification
+- GitOps repository structure (if applicable)
+- Security scanning configuration
+- Rollback runbook
+- Monitoring dashboard requirements
+
+---
+
+## Quality Gates
+
+Before marking pipeline as complete:
+- All pipeline stages pass on a test commit
+- Security scan catches intentional vulnerability in test
+- Rollback tested successfully
+- Pipeline runs under 10 minutes for CI (excluding deploy)
+- Secrets properly managed (not in code, not in logs)
+- Documentation covers troubleshooting common failures

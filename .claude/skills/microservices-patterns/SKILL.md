@@ -1,44 +1,94 @@
-﻿---
+---
 name: microservices-patterns
 type: reference
-description: "Provides microservices design patterns including service decomposition, API gateway, service mesh, circuit breakers, and saga orchestration. Use when designing a microservices system or when the user mentions microservices, service mesh, or distributed patterns."
+description: "Provides microservices design patterns for service decomposition, API gateway, circuit breakers, saga orchestration, and inter-service communication. Use when designing or implementing microservices architecture."
+paths: ["**/docker-compose*", "**/k8s/**", "**/services/**"]
 effort: 4
 allowed-tools: Read, Glob, Grep, Write, Edit, Bash
 user-invocable: true
-when_to_use: "When designing microservices architectures, decomposing monoliths, or implementing distributed system patterns"
+when_to_use: "When designing microservices architecture, implementing service communication, or decomposing monoliths"
 ---
 
 # Microservices Patterns
 
-Master microservices architecture patterns including service boundaries, inter-service communication, data management, and resilience patterns for building distributed systems.
+Service decomposition, communication, resilience, and orchestration patterns.
 
-## Use this skill when
+## Service Decomposition
 
-- Decomposing monoliths into microservices
-- Designing service boundaries and contracts
-- Implementing inter-service communication
-- Managing distributed data and transactions
-- Building resilient distributed systems
-- Implementing service discovery and load balancing
-- Designing event-driven architectures
+| Pattern | Description | Use When |
+|---------|-------------|----------|
+| Domain-Driven | Align services with bounded contexts | Complex business domains |
+| Data-Ownership | Service owns its data store | Data isolation required |
+| Team-Aligned | One service per team | Large organizations |
 
-## Do not use this skill when
+## Communication Patterns
 
-- The system is small enough for a modular monolith
-- You need a quick prototype without distributed complexity
-- There is no operational support for distributed systems
+### Sync: HTTP/gRPC
+\`\`\`yaml
+# API Gateway routing
+routes:
+  - match: { prefix: /orders }
+    route: { cluster: order-service }
+  - match: { prefix: /users }
+    route: { cluster: user-service }
+\`\`\`
 
-## Instructions
+### Async: Message Queue
+\`\`\`
+Producer → Exchange → Queue → Consumer
+         (Topic)   (DLQ on failure)
+\`\`\`
 
-1. Identify domain boundaries and ownership for each service.
-2. Define contracts, data ownership, and communication patterns.
-3. Plan resilience, observability, and deployment strategy.
-4. Provide migration steps and operational guardrails.
+Use async for: event propagation, eventual consistency, load leveling.
 
-## Resources
+## Resilience Patterns
 
-- `resources/implementation-playbook.md` for detailed patterns and examples.
+### Circuit Breaker
+\`\`\`typescript
+// Example with opossum
+const breaker = new CircuitBreaker(fetchUserProfile, {
+  timeout: 3000,
+  errorThresholdPercentage: 50,
+  resetTimeout: 30000,
+});
+\`\`\`
 
-## When to Use
+### Retry with Backoff
+\`\`\`typescript
+async function retryWithBackoff(fn, maxRetries = 3) {
+  for (let i = 0; i < maxRetries; i++) {
+    try { return await fn(); }
+    catch (e) { await sleep(Math.pow(2, i) * 1000); }
+  }
+  throw new Error('Max retries exceeded');
+}
+\`\`\`
 
-- Use when Design microservices architectures with service boundaries, event-driven communication, and resilience patterns. Use when building distributed systems, decomposing monoliths, or implementing micros...
+## Data Patterns
+
+| Pattern | Consistency | Complexity | Use When |
+|---------|-------------|------------|----------|
+| Saga (orchestration) | Eventual | High | Complex multi-service transactions |
+| Saga (choreography) | Eventual | Medium | Simple event chains |
+| Event sourcing | Eventual | High | Audit trail, time travel |
+| Shared database | Strong | Low | Anti-pattern, avoid |
+
+## API Gateway
+
+Tools: Kong, AWS API Gateway, Envoy, NGINX.
+
+Responsibilities: routing, auth, rate limiting, request transformation, load balancing.
+
+## Observability Stack
+
+- Distributed tracing: Jaeger / Tempo
+- Metrics: Prometheus + Grafana
+- Logs: ELK / Loki
+- Service mesh: Istio / Linkerd (adds mTLS, traffic management)
+
+## Related Skills
+
+- `backend-architect` — single-service architecture
+- `event-sourcing-architect` — event sourcing patterns
+- `kubernetes-architect` — deployment patterns
+- `deployment-engineer` — CI/CD for microservices

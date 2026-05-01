@@ -1,4 +1,4 @@
-﻿---
+---
 name: react-native-architecture
 type: reference
 description: "Provides React Native architecture patterns for navigation, state management, native module integration, offline sync, and Expo workflows. Use when working with React Native files or when the user mentions React Native, Expo, or mobile app."
@@ -11,33 +11,94 @@ effort: 4
 
 # React Native Architecture
 
-Production-ready patterns for React Native development with Expo, including navigation, state management, native modules, and offline-first architecture.
+Production-ready patterns for React Native with Expo: navigation, state management, native modules, offline-first, and performance.
 
-## Use this skill when
+## Navigation Patterns
 
-- Starting a new React Native or Expo project
-- Implementing complex navigation patterns
-- Integrating native modules and platform APIs
-- Building offline-first mobile applications
-- Optimizing React Native performance
-- Setting up CI/CD for mobile releases
+### Expo Router (file-based routing)
+\`\`\`typescript
+// app/(tabs)/_layout.tsx - Tab layout
+import { Tabs } from 'expo-router';
+export default function TabLayout() {
+  return (
+    <Tabs>
+      <Tabs.Screen name="index" options={{ title: 'Home' }} />
+      <Tabs.Screen name="profile" options={{ title: 'Profile' }} />
+    </Tabs>
+  );
+}
+\`\`\`
 
-## Do not use this skill when
+### React Navigation (programmatic)
+\`\`\`typescript
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+const Stack = createNativeStackNavigator<RootStackParamList>();
+\`\`\`
 
-- The task is unrelated to react native architecture
-- You need a different domain or tool outside this scope
+Pattern: Use Expo Router for new projects, React Navigation for complex deep linking.
 
-## Instructions
+## State Management
 
-- Clarify goals, constraints, and required inputs.
-- Apply relevant best practices and validate outcomes.
-- Provide actionable steps and verification.
-- If detailed examples are required, open `resources/implementation-playbook.md`.
+| Pattern | Use When | Library |
+|---------|----------|---------|
+| Zustand | Simple global state | zustand |
+| TanStack Query | Server state | @tanstack/react-query |
+| Redux Toolkit | Complex state logic | @reduxjs/toolkit |
+| Jotai | Atomic state | jotai |
 
-## Resources
+\`\`\`typescript
+// Zustand store example
+import { create } from 'zustand';
+const useAuthStore = create((set) => ({
+  user: null,
+  login: (user) => set({ user }),
+  logout: () => set({ user: null }),
+}));
+\`\`\`
 
-- `resources/implementation-playbook.md` for detailed patterns and examples.
+## Native Modules
 
-## When to Use
+### Expo Modules (recommended)
+\`\`\`typescript
+// modules/my-module/index.ts
+import { requireNativeModule } from 'expo-modules-core';
+export default requireNativeModule('MyModule');
+\`\`\`
 
-- Use when Build production React Native apps with Expo, navigation, native modules, offline sync, and cross-platform patterns. Use when developing mobile apps, implementing native integrations, or architecti...
+### Turbo Modules (bare RN)
+Use when Expo module is insufficient. Requires native Swift/Kotlin code.
+
+## Offline-First Architecture
+
+Pattern: Queue mutations, sync on reconnect.
+\`\`\`
+User action → Local state (optimistic) → Queue mutation → Sync to server
+\`\`\`
+
+Tools: WatermelonDB, Realm, or SQLite with Drizzle ORM.
+
+## Performance Checklist
+
+- Use `React.memo` for expensive list items
+- Virtualize lists with `FlashList` (not FlatList)
+- Lazy load screens with `React.lazy` + Suspense
+- Use `useMemo`/`useCallback` for expensive computations
+- Profile with Flipper or React DevTools
+- Hermes engine enabled (default in Expo)
+
+## Build & Deploy
+
+\`\`\`bash
+# Expo build
+eas build --platform ios
+eas build --platform android
+
+# OTA update
+eas update --branch production
+\`\`\`
+
+## Related Skills
+
+- `flutter-expert` — for Flutter cross-platform alternative
+- `mobile-developer` — broader mobile development patterns
+- `ios-developer` — iOS-specific native patterns

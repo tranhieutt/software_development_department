@@ -5,6 +5,8 @@ $requiredFields = @('name', 'description', 'user-invocable', 'allowed-tools', 'e
 $workflowFields = @('argument-hint')
 $recommendedFields = @('type')
 $optionalFields = @('agent', 'when_to_use', 'context')
+$validTypes = @('workflow', 'reference', 'agent')
+$minBodyLines = 30
 
 $total = 0
 $passed = 0
@@ -39,6 +41,21 @@ function Get-Frontmatter {
     }
 
     return $lines[1..($endIndex - 1)]
+}
+
+function Get-BodyLines {
+    param([string]$Path)
+    $lines = Get-Content -LiteralPath $Path
+    $inFrontmatter = $false
+    $endFrontmatter = -1
+    for ($i = 0; $i -lt $lines.Length; $i++) {
+        if ($lines[$i].Trim() -eq '---') {
+            if ($inFrontmatter) { $endFrontmatter = $i; break }
+            else { $inFrontmatter = $true }
+        }
+    }
+    if ($endFrontmatter -lt 0) { return $lines }
+    return $lines[($endFrontmatter + 1)..($lines.Length - 1)]
 }
 
 Write-Output '==========================================='
@@ -101,13 +118,48 @@ Get-ChildItem -LiteralPath $skillsDir -Directory |
             }
         }
 
+        # --- NEW CHECKS ---
+        $extraWarnings = New-Object System.Collections.Generic.List[string]
+
+        # Check 1: Type values valid
+        if ($typeMatch.Success -and ($skillType -notin $validTypes)) {
+            $extraWarnings.Add("invalid type '$skillType' (expected: $($validTypes -join ', '))")
+        }
+
+        # Check 2: Boilerplate detection
+        $allContent = Get-Content -LiteralPath $skillFile -Raw
+        if ($allContent -match 'Working on .+ tasks or workflows') {
+            $extraWarnings.Add('generic boilerplate header detected')
+        }
+
+        # Check 3: Broken references - find /skill-name patterns outside code blocks
+        $noCodeBlocks = [regex]::Replace($allContent, '```[\s\S]*?```', '')
+        $noInlineCode = [regex]::Replace($noCodeBlocks, '`[^`]+`', '')
+        $refMatches = [regex]::Matches($noInlineCode, '(?<=^|[\s(])/([a-z][a-z0-9-]+[a-z0-9])(?=[\s).,;:!?]|$)', [System.Text.RegularExpressions.RegexOptions]::Multiline)
+        foreach ($refMatch in $refMatches) {
+            $refName = $refMatch.Groups[1].Value
+            $refDir = Join-Path $skillsDir $refName
+            if ($refName -ne $skillName -and -not (Test-Path -LiteralPath $refDir)) {
+                $extraWarnings.Add("broken reference: /$refName (directory not found)")
+            }
+        }
+
+        # Check 4: Minimum content length
+        $bodyLines = @(Get-BodyLines -Path $skillFile)
+        $nonEmptyLines = ($bodyLines | Where-Object { $_.Trim() -ne '' }).Count
+        if ($nonEmptyLines -lt $minBodyLines) {
+            $extraWarnings.Add("thin content: $nonEmptyLines non-empty lines (min: $minBodyLines)")
+        }
+
+        # --- REPORT ---
         if ($skillFailed) {
             Write-Output "FAIL $skillName"
             Write-Output ("  Missing required: {0}" -f ($missingRequired -join ' '))
             $script:failed++
         }
-        elseif ($missingOptional.Count -gt 0) {
-            Write-Output ("WARN {0} - optional missing: {1}" -f $skillName, ($missingOptional -join ' '))
+        elseif ($missingOptional.Count -gt 0 -or $extraWarnings.Count -gt 0) {
+            $allWarnings = @($missingOptional | ForEach-Object { "optional missing: $_" }) + @($extraWarnings)
+            Write-Output ("WARN {0} - {1}" -f $skillName, ($allWarnings -join '; '))
             $script:passed++
             $script:warnings++
         }

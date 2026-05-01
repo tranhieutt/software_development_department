@@ -73,7 +73,7 @@ The user needs creative exploration and problem definition before anything else.
 3. Recommend running `/brainstorm open` as the next step
 4. Show the recommended path:
    - `/brainstorm` — discover your product concept
-   - `/architecture-decision` — decide on the tech stack
+   - `/architecture-decision-records` — decide on the tech stack
    - `/design-system` — decompose the concept into systems
    - `/prototype` — test the core functionality
    - `/sprint-plan` — plan the first sprint
@@ -87,7 +87,7 @@ The user has a seed but needs help growing it into a product concept.
 3. Recommend running `/brainstorm [their hint]` to develop it
 4. Show the recommended path:
    - `/brainstorm [hint]` — develop the idea into a full concept
-   - `/architecture-decision` — specify the technical stack
+   - `/architecture-decision-records` — specify the technical stack
    - `/design-system` — break down the architecture
    - `/prototype` — build a minimum viable prototype
    - `/sprint-plan` — plan the development sprint
@@ -102,9 +102,9 @@ The user knows what they want to make but hasn't documented the architecture.
    - What's the rough scope? (MVP, internal tool, enterprise app)
 2. Based on their answers, offer two paths:
    - **Formalize first**: Run `/brainstorm` to structure the concept into a proper PRD (Product Requirements Document).
-   - **Jump to architecture**: If they're confident in their concept, go straight to `/architecture-decision`.
+   - **Jump to architecture**: If they're confident in their concept, go straight to `/architecture-decision-records`.
 3. Show the recommended path (adapted to their choice):
-   - `/brainstorm` or `/architecture-decision` (their pick)
+   - `/brainstorm` or `/architecture-decision-records` (their pick
    - `/tech-debt` (if reviewing legacy ideas) or `/design-system`
    - `/team-feature` — allocate tasks to specialized AI agents
    - `/sprint-plan` — plan the first sprint
@@ -117,7 +117,7 @@ The user has artifacts already. Figure out what exists and what's missing.
    - "I can see you have [X source files / Y design docs / Z prototypes]..."
    - "Your tech stack is [configured as X / not yet clearly defined]..."
 2. Recommend running `/project-stage-detect` for a full analysis
-3. If the architecture isn't clear, note that `/architecture-decision` should come first
+3. If the architecture isn't clear, note that `/architecture-decision-records` should come first
 4. Show the recommended path:
    - `/project-stage-detect` — full gap analysis
    - `/code-review` — analyze existing codebase quality

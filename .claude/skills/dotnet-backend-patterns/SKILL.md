@@ -1,4 +1,4 @@
-﻿---
+---
 name: dotnet-backend-patterns
 type: reference
 description: "Provides .NET and ASP.NET Core patterns for REST APIs, Entity Framework, dependency injection, and middleware. Use when working with C# files (*.cs, *.csproj) or when the user mentions .NET, ASP.NET Core, C#, or Entity Framework."
@@ -11,37 +11,106 @@ when_to_use: "When building C#/.NET backend APIs, MCP servers, or enterprise app
 
 # .NET Backend Development Patterns
 
-Master C#/.NET patterns for building production-grade APIs, MCP servers, and enterprise backends with modern best practices (2024/2025).
+C#/.NET patterns for production-grade APIs, MCP servers, and enterprise backends.
 
-## Use this skill when
+## API Structure (Minimal API + Controllers)
 
-- Developing new .NET Web APIs or MCP servers
-- Reviewing C# code for quality and performance
-- Designing service architectures with dependency injection
-- Implementing caching strategies with Redis
-- Writing unit and integration tests
-- Optimizing database access with EF Core or Dapper
-- Configuring applications with IOptions pattern
-- Handling errors and implementing resilience patterns
+\`\`\`csharp
+// Program.cs - Minimal API
+var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddDbContext<AppDbContext>(o => o.UseNpgsql(connStr));
+builder.Services.AddScoped<IOrderService, OrderService>();
 
-## Do not use this skill when
+var app = builder.Build();
+app.MapGet("/orders/{id}", async (int id, IOrderService svc) =>
+    await svc.GetByIdAsync(id) is { } order ? Results.Ok(order) : Results.NotFound());
+\`\`\`
 
-- The project is not using .NET or C#
-- You only need frontend or client guidance
-- The task is unrelated to backend architecture
+## Dependency Injection Patterns
 
-## Instructions
+\`\`\`csharp
+// Register services
+builder.Services.AddScoped<IPaymentService, StripePaymentService>();
+builder.Services.AddSingleton<ICacheService, RedisCacheService>();
+builder.Services.AddHttpClient<IApiClient, ExternalApiClient>(client => {
+    client.BaseAddress = new Uri("https://api.external.com");
+});
+\`\`\`
 
-- Define architecture boundaries, modules, and layering.
-- Apply DI, async patterns, and resilience strategies.
-- Validate data access performance and caching.
-- Add tests and observability for critical flows.
-- If detailed patterns are required, open `resources/implementation-playbook.md`.
+Lifetime guide: Singleton (stateless/cache), Scoped (per-request), Transient (stateless utility).
 
-## Resources
+## Entity Framework Core
 
-- `resources/implementation-playbook.md` for detailed .NET patterns and examples.
+\`\`\`csharp
+// DbContext with conventions
+public class AppDbContext : DbContext {
+    public DbSet<Order> Orders => Set<Order>();
+    protected override void OnModelCreating(ModelBuilder builder) {
+        builder.Entity<Order>().HasIndex(o => o.UserId);
+        builder.Entity<Order>().Property(o => o.Total).HasPrecision(18, 2);
+    }
+}
+\`\`\`
 
-## When to Use
+Performance tips:
+- Use `.AsNoTracking()` for read-only queries
+- Avoid N+1 with `.Include()` or projection
+- Use compiled queries for hot paths
 
-- Use when Master C#/.NET backend development patterns for building robust APIs, MCP servers, and enterprise applications. Covers async/await, dependency injection, Entity Framework Core, Dapper, configuratio...
+## Middleware Pipeline
+
+\`\`\`csharp
+app.UseMiddleware<RequestLoggingMiddleware>();
+app.UseAuthentication();
+app.UseAuthorization();
+app.UseRateLimiter();
+app.MapControllers();
+\`\`\`
+
+## Error Handling
+
+\`\`\`csharp
+// Global exception handler
+app.UseExceptionHandler(err => err.Run(async context => {
+    var exception = context.Features.Get<IExceptionHandlerFeature>()?.Error;
+    var (status, message) = exception switch {
+        NotFoundException => (404, exception.Message),
+        UnauthorizedAccessException => (403, "Forbidden"),
+        _ => (500, "Internal server error")
+    };
+    context.Response.StatusCode = status;
+    await context.Response.WriteAsJsonAsync(new { error = message });
+}));
+\`\`\`
+
+## Configuration (IOptions pattern)
+
+\`\`\`csharp
+builder.Services.Configure<StripeSettings>(
+    builder.Configuration.GetSection("Stripe"));
+
+// Usage
+public class PaymentService(IOptions<StripeSettings> opts) {
+    private readonly string _key = opts.Value.SecretKey;
+}
+\`\`\`
+
+## Testing
+
+\`\`\`csharp
+// Integration test with WebApplicationFactory
+public class OrderApiTests : IClassFixture<WebApplicationFactory<Program>> {
+    private readonly HttpClient _client;
+    [Fact]
+    public async Task GetOrder_ReturnsOk() {
+        var response = await _client.GetAsync("/orders/1");
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+    }
+}
+\`\`\`
+
+## Related Skills
+
+- `backend-architect` — architecture decisions
+- `database-architect` — schema design
+- `drizzle-orm-expert` — Node.js ORM alternative

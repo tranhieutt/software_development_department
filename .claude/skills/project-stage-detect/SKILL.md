@@ -188,7 +188,7 @@ After generating the report, suggest relevant next steps:
 
 - **Concept exists but no systems index?** → `/map-systems` to decompose into systems
 - **Missing design docs?** → `/reverse-document design src/[system]`
-- **Missing architecture docs?** → `/architecture-decision` or `/reverse-document architecture`
+- **Missing architecture docs?** → `/architecture-decision-records` or `/reverse-document architecture`
 - **Prototypes need documentation?** → `/reverse-document concept prototypes/[name]`
 - **No sprint plan?** → `/sprint-plan`
 - **Approaching milestone?** → `/milestone-review`

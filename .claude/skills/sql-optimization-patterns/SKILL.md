@@ -1,45 +1,98 @@
-﻿---
+---
 name: sql-optimization-patterns
 type: reference
-description: "Provides SQL query optimization techniques, indexing strategies, and EXPLAIN analysis for improving database performance and eliminating slow queries. Use when debugging slow SQL queries or when the user mentions SQL optimization, slow queries, or database performance."
-paths: ["**/*.sql", "**/migrations/**", "**/schema.*", "**/*.prisma"]
-when_to_use: "When debugging slow SQL queries, designing indexing strategies, or analyzing EXPLAIN plans for performance optimization"
-allowed-tools: Read, Glob, Grep
-user-invocable: true
+description: "Provides SQL optimization patterns for query performance, indexing strategies, schema design, and database tuning. Use when optimizing slow queries, designing indexes, or tuning database performance."
+paths: ["**/*.sql", "**/migrations/**"]
 effort: 3
+allowed-tools: Read, Glob, Grep, Bash
+user-invocable: true
+when_to_use: "When optimizing slow SQL queries, designing indexes, or tuning database performance"
 ---
 
 # SQL Optimization Patterns
 
-Transform slow database queries into lightning-fast operations through systematic optimization, proper indexing, and query plan analysis.
+Query optimization, indexing, and performance tuning for PostgreSQL, MySQL, and SQLite.
 
-## Use this skill when
+## Index Strategy
 
-- Debugging slow-running queries
-- Designing performant database schemas
-- Optimizing application response times
-- Reducing database load and costs
-- Improving scalability for growing datasets
-- Analyzing EXPLAIN query plans
-- Implementing efficient indexes
-- Resolving N+1 query problems
+### When to Create Index
+\`\`\`sql
+-- High selectivity columns (many unique values)
+CREATE INDEX idx_orders_user_id ON orders(user_id);
 
-## Do not use this skill when
+-- Composite index: order matters (equality first, then range)
+CREATE INDEX idx_orders_user_date ON orders(user_id, created_at DESC);
 
-- The task is unrelated to sql optimization patterns
-- You need a different domain or tool outside this scope
+-- Covering index (includes all needed columns)
+CREATE INDEX idx_orders_covering ON orders(user_id, status) INCLUDE (total, created_at);
+\`\`\`
 
-## Instructions
+### When NOT to Index
+- Low cardinality columns (boolean, status with few values)
+- Small tables (< 1000 rows)
+- Write-heavy tables with rare reads
 
-- Clarify goals, constraints, and required inputs.
-- Apply relevant best practices and validate outcomes.
-- Provide actionable steps and verification.
-- If detailed examples are required, open `resources/implementation-playbook.md`.
+## Query Patterns
 
-## Resources
+### Avoid SELECT *
+\`\`\`sql
+-- Bad
+SELECT * FROM orders WHERE user_id = 1;
 
-- `resources/implementation-playbook.md` for detailed patterns and examples.
+-- Good (select only needed columns)
+SELECT id, total, status FROM orders WHERE user_id = 1;
+\`\`\`
 
-## When to Use
+### Avoid N+1 (use JOIN or subquery)
+\`\`\`sql
+-- Bad: N+1 queries from application
+-- Good: Single query with JOIN
+SELECT o.id, o.total, u.name
+FROM orders o JOIN users u ON o.user_id = u.id
+WHERE o.status = 'pending';
+\`\`\`
 
-- Use when Master SQL query optimization, indexing strategies, and EXPLAIN analysis to dramatically improve database performance and eliminate slow queries. Use when debugging slow queries, designing database...
+### Pagination (keyset, not OFFSET)
+\`\`\`sql
+-- Bad: OFFSET scans all skipped rows
+SELECT * FROM orders ORDER BY id LIMIT 20 OFFSET 10000;
+
+-- Good: Keyset pagination
+SELECT * FROM orders WHERE id > 10000 ORDER BY id LIMIT 20;
+\`\`\`
+
+## EXPLAIN ANALYZE
+
+\`\`\`sql
+EXPLAIN ANALYZE
+SELECT * FROM orders WHERE user_id = 1 AND status = 'pending';
+\`\`\`
+
+Read output:
+- Seq Scan = missing index
+- Index Scan = good
+- Nested Loop with high row count = check join strategy
+
+## Schema Anti-Patterns
+
+| Anti-Pattern | Problem | Fix |
+|-------------|---------|-----|
+| EAV (Entity-Attribute-Value) | No type safety, slow queries | Use JSONB or proper columns |
+| God table | Too many columns | Normalize into related tables |
+| No constraints | Data integrity issues | Add CHECK, FK, UNIQUE constraints |
+| String dates | Sorting/filtering issues | Use TIMESTAMP type |
+
+## Connection Pooling
+
+\`\`\`
+App → Pool (min: 5, max: 20) → PostgreSQL
+\`\`\`
+
+Tools: PgBouncer (PostgreSQL), ProxySQL (MySQL).
+
+## Related Skills
+
+- `database-architect` — schema design
+- `postgres-patterns` — PostgreSQL specifics
+- `nosql-expert` — NoSQL alternatives
+- `db-review` — database code review

@@ -44,3 +44,37 @@ Every component MUST define behavior for these 5 states:
 - Every interaction must have a keyboard equivalent.
 - Every interactive element must have an ARIA role and label.
 - Color contrast ratios must meet WCAG 2.1 Level AA (4.5:1 for normal text).
+
+## Output
+
+Save UI spec to `design/specs/ui-[feature-name].md`:
+
+\`\`\`markdown
+# UI Spec: [Feature Name]
+
+## Component Tree
+[Hierarchical list of components]
+
+## State Matrix
+| Component | Default | Loading | Empty | Error | Partial |
+|-----------|---------|---------|-------|-------|---------|
+
+## Interactions
+[Component] -> [Trigger] -> [Response]
+
+## Responsive Behavior
+[Breakpoint-specific layout changes]
+
+## Accessibility
+[Keyboard nav, ARIA labels, contrast requirements]
+
+## Open Questions
+[Items needing design decision]
+\`\`\`
+
+## Related Skills
+
+- `design-review` — review implemented UI against spec
+- `frontend-design` — aesthetic direction and design system
+- `design-system` — reusable component library
+- `review-spec` — general spec review workflow

@@ -1,4 +1,4 @@
-﻿---
+---
 name: hybrid-cloud-architect
 type: reference
 description: "Designs hybrid cloud architectures connecting on-premises infrastructure with public cloud services. Use when designing systems spanning on-prem and cloud, or when the user mentions hybrid cloud or multi-environment architecture."
@@ -8,163 +8,142 @@ user-invocable: true
 when_to_use: "When designing complex multi-cloud or hybrid cloud solutions across AWS, Azure, GCP, and private clouds"
 ---
 
-## Use this skill when
+# Hybrid Cloud Architect
 
-- Working on hybrid cloud architect tasks or workflows
-- Needing guidance, best practices, or checklists for hybrid cloud architect
-
-## Do not use this skill when
-
-- The task is unrelated to hybrid cloud architect
-- You need a different domain or tool outside this scope
-
-## Instructions
-
-- Clarify goals, constraints, and required inputs.
-- Apply relevant best practices and validate outcomes.
-- Provide actionable steps and verification.
-- If detailed examples are required, open `resources/implementation-playbook.md`.
-
-You are a hybrid cloud architect specializing in complex multi-cloud and hybrid infrastructure solutions across public, private, and edge environments.
-
-## Purpose
-Expert hybrid cloud architect with deep expertise in designing, implementing, and managing complex multi-cloud environments. Masters public cloud platforms (AWS, Azure, GCP), private cloud solutions (OpenStack, VMware, Kubernetes), and edge computing. Specializes in hybrid connectivity, workload placement optimization, compliance, and cost management across heterogeneous environments.
-
-## Capabilities
-
-### Multi-Cloud Platform Expertise
-- **Public clouds**: AWS, Microsoft Azure, Google Cloud Platform, advanced cross-cloud integrations
-- **Private clouds**: OpenStack (all core services), VMware vSphere/vCloud, Red Hat OpenShift
-- **Hybrid platforms**: Azure Arc, AWS Outposts, Google Anthos, VMware Cloud Foundation
-- **Edge computing**: AWS Wavelength, Azure Edge Zones, Google Distributed Cloud Edge
-- **Container platforms**: Multi-cloud Kubernetes, Red Hat OpenShift across clouds
-
-### OpenStack Deep Expertise
-- **Core services**: Nova (compute), Neutron (networking), Cinder (block storage), Swift (object storage)
-- **Identity & management**: Keystone (identity), Horizon (dashboard), Heat (orchestration)
-- **Advanced services**: Octavia (load balancing), Barbican (key management), Magnum (containers)
-- **High availability**: Multi-node deployments, clustering, disaster recovery
-- **Integration**: OpenStack with public cloud APIs, hybrid identity management
-
-### Hybrid Connectivity & Networking
-- **Dedicated connections**: AWS Direct Connect, Azure ExpressRoute, Google Cloud Interconnect
-- **VPN solutions**: Site-to-site VPN, client VPN, SD-WAN integration
-- **Network architecture**: Hybrid DNS, cross-cloud routing, traffic optimization
-- **Security**: Network segmentation, micro-segmentation, zero-trust networking
-- **Load balancing**: Global load balancing, traffic distribution across clouds
-
-### Advanced Infrastructure as Code
-- **Multi-cloud IaC**: Terraform/OpenTofu for cross-cloud provisioning, state management
-- **Platform-specific**: CloudFormation (AWS), ARM/Bicep (Azure), Heat (OpenStack)
-- **Modern IaC**: Pulumi, AWS CDK, Azure CDK for complex orchestrations
-- **Policy as Code**: Open Policy Agent (OPA) across multiple environments
-- **Configuration management**: Ansible, Chef, Puppet for hybrid environments
-
-### Workload Placement & Optimization
-- **Placement strategies**: Data gravity analysis, latency optimization, compliance requirements
-- **Cost optimization**: TCO analysis, workload cost comparison, resource right-sizing
-- **Performance optimization**: Workload characteristics analysis, resource matching
-- **Compliance mapping**: Data sovereignty requirements, regulatory compliance placement
-- **Capacity planning**: Resource forecasting, scaling strategies across environments
-
-### Hybrid Security & Compliance
-- **Identity federation**: Active Directory, LDAP, SAML, OAuth across clouds
-- **Zero-trust architecture**: Identity-based access, continuous verification
-- **Data encryption**: End-to-end encryption, key management across environments
-- **Compliance frameworks**: HIPAA, PCI-DSS, SOC2, FedRAMP hybrid compliance
-- **Security monitoring**: SIEM integration, cross-cloud security analytics
-
-### Data Management & Synchronization
-- **Data replication**: Cross-cloud data synchronization, real-time and batch replication
-- **Backup strategies**: Cross-cloud backups, disaster recovery automation
-- **Data lakes**: Hybrid data architectures, data mesh implementations
-- **Database management**: Multi-cloud databases, hybrid OLTP/OLAP architectures
-- **Edge data**: Edge computing data management, data preprocessing
-
-### Container & Kubernetes Hybrid
-- **Multi-cloud Kubernetes**: EKS, AKS, GKE integration with on-premises clusters
-- **Hybrid container platforms**: Red Hat OpenShift across environments
-- **Service mesh**: Istio, Linkerd for multi-cluster, multi-cloud communication
-- **Container registries**: Hybrid registry strategies, image distribution
-- **GitOps**: Multi-environment GitOps workflows, environment promotion
-
-### Cost Management & FinOps
-- **Multi-cloud cost analysis**: Cross-provider cost comparison, TCO modeling
-- **Hybrid cost optimization**: Right-sizing across environments, reserved capacity
-- **FinOps implementation**: Cost allocation, chargeback models, budget management
-- **Cost analytics**: Trend analysis, anomaly detection, optimization recommendations
-- **ROI analysis**: Cloud migration ROI, hybrid vs pure-cloud cost analysis
-
-### Migration & Modernization
-- **Migration strategies**: Lift-and-shift, re-platform, re-architect approaches
-- **Application modernization**: Containerization, microservices transformation
-- **Data migration**: Large-scale data migration, minimal downtime strategies
-- **Legacy integration**: Mainframe integration, legacy system connectivity
-- **Phased migration**: Risk mitigation, rollback strategies, parallel operations
-
-### Observability & Monitoring
-- **Multi-cloud monitoring**: Unified monitoring across all environments
-- **Hybrid metrics**: Cross-cloud performance monitoring, SLA tracking
-- **Log aggregation**: Centralized logging from all environments
-- **APM solutions**: Application performance monitoring across hybrid infrastructure
-- **Cost monitoring**: Real-time cost tracking, budget alerts, optimization insights
-
-### Disaster Recovery & Business Continuity
-- **Multi-site DR**: Active-active, active-passive across clouds and on-premises
-- **Data protection**: Cross-cloud backup and recovery, ransomware protection
-- **Business continuity**: RTO/RPO planning, disaster recovery testing
-- **Failover automation**: Automated failover processes, traffic routing
-- **Compliance continuity**: Maintaining compliance during disaster scenarios
-
-### Edge Computing Integration
-- **Edge architectures**: 5G integration, IoT gateways, edge data processing
-- **Edge-to-cloud**: Data processing pipelines, edge intelligence
-- **Content delivery**: Global CDN strategies, edge caching
-- **Real-time processing**: Low-latency applications, edge analytics
-- **Edge security**: Distributed security models, edge device management
-
-## Behavioral Traits
-- Evaluates workload placement based on multiple factors: cost, performance, compliance, latency
-- Implements consistent security and governance across all environments
-- Designs for vendor flexibility and avoids unnecessary lock-in
-- Prioritizes automation and Infrastructure as Code for hybrid management
-- Considers data gravity and compliance requirements in architecture decisions
-- Optimizes for both cost and performance across heterogeneous environments
-- Plans for disaster recovery and business continuity across all platforms
-- Values standardization while accommodating platform-specific optimizations
-- Implements comprehensive monitoring and observability across all environments
-
-## Knowledge Base
-- Public cloud services, pricing models, and service capabilities
-- OpenStack architecture, deployment patterns, and operational best practices
-- Hybrid connectivity options, network architectures, and security models
-- Compliance frameworks and data sovereignty requirements
-- Container orchestration and service mesh technologies
-- Infrastructure automation and configuration management tools
-- Cost optimization strategies and FinOps methodologies
-- Migration strategies and modernization approaches
-
-## Response Approach
-1. **Analyze workload requirements** across multiple dimensions (cost, performance, compliance)
-2. **Design hybrid architecture** with appropriate workload placement
-3. **Plan connectivity strategy** with redundancy and performance optimization
-4. **Implement security controls** consistent across all environments
-5. **Automate with IaC** for consistent deployment and management
-6. **Set up monitoring and observability** across all platforms
-7. **Plan for disaster recovery** and business continuity
-8. **Optimize costs** while meeting performance and compliance requirements
-9. **Document operational procedures** for hybrid environment management
-
-## Example Interactions
-- "Design a hybrid cloud architecture for a financial services company with strict compliance requirements"
-- "Plan workload placement strategy for a global manufacturing company with edge computing needs"
-- "Create disaster recovery solution across AWS, Azure, and on-premises OpenStack"
-- "Optimize costs for hybrid workloads while maintaining performance SLAs"
-- "Design secure hybrid connectivity with zero-trust networking principles"
-- "Plan migration strategy from legacy on-premises to hybrid multi-cloud architecture"
-- "Implement unified monitoring and observability across hybrid infrastructure"
-- "Create FinOps strategy for multi-cloud cost optimization and governance"
+Designs hybrid and multi-cloud architectures that bridge on-premises infrastructure (OpenStack, VMware, bare metal) with public cloud services (AWS, Azure, GCP).
 
 ## When to Use
 
-- Use when Expert hybrid cloud architect specializing in complex multi-cloud solutions across AWS/Azure/GCP and private clouds (OpenStack/VMware).
+- Designing systems that span on-premises and cloud environments
+- Planning workload placement across private and public clouds
+- Migrating from on-prem to hybrid architecture
+- User mentions hybrid cloud, multi-cloud, or cross-environment
+
+## When NOT to Use
+
+- Single-cloud deployment (use cloud-architect instead)
+- Pure infrastructure provisioning without architecture decisions (use devops-deploy)
+- Application-level architecture without infrastructure concerns (use backend-architect)
+
+## Workflow
+
+### 1. Assess Requirements
+
+Gather constraints before designing:
+
+| Dimension | Questions |
+|-----------|----------|
+| Compliance | Data sovereignty? Regulatory frameworks (HIPAA, PCI-DSS, GDPR)? |
+| Performance | Latency requirements? Data gravity? Real-time vs batch? |
+| Budget | TCO targets? Existing licenses? CapEx vs OpEx preference? |
+| Skills | Team expertise in cloud platforms? OpenStack experience? |
+| Timeline | Migration urgency? Phased approach acceptable? |
+
+### 2. Classify Workloads
+
+For each workload, determine placement:
+
+| Criteria | On-Prem | Public Cloud | Edge |
+|----------|---------|-------------|------|
+| Data sovereignty | Yes | No unless region-locked | Yes |
+| Low latency (less than 10ms) | Yes | No unless co-located | Yes |
+| Elastic scaling | No | Yes | No |
+| Cost-sensitive steady-state | Yes | No | - |
+| Managed services needed | No | Yes | No |
+
+### 3. Design Connectivity
+
+Choose connectivity based on requirements:
+
+Options:
+- VPN: Low cost, lower bandwidth, good for non-critical traffic
+- Dedicated (Direct Connect / ExpressRoute / Interconnect): High bandwidth, low latency, SLA-backed
+- SD-WAN: Multi-site, dynamic path selection, cost optimization
+- Service mesh: For cross-cloud microservices communication (Istio, Linkerd)
+
+### 4. Design Security Architecture
+
+Apply zero-trust across environments:
+- Identity federation: AD/LDAP to cloud IAM (SAML/OIDC)
+- Network segmentation: Micro-segmentation, security groups across clouds
+- Encryption: In-transit (TLS) + at-rest, key management per environment
+- Secret management: Centralized (Vault) or cloud-native (KMS/KeyVault)
+- Compliance: Per-environment compliance controls, audit logging
+
+### 5. Design Data Strategy
+
+| Pattern | Use When | Tools |
+|---------|----------|-------|
+| Active-active replication | RPO=0, RTO less than 1min | Database-native replication, Kafka |
+| Active-passive | RPO less than 15min, RTO less than 1hr | Cross-cloud backup, DNS failover |
+| Data mesh | Domain ownership, distributed teams | Data catalogs, federated queries |
+| Edge preprocessing | IoT, real-time analytics | Edge compute to cloud aggregation |
+
+### 6. Define Infrastructure as Code
+
+Multi-cloud IaC strategy:
+- Terraform/OpenTofu: Cross-cloud resource provisioning
+- Ansible: Configuration management
+- Pulumi/CDK: Complex orchestration logic
+- OPA/Conftest: Policy as Code
+- GitOps (ArgoCD/Flux): Multi-environment deployment
+
+State management:
+- Remote state with locking (S3+DynamoDB, Azure Storage, GCS)
+- Separate state per environment, shared modules
+- State migration plan for cross-cloud moves
+
+### 7. Design Observability
+
+Unified monitoring across environments:
+- Metrics: Prometheus + Thanos / Grafana Mimir (cross-cloud)
+- Logs: Centralized logging (ELK/Loki) with per-environment collectors
+- Traces: Distributed tracing (Jaeger/Tempo) across service boundaries
+- Alerting: Unified alerting with environment-aware routing
+- Cost monitoring: Per-cloud cost dashboards, anomaly detection
+
+### 8. Plan Disaster Recovery
+
+| Tier | Strategy | RPO | RTO | Cost |
+|------|----------|-----|-----|------|
+| Tier 1 | Active-active multi-cloud | 0 | less than 1min | High |
+| Tier 2 | Active-passive cross-cloud | less than 15min | less than 1hr | Medium-High |
+| Tier 3 | Backup + manual failover | less than 24hr | less than 4hr | Medium |
+| Tier 4 | Backup only | less than 24hr | less than 24hr | Low |
+
+DR automation:
+- Automated failover triggers (health checks, circuit breakers)
+- Runbook automation for failover procedures
+- Regular DR testing schedule (quarterly minimum)
+
+## Output
+
+Deliver:
+- Architecture diagram: showing all environments, connectivity, data flow
+- Workload placement matrix: workload to environment with justification
+- Connectivity plan: network topology, bandwidth, latency requirements
+- Security model: identity, network, data security per environment
+- Cost estimate: TCO comparison, per-environment breakdown
+- Migration plan: phased approach with rollback procedures (if applicable)
+
+## Platform-Specific Notes
+
+### OpenStack Integration
+- Services: Nova (compute), Neutron (network), Cinder (block storage), Swift (object), Keystone (identity)
+- Hybrid identity: Keystone federation with cloud IAM
+- Networking: Provider networks, VLAN/VXLAN for multi-tenant isolation
+
+### AWS Hybrid
+- Outposts: AWS hardware in on-prem data center
+- EKS Anywhere: Kubernetes on-prem with EKS compatibility
+- Direct Connect: Dedicated network connection
+
+### Azure Hybrid
+- Azure Arc: Manage resources across environments from Azure
+- Azure Stack: On-prem Azure services
+- ExpressRoute: Dedicated private connection
+
+### GCP Hybrid
+- Anthos: Multi-cloud Kubernetes management
+- Distributed Cloud: GCP services on-prem
+- Cloud Interconnect: Dedicated network connection

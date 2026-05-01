@@ -13,6 +13,8 @@ WORKFLOW_FIELDS=("argument-hint")
 # Recommended: warn nếu thiếu, không fail (backward compat với 100 skills cũ chưa có type)
 RECOMMENDED_FIELDS=("type")
 OPTIONAL_FIELDS=("agent" "when_to_use" "context")
+VALID_TYPES=("workflow" "reference" "agent")
+MIN_BODY_LINES=30
 
 RED='\033[0;31m'; YELLOW='\033[1;33m'; GREEN='\033[0;32m'; NC='\033[0m'
 
@@ -67,12 +69,48 @@ for skill_dir in "$SKILLS_DIR"/*/; do
     fi
   done
 
+  # --- NEW CHECKS ---
+  extra_warnings=()
+
+  # Check 1: Type values valid
+  type_valid=0
+  for vt in "${VALID_TYPES[@]}"; do
+    [[ "$skill_type" == "$vt" ]] && type_valid=1 && break
+  done
+  if [[ $type_valid -eq 0 ]]; then
+    extra_warnings+=("invalid type '$skill_type' (expected: ${VALID_TYPES[*]})")
+  fi
+
+  # Check 2: Boilerplate detection
+  if grep -qE "Working on .+ tasks or workflows" "$skill_file"; then
+    extra_warnings+=("generic boilerplate header detected")
+  fi
+
+  # Check 3: Broken references - find /skill-name patterns outside code blocks
+  no_code=$(sed '/^```/,/^```/d' "$skill_file" | sed 's/`[^`]*`//g')
+  while IFS= read -r ref_name; do
+    [[ -z "$ref_name" ]] && continue
+    [[ "$ref_name" == "$skill_name" ]] && continue
+    ref_dir="$SKILLS_DIR/$ref_name"
+    if [[ ! -d "$ref_dir" ]]; then
+      extra_warnings+=("broken reference: /$ref_name (directory not found)")
+    fi
+  done < <(echo "$no_code" | grep -oP '(?<=^|[\s(])/([a-z][a-z0-9-]+[a-z0-9])(?=[\s).,;:!?]|$)' | sed 's|^/||' | sort -u)
+
+  # Check 4: Minimum content length
+  body_lines=$(sed '1,/^---$/d' "$skill_file" | sed '1,/^---$/d' | sed '/^[[:space:]]*$/d' | wc -l)
+  if [[ $body_lines -lt $MIN_BODY_LINES ]]; then
+    extra_warnings+=("thin content: $body_lines non-empty lines (min: $MIN_BODY_LINES)")
+  fi
+
+  # --- REPORT ---
   if [[ $skill_failed -eq 1 ]]; then
     echo -e "${RED}✗ $skill_name${NC}"
     echo -e "  Missing required: ${missing_required[*]}"
     failed=$((failed + 1))
-  elif [[ ${#missing_optional[@]} -gt 0 ]]; then
-    echo -e "${YELLOW}△ $skill_name${NC} — optional missing: ${missing_optional[*]}"
+  elif [[ ${#missing_optional[@]} -gt 0 || ${#extra_warnings[@]} -gt 0 ]]; then
+    all_warns=("${missing_optional[@]/#/optional missing: }" "${extra_warnings[@]}")
+    echo -e "${YELLOW}△ $skill_name${NC} — ${all_warns[*]}"
     passed=$((passed + 1)); warnings=$((warnings + 1))
   else
     echo -e "${GREEN}✓ $skill_name${NC}"

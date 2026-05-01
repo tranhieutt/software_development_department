@@ -151,3 +151,8 @@ Deliver exactly:
 - **User-facing changelog** — user-friendly language, no internal references
 - **Both saved** to `production/releases/[version]/changelog.md` and `changelog-user.md`
 - **Excluded items count** — internal-only changes omitted from user version
+
+
+## See Also
+
+- Use `/patch-notes` to generate user-facing release notes from this changelog

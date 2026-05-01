@@ -13,7 +13,7 @@ when_to_use: "When designing LLM applications, building AI assistants/chatbots, 
 
 ## Resources
 
-- `resources/implementation-playbook.md` for detailed patterns and examples.
+
 
 ## Architecture decision matrix
 
