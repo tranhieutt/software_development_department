@@ -34,6 +34,8 @@ When this skill is invoked:
    - [ ] Proper layer separation (UI does not own business logic)
    - [ ] Events/messages used for cross-service communication
    - [ ] Consistent with established patterns in the codebase
+   - [ ] Interfaces are earning their complexity: prefer deep modules over thin pass-through wrappers
+   - [ ] Suspected abstractions survive the deletion test: deleting them would reintroduce complexity across callers, not simplify the system
 
 6. **Check SOLID compliance**:
    - [ ] Single Responsibility: Each class has one reason to change
@@ -81,6 +83,17 @@ When this skill is invoked:
 ```
 
 ## Protocol
+
+Architecture vocabulary to use when it helps clarify a finding:
+
+- **Module** — unit with an interface and implementation
+- **Deep module** — small interface, high leverage behind it
+- **Shallow module** — interface nearly as complex as implementation
+- **Deletion test** — if deleting a wrapper mostly removes indirection instead of
+  reintroducing complexity in callers, the abstraction may be shallow
+
+Use this vocabulary to sharpen architectural findings, not to force jargon into
+every review.
 
 - **Question**: Auto-starts from argument (file or directory path); no clarification needed
 - **Options**: Skip — single review path

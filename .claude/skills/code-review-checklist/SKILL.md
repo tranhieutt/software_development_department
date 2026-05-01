@@ -63,6 +63,7 @@ if (!KEY) throw new Error("API_KEY is required");
 - [ ] No dead code or commented-out blocks
 - [ ] DRY — no copy-paste of more than 3 lines
 - [ ] Follows existing project conventions and patterns
+- [ ] Abstractions are deep enough to justify themselves; thin pass-through wrappers fail the deletion test
 
 ## Tests
 

@@ -27,14 +27,29 @@ When this skill is invoked:
      - Duplicated code blocks (similar patterns in multiple files)
      - Files over 500 lines (potential god objects)
      - Functions over 50 lines (potential complexity)
+     - Shallow wrappers or pass-through abstractions that fail the deletion test
    - Categorize each finding:
-     - **Architecture Debt**: Wrong abstractions, missing patterns, coupling issues
+     - **Architecture Debt**: Wrong abstractions, missing patterns, coupling issues, shallow wrappers, failed deletion-test seams
      - **Code Quality Debt**: Duplication, complexity, naming, missing types
      - **Test Debt**: Missing tests, flaky tests, untested edge cases
      - **Documentation Debt**: Missing docs, outdated docs, undocumented APIs
      - **Dependency Debt**: Outdated packages, deprecated APIs, version conflicts
      - **Performance Debt**: Known slow paths, unoptimized queries, memory issues
    - Update the debt register at `docs/tech-debt-register.md`
+
+   For shallow-wrapper findings, apply this test before filing debt:
+
+   - If deleting the abstraction would mostly simplify the code and would not
+     force multiple callers to re-learn meaningful behavior, log it as
+     **Architecture Debt**.
+   - If deleting it would re-spread invariants, branching, retries, validation,
+     or ordering logic across callers, it is probably earning its keep; do not
+     file debt just because it is small.
+
+   Record shallow-wrapper debt explicitly in the description, for example:
+
+   - "Pass-through adapter around `OrderRepository` fails deletion test"
+   - "Thin mapper module mirrors caller complexity without adding leverage"
 
 3. **For `add`**:
    - Prompt for: description, category, affected files, estimated fix effort, impact if left unfixed
@@ -73,6 +88,8 @@ Total items: [N] | Estimated total effort: [T-shirt sizes summed]
 - Every debt entry must explain WHY it was accepted (deadline, prototype, missing info)
 - "Scan" should run at least once per sprint to catch new debt
 - Items older than 3 sprints without action should either be fixed or consciously accepted with a documented reason
+- Do not file every small abstraction as debt. File only wrappers/modules that
+  are shallow enough to fail the deletion test.
 
 ## Protocol
 

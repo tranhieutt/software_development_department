@@ -6,6 +6,59 @@ Tài liệu này ghi lại lịch sử cập nhật tài liệu và source code 
 
 ## 🗓️ Lịch sử cập nhật
 
+### [Unreleased] - 2026-05-01
+
+**Chu de:** Deepen SDD execution, review, and architecture vocabulary
+
+Dot cap nhat nay tiep tuc hap thu discipline tu external skill review, nhung giu
+pham vi additive: chi cap nhat skill instructions, khong doi Claude runtime
+hooks, agents, permissions, hay control-plane ownership.
+
+#### Changed - Planning and vertical slices
+
+- `.claude/skills/planning-and-task-breakdown/SKILL.md`: them issue-shaped
+  tracer-bullet guidance, blocker-first sequencing, va AFK/HITL classification
+  chat hon cho task execution.
+- `.claude/skills/vertical-slicing/SKILL.md`: bo sung nguyen tac slice phai giu
+  depth, khong chi cat xuyen layer; them `Blocked by`, acceptance criteria,
+  verification, va interface-risk framing cho tung slice.
+
+#### Changed - Debugging and diagnosis
+
+- `.claude/skills/systematic-debugging/SKILL.md`: nang rule
+  "feedback loop first" thanh gate ro rang truoc khi claim root cause.
+- `.claude/skills/diagnose/SKILL.md`: lam Stage 0 thanh leverage point chinh,
+  them quality gate cho `feedback_loop.signal`, va yeu cau verification quay lai
+  original loop.
+
+#### Changed - TDD and review workflows
+
+- `.claude/skills/test-driven-development/SKILL.md`: them anti-horizontal-slice
+  wording, cam bulk RED, va yeu cau khong de queued RED tests cho future slices.
+- `.claude/skills/receiving-code-review/SKILL.md`: them lens
+  deep-module/deletion-test cho review findings ve architecture va
+  maintainability.
+- `.claude/skills/code-review/SKILL.md` va
+  `.claude/skills/code-review-checklist/SKILL.md`: dua deletion test vao review
+  criteria va shared vocabulary.
+
+#### Changed - Architecture simplification and debt language
+
+- `.claude/skills/code-simplification/SKILL.md`: uu tien deepen modules thay vi
+  tao helper/wrapper nong; them deletion-test guidance.
+- `.claude/skills/tech-debt/SKILL.md`: scan/debt register gio nhan dien
+  shallow wrappers va failed deletion-test seams nhu mot loai Architecture Debt
+  cu the.
+
+#### Verification
+
+- `powershell -ExecutionPolicy Bypass -File scripts\validate-skills.ps1`: PASS
+  126 / 126, 0 fail, 0 warn.
+- `node scripts\harness-audit.js --compact`: PASS 120 / 120; readiness ready,
+  0 blocked, 0 warning.
+- `powershell -ExecutionPolicy Bypass -File scripts\codex-preflight.ps1`: PASS
+  voi warning working tree dirty do unrelated memory/archive changes da bo qua.
+
 ### [Unreleased] - 2026-04-30
 
 **Chu de:** Upgrade SDD execution skills from external skill review

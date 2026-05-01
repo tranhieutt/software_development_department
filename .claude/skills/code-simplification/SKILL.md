@@ -28,6 +28,10 @@ Less cognitive load.
 Fresh verification evidence.
 ```
 
+Prefer simplifications that deepen modules instead of flattening behavior across
+callers. A small interface hiding real complexity is valuable; a wrapper that
+only moves complexity around is not.
+
 ## When to Use
 
 Use this workflow when:
@@ -127,6 +131,15 @@ Only act on specific signals:
 | Unused wrapper | Inline only if the wrapper has no semantic value |
 | Comments explaining obvious "what" | Remove or replace with clearer code |
 
+Use the deletion test on wrappers, helpers, and extracted modules:
+
+- If deleting the abstraction would force several callers to re-learn hard
+  behavior, it is probably earning its keep.
+- If deleting it mostly removes indirection and does not spread meaningful
+  complexity, it is probably shallow.
+
+Prefer deeper modules with clearer seams over helper sprawl.
+
 Keep comments that explain why, tradeoffs, gotchas, or external constraints.
 
 ### 3. Apply One Safe Change at a Time
@@ -174,6 +187,7 @@ Before claiming completion, use `verification-before-completion`.
 | "This nearby cleanup is harmless." | If it is outside scope, note it instead of editing it. |
 | "The tests should still pass." | Run the check or state it was not verified. |
 | "This abstraction might be useful later." | Keep only abstractions earning their complexity now. |
+| "Every extraction is a simplification." | Extraction only helps when it increases leverage or locality instead of creating a shallow wrapper. |
 | "I can simplify while adding the feature." | Separate behavior changes from cleanup unless the plan explicitly couples them. |
 | "This changes behavior only slightly." | That is not simplification. Route to `spec-evolution` or TDD. |
 

@@ -28,6 +28,11 @@ complete path that is independently verifiable. Avoid horizontal tasks that only
 build one layer unless that layer is a prerequisite contract, migration, or
 bounded infrastructure step with its own verification.
 
+When the plan will later be published to an issue tracker, keep each task shaped
+like an independently grabbable issue: narrow outcome, explicit blockers,
+acceptance criteria, and enough context that another agent or human can execute
+it without reopening the whole spec.
+
 ## Workflow
 
 ### 1. Establish Inputs
@@ -108,6 +113,30 @@ Classify each task before presenting the plan:
 Default to `HITL` when the task contains unresolved product, security, release,
 or architecture judgment. Do not hide uncertainty inside an `AFK` task.
 
+Also classify the plan's execution risk honestly:
+
+- `AFK` tasks should already have settled scope, files, verification, and no
+  pending design choice hidden behind "implement as needed".
+- `HITL` tasks should say exactly what human input is missing: approve copy,
+  pick schema path, provide credential, accept ADR, confirm rollout window.
+- If a task becomes `AFK` only after one upstream `HITL` decision, keep that
+  dependency explicit instead of pretending the whole chain is agent-ready.
+
+### 4b. Tracer-Bullet Issue Shape
+
+When a task represents user-facing behavior or a reviewable slice, shape it like
+an issue another implementer could pick up directly:
+
+- **Title**: short outcome, not implementation mechanism
+- **Classification**: `AFK` or `HITL`
+- **Blocked by**: exact upstream task(s) or `None`
+- **What changes end-to-end**: the thinnest complete path across relevant layers
+- **Acceptance criteria**: demoable or independently verifiable checks
+
+Do not produce pseudo-issues such as "backend support", "frontend wiring", or
+"add tests" unless they are genuine prerequisite setup tasks with their own
+verification contract.
+
 ### 5. Dependency Mapping
 
 Order tasks by dependency:
@@ -121,6 +150,10 @@ Order tasks by dependency:
 Mark tasks as sequential unless they touch disjoint files and have no input
 dependency. If parallel execution is genuinely safe, say whether to use
 `fork-join` or `orchestrate`.
+
+Prefer blocker-first sequencing that mirrors issue-tracker publication order:
+publish or present true blockers before dependent slices so later tasks can
+reference real upstream work instead of vague "depends on prior implementation".
 
 ### 6. Create Plan and Request Approval
 
@@ -157,6 +190,7 @@ fits existing patterns.]
 
 ### Task 1: [Atomic Outcome]
 
+**Issue Shape:** [Short issue-style title]
 **Classification:** [AFK | HITL] because [why the agent can proceed alone or what human decision is required]
 **Purpose:** [Why this task exists]
 **Dependencies:** None / Task N
@@ -256,6 +290,8 @@ Before presenting the plan, review it yourself:
 - [ ] Every task is classified `AFK` or `HITL` with a concrete reason
 - [ ] User-facing behavior is decomposed into tracer-bullet vertical slices
       unless a contract/setup task is required first
+- [ ] Each user-facing task can stand on its own as an issue-shaped work item
+      with blockers and acceptance criteria
 - [ ] No placeholders or vague instructions remain
 - [ ] Names, paths, and interfaces are consistent across tasks
 - [ ] Execution mode recommendation matches dependencies

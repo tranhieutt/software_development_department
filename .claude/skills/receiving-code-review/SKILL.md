@@ -62,6 +62,12 @@ For each finding, record:
 - Proposed disposition: `fix`, `reject`, `defer`, `needs-clarification`, or
   `route-to-spec-evolution`
 
+When the finding is architectural or maintainability-oriented, also ask:
+
+- Is reviewer pointing at a genuinely shallow module or only at code they dislike?
+- Would the proposed fix deepen the seam, or only move complexity into another wrapper?
+- Does the deletion test support the abstraction being kept, changed, or removed?
+
 ### 3. Decide Disposition
 
 Use these rules:
@@ -110,6 +116,8 @@ For `reject` items:
   not apply.
 - Keep tone factual.
 - Do not change code just to satisfy an incorrect comment.
+- If the comment attacks an abstraction, explain whether the module is earning
+  its complexity by keeping leverage/locality concentrated behind the seam.
 
 For `defer` items:
 
@@ -161,6 +169,7 @@ fully addressed.
 | "I'll resolve the thread after pushing." | Verify the specific finding first. |
 | "This review comment implies a new feature." | Route scope changes to `spec-evolution`. |
 | "The comment is wrong, so ignore it." | Reject with evidence; do not leave it unaccounted for. |
+| "Reviewer wants fewer abstractions, so delete wrappers." | Use the deletion test. Remove only abstractions that fail to concentrate real complexity. |
 
 ## Integration
 
@@ -169,3 +178,11 @@ fully addressed.
 - Route spec or acceptance-criteria conflicts to `spec-evolution`.
 - Route behavior fixes to `test-driven-development`.
 - Use `verification-before-completion` before marking review comments resolved.
+
+Useful vocabulary for architecture-heavy review responses:
+
+- **Deep module** — small interface, high leverage behind it
+- **Shallow module** — interface nearly as complex as implementation
+- **Deletion test** — deleting the abstraction should reintroduce complexity in
+  callers if the abstraction is real; if deletion mostly removes indirection, it
+  was probably shallow

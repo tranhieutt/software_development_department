@@ -32,6 +32,15 @@ Seeing a symptom is not the same as knowing the cause. Do not edit production
 code until the root cause is stated, supported by evidence, and tied to a
 verification path.
 
+Add one stronger rule:
+
+```text
+No root-cause claim without a feedback loop you trust.
+```
+
+If the bug cannot be reproduced or bounded by a reliable pass/fail signal,
+investigation is still incomplete. Build the loop first.
+
 ## When To Use
 
 Use for:
@@ -67,19 +76,36 @@ Record the exact observed failure:
 Do not paraphrase away important details such as paths, line numbers, status
 codes, exception names, or assertion diffs.
 
-### 2. Reproduce or Bound the Failure
+### 2. Build the Feedback Loop First
 
-Try the smallest reliable reproduction:
+Create the fastest reliable pass/fail signal for the exact symptom before deeper
+analysis. Prefer, in order:
 
-- Re-run the failing command or test if available.
-- Reduce to a focused test, route, function, fixture, or input case.
-- If it cannot be reproduced, gather more evidence instead of guessing.
-- For flaky failures, record frequency and conditions.
+1. Focused failing test at the closest real behavior seam
+2. Narrow failing command or script
+3. Route, fixture, or API reproduction
+4. Replay harness for captured payload, log, or trace
+5. Throwaway harness or browser script if no lighter seam exists
 
-If no reproduction or evidence exists, stop and ask for logs, steps, data, or
-access needed to investigate.
+Improve the loop before moving on:
 
-### 3. Check Recent and Relevant Changes
+- Faster: remove unrelated setup, narrow scope, cache fixtures
+- Sharper: assert the exact symptom, not merely "did not crash"
+- More deterministic: pin time, seed randomness, isolate I/O, record flaky rate
+
+If you cannot build a credible loop, stop and ask for logs, steps, data, access,
+or permission for temporary instrumentation. Do not form a confident hypothesis
+from vibes.
+
+### 3. Reproduce or Bound the Failure
+
+Run the loop and confirm:
+
+- The observed failure matches the user's symptom
+- The signal is stable enough to debug against
+- For flaky issues, the reproduction rate is stated clearly
+
+### 4. Check Recent and Relevant Changes
 
 Inspect the narrow change surface:
 
@@ -90,7 +116,7 @@ Inspect the narrow change surface:
 
 Do not assume the most recent edit caused the bug. Use it as one candidate.
 
-### 4. Trace the Failure Boundary
+### 5. Trace the Failure Boundary
 
 Find where the bad value, failed state, or unexpected behavior first appears.
 
@@ -108,7 +134,7 @@ queue -> worker, CI job -> build script, test harness -> app runtime.
 When needed, add temporary diagnostics only if they are safe, scoped, and removed
 before completion. Do not leave debug logs in production paths.
 
-### 5. Compare Against Working Patterns
+### 6. Compare Against Working Patterns
 
 Find a nearby working example in the same codebase or documented standard.
 
@@ -123,7 +149,7 @@ Compare:
 
 List the meaningful differences. Small differences count until ruled out.
 
-### 6. Form One Hypothesis
+### 7. Form One Hypothesis
 
 State one falsifiable hypothesis:
 
@@ -134,7 +160,10 @@ Hypothesis: <root cause> because <evidence>. It can be falsified by <test/check>
 Do not propose a fix until this sentence is specific. Vague examples such as
 "state is wrong" or "race condition" are not sufficient.
 
-### 7. Test the Hypothesis Minimally
+The hypothesis must be distinguishable by the loop from Step 2. If the same loop
+result would fit several explanations, sharpen the loop before continuing.
+
+### 8. Test the Hypothesis Minimally
 
 Use one variable at a time:
 
@@ -147,7 +176,7 @@ If refuted, update the evidence and form a new hypothesis. Do not stack fixes.
 If three hypotheses or fix attempts fail, stop and escalate to `diagnose` or
 `architecture-decision-records` if the pattern itself appears wrong.
 
-### 8. Implement Only After Cause Is Confirmed
+### 9. Implement Only After Cause Is Confirmed
 
 Once root cause is confirmed:
 
@@ -159,7 +188,7 @@ Once root cause is confirmed:
 If the correct behavior conflicts with an approved spec, route to
 `spec-evolution` before changing behavior.
 
-### 9. Close With Evidence
+### 10. Close With Evidence
 
 Before saying the bug is fixed, use `verification-before-completion` with:
 
@@ -175,6 +204,7 @@ Before saying the bug is fixed, use `verification-before-completion` with:
 ## Systematic Debugging: [Issue]
 
 **Symptom:** [exact failure]
+**Feedback Loop:** [fastest reliable pass/fail command/check, or blocked reason]
 **Reproduction:** [command/steps/frequency]
 **Recent Relevant Changes:** [files/commits/config, or "None found"]
 
@@ -206,6 +236,7 @@ Stop and return to investigation if you think:
 - "Try this and see."
 - "I can change multiple things at once."
 - "The error is obvious" but no reproduction or evidence has been captured.
+- "I already know root cause" but no reliable loop exists yet.
 - "I will write the test after confirming the fix manually."
 - "One more fix attempt" after two failed fixes.
 - "This is flaky, so a sleep should stabilize it."

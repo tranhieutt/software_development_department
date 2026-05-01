@@ -23,6 +23,10 @@ points. They must not couple to private helpers, internal call order, temporary
 data structures, or implementation-only collaborators. A refactor that preserves
 behavior should not break the test.
 
+TDD here is strictly vertical. One behavior slice, one failing test, one minimum
+implementation. Bulk test authoring is not "getting ahead"; it is horizontal
+slicing and usually produces brittle tests for imagined behavior.
+
 ---
 
 ## Workflow (Strict Process)
@@ -72,6 +76,10 @@ Wrong: RED all tests -> GREEN all implementation
 Right: RED one behavior -> GREEN one behavior -> REFACTOR -> repeat
 ```
 
+If you feel tempted to queue several tests first, stop and restate the next
+single behavior in one sentence. If that sentence contains "and", you are
+probably slicing too wide.
+
 ---
 
 ## Output Format
@@ -111,6 +119,7 @@ Be aware of lazy logic that an Agent typically uses to skip testing. If a though
 | "I don't need to run the final terminal command to check if it's green. I can read the logic and I know it works." | **REJECTED.** Code does not exist until the compiler/test-runner proves it exists. You cannot hallucinate terminal outputs. Run the actual command. |
 | "Writing the failing test is safe before approval." | **REJECTED.** RED tests are execution. Confirm the pre-code gate before editing tests. |
 | "I'll write all RED tests first, then implement them together." | **REJECTED.** Bulk RED is horizontal slicing. Write one behavior test, make it pass, then continue. |
+| "I know future slices already, so I can pre-bake their tests now." | **REJECTED.** Future slices change as current implementation teaches you where the real seam is. Stay on one behavior. |
 | "Testing private helpers is faster than going through the public API." | **REJECTED.** Private-helper tests couple to implementation. Test the supported interface unless no behavior seam exists; if no seam exists, report that design problem. |
 
 ---
@@ -123,6 +132,7 @@ Do not conclude the turn unless you have:
 - [ ] Executed the test runner during the **GREEN** phase and captured a PASSING log.
 - [ ] Verified the test exercises observable behavior through a public interface.
 - [ ] Avoided horizontal slicing by completing only one RED -> GREEN behavior cycle at a time.
+- [ ] Did not leave queued RED tests for future slices in the worktree.
 - [ ] Displayed both terminal outputs (Red & Green) as indisputable evidence to the User.
 
 ---

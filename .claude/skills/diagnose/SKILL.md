@@ -68,6 +68,9 @@ Improve the loop before investigating:
 - More deterministic: pin time, seed randomness, isolate filesystem/network, or
   raise intermittent reproduction frequency with stress runs.
 
+Do not treat Stage 0 as warm-up. It is the main leverage point. A bad loop
+produces fake certainty, weak hypotheses, and symptom-only fixes.
+
 If no credible loop can be built, stop and report what was tried. Ask for access
 to the reproducing environment, a captured artifact, or permission to add
 temporary instrumentation. Do not proceed on a vibe.
@@ -128,6 +131,7 @@ temporary instrumentation. Do not proceed on a vibe.
 
 ### Quality gate (Lead Programmer rejects if):
 - `feedback_loop` is missing and no blocked-loop explanation exists
+- `feedback_loop.signal` is vague, broad, or does not isolate the user's symptom
 - `ranked_hypotheses` has fewer than 3 items unless the evidence makes a single
   cause unavoidable
 - Any hypothesis lacks a falsifiable prediction
@@ -144,6 +148,9 @@ temporary instrumentation. Do not proceed on a vibe.
 - `investigation.json` (from Stage 1)
 - Access to staging/test environment
 - The Stage 0 feedback loop, rerun before and after each meaningful probe
+
+Verification is invalid if it does not go back through the Stage 0 loop. A
+fix-looking local observation that bypasses the loop is not confirmation.
 
 ### Required output — `verification.json`
 ```json
@@ -301,6 +308,7 @@ Stage 4 → lead-programmer
 | Pitfall                                       | Fix                                                                         |
 | --------------------------------------------- | --------------------------------------------------------------------------- |
 | Hypothesizing before building a loop           | Return to Stage 0. A diagnosis without a signal is speculation.             |
+| Keeping a slow or blurry loop                  | Rework Stage 0 until the signal is fast, specific, and trustworthy.         |
 | Skipping Verification ("cause is obvious")    | Verifier exists specifically to catch "obvious but wrong" hypotheses        |
 | Investigator produces only 1 hypothesis       | Reject unless evidence makes alternatives impossible; require ranked hypotheses and predictions |
 | Solver picks Quick fix without naming tradeoff| Reject — all 3 options required for explicit tradeoff comparison            |
