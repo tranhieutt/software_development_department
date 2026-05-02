@@ -4,7 +4,7 @@ type: workflow
 description: "Forces the strict Red-Green-Refactor development cycle. Requires one failing behavior test through a public interface before each implementation slice."
 argument-hint: "[task-description-or-file]"
 user-invocable: true
-allowed-tools: Read, Glob, Grep, RunCommand
+allowed-tools: Read, Glob, Grep, Bash
 context: fork
 effort: 3
 agent: lead-programmer
