@@ -29,6 +29,7 @@ if [ -n "$BRANCH" ]; then
 fi
 
 # Current sprint (find most recent sprint file)
+# shellcheck disable=SC2012  # filenames are controlled; find -printf not portable
 LATEST_SPRINT=$(ls -t production/sprints/sprint-*.md 2>/dev/null | head -1)
 if [ -n "$LATEST_SPRINT" ]; then
     echo ""
@@ -36,6 +37,7 @@ if [ -n "$LATEST_SPRINT" ]; then
 fi
 
 # Current milestone
+# shellcheck disable=SC2012  # filenames are controlled; find -printf not portable
 LATEST_MILESTONE=$(ls -t production/milestones/*.md 2>/dev/null | head -1)
 if [ -n "$LATEST_MILESTONE" ]; then
     echo "Active milestone: $(basename "$LATEST_MILESTONE" .md)"

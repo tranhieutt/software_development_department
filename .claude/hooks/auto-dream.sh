@@ -10,6 +10,7 @@ ARCHIVE_DREAMS="$MEMORY_DIR/archive/dreams"
 
 # ─── Cleanup trap ─────────────────────────────────────────────────────────────
 # Ensure any temp file created by this script is removed on exit/interrupt.
+# shellcheck disable=SC2317  # called via trap, not directly
 _cleanup() {
     [ -n "${_DREAM_TMP:-}" ] && rm -f "$_DREAM_TMP" 2>/dev/null
 }
