@@ -6,6 +6,70 @@ Tài liệu này ghi lại lịch sử cập nhật tài liệu và source code 
 
 ## 🗓️ Lịch sử cập nhật
 
+### [Unreleased] - 2026-05-02
+
+**Chu de:** Rules upgrade — YAML frontmatter standardization, stack mismatch fixes, new error handling & logging standards
+
+Dot cap nhat nay review va upgrade toan bo 13 rule files trong `.claude/rules/`. Sua 4 van
+de P0 nghiem trong (template artifacts, path overlaps, stack mismatch), chuan hoa format,
+va them 2 rule file moi cho error handling va logging/observability.
+
+#### Fixed - Template artifacts va stack mismatch
+
+- `.claude/rules/test-standards.md`: rewrite examples tu GDScript (Godot) sang
+  JavaScript (Node.js/Jest) de match project stack.
+- `.claude/rules/network-code.md`: rewrite tu game netcode patterns (client
+  prediction, rollback, host migration, replication strategy) sang HTTP/REST
+  networking standards (HTTP client, error handling, resilience patterns, security,
+  observability).
+- Mo rong network-code paths tu `src/networking/**` thanh them `src/http/**`,
+  `src/services/**`.
+
+#### Fixed - Path overlaps va ambiguity
+
+- `.claude/rules/ui-code.md`: xoa `src/components/**` khoi paths, chi giu
+  `src/ui/**`, them cross-reference toi `frontend-code.md`.
+- `.claude/rules/frontend-code.md`: merge 5 UI rules tu ui-code (ARIA labels,
+  prefers-reduced-motion, colorblind-safe, loading/error/empty states, viewport
+  testing) vao Accessibility section, them cross-reference.
+- `.claude/rules/data-files.md`: xoa `src/config/**` khoi paths, them boundary
+  note de phan biet voi `secrets-config.md`.
+- `.claude/rules/secrets-config.md`: them boundary note, cross-reference toi
+  `data-files.md`.
+
+#### Changed - YAML frontmatter standardization
+
+- Chuan hoa YAML frontmatter cho 5 files: `api-code.md`, `database-code.md`,
+  `frontend-code.md`, `secrets-config.md`, `git-push.md`.
+- Truoc do: 4 files dung "Applies to:" text format, 1 file khong co scope.
+- Sau: tat ca 15 files dung YAML `--- paths: ---` hoac `--- scope: ---` nhat quan.
+
+#### Added - Error handling strategy
+
+- Them `.claude/rules/error-handling.md` (86 dong, scope: global).
+- Bao gom: error classification (User/System/Business Logic/Programming), throw vs
+  return, error types (base class + domain subclasses), global error handler, logging
+  levels (WARN/ERROR/FATAL), retry & recovery, validation error format, error response
+  JSON envelope, forbidden patterns.
+
+#### Added - Logging & observability standards
+
+- Them `.claude/rules/logging-standards.md` (119 dong, scope: global).
+- Bao gom: log levels (TRACE/DEBUG/INFO/WARN/ERROR/FATAL), structured JSON log format
+  (required + optional fields), what to log/never log/caution, request tracing
+  (requestId, OpenTelemetry), metrics & health checks, log rotation & retention,
+  forbidden patterns.
+
+#### Updated - CHANGELOG.md
+
+- Cap nhat `CHANGELOG.md` (root) voi tat ca rules changes.
+
+#### Verification
+
+- 15 rule files trong `.claude/rules/`: tat ca co YAML frontmatter, khong con
+  template artifacts, khong con path overlaps.
+- `git status`: 12 files staged (10 modified + 2 new).
+- Commit: `3496529` pushed to `origin/main`.
 
 ### [Unreleased] - 2026-05-02
 
