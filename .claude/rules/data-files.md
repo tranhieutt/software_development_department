@@ -2,10 +2,13 @@
 paths:
   - "assets/data/**"
   - "config/**"
-  - "src/config/**"
 ---
 
 # Data File Rules
+
+> **Boundary:** This rule governs **data schema, naming, and structure** for JSON data files.
+> For secrets, environment variables, and sensitive configuration values in `config/**`
+> and `src/config/**`, see `secrets-config.md`.
 
 - All JSON files must be valid JSON — broken JSON blocks the entire application startup
 - File naming: lowercase with underscores only, following `[domain]_[name].json` pattern

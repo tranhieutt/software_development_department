@@ -1,6 +1,18 @@
+---
+paths:
+  - ".env*"
+  - "*.config.*"
+  - "config/**"
+  - "infra/**"
+  - "scripts/**"
+  - "src/config/**"
+---
+
 # Secrets & Configuration Standards
 
-Applies to: `.env*`, `*.config.*`, `config/**`, `infra/**`, `scripts/**`, `src/config/**`
+> **Boundary:** This rule governs **secrets, environment variables, and sensitive configuration**.
+> For non-sensitive data file schema, naming, and structure in `config/**` and `assets/data/**`,
+> see `data-files.md`.
 
 ## Secret Management
 

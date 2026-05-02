@@ -1,6 +1,13 @@
-# Database Code Standards
+---
+paths:
+  - "src/db/**"
+  - "src/models/**"
+  - "src/repositories/**"
+  - "migrations/**"
+  - "schema/**"
+---
 
-Applies to: `src/db/**`, `src/models/**`, `src/repositories/**`, `migrations/**`, `schema/**`
+# Database Code Standards
 
 ## Schema Design
 - Every table must have: primary key, `created_at` (NOT NULL), `updated_at` (NOT NULL)

@@ -1,6 +1,12 @@
-# API Code Standards
+---
+paths:
+  - "src/api/**"
+  - "src/routes/**"
+  - "src/controllers/**"
+  - "src/handlers/**"
+---
 
-Applies to: `src/api/**`, `src/routes/**`, `src/controllers/**`, `src/handlers/**`
+# API Code Standards
 
 ## Endpoint Design
 - Resource names must be nouns in plural form (`/users`, not `/getUser`)

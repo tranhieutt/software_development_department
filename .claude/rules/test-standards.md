@@ -18,29 +18,35 @@ paths:
 
 **Correct** (proper naming + Arrange/Act/Assert):
 
-```gdscript
-func test_health_system_take_damage_reduces_health() -> void:
-    # Arrange
-    var health := HealthComponent.new()
-    health.max_health = 100
-    health.current_health = 100
+```javascript
+// Using Node.js test runner (node:test) or any framework (Jest, Vitest, Mocha)
+describe("HealthSystem", () => {
+  test("takeDamage_reducesCurrentHealth", () => {
+    // Arrange
+    const health = new HealthSystem({ maxHealth: 100 });
+    health.currentHealth = 100;
 
-    # Act
-    health.take_damage(25)
+    // Act
+    health.takeDamage(25);
 
-    # Assert
-    assert_eq(health.current_health, 75)
+    // Assert
+    expect(health.currentHealth).toBe(75);
+  });
+});
 ```
 
 **Incorrect**:
 
-```gdscript
-func test1() -> void:  # VIOLATION: no descriptive name
-    var h := HealthComponent.new()
-    h.take_damage(25)  # VIOLATION: no arrange step, no clear assert
-    assert_true(h.current_health < 100)  # VIOLATION: imprecise assertion
+```javascript
+// VIOLATION: no descriptive name
+test("test1", () => {
+  const health = new HealthSystem({ maxHealth: 100 });
+  // VIOLATION: no arrange step, no clear assert
+  health.takeDamage(25);
+  // VIOLATION: imprecise assertion — does not check exact expected value
+  expect(health.currentHealth).toBeLessThan(100);
+});
 ```
-
 
 ## Coverage Mapping with GitNexus
 

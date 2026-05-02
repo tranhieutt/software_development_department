@@ -1,10 +1,11 @@
 ---
 paths:
   - "src/ui/**"
-  - "src/components/**"
 ---
 
 # UI Code Rules
+
+> For components in `src/components/**`, see also `frontend-code.md`.
 
 - UI must NEVER own or directly modify application state — display only, use events/callbacks/API calls to request changes
 - All UI text must go through the i18n/localization system — no hardcoded user-facing strings

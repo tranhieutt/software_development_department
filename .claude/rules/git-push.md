@@ -1,3 +1,7 @@
+---
+scope: global
+---
+
 # Requirements Before Pushing Code to Git
 
 Whenever the user asks you to push code to Git, you MUST perform the following 2 tasks BEFORE executing `git push`:
