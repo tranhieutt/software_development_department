@@ -4,14 +4,14 @@
     A structured agentic system that transforms a single Claude Code session<br />
     into a coordinated software engineering organization.
     <br /><br />
-    28 agents - 125 context-optimized skills - 10/12 agentic harness patterns - MAS Infrastructure - Steel-discipline enforcement - Runtime-proven harness
+    28 agents - 126 context-optimized skills - 10/12 agentic harness patterns - MAS Infrastructure - Steel-discipline enforcement - Runtime-proven harness
   </p>
 </p>
 
 <p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT License"></a>
   <a href=".claude/agents"><img src="https://img.shields.io/badge/agents-28-blueviolet" alt="28 Agents"></a>
-  <a href=".claude/skills"><img src="https://img.shields.io/badge/skills-125-green" alt="125 Skills"></a>
+  <a href=".claude/skills"><img src="https://img.shields.io/badge/skills-126-green" alt="126 Skills"></a>
   <a href=".claude/hooks"><img src="https://img.shields.io/badge/hooks-28-orange" alt="28 Hook Files""></a>
   <a href=".claude/rules"><img src="https://img.shields.io/badge/rules-13-red" alt="13 Rules"></a>
   <a href="https://docs.anthropic.com/en/docs/claude-code"><img src="https://img.shields.io/badge/built%20for-Claude%20Code-f5f5f5?logo=anthropic" alt="Built for Claude Code"></a>
@@ -81,7 +81,7 @@ The result is a system where:
 - **Process is enforced**: spec before implementation, plan before code, tests before merge — enforced via hooks and verification gates, not suggestions
 - **Memory persists**: a 5-layer durable memory architecture (Tier 1 index → Tier 2 topic files → Tier 3 cold archive → MCP Supermemory semantic store) survives across sessions (**Privacy-first: Bring Your Own Brain**)
 - **Context is surgical**: incremental loading with a 3-Question Relevance Gate prevents context stuffing; max 3 Tier 2 files per session
-- **Routing is precise**: 125 skills with `paths:` triggers, `when_to_use:` semantics, and `effort:` scores let the AI self-route without human navigation
+- **Routing is precise**: 126 skills with `paths:` triggers, `when_to_use:` semantics, and `effort:` scores let the AI self-route without human navigation
 - **Visual Intelligence**: Automated Technical Diagramming (SVG/PNG) for architectures, sequence flows, and process models via `/visualize`. 
 
 ---
@@ -135,7 +135,7 @@ SDD implements **10 of 12** patterns from Claude Code's internal agentic harness
 | #3 Tiered Memory | ✅ | 5-layer: MEMORY.md → topic files → archive → Supermemory |
 | #4 Dream Consolidation | ✅ | `auto-dream.sh` — 5-phase automated consolidation |
 | #6 Context: Fork | ✅ | 10 heavy analysis skills run in isolated subagent context |
-| #7 Skill Routing | ✅ | 125 skills with `paths:`, `when_to_use:`, `effort:` metadata |
+| #7 Skill Routing | ✅ | 126 skills with `paths:`, `when_to_use:`, `effort:` metadata |
 | #8 Fork-Join Parallelism | ✅ | `fork-join.sh` — git worktree lifecycle manager |
 | #10 Least Privilege Tools | ✅ | `allowed-tools:` per skill + 22-entry permission allow-list |
 | #11 Bash Guard | ✅ | `bash-guard.sh` blocks RCE patterns, destructive commands |
@@ -266,7 +266,7 @@ Editing *.py, manage.py       → Django, FastAPI, ML skills surface
 Editing Dockerfile, *.tf      → DevOps, Kubernetes, AWS skills activate
 ```
 
-Type `/` in Claude Code — you see what's relevant, not all 125.
+Type `/` in Claude Code — you see what's relevant, not all 126.
 
 ---
 
@@ -275,7 +275,7 @@ Type `/` in Claude Code — you see what's relevant, not all 125.
 | Category | Count | Description |
 |---|---|---|
 | **Agents** | 28 | Specialized subagents across product, engineering, design, QA, data, and operations |
-| **Skills** | 125 | Core workflows and technology frameworks with context-aware routing |
+| **Skills** | 126 | Core workflows and technology frameworks with context-aware routing |
 | **Hooks** | 28 | Automated validation: commits, pushes, asset changes, session lifecycle, circuit breaker, skill telemetry, decision ledger, bash guard, fork-join |
 | **Rules** | 13 | Path-scoped coding standards enforced automatically by file location |
 | **Templates** | 22+ | PRDs, API designs, system architecture, ADRs, mobile, incident response, postmortem |
@@ -301,7 +301,7 @@ claude
 
 Run `/start` — the system asks where you are (new concept, existing codebase, or specific task) and guides you from there.
 
-**Antigravity Platform**: Open the directory in Antigravity. The `.claude/` architecture loads automatically. All 125 workflows are available immediately — just assign tasks.
+**Antigravity Platform**: Open the directory in Antigravity. The `.claude/` architecture loads automatically. All 126 workflows are available immediately — just assign tasks.
 
 ### Setup (Codex)
 
@@ -346,7 +346,7 @@ TODO.md                             # Living backlog (governed by @producer)
 .claude/
   settings.json                     # Permissions, deny rules, hook registration
   agents/                           # 28 agent definitions with domain ownership
-  skills/                           # 125 skills (one subdirectory each)
+  skills/                           # 126 skills (one subdirectory each)
   hooks/                            # 28 hook scripts
   rules/                            # 13 path-scoped coding standards
   memory/                           # 5-layer durable memory system
