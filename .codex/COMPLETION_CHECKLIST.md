@@ -1,7 +1,7 @@
 # Codex Completion Checklist
 
-> Before claiming work is done, Codex must complete this checklist.
-> This replaces Claude's `verification-before-completion` hook discipline.
+> Before claiming work is done, Codex must complete this checklist. This
+> preserves `verification-before-completion` discipline outside Claude Code.
 
 ## Required Steps
 
@@ -13,9 +13,9 @@ Run the verification command declared in the pre-code gate:
 Verification: <exact command from pre-code gate>
 ```
 
-- [ ] Command executed successfully
-- [ ] Output shows expected results (pass, build success, lint clean)
-- [ ] No warnings left unaddressed
+- [ ] Command executed successfully, or failure is clearly unrelated to the scoped change.
+- [ ] Output shows expected result for the claim being made.
+- [ ] Warnings are fixed, classified, or reported with scope impact.
 
 ### 2. Changed Files Summary
 
@@ -27,7 +27,7 @@ Files changed:
 - <file 2>: <what changed>
 ```
 
-### 3. Verification Commands and Results
+### 3. Verification Commands And Results
 
 ```text
 Commands run:
@@ -36,10 +36,10 @@ Commands run:
 
 ### 4. Scope Compliance
 
-- [ ] All changes are within the approved scope
-- [ ] No drive-by refactors
-- [ ] No extra behavior not in the spec/task
-- [ ] Every line traces to a user requirement
+- [ ] All changes are within approved scope.
+- [ ] No drive-by refactors.
+- [ ] No extra behavior outside the spec/task/request.
+- [ ] Every material change traces to the user request or approved plan.
 
 ### 5. Risk Assessment
 
@@ -52,14 +52,17 @@ Commands run:
 
 ### 6. Unreported Items
 
-- [ ] Report any skipped or unavailable checks (with reason)
-- [ ] Mention unrelated untracked files only if they matter
+- [ ] Report skipped or unavailable checks with reason.
+- [ ] Mention unrelated untracked files only if they matter to the next step.
 
 ## Blocked Completion Claims
 
-Do NOT claim completion if:
+Do not claim completion if:
 
-- Verification command was not run or failed
-- "Looks good" or "should work" is the only evidence
-- A previous run's output is reused without checking freshness
-- Warnings, skipped tests, or partial failures are ignored
+- Verification command was not run.
+- "Looks good" or "should work" is the only evidence.
+- A previous run's output is reused without checking freshness.
+- Warnings, skipped tests, or partial failures are ignored.
+
+If full verification fails for unrelated existing issues, narrow the completion
+claim and report the failing check.

@@ -60,6 +60,9 @@ $required = @(
     "CLAUDE.md",
     ".codex/INSTALL.md",
     ".codex/START.md",
+    ".codex/CONTEXT.md",
+    ".codex/PRE_EDIT_CHECKLIST.md",
+    ".codex/COMPLETION_CHECKLIST.md",
     "docs/codex-compatibility.md",
     "docs/technical/SDD_LIFECYCLE_MAP.md",
     ".claude/settings.json",
@@ -75,6 +78,39 @@ foreach ($path in $required) {
         Add-Ok "found $path"
     } else {
         Add-Failure "missing $path"
+    }
+}
+
+Write-Section "Codex Adapter Content"
+$codexChecks = @(
+    @{
+        Path = ".codex/CONTEXT.md"
+        Pattern = "If this summary disagrees with a Claude source file, the Claude source wins."
+        Label = "CONTEXT.md declares Claude source precedence"
+    },
+    @{
+        Path = ".codex/PRE_EDIT_CHECKLIST.md"
+        Pattern = "Pre-code gate: <Fast|Spec|Plan|Interview|Override> satisfied by <evidence>; next edit: <file>; verification: <command/check>."
+        Label = "PRE_EDIT_CHECKLIST.md uses canonical one-line gate"
+    },
+    @{
+        Path = ".codex/COMPLETION_CHECKLIST.md"
+        Pattern = "Warnings are fixed, classified, or reported with scope impact."
+        Label = "COMPLETION_CHECKLIST.md classifies warnings"
+    }
+)
+
+foreach ($check in $codexChecks) {
+    if (-not (Test-Path $check.Path)) {
+        Add-Failure "missing $($check.Path)"
+        continue
+    }
+
+    $content = Get-Content $check.Path -Raw
+    if ($content.Contains($check.Pattern)) {
+        Add-Ok $check.Label
+    } else {
+        Add-Failure "$($check.Label) missing expected text"
     }
 }
 

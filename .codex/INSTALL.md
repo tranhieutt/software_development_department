@@ -5,10 +5,10 @@ adapter that points Codex at the existing `.claude/skills` directory.
 
 ## Windows Setup (Recommended)
 
-Run from any PowerShell session:
+Run from the repository root in PowerShell:
 
 ```powershell
-$repo = "E:\SDD-Upgrade"
+$repo = (Get-Location).Path
 New-Item -ItemType Directory -Force -Path "$env:USERPROFILE\.agents\skills"
 cmd /c mklink /J "$env:USERPROFILE\.agents\skills\sdd" "$repo\.claude\skills"
 ```

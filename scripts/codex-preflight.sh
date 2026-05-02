@@ -61,6 +61,9 @@ required_files=(
   "CLAUDE.md"
   ".codex/INSTALL.md"
   ".codex/START.md"
+  ".codex/CONTEXT.md"
+  ".codex/PRE_EDIT_CHECKLIST.md"
+  ".codex/COMPLETION_CHECKLIST.md"
   "docs/codex-compatibility.md"
   "docs/technical/SDD_LIFECYCLE_MAP.md"
   ".claude/settings.json"
@@ -78,6 +81,32 @@ for path in "${required_files[@]}"; do
     fail "missing $path"
   fi
 done
+
+section "Codex Adapter Content"
+check_file_contains() {
+  path="$1"
+  pattern="$2"
+  label="$3"
+  if [ ! -f "$path" ]; then
+    fail "missing $path"
+    return
+  fi
+  if grep -Fq "$pattern" "$path"; then
+    ok "$label"
+  else
+    fail "$label missing expected text"
+  fi
+}
+
+check_file_contains ".codex/CONTEXT.md" \
+  "If this summary disagrees with a Claude source file, the Claude source wins." \
+  "CONTEXT.md declares Claude source precedence"
+check_file_contains ".codex/PRE_EDIT_CHECKLIST.md" \
+  "Pre-code gate: <Fast|Spec|Plan|Interview|Override> satisfied by <evidence>; next edit: <file>; verification: <command/check>." \
+  "PRE_EDIT_CHECKLIST.md uses canonical one-line gate"
+check_file_contains ".codex/COMPLETION_CHECKLIST.md" \
+  "Warnings are fixed, classified, or reported with scope impact." \
+  "COMPLETION_CHECKLIST.md classifies warnings"
 
 section "Git Status"
 if command -v git >/dev/null 2>&1; then

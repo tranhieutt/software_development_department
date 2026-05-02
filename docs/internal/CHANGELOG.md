@@ -8,6 +8,42 @@ Tài liệu này ghi lại lịch sử cập nhật tài liệu và source code 
 
 ### [Unreleased] - 2026-05-02
 
+**Chu de:** Codex adapter source-alignment hardening
+
+Codex adapter docs duoc tighten de tranh source drift tu generated summary.
+`.codex` tiep tuc la adapter summary, khong phai source of truth; Claude-native
+files van thang khi co conflict.
+
+#### Changed - Codex context and checklist alignment
+
+- `.codex/CONTEXT.md`: rewrite thanh source-aligned session context, bo stack
+  defaults chua duoc configure, bo auto-commit guidance, bo last-write-wins
+  conflict rule, them rule Claude source wins.
+- `.codex/PRE_EDIT_CHECKLIST.md`: dung canonical one-line pre-code gate tu
+  `using-sdd`, sua gate definitions de match SDD workflow.
+- `.codex/COMPLETION_CHECKLIST.md`: doi warning handling thanh fixed,
+  classified, or reported; cho phep narrow completion claim khi full
+  verification fail do unrelated existing issues.
+- `.codex/INSTALL.md`: bo hardcoded repo path, dung current repository root.
+
+#### Changed - Codex preflight coverage
+
+- `scripts/codex-preflight.ps1`: them required files va content checks cho
+  `.codex/CONTEXT.md`, `.codex/PRE_EDIT_CHECKLIST.md`,
+  `.codex/COMPLETION_CHECKLIST.md`.
+- `scripts/codex-preflight.sh`: them parity checks tuong ung cho Unix flow.
+
+#### Verification
+
+- `git diff --check -- .codex scripts/codex-preflight.ps1 scripts/codex-preflight.sh`: PASS.
+- `powershell -ExecutionPolicy Bypass -File scripts\codex-preflight.ps1 -SkipSkillValidation -SkipHarnessAudit -SkipReadmeSync -SkipTraceCheck`: PASS, 1 warning do working tree dirty/untracked memory archives.
+- Full `scripts\codex-preflight.ps1`: known README sync failure unrelated to
+  `.codex` scope.
+
+---
+
+### [Unreleased] - 2026-05-02
+
 **Chu de:** Codex adapter hardening — safety rules, context injection, checklists, observability
 
 Codex adapter baseline duoc nang cap tu basic adapter len strategic adapter hardening
