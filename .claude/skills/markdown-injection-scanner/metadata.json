@@ -1,0 +1,11 @@
+{
+  "version": "1.0.0",
+  "organization": "SDD Security Team",
+  "date": "May 2026",
+  "abstract": "Scans Markdown files for 18 categories of malicious code injection including XSS, prompt injection, script injection, base64 payloads, data URI injection, shell command injection, obfuscation, and supply chain attack vectors. Uses parallel subagent execution for speed.",
+  "references": [
+    "https://owasp.org/www-community/attacks/xss/",
+    "https://owasp.org/www-community/attacks/Code_Injection",
+    "https://github.com/certsocietegenerale/awesome-ml-security"
+  ]
+}
