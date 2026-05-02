@@ -50,6 +50,69 @@ Preserve these boundaries:
 - Do not claim work is done without fresh evidence.
 - Do not commit or push unless the user explicitly asks.
 
+## Safety Rules (Manual Deny List)
+
+Claude Code enforces these rules automatically through hooks and permissions.
+Codex does not run those hooks, so **you must enforce these rules manually**.
+
+### Blocked Commands — NEVER Execute
+
+These commands are forbidden. If a task seems to require one, stop and ask the
+user for explicit approval and an alternative approach.
+
+**Destructive filesystem:**
+- `rm -rf /`, `rm -rf .`, `rm -rf /*`, `rm -rf ./*`
+- `mkfs`, `dd if=/dev/zero`, `dd if=/dev/null`
+- `chmod 777`
+
+**Credential and secret exposure:**
+- Reading `.env`, `.env.*`, or any `*.env` file
+- Reading `~/.ssh/`, `~/.aws/`, `~/.azure/`, `~/.gnupg/`, `~/.config/gcloud/`
+- Reading `~/.docker/config.json`, `~/.kube/config`
+- Writing to `.env`, `.env.*`, `.bashrc`, `.zshrc`, `.profile`
+- `cat .env`, `type .env`, or any command that outputs secret files
+
+**Dangerous git:**
+- `git push --force`, `git push -f`
+- `git reset --hard`
+- `git clean -f`
+
+**Remote code execution:**
+- `curl * | sh`, `curl * | bash`
+- `wget * | sh`, `wget * | bash`
+
+**Package and infrastructure:**
+- `npm publish` without explicit user approval
+- `sudo` commands
+- `docker rm -f`, `docker system prune`
+- `crontab -r`
+
+**Destructive SQL (soft warning — proceed only with explicit approval):**
+- `DROP TABLE`, `DELETE FROM`, `TRUNCATE` without WHERE clause
+
+### Risk Tiers
+
+Before editing code or executing commands, assess the risk:
+
+| Tier | Level | Rule |
+|---|---|---|
+| Low | Reversible, local, no shared impact | Proceed with stated verification |
+| Medium | Shared code, needs rollback plan | State the plan and ask for confirmation |
+| High | Destructive, production, or cross-domain | Require explicit user approval |
+
+### Context Files to Read
+
+Claude auto-injects these files via `@.claude/` syntax. Codex does not.
+Read these files at the start of any non-trivial task:
+
+1. `.claude/docs/coding-standards.md`
+2. `.claude/docs/coordination-rules.md`
+3. `.claude/docs/technical-preferences.md`
+4. `.claude/memory/MEMORY.md`
+
+If context window is limited, read at minimum: `coding-standards.md` and
+`MEMORY.md`.
+
 ## Quick Start In Codex
 
 Codex does not have Claude slash commands, so the closest equivalent to

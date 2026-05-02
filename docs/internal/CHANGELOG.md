@@ -8,6 +8,48 @@ Tài liệu này ghi lại lịch sử cập nhật tài liệu và source code 
 
 ### [Unreleased] - 2026-05-02
 
+**Chu de:** Codex adapter hardening — safety rules, context injection, checklists, observability
+
+Codex adapter baseline duoc nang cap tu basic adapter len strategic adapter hardening
+de giai quyet 3 critical issues (hook system absent, permission deny-list not enforced,
+@claude/ context not injected) va cac issue medium/high.
+
+#### Added - Safety Rules (Manual Deny List)
+
+- AGENTS.md: them section Safety Rules voi blocked commands (destructive filesystem,
+  credential exposure, dangerous git, RCE, package/infra, destructive SQL), Risk Tiers
+  table, va Context Files to Read list.
+
+#### Added - Codex Context Injection
+
+- .codex/CONTEXT.md: file moi chua condensed context tu 4 Claude auto-inject files.
+- .codex/START.md: cap nhat them .codex/CONTEXT.md vao reading list.
+
+#### Added - Codex Checklists
+
+- .codex/PRE_EDIT_CHECKLIST.md: thay the Claude pre-code-gate hook.
+- .codex/COMPLETION_CHECKLIST.md: thay the Claude verification-before-completion.
+
+#### Added - Cross-platform Setup
+
+- .codex/INSTALL.md: them macOS/Linux setup, Session Checklist, Uninstall.
+
+#### Added - Commit Telemetry
+
+- .githooks/pre-commit: platform-agnostic commit telemetry hook.
+
+#### Added - Safety Validation
+
+- scripts/codex-safety-check.py: adapter validation script.
+
+#### Changed - Documentation Updates
+
+- docs/codex-compatibility.md: parity matrix +7 rows, file list expanded.
+
+---
+
+### [Unreleased] - 2026-05-02
+
 **Chu de:** Rules upgrade — YAML frontmatter standardization, stack mismatch fixes, new error handling & logging standards
 
 Dot cap nhat nay review va upgrade toan bo 13 rule files trong `.claude/rules/`. Sua 4 van

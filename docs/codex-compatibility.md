@@ -20,9 +20,14 @@ Claude Code
   .claude/hooks
 
 Codex
-  AGENTS.md
-  .codex/INSTALL.md
-  .codex/START.md
+  AGENTS.md                          (entry point + safety rules)
+  .codex/START.md                    (session start prompt)
+  .codex/INSTALL.md                  (setup: Windows + Mac/Linux)
+  .codex/CONTEXT.md                  (critical context summary)
+  .codex/PRE_EDIT_CHECKLIST.md       (pre-code gate replacement)
+  .codex/COMPLETION_CHECKLIST.md     (verification discipline)
+  .githooks/pre-commit               (commit telemetry)
+  scripts/codex-safety-check.py      (adapter validation)
   docs/codex-compatibility.md
   optional junction: ~/.agents/skills/sdd -> .claude/skills
 ```
@@ -59,7 +64,13 @@ Claude remains the runtime owner. Codex is a compatible client.
 | Memory files | `.claude/memory` | Readable as project files | Manual |
 | Circuit breaker | Hooks read/write circuit state | Manual inspection today | Manual |
 | Verification before completion | Skill discipline | Same discipline through `AGENTS.md` | Adapter |
-| Commit/push flow | User-approved | User-approved | Native |
+| Commit/push flow | User-approved | User-approved | Native |\n| Safety rules (deny list) | `.claude/settings.json` deny patterns | `AGENTS.md` Safety Rules section | Adapter |
+| Context injection | `@.claude/` auto-inject syntax | `.codex/CONTEXT.md` manual read | Adapter |
+| Pre-edit checklist | `pre-code-gate` hook | `.codex/PRE_EDIT_CHECKLIST.md` | Adapter |
+| Completion checklist | `verification-before-completion` skill | `.codex/COMPLETION_CHECKLIST.md` | Adapter |
+| Commit telemetry | `log-commit.sh` hook | `.githooks/pre-commit` script | Adapter |
+| Safety validation | `bash-guard.ps1/sh` hook | `scripts/codex-safety-check.py` | Adapter |
+| Platform setup | N/A | `.codex/INSTALL.md` (Windows + Mac/Linux) | Native |
 
 ---
 

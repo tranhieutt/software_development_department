@@ -7,7 +7,7 @@ Paste this message into Codex:
 ```text
 Use the SDD Codex adapter for this repo.
 
-Read AGENTS.md, .claude/skills/codex-sdd/SKILL.md, .claude/skills/using-sdd/SKILL.md,
+Read AGENTS.md, .codex/CONTEXT.md, .claude/skills/codex-sdd/SKILL.md, .claude/skills/using-sdd/SKILL.md,
 docs/technical/SDD_LIFECYCLE_MAP.md, and .claude/skills/start/SKILL.md.
 
 Then run the equivalent of Claude's /start workflow:
@@ -21,16 +21,17 @@ Then run the equivalent of Claude's /start workflow:
 Short form if you already trust the adapter:
 
 ```text
-Use codex-sdd, then route through using-sdd, then run the start workflow for this repo.
+Use codex-sdd, then read .codex/CONTEXT.md, then route through using-sdd, then run the start workflow for this repo.
 ```
 
 Expected behavior:
 
 1. Codex treats `AGENTS.md` as the repo entrypoint.
-2. Codex uses `codex-sdd` only for adapter behavior.
-3. Codex routes through `using-sdd`.
-4. If this is a first session or project state is unclear, Codex follows `start`.
-5. Codex asks the onboarding question instead of writing code.
+2. Codex reads `.codex/CONTEXT.md` for critical context (coding standards, coordination rules, technical preferences, memory architecture) that Claude auto-injects but Codex cannot.
+3. Codex uses `codex-sdd` only for adapter behavior.
+4. Codex routes through `using-sdd`.
+5. If this is a first session or project state is unclear, Codex follows `start`.
+6. Codex asks the onboarding question instead of writing code.
 
 This artifact is additive. It does not replace Claude Code slash commands or
 Claude hook behavior.

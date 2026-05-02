@@ -1,0 +1,30 @@
+#!/bin/sh
+# SDD Codex-aware pre-commit hook
+# Logs commit metadata for observability (replaces Claude log-commit hook).
+# Works on any platform without Claude Code runtime.
+
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+LOG_DIR="$REPO_ROOT/production/traces"
+LOG_FILE="$LOG_DIR/commit-log.jsonl"
+
+mkdir -p "$LOG_DIR"
+
+TIMESTAMP="$(date -u +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || python -c 'from datetime import datetime; print(datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ"))')"
+BRANCH="$(git rev-parse --abbrev-ref HEAD)"
+COMMIT_MSG="$(cat .git/COMMIT_EDITMSG 2>/dev/null || echo 'pre-commit')"
+CHANGED="$(git diff --cached --name-only | tr '\n' ',' | sed 's/,$//')"
+
+# Detect runtime
+if [ -n "$CLAUDE_CODE_SESSION" ]; then
+    RUNTIME="claude"
+elif [ -n "$CODEX_SESSION" ]; then
+    RUNTIME="codex"
+else
+    RUNTIME="manual"
+fi
+
+# Append JSONL log
+printf '{"timestamp":"%s","branch":"%s","runtime":"%s","changed_files":"%s"}\n' \
+    "$TIMESTAMP" "$BRANCH" "$RUNTIME" "$CHANGED" >> "$LOG_FILE"
+
+exit 0
