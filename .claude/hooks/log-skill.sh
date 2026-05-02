@@ -52,12 +52,12 @@ if command -v jq >/dev/null 2>&1; then
         --arg src "user-prompt" \
         '{timestamp:$ts,session_id:$sid,skill:$sk,branch:$b,source:$src}' 2>/dev/null)
 else
-    LOG_ENTRY=$(node -e "
+    LOG_ENTRY=$(LOG_TS="$TIMESTAMP" LOG_SID="$SESSION_ID" LOG_SK="$SKILL_NAME" LOG_BR="$BRANCH" node -e "
         process.stdout.write(JSON.stringify({
-            timestamp: '${TIMESTAMP}',
-            session_id: '${SESSION_ID}',
-            skill: '${SKILL_NAME}',
-            branch: '${BRANCH}',
+            timestamp: process.env.LOG_TS,
+            session_id: process.env.LOG_SID,
+            skill: process.env.LOG_SK,
+            branch: process.env.LOG_BR,
             source: 'user-prompt'
         }));
     " 2>/dev/null)

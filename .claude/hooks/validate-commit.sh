@@ -204,3 +204,5 @@ if command -v npx >/dev/null 2>&1; then
         fi
     fi
 fi
+
+exit 0

@@ -20,13 +20,6 @@ if [ "$TOOL_NAME" != "Task" ]; then
     exit 0
 fi
 
-# ─── DEBUG: dump Task input payload once for schema discovery ─────────────────
-DEBUG_FILE="production/session-logs/task-input-sample.json"
-if [ ! -f "$DEBUG_FILE" ]; then
-    mkdir -p "$(dirname "$DEBUG_FILE")"
-    echo "$INPUT" | jq '.' > "$DEBUG_FILE" 2>/dev/null || true
-fi
-
 CIRCUIT_FILE=".claude/memory/circuit-state.json"
 
 # ─── Extract agent name from Task input ──────────────────────────────────────
@@ -64,10 +57,10 @@ case "$STATE" in
         SHOULD_TRANSITION=false
         if [ -n "$LAST_FAIL_TS" ] && [ "$LAST_FAIL_TS" != "null" ]; then
             if command -v python3 >/dev/null 2>&1; then
-                ELAPSED=$(python3 -c "
-import sys, datetime
+                ELAPSED=$(CIRCUIT_LAST_FAIL_TS="$LAST_FAIL_TS" python3 -c "
+import os, sys, datetime
 try:
-    ts = datetime.datetime.fromisoformat('${LAST_FAIL_TS}'.replace('Z', '+00:00'))
+    ts = datetime.datetime.fromisoformat(os.environ['CIRCUIT_LAST_FAIL_TS'].replace('Z', '+00:00'))
     now = datetime.datetime.now(datetime.timezone.utc)
     diff = (now - ts).total_seconds() / 60
     print(int(diff))

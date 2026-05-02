@@ -67,7 +67,7 @@ if echo "$COMBINED_TEXT" | grep -qiE \
     RISK="High"
 # Low risk: documentation-only tasks
 elif echo "$COMBINED_TEXT" | grep -qiE \
-    '^(docs?|readme|changelog|explain|describe|summarize|analysis|report)'; then
+    '\b(docs?|readme|changelog|explain|describe|summarize|analysis|report)\b'; then
     RISK="Low"
 fi
 

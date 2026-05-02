@@ -66,6 +66,11 @@ SECRET_PATTERNS=(
 
 STAGED_DIFF=$(git diff --cached 2>/dev/null)
 
+# If nothing staged, scan last commit diff (most likely what's being pushed)
+if [ -z "$STAGED_DIFF" ]; then
+    STAGED_DIFF=$(git diff HEAD~1 2>/dev/null)
+fi
+
 if [ -n "$STAGED_DIFF" ]; then
     for pattern in "${SECRET_PATTERNS[@]}"; do
         MATCH=$(echo "$STAGED_DIFF" | grep -E "^\+" | grep -E "$pattern" 2>/dev/null | head -1)

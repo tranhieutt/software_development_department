@@ -26,8 +26,8 @@ foreach ($branch in $protectedBranches) {
 }
 
 if ($matchedBranch) {
-    Write-Host "[HOOK:ValidatePush] Push to protected branch '$matchedBranch' detected."
-    Write-Host "[HOOK:ValidatePush] Reminder: Ensure build passes, tests pass, and no S1/S2 bugs exist."
+    [Console]::Error.WriteLine("[HOOK:ValidatePush] Push to protected branch '$matchedBranch' detected.")
+    [Console]::Error.WriteLine("[HOOK:ValidatePush] Reminder: Ensure build passes, tests pass, and no S1/S2 bugs exist.")
 }
 
 # ─── Secret scan ─────────────────────────────────────────────────────────────
@@ -51,6 +51,12 @@ $secretPatterns = @(
 )
 
 $stagedDiff = git diff --cached 2>$null
+
+# If nothing staged, scan last commit diff (most likely what's being pushed)
+if (-not $stagedDiff) {
+    $stagedDiff = git diff HEAD~1 2>$null
+}
+
 if ($stagedDiff) {
     $addedLines = $stagedDiff | Where-Object { $_ -match '^\+' }
     foreach ($pattern in $secretPatterns) {

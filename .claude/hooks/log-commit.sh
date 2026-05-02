@@ -12,7 +12,9 @@
 # never block or surface noise to the user (Rule 9).
 
 set -u
-exec 2>/dev/null  # suppress all stderr from this hook to keep UI clean
+_HOOK_ERR_LOG="production/session-logs/hook-errors.log"
+mkdir -p "$(dirname "$_HOOK_ERR_LOG")" 2>/dev/null
+exec 2>>"$_HOOK_ERR_LOG"  # redirect stderr to log file instead of /dev/null
 
 INPUT=$(cat)
 

@@ -8,7 +8,9 @@
 # Delegates pattern matching + file append to Node (UTF-8 + regex safety).
 
 set -u
-exec 2>/dev/null  # suppress stderr noise from UI; errors logged to file below
+_HOOK_ERR_LOG="production/session-logs/hook-errors.log"
+mkdir -p "$(dirname "$_HOOK_ERR_LOG")" 2>/dev/null
+exec 2>>"$_HOOK_ERR_LOG"  # redirect stderr to log file instead of /dev/null
 
 INPUT=$(cat)
 

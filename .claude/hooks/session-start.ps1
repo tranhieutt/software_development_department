@@ -3,6 +3,16 @@
 
 Write-Host "=== Claude Code Software Development Department — Session Context (PS) ==="
 
+# SDD Router
+$usingSddSkill = ".claude/skills/using-sdd/SKILL.md"
+if (Test-Path $usingSddSkill) {
+    Write-Host ""
+    Write-Host "=== SDD ROUTER ==="
+    Write-Host "Required workflow router: $usingSddSkill"
+    Write-Host "Before any task action, route the request through using-sdd and follow the matching SDD skill gates."
+    Write-Host "=== END SDD ROUTER ==="
+}
+
 # Current branch
 $branch = git rev-parse --abbrev-ref HEAD 2>$null
 if ($branch) {
@@ -56,8 +66,13 @@ if (Test-Path "src") {
     }
 }
 
-# --- Active session state recovery ---
-$stateFile = "production/session-state/active.md"
+# --- Active session state recovery / bootstrap ---
+$stateDir = "production/session-state"
+$stateFile = "$stateDir/active.md"
+if (-not (Test-Path $stateDir)) {
+    New-Item -ItemType Directory -Path $stateDir -Force 2>$null | Out-Null
+}
+
 if (Test-Path $stateFile) {
     Write-Host ""
     Write-Host "=== ACTIVE SESSION STATE DETECTED ==="
@@ -71,6 +86,84 @@ if (Test-Path $stateFile) {
         Write-Host "  ... ($totalLines total lines — read the full file to continue)"
     }
     Write-Host "=== END SESSION STATE PREVIEW ==="
+} else {
+    # Bootstrap a fresh active.md template
+    $now = Get-Date -Format "yyyy-MM-ddTHH:mm:ssZ"
+    $curBranch = if ($branch) { $branch } else { "main" }
+    $template = @"
+---
+session: init
+branch: $curBranch
+tags: []
+started: $now
+lastActive: $now
+---
+
+# Active Session State
+
+> Live checkpoint for the current Claude Code session. The **file is the memory,
+> not the conversation**. Append a new ``<!-- STATUS -->`` block at the end on
+> every milestone or compaction; the last block wins.
+
+## Current Task
+
+_No active task — waiting for user direction._
+
+## Progress Checklist
+
+- [ ] _Fill in as work begins_
+
+## Key Decisions Made
+
+_None yet._
+
+## Files This Session
+
+| File | Action | Timestamp |
+|---|---|---|
+| _(none)_ | _(none)_ | _(none)_ |
+
+## Partial Reads This Session
+
+_None._
+
+## Cached Decisions (may be stale)
+
+_None._
+
+## Subagent Log
+
+| Timestamp | Agent | Task | Outcome |
+|---|---|---|---|
+| _(none)_ | _(none)_ | _(none)_ | _(none)_ |
+
+## Open Questions / Blockers
+
+_None._
+
+---
+
+<!-- STATUS: $now | Task: session initialized -->
+Fresh session-state bootstrap by session-start.ps1. No work in progress.
+<!-- /STATUS -->
+"@
+    Set-Content -Path $stateFile -Value $template -Encoding UTF8 2>$null
+    Write-Host ""
+    Write-Host "=== ACTIVE SESSION STATE BOOTSTRAPPED ==="
+    Write-Host "Created fresh $stateFile (no prior session detected)."
+    Write-Host "=== END STATE BOOTSTRAP ==="
+}
+
+# --- GitNexus indexed repos ---
+$npxPath = Get-Command npx -ErrorAction SilentlyContinue
+if ($npxPath) {
+    $gnList = npx --no gitnexus list 2>$null
+    if ($gnList) {
+        Write-Host ""
+        Write-Host "GitNexus indexed repos:"
+        $gnList | ForEach-Object { Write-Host "  $_" }
+        Write-Host "  (run 'npx gitnexus status' to check freshness)"
+    }
 }
 
 Write-Host "==================================="

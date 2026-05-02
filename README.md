@@ -12,7 +12,7 @@
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT License"></a>
   <a href=".claude/agents"><img src="https://img.shields.io/badge/agents-28-blueviolet" alt="28 Agents"></a>
   <a href=".claude/skills"><img src="https://img.shields.io/badge/skills-125-green" alt="125 Skills"></a>
-  <a href=".claude/hooks"><img src="https://img.shields.io/badge/hooks-29-orange" alt="29 Hook Files"></a>
+  <a href=".claude/hooks"><img src="https://img.shields.io/badge/hooks-28-orange" alt="28 Hook Files""></a>
   <a href=".claude/rules"><img src="https://img.shields.io/badge/rules-13-red" alt="13 Rules"></a>
   <a href="https://docs.anthropic.com/en/docs/claude-code"><img src="https://img.shields.io/badge/built%20for-Claude%20Code-f5f5f5?logo=anthropic" alt="Built for Claude Code"></a>
 </p>
@@ -276,7 +276,7 @@ Type `/` in Claude Code — you see what's relevant, not all 125.
 |---|---|---|
 | **Agents** | 28 | Specialized subagents across product, engineering, design, QA, data, and operations |
 | **Skills** | 125 | Core workflows and technology frameworks with context-aware routing |
-| **Hooks** | 29 | Automated validation: commits, pushes, asset changes, session lifecycle, circuit breaker, skill telemetry, decision ledger, bash guard, fork-join |
+| **Hooks** | 28 | Automated validation: commits, pushes, asset changes, session lifecycle, circuit breaker, skill telemetry, decision ledger, bash guard, fork-join |
 | **Rules** | 13 | Path-scoped coding standards enforced automatically by file location |
 | **Templates** | 22+ | PRDs, API designs, system architecture, ADRs, mobile, incident response, postmortem |
 
@@ -347,7 +347,7 @@ TODO.md                             # Living backlog (governed by @producer)
   settings.json                     # Permissions, deny rules, hook registration
   agents/                           # 28 agent definitions with domain ownership
   skills/                           # 125 skills (one subdirectory each)
-  hooks/                            # 29 hook scripts
+  hooks/                            # 28 hook scripts
   rules/                            # 13 path-scoped coding standards
   memory/                           # 5-layer durable memory system
   docs/

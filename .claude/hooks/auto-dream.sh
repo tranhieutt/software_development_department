@@ -8,6 +8,13 @@ MEMORY_DIR=".claude/memory"
 MEMORY_INDEX="$MEMORY_DIR/MEMORY.md"
 ARCHIVE_DREAMS="$MEMORY_DIR/archive/dreams"
 
+# ─── Cleanup trap ─────────────────────────────────────────────────────────────
+# Ensure any temp file created by this script is removed on exit/interrupt.
+_cleanup() {
+    [ -n "${_DREAM_TMP:-}" ] && rm -f "$_DREAM_TMP" 2>/dev/null
+}
+trap _cleanup EXIT INT TERM
+
 # ─── Guard: Only run if memory directory exists ───────────────────────────────
 [ -d "$MEMORY_DIR" ] || exit 0
 
@@ -68,6 +75,7 @@ PRUNED=0
 if [ -f "$MEMORY_INDEX" ]; then
     # Remove lines pointing to files that no longer exist in memory dir
     TMP=$(mktemp)
+    _DREAM_TMP="$TMP"
     while IFS= read -r line; do
         # Extract filename from markdown link: [Title](filename.md)
         LINKED_FILE=$(echo "$line" | grep -oE '\([^)]+\.md\)' | tr -d '()')
