@@ -13,7 +13,7 @@
   <a href=".claude/agents"><img src="https://img.shields.io/badge/agents-28-blueviolet" alt="28 Agents"></a>
   <a href=".claude/skills"><img src="https://img.shields.io/badge/skills-126-green" alt="126 Skills"></a>
   <a href=".claude/hooks"><img src="https://img.shields.io/badge/hooks-28-orange" alt="28 Hook Files""></a>
-  <a href=".claude/rules"><img src="https://img.shields.io/badge/rules-13-red" alt="13 Rules"></a>
+  <a href=".claude/rules"><img src="https://img.shields.io/badge/rules-15-red" alt="15 Rules"></a>
   <a href="https://docs.anthropic.com/en/docs/claude-code"><img src="https://img.shields.io/badge/built%20for-Claude%20Code-f5f5f5?logo=anthropic" alt="Built for Claude Code"></a>
 </p>
 
@@ -93,7 +93,7 @@ SDD triển khai **10 trong 12** patterns từ kiến trúc agentic harness nộ
 | Pattern | Trạng thái | Triển khai |
 |---|---|---|
 | #1 Structured Agent Definitions | ✅ | 28 agents với YAML frontmatter + domain ownership |
-| #2 Path-Scoped Rules | ✅ | 13 rules tự động enforce theo file path |
+| #2 Path-Scoped Rules | ✅ | 15 rules tự động enforce theo file path |
 | #3 Tiered Memory | ✅ | 5 tầng: MEMORY.md → topic files → archive → Supermemory |
 | #4 Dream Consolidation | ✅ | `auto-dream.sh` — 5-phase consolidation tự động |
 | #6 Context: Fork | ✅ | 10 analysis skills nặng chạy trong subagent context độc lập |
@@ -238,7 +238,7 @@ Gõ `/` trong Claude Code — bạn thấy cái relevant, không phải cả 126
 | **Agents** | 28 | Agents chuyên biệt cho product, engineering, design, QA, data, operations |
 | **Skills** | 126 | Core workflows và technology frameworks với context-aware routing |
 | **Hooks** | 28 | Automated validation: commits, pushes, asset changes, session lifecycle, circuit breaker, skill telemetry, decision ledger, bash guard, fork-join |
-| **Rules** | 13 | Coding standards tự động enforce theo file path |
+| **Rules** | 15 | Coding standards tự động enforce theo file path |
 | **Templates** | 22+ | PRDs, API designs, system architecture, ADRs, mobile, incident response, postmortem |
 
 ---
@@ -287,7 +287,7 @@ TODO.md                             # Living backlog (quản lý bởi @producer
   agents/                           # 28 agent definitions với domain ownership
   skills/                           # 126 skills (mỗi subdirectory một skill)
   hooks/                            # 28 hook scripts
-  rules/                            # 13 path-scoped coding standards
+  rules/                            # 15 path-scoped coding standards
   memory/                           # 5-layer durable memory system
   docs/
     quick-start.md

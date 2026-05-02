@@ -13,7 +13,7 @@
   <a href=".claude/agents"><img src="https://img.shields.io/badge/agents-28-blueviolet" alt="28 Agents"></a>
   <a href=".claude/skills"><img src="https://img.shields.io/badge/skills-126-green" alt="126 Skills"></a>
   <a href=".claude/hooks"><img src="https://img.shields.io/badge/hooks-28-orange" alt="28 Hook Files""></a>
-  <a href=".claude/rules"><img src="https://img.shields.io/badge/rules-13-red" alt="13 Rules"></a>
+  <a href=".claude/rules"><img src="https://img.shields.io/badge/rules-15-red" alt="15 Rules"></a>
   <a href="https://docs.anthropic.com/en/docs/claude-code"><img src="https://img.shields.io/badge/built%20for-Claude%20Code-f5f5f5?logo=anthropic" alt="Built for Claude Code"></a>
 </p>
 
@@ -131,7 +131,7 @@ SDD implements **10 of 12** patterns from Claude Code's internal agentic harness
 | Pattern | Status | Implementation |
 |---|---|---|
 | #1 Structured Agent Definitions | ✅ | 28 agents with YAML frontmatter + domain ownership |
-| #2 Path-Scoped Rules | ✅ | 13 rules auto-enforced by file path |
+| #2 Path-Scoped Rules | ✅ | 15 rules auto-enforced by file path |
 | #3 Tiered Memory | ✅ | 5-layer: MEMORY.md → topic files → archive → Supermemory |
 | #4 Dream Consolidation | ✅ | `auto-dream.sh` — 5-phase automated consolidation |
 | #6 Context: Fork | ✅ | 10 heavy analysis skills run in isolated subagent context |
@@ -277,7 +277,7 @@ Type `/` in Claude Code — you see what's relevant, not all 126.
 | **Agents** | 28 | Specialized subagents across product, engineering, design, QA, data, and operations |
 | **Skills** | 126 | Core workflows and technology frameworks with context-aware routing |
 | **Hooks** | 28 | Automated validation: commits, pushes, asset changes, session lifecycle, circuit breaker, skill telemetry, decision ledger, bash guard, fork-join |
-| **Rules** | 13 | Path-scoped coding standards enforced automatically by file location |
+| **Rules** | 15 | Path-scoped coding standards enforced automatically by file location |
 | **Templates** | 22+ | PRDs, API designs, system architecture, ADRs, mobile, incident response, postmortem |
 
 ---
@@ -348,7 +348,7 @@ TODO.md                             # Living backlog (governed by @producer)
   agents/                           # 28 agent definitions with domain ownership
   skills/                           # 126 skills (one subdirectory each)
   hooks/                            # 28 hook scripts
-  rules/                            # 13 path-scoped coding standards
+  rules/                            # 15 path-scoped coding standards
   memory/                           # 5-layer durable memory system
   docs/
     quick-start.md
