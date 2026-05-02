@@ -6,6 +6,88 @@ Tài liệu này ghi lại lịch sử cập nhật tài liệu và source code 
 
 ## 🗓️ Lịch sử cập nhật
 
+
+### [Unreleased] - 2026-05-02
+
+**Chu de:** Hooks hardening, skills quality overhaul, and markdown security scanner
+
+Dot cap nhat nay bao gom 6 commits tu 2026-05-02: refactor skills boilerplate
+chat luong P0-P4, fix 14 hooks issues (security, cross-platform, performance),
+suppress ShellCheck warnings, dong bo skill count README, va them skill
+markdown-injection-scanner cho .md security audit.
+
+#### New - `markdown-injection-scanner` skill
+
+- Them `.claude/skills/markdown-injection-scanner/SKILL.md` (188 dong).
+- Quet file Markdown (.md) cho cac loai code injection: XSS, prompt injection,
+  script injection, obfuscated payloads, va supply chain attack vectors.
+- Khi nao dung: audit file .md cho security threats, khi user muon scan markdown
+  cho malicious content.
+- Them `metadata.json` cho skill.
+
+#### Refactor - Skills quality overhaul P0-P4
+
+- Xoa cac skill stub boilerplate trong: `backend-security-coder`,
+  `cloud-architect`, `flutter-expert`, `frontend-security-coder`.
+- Rewrite chat luong: `deployment-engineer`, `dotnet-backend-patterns`,
+  `gitlab-ci-patterns`.
+- Cap nhat skill boilerplate cho `changelog` va cac skill khac.
+- Xoa stale memory archives (session logs cu 2026-04-27).
+- Dong bo `README.md` skill count tu 126 -> 125 (sau khi xoa `startup-business`).
+
+#### Refactor - Harden execution and review discipline
+
+- `.claude/skills/systematic-debugging/SKILL.md`: nang rule "feedback loop first"
+  thanh gate ro rang, them 9-phase workflow chi tiet hon.
+- `.claude/skills/planning-and-task-breakdown/SKILL.md`: them issue-shaped
+  tracer-bullet guidance, blocker-first sequencing, AFK/HITL classification.
+- `.claude/skills/vertical-slicing/SKILL.md`: nguyen tac slice phai giu depth,
+  them `Blocked by`, acceptance criteria, verification, interface-risk framing.
+- `.claude/skills/test-driven-development/SKILL.md`: them anti-horizontal-slice
+  wording, cam bulk RED, yeu cau khong de queued RED tests.
+- `.claude/skills/receiving-code-review/SKILL.md`: them lens
+  deep-module/deletion-test cho review findings.
+- `.claude/skills/code-review/SKILL.md`,
+  `.claude/skills/code-review-checklist/SKILL.md`: dua deletion test vao review
+  criteria.
+- `.claude/skills/code-simplification/SKILL.md`: uu tien deepen modules thay vi
+  tao helper/wrapper nong, them deletion-test guidance.
+- `.claude/skills/tech-debt/SKILL.md`: nhan dien shallow wrappers va failed
+  deletion-test seams nhu Architecture Debt.
+- `.claude/skills/diagnose/SKILL.md`: lam Stage 0 thanh leverage point chinh,
+  them quality gate cho `feedback_loop.signal`.
+
+#### Fixed - Hooks system (14 issues)
+
+- `.claude/hooks/auto-dream.sh`: bo sung error handling va log.
+- `.claude/hooks/circuit-guard.sh`: fix security va cross-platform issues.
+- `.claude/hooks/debug-posttooluse.sh`: xoa (temporary hook da hoan thanh muc
+  dich, schema discovery da co data).
+- `.claude/hooks/decision-ledger-writer.sh`: fix minor issue.
+- `.claude/hooks/extract-decisions.sh`: fix variable handling.
+- `.claude/hooks/log-commit.sh`: fix variable handling.
+- `.claude/hooks/log-skill.sh`: fix security va input handling.
+- `.claude/hooks/persist-memory.sh`: fix variable handling.
+- `.claude/hooks/session-start.ps1`: mo rong 99+ dong, them full Windows
+  PowerShell parity.
+- `.claude/hooks/session-start.sh`: fix minor issues.
+- `.claude/hooks/validate-commit.ps1`: rewrite 159+ dong, nang security checks
+  va cross-platform support.
+
+#### Fixed - ShellCheck warnings
+
+- `.claude/hooks/auto-dream.sh`: suppress SC2317 (unreachable code) bang
+  shellcheck directive.
+- `.claude/hooks/session-start.sh`: suppress SC2012 bang shellcheck directive,
+  dung `find` thay vi `ls` cho counting.
+- `.claude/hooks/*`: fix SC1087 bang su dung braces cho variable expansion.
+
+#### Verification
+
+- `powershell -ExecutionPolicy Bypass -File scripts\validate-skills.ps1`: PASS.
+- `node scripts\harness-audit.js --compact`: PASS.
+
+---
 ### [Unreleased] - 2026-05-01
 
 **Chu de:** Deepen SDD execution, review, and architecture vocabulary

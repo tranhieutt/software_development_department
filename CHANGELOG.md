@@ -4,7 +4,14 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
-## [Unreleased] - 2026-05-01
+## [Unreleased] - 2026-05-02
+
+### Added
+- New `markdown-injection-scanner` skill for .md file security audit (XSS, prompt injection, script injection, obfuscated payloads)
+
+### Fixed
+- Resolved 14 issues in hooks system: security hardening, cross-platform compatibility, performance improvements
+- Suppressed shellcheck warnings SC2317, SC2012 in auto-dream.sh and session-start.sh
 
 ### Removed
 - Deleted startup-business skill (empty boilerplate)
@@ -17,7 +24,5 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Removed broken resources/implementation-playbook.md references from 6 skills
 - Fixed 6 naming inconsistencies (architecture-decision to architecture-decision-records)
 - Fixed vertical-slicing typo (/vertical-slice to /vertical-slicing)
-
-### Added
 - Cross-references between changelog and patch-notes skills
 - 4 new validation checks in validate-skills.ps1 and validate-skills.sh (type validation, boilerplate detection, broken references, minimum content length)
