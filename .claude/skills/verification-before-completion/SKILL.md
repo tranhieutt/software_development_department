@@ -77,6 +77,7 @@ Map the claim to the smallest sufficient proof:
 | Agent completed work | Inspect changed files or diff, then run the plan's verification |
 | Merge/PR ready | Tests/build required by project plus review of changed-file scope |
 | Documentation updated | File exists, relevant sections changed, links or generated indexes verified |
+| Prose quality verified | Fresh `style-review` scorecard, or an explicit statement that style review was skipped |
 | Manual/visual outcome | Exact manual check, environment, viewport/artifact, and observed result |
 
 When multiple claims are being made, verify each claim or narrow the final
@@ -133,6 +134,7 @@ the success claim and the evidence appear together.
 | About to open a PR | Verify tests/build and summarize changed scope |
 | About to say a bug is fixed | Verify the original reproduction path or regression test |
 | About to claim docs are updated | Check the changed docs and any generated command list/index if applicable |
+| About to claim docs are polished or review-ready | Run `style-review` or state that prose style was not verified |
 
 ## Anti-Rationalizations
 
@@ -166,3 +168,5 @@ Stop and verify before proceeding if:
   and again after cross-task verification.
 - `commit`, `pr-writer`, `code-review`, `gate-check`, `release-checklist`, and
   `launch-checklist` should use this gate before success or readiness claims.
+- `style-review` supplies optional evidence for claims about prose clarity,
+  citation discipline, or documentation polish.

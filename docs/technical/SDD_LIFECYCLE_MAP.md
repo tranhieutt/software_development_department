@@ -39,8 +39,8 @@ This document is a navigation aid, not a replacement for the control plane.
 | PLAN | Turn intent into executable, reviewable tasks. | `planning-and-task-breakdown`, `vertical-slicing`, `orchestrate`, `fork-join` | Task list with files, acceptance criteria, verification commands, dependencies, and user approval. |
 | BUILD | Make the approved change with narrow scope. | `test-driven-development`, `subagent-driven-development`, domain implementation skills | RED/GREEN or equivalent implementation evidence. |
 | VERIFY | Prove the exact claim being made. | `verification-before-completion`, `systematic-debugging`, `diagnose`, future browser/runtime verification skills | Fresh test, build, lint, manual, visual, runtime, or review evidence. |
-| REVIEW | Check quality, safety, maintainability, and scope. | `code-review`, `code-review-checklist`, `receiving-code-review`, `code-simplification`, `security-audit`, `design-review`, `db-review`, `mobile-review` | Findings classified and blocking issues fixed, rejected with evidence, deferred, or routed to `spec-evolution`. |
-| SHIP | Package, commit, PR, release, or hand off safely. | `commit`, `pr-writer`, `changelog`, `release-checklist`, `launch-checklist`, `patch-notes`, `save-state` | User-approved commit/push/PR/release step, changelog or release evidence, and stated residual risks. |
+| REVIEW | Check quality, safety, maintainability, and scope. | `code-review`, `style-review`, `code-review-checklist`, `receiving-code-review`, `code-simplification`, `security-audit`, `design-review`, `db-review`, `mobile-review` | Findings classified and blocking issues fixed, rejected with evidence, deferred, or routed to `spec-evolution`. |
+| SHIP | Package, commit, PR, release, or hand off safely. | `commit`, `pr-writer`, `style-review`, `changelog`, `release-checklist`, `launch-checklist`, `patch-notes`, `save-state` | User-approved commit/push/PR/release step, changelog or release evidence, and stated residual risks. |
 
 ---
 
@@ -200,6 +200,8 @@ This document is a navigation aid, not a replacement for the control plane.
 - `code-review` and `code-review-checklist` for quality and architecture.
 - `receiving-code-review` for review feedback triage.
 - `code-simplification` for behavior-preserving cleanup after tests pass.
+- `style-review` for important prose artifacts such as specs, ADRs, PR bodies,
+  release notes, and technical docs when clarity or evidence discipline matters.
 - `security-audit` for security-sensitive changes.
 - `design-review`, `db-review`, or `mobile-review` for domain-specific review.
 
@@ -230,6 +232,8 @@ This document is a navigation aid, not a replacement for the control plane.
 
 - `commit` for user-approved commits.
 - `pr-writer` for PR title/body and linked context.
+- `style-review` for final prose polish when PR bodies, release notes, or docs
+  are important enough to review separately.
 - `changelog`, `patch-notes`, `release-checklist`, and `launch-checklist` for
   release readiness.
 - `save-state` before session end, context reset, handoff, or pause.
@@ -318,6 +322,7 @@ BUILD
 VERIFY
   file/link/index validation
 REVIEW
+  style-review when prose quality matters
   code-review only if docs alter executable examples or policy
 SHIP
   commit / changelog as authorized

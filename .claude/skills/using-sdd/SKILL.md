@@ -53,6 +53,7 @@ skill and follow its gates.
 | API contract or endpoint design | `api-design` |
 | Architecture decision with durable consequences | `architecture-decision-records` |
 | Code quality, PR review, merge readiness | `code-review` or `code-review-checklist` |
+| Prose quality for specs, ADRs, PR bodies, release notes, or technical docs | `style-review` |
 | Behavior-preserving cleanup, simplification, readability refactor, or complexity reduction after tests pass | `code-simplification` |
 | Review comments, PR feedback, CHANGES_REQUIRED verdict, or reviewer questions need response | `receiving-code-review` |
 | Phase transition or readiness review | `gate-check` |
@@ -72,8 +73,8 @@ When multiple skills apply, use process skills before implementation skills:
 3. Investigation and execution: `systematic-debugging`,
    `test-driven-development`, domain implementation skills
 4. Review and release: `verification-before-completion`, `code-review`,
-   `code-simplification`, `receiving-code-review`, `gate-check`,
-   `release-checklist`
+   `style-review`, `code-simplification`, `receiving-code-review`,
+   `gate-check`, `release-checklist`
 
 ## Mandatory Gates
 

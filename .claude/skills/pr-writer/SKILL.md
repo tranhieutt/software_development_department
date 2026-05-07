@@ -87,6 +87,10 @@ Use this structure for PR descriptions (ignoring any repository PR templates):
 - Context that isn't obvious from the code
 - Notes on specific areas that need careful review
 
+For non-trivial PR prose, use `style-review` as an opt-in polish pass before
+the body is finalized. The pass must review a draft copy and must not mutate the
+source draft unless the user explicitly accepts edits.
+
 ### Step 4: Create the PR
 
 ```bash

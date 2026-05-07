@@ -42,6 +42,7 @@
 | 002 | Puppeteer Launch Config for Serverless | Accepted | 2026-04-03 | @devops-engineer |
 | 006 | Shared State Adoption as Tier 2 Evolution of SDD Coordination | Accepted | 2026-04-23 | User, @technical-director |
 | 007 | Shared SDD Core with Dual Execution Lanes for Claude and Codex | Accepted | 2026-04-24 | User, @technical-director |
+| 008 | Adopt agent-style as an Opt-in Prose Review Gate | Accepted | 2026-05-07 | User, @technical-director |
 
 ---
 
@@ -149,3 +150,30 @@ implementation.
   strengths.
 - **Negative**: Requires explicit handoff discipline and continued Codex adapter
   maintenance instead of a full native Codex runtime.
+
+---
+
+## ADR-008: Adopt agent-style as an Opt-in Prose Review Gate
+
+**Date**: 2026-05-07
+**Status**: Accepted
+**Deciders**: User, @technical-director
+**Detailed ADR**: [docs/internal/adr/ADR-008-adopt-agent-style-opt-in-review.md](../internal/adr/ADR-008-adopt-agent-style-opt-in-review.md)
+
+### Context
+SDD produces specs, ADRs, PR descriptions, release notes, runbooks, and
+completion summaries where clear prose and evidence-backed claims affect review
+quality. The repository also has existing runtime voice constraints in
+`AGENTS.md` and a Claude-native constitution in `CLAUDE.md`.
+
+### Decision
+Adopt `agent-style` v0.3.5 as an opt-in `style-review` gate. Vendor the pinned
+rule pack under `.agent-style/`, route important prose artifacts to
+`style-review` when prose quality matters, and do not enable global soft
+enforcement in `AGENTS.md` or `CLAUDE.md`.
+
+### Consequences
+- **Positive**: Adds a repeatable prose review path for important SDD artifacts
+  without changing ordinary agent responses.
+- **Negative**: Requires explicit invocation and an installed `agent-style` CLI
+  for deterministic audit output.

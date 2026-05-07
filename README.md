@@ -4,15 +4,37 @@
     A structured agentic system that transforms a single Claude Code session<br />
     into a coordinated software engineering organization.
     <br /><br />
-    28 agents - 126 context-optimized skills - 10/12 agentic harness patterns - MAS Infrastructure - Steel-discipline enforcement - Runtime-proven harness
+    28 agents - 127 context-optimized skills - 10/12 agentic harness patterns - MAS Infrastructure - Steel-discipline enforcement - Runtime-proven harness
   </p>
 </p>
 
 <p align="center">
+  <a href="https://github.com/tranhieutt/software_development_department/stargazers"><img src="https://img.shields.io/github/stars/tranhieutt/software_development_department?style=for-the-badge&logo=github&color=ffd33d" alt="GitHub stars"></a>
+  <a href="https://github.com/tranhieutt/software_development_department/network/members"><img src="https://img.shields.io/github/forks/tranhieutt/software_development_department?style=for-the-badge&logo=github&color=8a63d2" alt="GitHub forks"></a>
+  <a href="https://github.com/tranhieutt/software_development_department/commits/main"><img src="https://img.shields.io/github/last-commit/tranhieutt/software_development_department?style=for-the-badge&color=00b4d8" alt="Last commit"></a>
+  <a href="https://github.com/tranhieutt/software_development_department/issues"><img src="https://img.shields.io/github/issues/tranhieutt/software_development_department?style=for-the-badge&color=f97316" alt="Open issues"></a>
+</p>
+
+<!--
+  TRENDSHIFT BADGE; replace XXXXX after claiming the repo at https://trendshift.io
+  1. Sign in with GitHub at https://trendshift.io
+  2. Search "software_development_department" and click "Claim"
+  3. Copy the numeric repository ID from the badge snippet they provide
+  4. Replace XXXXX below in BOTH lines, then uncomment
+-->
+<!--
+<p align="center">
+  <a href="https://trendshift.io/repositories/XXXXX" target="_blank">
+    <img src="https://trendshift.io/api/badge/repositories/XXXXX" alt="Trendshift" style="width: 250px; height: 55px;" width="250" height="55"/>
+  </a>
+</p>
+-->
+
+<p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT License"></a>
   <a href=".claude/agents"><img src="https://img.shields.io/badge/agents-28-blueviolet" alt="28 Agents"></a>
-  <a href=".claude/skills"><img src="https://img.shields.io/badge/skills-126-green" alt="126 Skills"></a>
-  <a href=".claude/hooks"><img src="https://img.shields.io/badge/hooks-28-orange" alt="28 Hook Files""></a>
+  <a href=".claude/skills"><img src="https://img.shields.io/badge/skills-127-green" alt="127 Skills"></a>
+  <a href=".claude/hooks"><img src="https://img.shields.io/badge/hooks-28-orange" alt="28 Hook Files"></a>
   <a href=".claude/rules"><img src="https://img.shields.io/badge/rules-15-red" alt="15 Rules"></a>
   <a href="https://docs.anthropic.com/en/docs/claude-code"><img src="https://img.shields.io/badge/built%20for-Claude%20Code-f5f5f5?logo=anthropic" alt="Built for Claude Code"></a>
 </p>
@@ -36,7 +58,7 @@ does not change Claude Code runtime behavior.
 - Start with `AGENTS.md` when using Codex in this repo.
 - Install/discover SDD skills through `.codex/INSTALL.md`.
 - Use `.codex/START.md` as the recommended first prompt when you want the
-  Codex equivalent of Claude's `/start` workflow.
+  Codex equivalent of the Claude `/start` workflow.
 - Use `docs/codex-compatibility.md` for the Claude-to-Codex tool mapping,
   manual hook equivalents, and verification checklist.
 - Run `powershell -ExecutionPolicy Bypass -File scripts\codex-preflight.ps1`
@@ -63,9 +85,11 @@ Use codex-sdd, then route through using-sdd, then run the start workflow for thi
 
 ## The Problem
 
-An AI session without structure behaves like a junior engineer without oversight: it ships, but it skips the design doc, ignores edge cases, accumulates silent technical debt, and has no one to push back when the scope creeps.
+An AI session without structure behaves like a junior engineer without oversight.
+It ships, but it skips the design doc, ignores edge cases, accumulates silent
+technical debt, and has no one to push back when the scope creeps.
 
-The fundamental constraint is not model capability — it's organizational entropy. A single-session AI has no department boundaries, no escalation path, no domain authority, no memory across concerns. It answers every question but owns nothing.
+The fundamental constraint is not model capability; it is organizational entropy. A single-session AI has no department boundaries, no escalation path, no domain authority, no memory across concerns. It answers every question but owns nothing.
 
 **Claude Code Software Development Department** is an architectural solution to that problem.
 
@@ -73,15 +97,15 @@ The fundamental constraint is not model capability — it's organizational entro
 
 ## What This System Is
 
-SDD is a **governed multi-agent harness** built natively on Claude Code's agentic primitives. It is not a wrapper. It is not a prompt library. It is an organizational structure that imposes the coordination patterns of a real engineering department on top of a Claude Code session.
+SDD is a **governed multi-agent harness** built natively on Claude Code agentic primitives. The system is not a wrapper or a prompt library. It is an organizational structure that imposes the coordination patterns of a real engineering department on top of a Claude Code session.
 
 The result is a system where:
 
-- **Authority is scoped**: agents own domains and don't cross boundaries without explicit delegation
-- **Process is enforced**: spec before implementation, plan before code, tests before merge — enforced via hooks and verification gates, not suggestions
+- **Authority is scoped**: agents own domains and do not cross boundaries without explicit delegation
+- **Process is enforced**: spec before implementation, plan before code, tests before merge; enforced via hooks and verification gates, not suggestions
 - **Memory persists**: a 5-layer durable memory architecture (Tier 1 index → Tier 2 topic files → Tier 3 cold archive → MCP Supermemory semantic store) survives across sessions (**Privacy-first: Bring Your Own Brain**)
 - **Context is surgical**: incremental loading with a 3-Question Relevance Gate prevents context stuffing; max 3 Tier 2 files per session
-- **Routing is precise**: 126 skills with `paths:` triggers, `when_to_use:` semantics, and `effort:` scores let the AI self-route without human navigation
+- **Routing is precise**: 127 skills with `paths:` triggers, `when_to_use:` semantics, and `effort:` scores let the AI self-route without human navigation
 - **Visual Intelligence**: Automated Technical Diagramming (SVG/PNG) for architectures, sequence flows, and process models via `/visualize`. 
 
 ---
@@ -97,14 +121,14 @@ The result is a system where:
 Three tiers. Clear escalation paths. No ambiguous authority.
 
 ```
-Tier 1 — Executive (Opus)
+Tier 1; Executive (Opus)
   cto                 technical-director    producer
 
-Tier 2 — Leads (Sonnet)
+Tier 2; Leads (Sonnet)
   product-manager     lead-programmer       ux-designer
   qa-engineer         release-manager
 
-Tier 3 — Specialists (Sonnet / Haiku)
+Tier 3; Specialists (Sonnet / Haiku)
   frontend-developer  backend-developer     fullstack-developer
   mobile-developer    ai-programmer         network-programmer
   tools-programmer    ui-programmer         data-engineer
@@ -126,17 +150,17 @@ Tier 3 — Specialists (Sonnet / Haiku)
 
 ### Agentic Harness Coverage
 
-SDD implements **10 of 12** patterns from Claude Code's internal agentic harness architecture:
+SDD implements **10 of 12** patterns from Claude Code internal agentic harness architecture:
 
 | Pattern | Status | Implementation |
 |---|---|---|
 | #1 Structured Agent Definitions | ✅ | 28 agents with YAML frontmatter + domain ownership |
 | #2 Path-Scoped Rules | ✅ | 15 rules auto-enforced by file path |
 | #3 Tiered Memory | ✅ | 5-layer: MEMORY.md → topic files → archive → Supermemory |
-| #4 Dream Consolidation | ✅ | `auto-dream.sh` — 5-phase automated consolidation |
+| #4 Dream Consolidation | ✅ | `auto-dream.sh`; 5-phase automated consolidation |
 | #6 Context: Fork | ✅ | 10 heavy analysis skills run in isolated subagent context |
-| #7 Skill Routing | ✅ | 126 skills with `paths:`, `when_to_use:`, `effort:` metadata |
-| #8 Fork-Join Parallelism | ✅ | `fork-join.sh` — git worktree lifecycle manager |
+| #7 Skill Routing | ✅ | 127 skills with `paths:`, `when_to_use:`, `effort:` metadata |
+| #8 Fork-Join Parallelism | ✅ | `fork-join.sh`; git worktree lifecycle manager |
 | #10 Least Privilege Tools | ✅ | `allowed-tools:` per skill + 22-entry permission allow-list |
 | #11 Bash Guard | ✅ | `bash-guard.sh` blocks RCE patterns, destructive commands |
 | #12 Annotation System | ✅ | `/annotate` skill + `annotations.md` persistent gotcha store |
@@ -147,7 +171,7 @@ SDD implements **10 of 12** patterns from Claude Code's internal agentic harness
 
 ## Runtime Observability (v1.45.0)
 
-The most recent architecture cycle upgraded SDD from **artifact-complete** to **runtime-proven** — every harness component now has telemetry, audit trails, and health reporting.
+The most recent architecture cycle upgraded SDD from **artifact-complete** to **runtime-proven**; every harness component now has telemetry, audit trails, and health reporting.
 
 ### Per-Agent Circuit Breaker
 
@@ -162,8 +186,8 @@ Circuit breaker migrated from global kill-switch to per-agent state machine (`ci
 }
 ```
 
-- `circuit-guard.sh` reads `subagent_type` from Task input — only blocks the failing agent, not the entire harness
-- `circuit-updater.sh` writes state per agent key — CLOSED→HALF_OPEN→OPEN transitions log to `decision_ledger.jsonl` with `risk_tier: High`
+- `circuit-guard.sh` reads `subagent_type` from Task input; only blocks the failing agent, not the entire harness
+- `circuit-updater.sh` writes state per agent key; CLOSED→HALF_OPEN→OPEN transitions log to `decision_ledger.jsonl` with `risk_tier: High`
 - Auto-reset after 60-minute TTL transitions OPEN→HALF_OPEN for probe
 
 ### Agent Health Report
@@ -184,7 +208,7 @@ node scripts/skill-usage-report.js --cull-only  # 48 domain-cluster cull candida
 node scripts/skill-usage-report.js --days 7     # filter to last N days
 ```
 
-Cull decisions are evidence-based — no skills removed until ≥7 days of real usage data.
+Cull decisions are evidence-based; no skills removed until ≥7 days of real usage data.
 
 ---
 
@@ -196,9 +220,9 @@ The earlier architecture cycle introduced **Steel Discipline**.
 
 Every skill template now includes an `## Anti-Rationalizations` section that explicitly names and blocks the excuses an AI uses to skip process:
 
-> *"I'll write the test after to save time."* → Blocked. TDD is not optional.  
+> *"I will write the test after to save time."* → Blocked. TDD is not optional.  
 > *"The spec is clear enough from context."* → Blocked. Blueprint required before file creation.  
-> *"I'll refactor this while I'm here."* → Blocked. Surgical changes only.
+> *"I will refactor this while I am here."* → Blocked. Surgical changes only.
 
 ### Verification Gates
 
@@ -223,18 +247,18 @@ Four commands in `CLAUDE.md` are now injected as mandatory process checkpoints:
 
 ### Surgical Changes Rule (src-code.md)
 
-Every line of code modified must trace directly to a user requirement. No opportunistic refactoring, no dead code removal "while you're at it", no docstrings added to untouched code. Enforced for all files matching `src/**`.
+Every line of code modified must trace directly to a user requirement. No opportunistic refactoring, no dead code removal "while you are at it", no docstrings added to untouched code. Enforced for all files matching `src/**`.
 
 ---
 
 ## Memory Architecture
 
 ```
-Tier 1  MEMORY.md                    — 50-line index, keyword triggers, session pointers
-Tier 2  .claude/memory/*.md          — Topic files: annotations, tech decisions, role context
-Tier 3  .claude/memory/archive/      — Cold storage: sessions, decisions, dreams
-Tier 4  MCP Supermemory              — Semantic recall across all sessions (external)
-Tier 5  CLAUDE.md @include chain     — Static universal context, always in prompt
+Tier 1  MEMORY.md                   ; 50-line index, keyword triggers, session pointers
+Tier 2  .claude/memory/*.md         ; Topic files: annotations, tech decisions, role context
+Tier 3  .claude/memory/archive/     ; Cold storage: sessions, decisions, dreams
+Tier 4  MCP Supermemory             ; Semantic recall across all sessions (external)
+Tier 5  CLAUDE.md @include chain    ; Static universal context, always in prompt
 ```
 
 **Incremental Loading Protocol**: Before loading any Tier 2 file, the agent passes a 3-Question Relevance Gate (actual need / timing / subset sufficiency). Hard limits: max 3 files per session, stop loading if context < 30%.
@@ -243,7 +267,7 @@ Tier 5  CLAUDE.md @include chain     — Static universal context, always in pro
 
 ## Skill System
 
-### 126 Skills Across 7 Domains
+### 127 Skills Across 7 Domains
 
 | Domain | Representative Skills |
 |---|---|
@@ -266,16 +290,16 @@ Editing *.py, manage.py       → Django, FastAPI, ML skills surface
 Editing Dockerfile, *.tf      → DevOps, Kubernetes, AWS skills activate
 ```
 
-Type `/` in Claude Code — you see what's relevant, not all 126.
+Type `/` in Claude Code; you see what is relevant, not all 127.
 
 ---
 
-## What's Included
+## What Is Included
 
 | Category | Count | Description |
 |---|---|---|
 | **Agents** | 28 | Specialized subagents across product, engineering, design, QA, data, and operations |
-| **Skills** | 126 | Core workflows and technology frameworks with context-aware routing |
+| **Skills** | 127 | Core workflows and technology frameworks with context-aware routing |
 | **Hooks** | 28 | Automated validation: commits, pushes, asset changes, session lifecycle, circuit breaker, skill telemetry, decision ledger, bash guard, fork-join |
 | **Rules** | 15 | Path-scoped coding standards enforced automatically by file location |
 | **Templates** | 22+ | PRDs, API designs, system architecture, ADRs, mobile, incident response, postmortem |
@@ -286,10 +310,10 @@ Type `/` in Claude Code — you see what's relevant, not all 126.
 
 ### Prerequisites
 
-- [Claude Code](https://docs.anthropic.com/en/docs/claude-code) — `npm install -g @anthropic-ai/claude-code`
+- [Claude Code](https://docs.anthropic.com/en/docs/claude-code): `npm install -g @anthropic-ai/claude-code`
 - [Git](https://git-scm.com/)
-- [jq](https://jqlang.github.io/jq/) *(recommended — used by validation hooks)*
-- Python 3 *(recommended — used by skill evaluation scripts)*
+- [jq](https://jqlang.github.io/jq/) *(recommended; used by validation hooks)*
+- Python 3 *(recommended; used by skill evaluation scripts)*
 
 ### Setup
 
@@ -299,9 +323,9 @@ cd my-project
 claude
 ```
 
-Run `/start` — the system asks where you are (new concept, existing codebase, or specific task) and guides you from there.
+Run `/start`; the system asks where you are (new concept, existing codebase, or specific task) and guides you from there.
 
-**Antigravity Platform**: Open the directory in Antigravity. The `.claude/` architecture loads automatically. All 126 workflows are available immediately — just assign tasks.
+**Antigravity Platform**: Open the directory in Antigravity. The `.claude/` architecture loads automatically. All 127 workflows are available immediately; just assign tasks.
 
 ### Setup (Codex)
 
@@ -346,15 +370,15 @@ TODO.md                             # Living backlog (governed by @producer)
 .claude/
   settings.json                     # Permissions, deny rules, hook registration
   agents/                           # 28 agent definitions with domain ownership
-  skills/                           # 126 skills (one subdirectory each)
+  skills/                           # 127 skills (one subdirectory each)
   hooks/                            # 28 hook scripts
   rules/                            # 15 path-scoped coding standards
   memory/                           # 5-layer durable memory system
   docs/
     quick-start.md
     agent-roster.md
-    context-management.md           # Rules file — injected into system prompt
-    context-management-guide.md     # Reference only — NOT injected
+    context-management.md           # Rules file; injected into system prompt
+    context-management-guide.md     # Reference only; NOT injected
     agent-coordination-map.md
     llm-coding-behavior.md          # Karpathy principles: surgical, goal-driven
     utility-prompts.md
@@ -373,7 +397,7 @@ production/                         # Sprint plans, milestones, release tracking
 
 ## Path-Scoped Rules
 
-Coding standards are enforced automatically based on file path — no manual invocation required.
+Coding standards are enforced automatically based on file path; no manual invocation required.
 
 | Path | Standard enforced |
 |---|---|
@@ -386,7 +410,7 @@ Coding standards are enforced automatically based on file path — no manual inv
 | `config/**` | No hardcoded secrets, schema validation required |
 | `design/docs/**` | PRD sections required, acceptance criteria mandatory |
 | `tests/**` | Naming conventions, coverage floors, fixture patterns |
-| `src/**` | Surgical changes — every edit traces to a user requirement |
+| `src/**` | Surgical changes; every edit traces to a user requirement |
 
 ---
 
@@ -394,13 +418,13 @@ Coding standards are enforced automatically based on file path — no manual inv
 
 This system does not take actions without your approval. Every agent follows a five-step collaboration protocol:
 
-1. **Ask** — clarify intent before proposing solutions
-2. **Options** — present 2–4 alternatives with trade-offs
-3. **Decide** — you make the call
-4. **Draft** — agent shows the work before committing
-5. **Approve** — nothing is written without explicit sign-off
+1. **Ask**: clarify intent before proposing solutions
+2. **Options**: present 2–4 alternatives with trade-offs
+3. **Decide**: you make the call
+4. **Draft**: agent shows the work before committing
+5. **Approve**: nothing is written without explicit sign-off
 
-You remain the decision-maker. The agents provide structure, domain expertise, and process enforcement — not autonomy.
+You remain the decision-maker. The agents provide structure, domain expertise, and process enforcement; not autonomy.
 
 ---
 
@@ -408,11 +432,11 @@ You remain the decision-maker. The agents provide structure, domain expertise, a
 
 This is a template, not a locked framework. Customize freely:
 
-- **Add or remove agents** — delete what you don't need, add role-specific agents for your stack
-- **Edit agent prompts** — tune behavior, inject project-specific context
-- **Modify skills** — adjust workflows to match your team's process
-- **Add rules** — create new path-scoped standards for your directory layout
-- **Tune hooks** — adjust validation strictness, add new automated checks
+- **Add or remove agents**; delete what you do not need, add role-specific agents for your stack
+- **Edit agent prompts**; tune behavior, inject project-specific context
+- **Modify skills**; adjust workflows to match your team process
+- **Add rules**; create new path-scoped standards for your directory layout
+- **Tune hooks**; adjust validation strictness, add new automated checks
 
 See [`UPGRADING.md`](UPGRADING.md) for pulling upstream changes without overwriting your customizations.
 
@@ -439,7 +463,7 @@ Tested on **Windows 10/11** with Git Bash. All hooks use POSIX-compatible patter
 
 ## Version
 
-**v1.45.0** — 2026-04-21
+**v1.45.0**: 2026-04-21
 
 See [`docs/internal/CHANGELOG.md`](docs/internal/CHANGELOG.md) for release history.
 
@@ -453,6 +477,6 @@ MIT. See [LICENSE](LICENSE).
 
 ---
 
-*Based on [Claude Code Game Studios](https://github.com/Donchitos/Claude-Code-Game-Studios) by Donchitos — adapted for software engineering organizations.*
+*Based on [Claude Code Game Studios](https://github.com/Donchitos/Claude-Code-Game-Studios) by Donchitos; adapted for software engineering organizations.*
 
 *Author: [tranhieutt](https://github.com/tranhieutt)*
