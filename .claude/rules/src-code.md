@@ -5,6 +5,8 @@ paths:
 
 # Source Code Standards
 
+Applies to: `src/**`.
+
 Applies to all files under `src/`.
 
 ## Before Modifying Any Public Symbol

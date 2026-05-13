@@ -4,6 +4,8 @@ scope: global
 
 # Error Handling Strategy
 
+Applies to: runtime code paths that create, handle, log, or surface errors.
+
 ## Core Principles
 
 - Errors are not exceptions to be hidden — they are expected outcomes that must be handled explicitly

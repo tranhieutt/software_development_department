@@ -9,6 +9,8 @@ paths:
 
 # Frontend Code Standards
 
+Applies to: frontend application code, components, state, styling, and browser behavior.
+
 > For low-level UI primitives in `src/ui/**`, see also `ui-code.md`.
 
 ## Component Design

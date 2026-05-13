@@ -10,6 +10,8 @@ paths:
 
 # Secrets & Configuration Standards
 
+Applies to: secrets, credentials, environment variables, config files, and deployment settings.
+
 > **Boundary:** This rule governs **secrets, environment variables, and sensitive configuration**.
 > For non-sensitive data file schema, naming, and structure in `config/**` and `assets/data/**`,
 > see `data-files.md`.

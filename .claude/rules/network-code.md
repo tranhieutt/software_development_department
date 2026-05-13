@@ -8,6 +8,8 @@ paths:
 
 # Network Code Rules
 
+Applies to: HTTP clients, service calls, webhooks, retries, and external network integrations.
+
 ## General Principles
 
 - Server is AUTHORITATIVE for all business-critical state — never trust the client

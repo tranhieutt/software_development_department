@@ -5,6 +5,8 @@ paths:
 
 # Design Document Rules
 
+Applies to: design documents, specs, contracts, ADRs, and planning artifacts.
+
 - Every design document MUST contain these 8 sections: Overview, User Value, Detailed Requirements, Formulas / Algorithms, Edge Cases, Dependencies, Configuration Parameters, Acceptance Criteria
 - Formulas and algorithms must include variable definitions, expected value ranges, and example calculations
 - Edge cases must explicitly state what happens, not just "handle gracefully"

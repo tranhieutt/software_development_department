@@ -5,6 +5,8 @@ paths:
 
 # Test Standards
 
+Applies to: unit, integration, end-to-end, fixture, and test harness code.
+
 - Test naming: `test_[system]_[scenario]_[expected_result]` pattern
 - Every test must have a clear arrange/act/assert structure
 - Unit tests must not depend on external state (filesystem, network, database)

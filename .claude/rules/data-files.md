@@ -6,6 +6,8 @@ paths:
 
 # Data File Rules
 
+Applies to: data and structured content files governed by this rule.
+
 > **Boundary:** This rule governs **data schema, naming, and structure** for JSON data files.
 > For secrets, environment variables, and sensitive configuration values in `config/**`
 > and `src/config/**`, see `secrets-config.md`.

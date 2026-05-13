@@ -9,6 +9,8 @@ paths:
 
 # Database Code Standards
 
+Applies to: database schema, migration, query, and persistence code.
+
 ## Schema Design
 - Every table must have: primary key, `created_at` (NOT NULL), `updated_at` (NOT NULL)
 - Use meaningful column names — avoid abbreviations

@@ -5,6 +5,8 @@ paths:
 
 # UI Code Rules
 
+Applies to: UI components, screens, interaction states, and visual behavior.
+
 > For components in `src/components/**`, see also `frontend-code.md`.
 
 - UI must NEVER own or directly modify application state — display only, use events/callbacks/API calls to request changes

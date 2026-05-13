@@ -7,6 +7,8 @@ paths:
 
 # AI/ML Code Rules
 
+Applies to: `src/ai/**`, `src/ml/**`, `src/recommendations/**`.
+
 - AI/ML inference budget: profile with realistic data to verify acceptable latency — never guess
 - All model parameters and thresholds must be configurable from environment or config files (not hardcoded)
 - AI systems must be debuggable: implement logging for model inputs, outputs, and confidence scores

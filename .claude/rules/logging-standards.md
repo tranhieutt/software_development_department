@@ -4,6 +4,8 @@ scope: global
 
 # Logging & Observability Standards
 
+Applies to: logging, metrics, traces, audit events, and operational diagnostics.
+
 ## Core Principles
 
 - Logs exist for humans to debug and for machines to alert — serve both audiences

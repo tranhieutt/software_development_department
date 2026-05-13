@@ -8,6 +8,8 @@ paths:
 
 # API Code Standards
 
+Applies to: `src/api/**`, `src/routes/**`, `src/controllers/**`, `src/handlers/**`.
+
 ## Endpoint Design
 - Resource names must be nouns in plural form (`/users`, not `/getUser`)
 - HTTP methods must match semantics: GET (read), POST (create), PUT/PATCH (update), DELETE (remove)

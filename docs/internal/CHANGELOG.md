@@ -1,4 +1,4 @@
-# History Update Log
+﻿# History Update Log
 
 Tài liệu này ghi lại lịch sử cập nhật tài liệu và source code của **Software Development Department** template.
 
@@ -6,6 +6,26 @@ Tài liệu này ghi lại lịch sử cập nhật tài liệu và source code 
 
 ## 🗓️ Lịch sử cập nhật
 
+### [v1.67.1] - 2026-05-13
+
+**Chu de:** Rule scope labels and skill validator aliases
+
+#### Changed - Rule clarity
+
+- .claude/rules/*.md: them dong Applies to de lam ro pham vi ap dung cua tung rule.
+
+#### Changed - Skill validation
+
+- scripts/validate-skills.ps1: chap nhan slash command aliases /plan, /spec, va /tdd khi canonical skill directory ton tai.
+- scripts/validate-skills.sh: dong bo alias handling voi PowerShell validator.
+
+#### Verification
+
+- powershell -ExecutionPolicy Bypass -File scripts\validate-skills.ps1: PASS 128/128, 0 warnings.
+- git diff --check: PASS.
+- ash -n scripts/validate-skills.sh: NOT RUN; WSL reports no installed distributions.
+
+---
 ### [v1.67.0] - 2026-05-13
 
 **Chu de:** Product-safe SDD initializer

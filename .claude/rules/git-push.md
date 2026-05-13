@@ -4,6 +4,8 @@ scope: global
 
 # Requirements Before Pushing Code to Git
 
+Applies to: git push, PR handoff, and remote publication workflows.
+
 Whenever the user asks you to push code to Git, you MUST perform the following 2 tasks BEFORE executing `git push`:
 
 1. **Update the History log**: Based on the source code changes you have made, summarize and update the project's History log.

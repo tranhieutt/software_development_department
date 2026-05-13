@@ -5,6 +5,8 @@ paths:
 
 # Prototype Code Standards (Relaxed)
 
+Applies to: prototype and exploratory code paths only.
+
 Prototypes are throwaway code for validating ideas. Standards are intentionally
 relaxed to maximize iteration speed. The goal is learning, not production quality.
 
