@@ -6,7 +6,7 @@ Tài liệu này ghi lại lịch sử cập nhật tài liệu và source code 
 
 ## 🗓️ Lịch sử cập nhật
 
-### [v1.61.0] - 2026-05-13
+### [v1.67.0] - 2026-05-13
 
 **Chu de:** Product-safe SDD initializer
 
@@ -60,7 +60,7 @@ noi dung repo SDD vao product workspace nhu BeeGroup.
 
 ---
 
-### [Unreleased] - 2026-05-02
+### [v1.66.0] - 2026-05-02
 
 **Chu de:** Codex adapter source-alignment hardening
 
@@ -96,7 +96,7 @@ files van thang khi co conflict.
 
 ---
 
-### [Unreleased] - 2026-05-02
+### [v1.65.0] - 2026-05-02
 
 **Chu de:** Codex adapter hardening — safety rules, context injection, checklists, observability
 
@@ -138,7 +138,7 @@ de giai quyet 3 critical issues (hook system absent, permission deny-list not en
 
 ---
 
-### [Unreleased] - 2026-05-02
+### [v1.64.0] - 2026-05-02
 
 **Chu de:** Rules upgrade — YAML frontmatter standardization, stack mismatch fixes, new error handling & logging standards
 
@@ -203,7 +203,7 @@ va them 2 rule file moi cho error handling va logging/observability.
 - `git status`: 12 files staged (10 modified + 2 new).
 - Commit: `3496529` pushed to `origin/main`.
 
-### [Unreleased] - 2026-05-02
+### [v1.63.0] - 2026-05-02
 
 **Chu de:** Hooks hardening, skills quality overhaul, and markdown security scanner
 
@@ -284,7 +284,7 @@ markdown-injection-scanner cho .md security audit.
 - `node scripts\harness-audit.js --compact`: PASS.
 
 ---
-### [Unreleased] - 2026-05-01
+### [v1.62.0] - 2026-05-01
 
 **Chu de:** Deepen SDD execution, review, and architecture vocabulary
 
@@ -337,7 +337,7 @@ hooks, agents, permissions, hay control-plane ownership.
 - `powershell -ExecutionPolicy Bypass -File scripts\codex-preflight.ps1`: PASS
   voi warning working tree dirty do unrelated memory/archive changes da bo qua.
 
-### [Unreleased] - 2026-04-30
+### [v1.61.0] - 2026-04-30
 
 **Chu de:** Upgrade SDD execution skills from external skill review
 
