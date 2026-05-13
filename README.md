@@ -1,19 +1,19 @@
-﻿<p align= center>
-  <h1 align=center>Claude Code Software Development Department</h1>
-  <p align=center>
+<p align="center">
+  <h1 align="center">Claude Code Software Development Department</h1>
+  <p align="center">
     Bộ harness đa tác tử có quản trị cho Claude Code.
     <br /><br />
     28 agents - 128 skills tối ưu ngữ cảnh - 28 hook files - 15 rules
   </p>
 </p>
 
-<p align=center>
-  <a href=LICENSE><img src=https://img.shields.io/badge/license-MIT-blue.svg alt=MIT License></a>
-  <a href=.claude/agents><img src=https://img.shields.io/badge/agents-28-blueviolet alt=28 Agents></a>
-  <a href=.claude/skills><img src=https://img.shields.io/badge/skills-128-green alt=128 Skills></a>
-  <a href=.claude/hooks><img src=https://img.shields.io/badge/hooks-28-orange alt=28 Hook Files></a>
-  <a href=.claude/rules><img src=https://img.shields.io/badge/rules-15-red alt=15 Rules></a>
-  <a href=https://docs.anthropic.com/en/docs/claude-code><img src=https://img.shields.io/badge/built%20for-Claude%20Code-f5f5f5?logo=anthropic alt=Built for Claude Code></a>
+<p align="center">
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT License"></a>
+  <a href=".claude/agents"><img src="https://img.shields.io/badge/agents-28-blueviolet" alt="28 Agents"></a>
+  <a href=".claude/skills"><img src="https://img.shields.io/badge/skills-128-green" alt="128 Skills"></a>
+  <a href=".claude/hooks"><img src="https://img.shields.io/badge/hooks-28-orange" alt="28 Hook Files"></a>
+  <a href=".claude/rules"><img src="https://img.shields.io/badge/rules-15-red" alt="15 Rules"></a>
+  <a href="https://docs.anthropic.com/en/docs/claude-code"><img src="https://img.shields.io/badge/built%20for-Claude%20Code-f5f5f5?logo=anthropic" alt="Built for Claude Code"></a>
 </p>
 
 ---
@@ -22,7 +22,7 @@
 
 Software Development Department (SDD) biến một workspace Claude Code thành một tổ chức kỹ thuật nhỏ: agents sở hữu domain, skills điều hướng công việc qua workflow lặp lại được, hooks thực thi cổng kiểm soát, memory lưu ngữ cảnh vận hành xuyên phiên.
 
-SDD native cho Claude. Hỗ trợ Codex là lớp adapter qua AGENTS.md, .codex/, và docs/codex-compatibility.md; lớp này không thay đổi hành vi runtime của Claude.
+SDD native cho Claude. Hỗ trợ Codex là lớp adapter qua `AGENTS.md`, `.codex/`, và `docs/codex-compatibility.md`; lớp này không thay đổi hành vi runtime của Claude.
 
 ## Vì Sao Tồn Tại
 
@@ -33,15 +33,15 @@ Lập trình với một agent thường bỏ qua quy trình: spec mơ hồ, edi
 | Năng lực | Triển khai |
 |---|---|
 | Định nghĩa agent có cấu trúc | 28 agents với role, model, ownership, escalation path, và tool scope |
-| Skill routing | 128 skills với when_to_use, llowed-tools, effort hints, và workflow gates |
-| Lifecycle map | DEFINE -> PLAN -> BUILD -> VERIFY -> REVIEW -> SHIP cho mọi việc không tầm thường |
+| Skill routing | 128 skills với `when_to_use`, `allowed-tools`, effort hints, và workflow gates |
+| Lifecycle map | `DEFINE -> PLAN -> BUILD -> VERIFY -> REVIEW -> SHIP` cho mọi việc không tầm thường |
 | Verification gates | Pre-code gate, TDD workflow, review gates, completion evidence, và Codex preflight |
 | Rules theo phạm vi đường dẫn | 15 rules áp theo vùng file: API, UI, DB, AI, config, tests, docs, và source code |
 | Runtime hooks | 28 hook files cho bash guard, trace logging, skill telemetry, circuit state, và validation |
-| Durable memory | Memory phân tầng từ index MEMORY.md tới topic files, archive, và semantic recall tùy chọn |
+| Durable memory | Memory phân tầng từ index `MEMORY.md` tới topic files, archive, và semantic recall tùy chọn |
 | Circuit breaker | Trạng thái lỗi theo từng agent với fallback routing và transition có audit |
 | Fork-join execution | Git worktree workflow cho các workstream song song, độc lập, review được |
-| Agent-style review | Gói skill gent-style portable cho technical prose review opt-in |
+| Agent-style review | Gói skill `agent-style` portable cho technical prose review opt-in |
 
 ## Khởi Động Nhanh
 
@@ -49,77 +49,48 @@ Lập trình với một agent thường bỏ qua quy trình: spec mơ hồ, edi
 
 Clone SDD một lần, rồi cài harness vào thư mục product:
 
-`powershell
-git clone https://github.com/tranhieutt/software_development_department [Your folder clone's URL]
-cd [Your folder clone's URL]
-powershell -NoProfile -ExecutionPolicy Bypass -File .\install-sdd.ps1 [Your folder project's URL]
-`
+```powershell
+git clone https://github.com/tranhieutt/software_development_department [Your folder clone's path]
+cd [Your folder clone's path]
+powershell -NoProfile -ExecutionPolicy Bypass -File .\install-sdd.ps1 [Your folder project's path]
+```
 
-Đường dẫn mặc định này dùng Product mode và chạy preflight sau khi cài. Product mode giữ nguyên file product hiện có: README.md, PRD.md, TODO.md, và .gitignore.
+Đường dẫn mặc định này dùng Product mode và chạy preflight sau khi cài. Product mode giữ nguyên file product hiện có: `README.md`, `PRD.md`, `TODO.md`, và `.gitignore`.
 
 Mở thư mục product sau khi cài:
 
-`powershell
-cd [Your folder project's URL]
-`
+```powershell
+cd [Your folder project's path]
+```
 
-Với Claude Code, đọc CLAUDE.md và chạy /start.
+Với Claude Code, đọc `CLAUDE.md` và chạy `/start`.
 
-Với Codex, đọc AGENTS.md và .codex/START.md, hoặc paste:
+Với Codex, đọc `AGENTS.md` và `.codex/START.md`, hoặc paste:
 
-`	ext
+```text
 Use codex-sdd, then route through using-sdd, then run the start workflow for this repo.
-`
+```
 
 ## Điều Kiện Cần
 
-- Claude Code: 
-pm install -g @anthropic-ai/claude-code
+- Claude Code: `npm install -g @anthropic-ai/claude-code`
 - Git
 - Git Bash 2.40+ hoặc WSL2 trên Windows để hook tương thích với shell
-- Khuyến nghị có jq và Python 3 cho validation và audit scripts
-
-## Cài Vào Product
-
-Dùng Product mode khi áp SDD vào repository khác. Mode này cài harness mà không ghi đè các file nhận diện product như README.md, PRD.md, TODO.md, và .gitignore.
-
-Lệnh Windows khuyến nghị:
-
-`powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File .\install-sdd.ps1 E:\MyProduct
-`
-
-Initializer cấp thấp hơn:
-
-`powershell
-.\init-sdd.ps1 -Path E:\MyProduct -InstallMode Product
-`
-
-Mac/Linux:
-
-`ash
-./init-sdd.sh --install-mode product /path/to/my-product
-`
-
-Chỉ dùng SddDev mode cho workspace cần chứa đầy đủ documentation và validators của SDD repository.
-
-`powershell
-.\init-sdd.ps1 -Path E:\SomeSddWorkspace -InstallMode SddDev
-`
+- Khuyến nghị có `jq` và Python 3 cho validation và audit scripts
 
 ## Codex Adapter
 
-Với Codex, mở repository này và dùng .codex/START.md như bản tương đương /start. Codex phải tự tuân thủ SDD gates vì Claude Code hooks không tự chạy trong Codex.
+Với Codex, mở repository này và dùng `.codex/START.md` như bản tương đương `/start`. Codex phải tự tuân thủ SDD gates vì Claude Code hooks không tự chạy trong Codex.
 
 Kiểm tra khuyến nghị trước công việc Codex rủi ro:
 
-`powershell
+```powershell
 powershell -ExecutionPolicy Bypass -File scripts\codex-preflight.ps1
-`
+```
 
 ### Department Hierarchy
 
-`	ext
+```text
 Tier 1; Executive
   cto                 technical-director    producer
 
@@ -135,11 +106,11 @@ Tier 3; Specialists
   prototyper          performance-analyst   devops-engineer
   security-engineer   diagnostics           accessibility-specialist
   community-manager   ui-spec-designer
-`
+```
 
 ## Mô Hình Vận Hành
 
-1. Route request qua using-sdd.
+1. Route request qua `using-sdd`.
 2. Chọn skill điều phối: spec, plan, TDD, review, release, hoặc specialist workflow.
 3. Nêu pre-code gate trước khi edit production.
 4. Giữ thay đổi đúng phạm vi task đã duyệt.
@@ -150,17 +121,17 @@ Entry points thường dùng:
 
 | Tình huống | Command |
 |---|---|
-| Bắt đầu phiên | /start |
-| Khám phá ý tưởng | /brainstorm |
-| Viết spec | /spec |
-| Chia nhỏ kế hoạch | /plan |
-| Triển khai task đã duyệt | /tdd |
-| Điều phối agents | /orchestrate |
-| Review code | /code-review |
-| Review văn phong | /style-review |
-| Chuẩn bị release | /release-checklist |
+| Bắt đầu phiên | `/start` |
+| Khám phá ý tưởng | `/brainstorm` |
+| Viết spec | `/spec` |
+| Chia nhỏ kế hoạch | `/plan` |
+| Triển khai task đã duyệt | `/tdd` |
+| Điều phối agents | `/orchestrate` |
+| Review code | `/code-review` |
+| Review văn phong | `/style-review` |
+| Chuẩn bị release | `/release-checklist` |
 
-Gõ / trong Claude Code để xem workflow liên quan; SDD cung cấp 128 workflows nhưng kỳ vọng agents chỉ load skill cần cho task hiện tại.
+Gõ `/` trong Claude Code để xem workflow liên quan; SDD cung cấp 128 workflows nhưng kỳ vọng agents chỉ load skill cần cho task hiện tại.
 
 ## Bao Gồm
 
@@ -174,7 +145,7 @@ Gõ / trong Claude Code để xem workflow liên quan; SDD cung cấp 128 workfl
 
 ## Cấu Trúc Dự Án
 
-`	ext
+```text
 CLAUDE.md                           # Hiến pháp Claude-native
 AGENTS.md                           # Hướng dẫn adapter cho Codex
 .codex/                             # Adapter prompts và checklists cho Codex
@@ -188,16 +159,16 @@ AGENTS.md                           # Hướng dẫn adapter cho Codex
 docs/                               # Technical docs, ADRs, compatibility notes
 scripts/                            # Validators, reports, utility scripts
 production/traces/                  # Decision, skill, agent telemetry
-`
+```
 
 ## Validation
 
-`powershell
+```powershell
 powershell -ExecutionPolicy Bypass -File scripts\codex-preflight.ps1
 powershell -ExecutionPolicy Bypass -File scripts\validate-skills.ps1
 node scripts\harness-audit.js --compact
 node scripts\validate-readme-sync.js
-`
+```
 
 ## License
 
