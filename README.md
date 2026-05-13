@@ -1,9 +1,9 @@
-<p align="center">
+﻿<p align="center">
   <h1 align="center">Claude Code Software Development Department</h1>
   <p align="center">
     Bộ harness đa tác tử có quản trị cho Claude Code.
     <br /><br />
-    28 agents - 128 skills tối ưu ngữ cảnh - 28 hook files - 15 rules
+    28 agents - 128 context-optimized skills - 28 hook files - 15 rules
   </p>
 </p>
 
@@ -32,7 +32,7 @@ Lập trình với một agent thường bỏ qua quy trình: spec mơ hồ, edi
 
 | Năng lực | Triển khai |
 |---|---|
-| Định nghĩa agent có cấu trúc | 28 agents với role, model, ownership, escalation path, và tool scope |
+| Structured Agent Definitions | 28 agents với role, model, ownership, escalation path, và tool scope |
 | Skill routing | 128 skills với `when_to_use`, `allowed-tools`, effort hints, và workflow gates |
 | Lifecycle map | `DEFINE -> PLAN -> BUILD -> VERIFY -> REVIEW -> SHIP` cho mọi việc không tầm thường |
 | Verification gates | Pre-code gate, TDD workflow, review gates, completion evidence, và Codex preflight |
