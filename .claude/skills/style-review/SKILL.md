@@ -13,16 +13,18 @@ when_to_use: "Use as an opt-in REVIEW or SHIP gate for important prose artifacts
 
 # Style Review
 
-Opt-in prose review for SDD artifacts using the vendored `agent-style` v0.3.5
-rule pack. This skill is a second-pass review gate, not a global writing mode.
-It does not edit `AGENTS.md`, `CLAUDE.md`, or any source document in place.
+Opt-in prose review for SDD artifacts using the portable `agent-style` v0.3.5
+skill bundle. This skill is a second-pass review gate, not a global writing
+mode. It does not edit `AGENTS.md`, `CLAUDE.md`, or any source document in
+place.
 
 ## Source and Scope
 
-- Rule pack: `.agent-style/RULES.md`
-- Upstream note: `.agent-style/UPSTREAM.md`
-- Detector reference: `.agent-style/skills/style-review/references/rule-detectors.md`
-- Revision prompt: `.agent-style/skills/style-review/references/revision-prompt.md`
+- Rule pack: `.claude/skills/agent-style/references/RULES.md`
+- Upstream note: `.claude/skills/agent-style/references/UPSTREAM.md`
+- Attribution: `.claude/skills/agent-style/references/NOTICE.md`
+- Detector reference: `.claude/skills/agent-style/references/rule-detectors.md`
+- Revision prompt: `.claude/skills/agent-style/references/revision-prompt.md`
 
 Use this skill for English technical prose where clarity, evidence, and review
 readability matter:
@@ -70,8 +72,8 @@ Invocation:
 
 3. Add semantic judgment for rules the CLI marks as skipped because they need
    host-model context: RULE-01, RULE-03, RULE-04, RULE-08, RULE-11, RULE-F, and
-   RULE-H. Use `.agent-style/RULES.md` and the detector reference as the source
-   of truth.
+   RULE-H. Use the bundled `agent-style` rules and detector reference as the
+   source of truth.
 4. Report a compact scorecard with per-rule counts and the first few examples.
 5. Ask the user before writing any revised copy:
 
