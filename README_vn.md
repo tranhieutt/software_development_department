@@ -53,14 +53,33 @@ trước khi claim hoàn thành.
 
 ## Hướng dẫn sử dụng cực nhanh
 
-1. Clone Git repository này về local.
-2. Viết trong phần chat:
+### Dự án sản phẩm đã có sẵn
 
-   ```text
-   Sử dụng [đường dẫn chứa SDD folder] vận hành dự án [đường dẫn chứa folder dự án]
-   ```
+Clone SDD một lần, rồi cài harness vào folder dự án:
 
-3. Dùng `/start` để bắt đầu.
+```powershell
+git clone https://github.com/tranhieutt/software_development_department E:\SDD-Upgrade
+cd E:\SDD-Upgrade
+powershell -NoProfile -ExecutionPolicy Bypass -File .\install-sdd.ps1 E:\BeeGroup_v1.0
+```
+
+Lệnh này mặc định dùng Product mode và chạy preflight sau khi cài. Product mode
+giữ nguyên file nhận diện của dự án nếu đã có: `README.md`, `PRD.md`, `TODO.md`,
+và `.gitignore`.
+
+Sau khi cài, mở folder dự án:
+
+```powershell
+cd E:\BeeGroup_v1.0
+```
+
+Với Claude Code, đọc `CLAUDE.md` rồi chạy `/start`.
+
+Với Codex, đọc `AGENTS.md` và `.codex/START.md`, hoặc paste:
+
+```text
+Use codex-sdd, then route through using-sdd, then run the start workflow for this repo.
+```
 
 ## Yêu cầu
 
@@ -75,9 +94,19 @@ Dùng Product mode khi apply SDD vào repo sản phẩm. Mode này cài harness 
 không ghi đè file identity của sản phẩm như `README.md`, `PRD.md`, `TODO.md`,
 và `.gitignore`.
 
+Lệnh Windows khuyến nghị:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File .\install-sdd.ps1 E:\MyProduct
+```
+
+Lệnh initializer cấp thấp:
+
 ```powershell
 .\init-sdd.ps1 -Path E:\MyProduct -InstallMode Product
 ```
+
+Mac/Linux:
 
 ```bash
 ./init-sdd.sh --install-mode product /path/to/my-product

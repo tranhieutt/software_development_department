@@ -53,14 +53,33 @@ approval gates, and fresh evidence before completion claims.
 
 ## Quick Start
 
-1. Clone this repository locally.
-2. In chat, write:
+### Existing Product Repo
 
-   ```text
-   Use [path to SDD folder] to operate project [path to project folder]
-   ```
+Clone SDD once, then install the harness into your product folder:
 
-3. Run `/start`.
+```powershell
+git clone https://github.com/tranhieutt/software_development_department E:\SDD-Upgrade
+cd E:\SDD-Upgrade
+powershell -NoProfile -ExecutionPolicy Bypass -File .\install-sdd.ps1 E:\BeeGroup_v1.0
+```
+
+This default path uses Product mode and runs preflight after install. Product
+mode preserves existing product files: `README.md`, `PRD.md`, `TODO.md`, and
+`.gitignore`.
+
+Open the product folder after install:
+
+```powershell
+cd E:\BeeGroup_v1.0
+```
+
+For Claude Code, read `CLAUDE.md` and run `/start`.
+
+For Codex, read `AGENTS.md` and `.codex/START.md`, or paste:
+
+```text
+Use codex-sdd, then route through using-sdd, then run the start workflow for this repo.
+```
 
 ## Prerequisites
 
@@ -75,9 +94,19 @@ Use Product mode when applying SDD to another repository. It installs the
 harness without overwriting product identity files such as `README.md`, `PRD.md`,
 `TODO.md`, and `.gitignore`.
 
+Recommended Windows command:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File .\install-sdd.ps1 E:\MyProduct
+```
+
+Lower-level initializer:
+
 ```powershell
 .\init-sdd.ps1 -Path E:\MyProduct -InstallMode Product
 ```
+
+Mac/Linux:
 
 ```bash
 ./init-sdd.sh --install-mode product /path/to/my-product
