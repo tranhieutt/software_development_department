@@ -39,21 +39,60 @@ SKIP_SKILL_VALIDATION=0
 SKIP_HARNESS_AUDIT=0
 SKIP_README_SYNC=0
 SKIP_TRACE_CHECK=0
+INSTALL_MODE="auto"
 
-for arg in "$@"; do
-  case "$arg" in
+while [ "$#" -gt 0 ]; do
+  case "$1" in
     --skip-skill-validation) SKIP_SKILL_VALIDATION=1 ;;
     --skip-harness-audit) SKIP_HARNESS_AUDIT=1 ;;
     --skip-readme-sync) SKIP_README_SYNC=1 ;;
     --skip-trace-check) SKIP_TRACE_CHECK=1 ;;
+    --install-mode)
+      shift
+      case "${1:-}" in
+        auto|product|sdd-dev) INSTALL_MODE="$1" ;;
+        *)
+          fail "invalid --install-mode: ${1:-}"
+          ;;
+      esac
+      ;;
     *)
-      fail "unknown argument: $arg"
+      fail "unknown argument: $1"
       ;;
   esac
+  shift
 done
+
+detect_install_mode() {
+  if [ "$INSTALL_MODE" != "auto" ]; then
+    printf '%s\n' "$INSTALL_MODE"
+    return
+  fi
+
+  if [ -f ".sdd/install.json" ] && command -v node >/dev/null 2>&1; then
+    marker_mode="$(node -e "const fs=require('fs');try{const m=JSON.parse(fs.readFileSync('.sdd/install.json','utf8'));if(m.installMode==='Product')console.log('product');else if(m.installMode==='SddDev')console.log('sdd-dev');}catch(e){process.exit(0)}" 2>/dev/null)"
+    if [ "$marker_mode" = "product" ] || [ "$marker_mode" = "sdd-dev" ]; then
+      printf '%s\n' "$marker_mode"
+      return
+    fi
+  fi
+
+  if [ -f "README_vn.md" ] &&
+     [ -f "scripts/validate-readme-sync.js" ] &&
+     [ -d "docs/internal/adr" ] &&
+     [ -f "docs/technical/CONTROL_PLANE_MAP.md" ]; then
+    printf '%s\n' "sdd-dev"
+    return
+  fi
+
+  printf '%s\n' "product"
+}
+
+EFFECTIVE_INSTALL_MODE="$(detect_install_mode)"
 
 printf 'SDD Codex Preflight\n'
 printf 'Root: %s\n' "$(pwd)"
+printf 'Install mode: %s\n' "$EFFECTIVE_INSTALL_MODE"
 
 section "Required Files"
 required_files=(
@@ -70,9 +109,18 @@ required_files=(
   ".claude/skills/using-sdd/SKILL.md"
   ".claude/skills/codex-sdd/SKILL.md"
   "scripts/validate-skills.sh"
-  "scripts/validate-readme-sync.js"
   "scripts/harness-audit.js"
 )
+
+if [ "$EFFECTIVE_INSTALL_MODE" = "sdd-dev" ]; then
+  required_files+=(
+    "README_vn.md"
+    "scripts/validate-readme-sync.js"
+    "docs/internal/adr"
+    "docs/technical/CONTROL_PLANE_MAP.md"
+    "docs/technical/SOURCE_OF_TRUTH_REGISTRY.md"
+  )
+fi
 
 for path in "${required_files[@]}"; do
   if [ -e "$path" ]; then
@@ -152,7 +200,10 @@ if [ "$SKIP_HARNESS_AUDIT" -eq 0 ]; then
   run_checked "harness audit" node scripts/harness-audit.js --compact
 fi
 
-if [ "$SKIP_README_SYNC" -eq 0 ]; then
+if [ "$EFFECTIVE_INSTALL_MODE" = "product" ]; then
+  section "README Sync"
+  ok "skipped for Product install mode"
+elif [ "$SKIP_README_SYNC" -eq 0 ]; then
   section "README Sync"
   run_checked "README sync" node scripts/validate-readme-sync.js
 fi

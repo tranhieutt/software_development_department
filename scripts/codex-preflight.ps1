@@ -2,7 +2,10 @@ param(
     [switch]$SkipSkillValidation,
     [switch]$SkipHarnessAudit,
     [switch]$SkipReadmeSync,
-    [switch]$SkipTraceCheck
+    [switch]$SkipTraceCheck,
+
+    [ValidateSet("Auto", "Product", "SddDev")]
+    [string]$InstallMode = "Auto"
 )
 
 $ErrorActionPreference = "Stop"
@@ -48,11 +51,42 @@ function Invoke-Checked {
     }
 }
 
+function Get-DetectedInstallMode {
+    if ($InstallMode -ne "Auto") {
+        return $InstallMode
+    }
+
+    $MarkerPath = ".sdd/install.json"
+    if (Test-Path $MarkerPath) {
+        try {
+            $Marker = Get-Content -Raw $MarkerPath | ConvertFrom-Json
+            if ($Marker.installMode -eq "Product" -or $Marker.installMode -eq "SddDev") {
+                return $Marker.installMode
+            }
+        } catch {
+            Add-Warning "could not parse .sdd/install.json; falling back to repo shape detection"
+        }
+    }
+
+    $LooksLikeSddDev = (Test-Path "README_vn.md") -and
+        (Test-Path "scripts/validate-readme-sync.js") -and
+        (Test-Path "docs/internal/adr") -and
+        (Test-Path "docs/technical/CONTROL_PLANE_MAP.md")
+
+    if ($LooksLikeSddDev) {
+        return "SddDev"
+    }
+
+    return "Product"
+}
+
 $Failures = @()
 $Warnings = @()
 
 Write-Host "SDD Codex Preflight"
 Write-Host "Root: $(Get-Location)"
+$EffectiveInstallMode = Get-DetectedInstallMode
+Write-Host "Install mode: $EffectiveInstallMode"
 
 Write-Section "Required Files"
 $required = @(
@@ -69,9 +103,18 @@ $required = @(
     ".claude/skills/using-sdd/SKILL.md",
     ".claude/skills/codex-sdd/SKILL.md",
     "scripts/validate-skills.ps1",
-    "scripts/validate-readme-sync.js",
     "scripts/harness-audit.js"
 )
+
+if ($EffectiveInstallMode -eq "SddDev") {
+    $required += @(
+        "README_vn.md",
+        "scripts/validate-readme-sync.js",
+        "docs/internal/adr",
+        "docs/technical/CONTROL_PLANE_MAP.md",
+        "docs/technical/SOURCE_OF_TRUTH_REGISTRY.md"
+    )
+}
 
 foreach ($path in $required) {
     if (Test-Path $path) {
@@ -156,7 +199,10 @@ if (-not $SkipHarnessAudit) {
     Invoke-Checked "harness audit" "node" @("scripts\harness-audit.js", "--compact")
 }
 
-if (-not $SkipReadmeSync) {
+if ($EffectiveInstallMode -eq "Product") {
+    Write-Section "README Sync"
+    Add-Ok "skipped for Product install mode"
+} elseif (-not $SkipReadmeSync) {
     Write-Section "README Sync"
     Invoke-Checked "README sync" "node" @("scripts\validate-readme-sync.js")
 }

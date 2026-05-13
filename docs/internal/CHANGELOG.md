@@ -6,6 +6,60 @@ Tài liệu này ghi lại lịch sử cập nhật tài liệu và source code 
 
 ## 🗓️ Lịch sử cập nhật
 
+### [Unreleased] - 2026-05-13
+
+**Chu de:** Product-safe SDD initializer
+
+SDD installer duoc tach thanh product install va SDD dev install de tranh copy
+noi dung repo SDD vao product workspace nhu BeeGroup.
+
+#### Added - Install modes
+
+- `init-sdd.ps1`: them `-InstallMode Product|SddDev`, default `Product`.
+- `init-sdd.sh`: them `--install-mode product|sdd-dev`, default `product`.
+- `.sdd/install.json`: them install marker voi `installMode`, `installedAt`,
+  va `source`.
+
+#### Changed - Product install behavior
+
+- Product mode chi copy runtime harness, selected scripts, `docs/codex-compatibility.md`,
+  va `docs/technical/SDD_LIFECYCLE_MAP.md`.
+- Product mode preserve `README.md`, `PRD.md`, `TODO.md`, va `.gitignore` neu
+  da ton tai.
+- Product mode tao product-oriented stubs cho `README.md`, `PRD.md`, va
+  `TODO.md` khi thieu.
+- `SddDev` mode giu full SDD docs, README validator, scripts, va SDD repo
+  content cho workspace dung de phat trien SDD.
+
+#### Changed - Mode-aware preflight
+
+- `scripts/codex-preflight.ps1`: them `-InstallMode Auto|Product|SddDev`.
+- `scripts/codex-preflight.sh`: them `--install-mode auto|product|sdd-dev`.
+- Product preflight khong require `README_vn.md` hoac
+  `scripts/validate-readme-sync.js`, va auto skip README sync.
+- SddDev preflight tiep tuc require README validator va SDD internal docs.
+
+#### Documentation
+
+- `README.md`, `.codex/INSTALL.md`, va `docs/codex-compatibility.md`: them
+  huong dan Product vs SddDev install modes.
+
+#### Verification
+
+- Product temp install smoke: PASS.
+- Product no-overwrite smoke cho `README.md`, `PRD.md`, `TODO.md`, `.gitignore`: PASS.
+- SddDev temp install smoke: PASS.
+- Product full preflight: PASS, README sync skipped.
+- SddDev full preflight: PASS, README sync passed.
+- `powershell -ExecutionPolicy Bypass -File scripts\codex-preflight.ps1`: PASS.
+- `powershell -ExecutionPolicy Bypass -File scripts\validate-skills.ps1`: PASS
+  127/127, 2 existing warnings.
+- `node scripts\harness-audit.js --compact`: PASS with existing readiness warning.
+- Git Bash `bash -n` for `init-sdd.sh` and `scripts/codex-preflight.sh`: PASS.
+- `git diff --check`: PASS.
+
+---
+
 ### [Unreleased] - 2026-05-02
 
 **Chu de:** Codex adapter source-alignment hardening

@@ -152,6 +152,19 @@ Codex preflight:
 powershell -ExecutionPolicy Bypass -File scripts\codex-preflight.ps1
 ```
 
+Product installs use mode-aware preflight. `Product` skips SDD README sync and
+checks only harness-operability files; `SddDev` keeps the SDD README validator:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts\codex-preflight.ps1 -InstallMode Product
+powershell -ExecutionPolicy Bypass -File scripts\codex-preflight.ps1 -InstallMode SddDev
+```
+
+```bash
+bash scripts/codex-preflight.sh --install-mode product
+bash scripts/codex-preflight.sh --install-mode sdd-dev
+```
+
 After installing the optional skill junction:
 
 ```powershell

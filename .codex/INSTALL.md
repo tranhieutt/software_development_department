@@ -46,6 +46,34 @@ prompt in:
 That file gives Codex the nearest equivalent to Claude's `/start` workflow:
 adapter bootstrap -> context reading -> `using-sdd` routing -> `start` onboarding.
 
+## Installing SDD Into A Product Project
+
+Use Product mode when applying SDD to another project. Product mode installs the
+harness and preserves product identity files:
+
+```powershell
+.\init-sdd.ps1 -Path E:\MyProduct -InstallMode Product
+```
+
+```bash
+./init-sdd.sh --install-mode product /path/to/my-product
+```
+
+Product mode does not overwrite existing `README.md`, `PRD.md`, `TODO.md`, or
+`.gitignore`. If those files are missing, it creates product-oriented stubs.
+
+Use SddDev mode only when the target is meant to work on SDD itself:
+
+```powershell
+.\init-sdd.ps1 -Path E:\SomeSddWorkspace -InstallMode SddDev
+```
+
+```bash
+./init-sdd.sh --install-mode sdd-dev /path/to/sdd-workspace
+```
+
+SddDev mode copies SDD repository docs and README validators.
+
 ## Session Checklist
 
 At the start of each Codex session:

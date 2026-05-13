@@ -325,6 +325,30 @@ claude
 
 Run `/start`; the system asks where you are (new concept, existing codebase, or specific task) and guides you from there.
 
+### Install Into An Existing Product
+
+Use Product mode when applying SDD to another project. It installs the harness
+without overwriting product identity files:
+
+```powershell
+.\init-sdd.ps1 -Path E:\MyProduct -InstallMode Product
+```
+
+```bash
+./init-sdd.sh --install-mode product /path/to/my-product
+```
+
+Product mode preserves existing `README.md`, `PRD.md`, `TODO.md`, and
+`.gitignore`. Missing product docs are created as product-oriented stubs, not SDD
+repository docs.
+
+Use SddDev mode only for a workspace that should contain the full SDD repository
+documentation and validators:
+
+```powershell
+.\init-sdd.ps1 -Path E:\SomeSddWorkspace -InstallMode SddDev
+```
+
 **Antigravity Platform**: Open the directory in Antigravity. The `.claude/` architecture loads automatically. All 127 workflows are available immediately; just assign tasks.
 
 ### Setup (Codex)
