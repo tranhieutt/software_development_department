@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SDD × Linear — Hệ thống quản trị công việc phần mềm</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f9f8f6;
+      --surface: #ffffff;
+      --border: #e8e4de;
+      --text-primary: #1a1a1a;
+      --text-secondary: #5c5c5c;
+      --text-muted: #9a9a9a;
+      --accent: #d97757;
+      --accent-soft: #f5ede9;
+      --accent-dark: #b85f3e;
+      --tag-bg: #f0ede8;
+      --tag-text: #5c5c5c;
+      --code-bg: #f4f2ef;
+      --shadow: 0 1px 4px rgba(0,0,0,0.06);
+      --radius: 10px;
+      --font: 'Inter', 'SF Pro Text', system-ui, -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text-primary);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Header ── */
+    .header {
+      text-align: center;
+      margin-bottom: 48px;
+      max-width: 640px;
+    }
+    .header .eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+    .header h1 {
+      font-size: clamp(24px, 4vw, 34px);
+      font-weight: 700;
+      line-height: 1.25;
+      color: var(--text-primary);
+      letter-spacing: -0.02em;
+      margin-bottom: 14px;
+    }
+    .header p {
+      font-size: 15px;
+      color: var(--text-secondary);
+      line-height: 1.65;
+    }
+
+    /* ── Carousel ── */
+    .carousel-wrapper {
+      width: 100%;
+      max-width: 780px;
+      position: relative;
+    }
+
+    .carousel-track-container {
+      overflow: hidden;
+      border-radius: var(--radius);
+    }
+
+    .carousel-track {
+      display: flex;
+      transition: transform 0.42s cubic-bezier(0.4, 0, 0.2, 1);
+      will-change: transform;
+    }
+
+    /* ── Slide ── */
+    .slide {
+      min-width: 100%;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 44px 48px;
+      box-shadow: var(--shadow);
+    }
+
+    .slide-meta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 28px;
+    }
+    .slide-number {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+    }
+    .slide-tag {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      background: var(--accent-soft);
+      color: var(--accent-dark);
+      padding: 3px 9px;
+      border-radius: 4px;
+    }
+
+    .slide h2 {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.3;
+      margin-bottom: 18px;
+      color: var(--text-primary);
+    }
+
+    .slide p {
+      font-size: 14.5px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      margin-bottom: 16px;
+    }
+    .slide p:last-child { margin-bottom: 0; }
+
+    /* ── List ── */
+    .item-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 4px;
+    }
+    .item-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+    .item-list li::before {
+      content: '';
+      display: block;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--accent);
+      margin-top: 8px;
+      flex-shrink: 0;
+    }
+
+    /* ── Table ── */
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 8px;
+      font-size: 13.5px;
+    }
+    .data-table thead th {
+      text-align: left;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      padding: 0 12px 10px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .data-table tbody td {
+      padding: 10px 12px 10px 0;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-secondary);
+      line-height: 1.55;
+      vertical-align: top;
+    }
+    .data-table tbody tr:last-child td { border-bottom: none; }
+    .data-table tbody td:first-child {
+      font-weight: 600;
+      color: var(--text-primary);
+      white-space: nowrap;
+    }
+
+    /* ── State badge ── */
+    .state-badge {
+      display: inline-block;
+      font-size: 11.5px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 4px;
+      background: var(--tag-bg);
+      color: var(--tag-text);
+      font-family: var(--font-mono);
+    }
+
+    /* ── Code block ── */
+    .code-block {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 16px 20px;
+      font-family: var(--font-mono);
+      font-size: 12.5px;
+      line-height: 1.7;
+      color: var(--text-secondary);
+      overflow-x: auto;
+      margin-top: 12px;
+      white-space: pre;
+    }
+
+    /* ── Two-col grid ── */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-top: 8px;
+    }
+    .col-block {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 16px 18px;
+    }
+    .col-block h4 {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+    .col-block ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .col-block ul li {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+      display: flex;
+      align-items: flex-start;
+      gap: 7px;
+    }
+    .col-block ul li::before {
+      content: '';
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--accent);
+      margin-top: 7px;
+      flex-shrink: 0;
+    }
+
+    /* ── Phase steps ── */
+    .phase-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-top: 8px;
+    }
+    .phase-card {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px 18px;
+      background: var(--surface);
+    }
+    .phase-card .phase-num {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+    .phase-card h4 {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+    }
+    .phase-card ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .phase-card ul li {
+      font-size: 12.5px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    /* ── Label group ── */
+    .label-group {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-top: 8px;
+    }
+    .label-row h4 {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+    .label-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .chip {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      padding: 4px 10px;
+      background: var(--tag-bg);
+      color: var(--tag-text);
+      border-radius: 4px;
+      border: 1px solid var(--border);
+    }
+
+    /* ── Principle callout ── */
+    .callout {
+      background: var(--accent-soft);
+      border-left: 3px solid var(--accent);
+      border-radius: 0 6px 6px 0;
+      padding: 14px 18px;
+      margin-top: 20px;
+      font-size: 13.5px;
+      color: var(--accent-dark);
+      font-weight: 500;
+      line-height: 1.6;
+    }
+
+    /* ── Flow diagram ── */
+    .flow {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      margin-top: 16px;
+      flex-wrap: wrap;
+    }
+    .flow-node {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 10px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-primary);
+      text-align: center;
+      min-width: 100px;
+    }
+    .flow-node.accent {
+      background: var(--accent-soft);
+      border-color: var(--accent);
+      color: var(--accent-dark);
+    }
+    .flow-arrow {
+      font-size: 16px;
+      color: var(--text-muted);
+      padding: 0 8px;
+    }
+
+    /* ── Metric chips ── */
+    .metric-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 8px;
+    }
+    .metric-item {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 12px 14px;
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+    .metric-item::before {
+      content: attr(data-icon);
+      display: block;
+      font-size: 16px;
+      margin-bottom: 6px;
+    }
+
+    /* ── Navigation ── */
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 24px;
+      width: 100%;
+      max-width: 780px;
+    }
+
+    .nav-btn {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 18px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.18s ease;
+      font-family: var(--font);
+    }
+    .nav-btn:hover:not(:disabled) {
+      background: var(--accent-soft);
+      border-color: var(--accent);
+      color: var(--accent-dark);
+    }
+    .nav-btn:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+
+    .dots {
+      display: flex;
+      gap: 7px;
+      align-items: center;
+    }
+    .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--border);
+      cursor: pointer;
+      transition: all 0.18s ease;
+      border: none;
+      padding: 0;
+    }
+    .dot.active {
+      background: var(--accent);
+      width: 20px;
+      border-radius: 3px;
+    }
+
+    /* ── Progress bar ── */
+    .progress-bar {
+      width: 100%;
+      max-width: 780px;
+      height: 2px;
+      background: var(--border);
+      border-radius: 1px;
+      margin-bottom: 14px;
+    }
+    .progress-fill {
+      height: 100%;
+      background: var(--accent);
+      border-radius: 1px;
+      transition: width 0.42s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    @media (max-width: 600px) {
+      .slide { padding: 28px 24px; }
+      .two-col, .phase-grid, .metric-list { grid-template-columns: 1fr; }
+      .flow { gap: 4px; }
+      .flow-node { min-width: 80px; font-size: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="eyebrow">Software Development Department</div>
+    <h1>SDD × Linear</h1>
+    <p>Hệ thống quản trị công việc phần mềm — từ backlog đến delivery có dữ liệu và tiêu chuẩn.</p>
+  </div>
+
+  <div class="progress-bar">
+    <div class="progress-fill" id="progressFill" style="width: 10%"></div>
+  </div>
+
+  <div class="carousel-wrapper">
+    <div class="carousel-track-container">
+      <div class="carousel-track" id="track">
+
+        <!-- Slide 1: Mục đích -->
+        <div class="slide">
+          <div class="slide-meta">
+            <span class="slide-number">01 / 10</span>
+            <span class="slide-tag">Tổng quan</span>
+          </div>
+          <h2>Tại sao cần kết hợp SDD với Linear?</h2>
+          <p>SDD định nghĩa quy trình, tiêu chuẩn và cách đánh giá chất lượng. Linear lưu trữ, điều phối, ưu tiên và theo dõi công việc. Hai hệ thống bổ sung cho nhau, không thay thế nhau.</p>
+          <ul class="item-list">
+            <li>Biến mọi nhu cầu thành issue rõ ràng, có phạm vi và acceptance criteria.</li>
+            <li>Quản lý backlog, roadmap, sprint/cycle và delivery trên một hệ thống duy nhất.</li>
+            <li>Giảm công việc nằm rải rác trong chat, ghi chú cá nhân hoặc trí nhớ.</li>
+            <li>Tạo nền tảng để kết nối agent, automation, CI/CD và dashboard sau này.</li>
+          </ul>
+          <div class="callout">Nguyên tắc: SDD đặt luật — Linear giúp vận hành luật đó hằng ngày.</div>
+        </div>
+
+        <!-- Slide 2: Mô hình phân vai -->
+        <div class="slide">
+          <div class="slide-meta">
+            <span class="slide-number">02 / 10</span>
+            <span class="slide-tag">Kiến trúc</span>
+          </div>
+          <h2>Mô hình phân vai SDD × Linear</h2>
+          <p>Mỗi thành phần có vai trò xác định, không chồng chéo:</p>
+          <table class="data-table">
+            <thead>
+              <tr><th>Thành phần</th><th>Vai trò</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>SDD</td><td>Định nghĩa workflow, tiêu chuẩn, template, definition of done</td></tr>
+              <tr><td>Linear</td><td>Lưu trữ và điều phối toàn bộ công việc</td></tr>
+              <tr><td>Issue</td><td>Đơn vị công việc nhỏ nhất có thể giao, làm, review và đóng</td></tr>
+              <tr><td>Project</td><td>Mục tiêu lớn gồm nhiều issue có điểm kết thúc rõ ràng</td></tr>
+              <tr><td>Cycle</td><td>Khung thời gian thực thi, thường là 1–2 tuần</td></tr>
+              <tr><td>Label</td><td>Bộ lọc và phân loại công việc</td></tr>
+              <tr><td>Document</td><td>Nơi lưu quy ước, hướng dẫn, ADR và checklist</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Slide 3: Workflow state -->
+        <div class="slide">
+          <div class="slide-meta">
+            <span class="slide-number">03 / 10</span>
+            <span class="slide-tag">Workflow</span>
+          </div>
+          <h2>Workflow state đề xuất</h2>
+          <p>Trạng thái issue phản ánh đúng vị trí thực tế trong quy trình delivery:</p>
+          <table class="data-table">
+            <thead>
+              <tr><th>State</th><th>Ý nghĩa</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><span class="state-badge">Backlog</span></td><td>Mới ghi nhận, chưa sẵn sàng làm</td></tr>
+              <tr><td><span class="state-badge">Ready</span></td><td>Đã rõ yêu cầu, có thể nhận làm</td></tr>
+              <tr><td><span class="state-badge">In Progress</span></td><td>Đang thực hiện</td></tr>
+              <tr><td><span class="state-badge">Review</span></td><td>Chờ review, test hoặc phê duyệt</td></tr>
+              <tr><td><span class="state-badge">Blocked</span></td><td>Bị chặn bởi thiếu thông tin, quyền hoặc quyết định</td></tr>
+              <tr><td><span class="state-badge">Done</span></td><td>Hoàn tất và đạt definition of done</td></tr>
+              <tr><td><span class="state-badge">Canceled</span></td><td>Hủy vì không còn cần thiết</td></tr>
+            </tbody>
+          </table>
+          <div class="callout">Issue <strong>Blocked</strong> phải ghi rõ đang bị chặn bởi gì và cần ai xử lý.</div>
+        </div>
+
+        <!-- Slide 4: Agent quyền hạn -->
+        <div class="slide">
+          <div class="slide-meta">
+            <span class="slide-number">04 / 10</span>
+            <span class="slide-tag">Agent</span>
+          </div>
+          <h2>Quyền hạn của agent SDD trên Linear</h2>
+          <p>Agent được cấp quyền thao tác có kiểm soát, không thay thế hoàn toàn quyết định của người phụ trách:</p>
+          <div class="two-col">
+            <div class="col-block">
+              <h4>Được phép</h4>
+              <ul>
+                <li>Cập nhật progress comment / workpad</li>
+                <li>Đổi sang <code>In Progress</code> khi bắt đầu</li>
+                <li>Đổi sang <code>Review</code> khi hoàn tất và đã validation</li>
+                <li>Đổi sang <code>Blocked</code> khi có blocker rõ</li>
+                <li>Tạo follow-up issue ngoài scope</li>
+                <li>Gắn PR, tài liệu, bằng chứng vào issue</li>
+              </ul>
+            </div>
+            <div class="col-block">
+              <h4>Không được phép</h4>
+              <ul>
+                <li>Đóng <code>Done</code> khi chưa có human approval</li>
+                <li>Đổi priority business-critical nếu không được giao</li>
+                <li>Reassign người khác nếu chưa có rule</li>
+                <li>Xóa hoặc archive issue</li>
+                <li>Tự chuyển <code>Review → Done</code> khi cần approval</li>
+              </ul>
+            </div>
+          </div>
+          <div class="callout">Agent hỗ trợ vận hành — không thay thế quyền quyết định của người phụ trách quy trình.</div>
+        </div>
+
+        <!-- Slide 5: Label convention -->
+        <div class="slide">
+          <div class="slide-meta">
+            <span class="slide-number">05 / 10</span>
+            <span class="slide-tag">Convention</span>
+          </div>
+          <h2>Label convention</h2>
+          <p>Label có tiền tố để dễ lọc và ra quyết định. Không tạo label chỉ để trang trí.</p>
+          <div class="label-group">
+            <div class="label-row">
+              <h4>Type — Loại công việc</h4>
+              <div class="label-chips">
+                <span class="chip">type:bug</span>
+                <span class="chip">type:feature</span>
+                <span class="chip">type:docs</span>
+                <span class="chip">type:infra</span>
+                <span class="chip">type:research</span>
+                <span class="chip">type:chore</span>
+                <span class="chip">type:support</span>
+              </div>
+            </div>
+            <div class="label-row">
+              <h4>Area — Khu vực kỹ thuật</h4>
+              <div class="label-chips">
+                <span class="chip">area:frontend</span>
+                <span class="chip">area:backend</span>
+                <span class="chip">area:devops</span>
+                <span class="chip">area:qa</span>
+                <span class="chip">area:docs</span>
+                <span class="chip">area:ai</span>
+              </div>
+            </div>
+            <div class="label-row">
+              <h4>Risk — Mức độ rủi ro</h4>
+              <div class="label-chips">
+                <span class="chip">risk:low</span>
+                <span class="chip">risk:medium</span>
+                <span class="chip">risk:high</span>
+              </div>
+            </div>
+            <div class="label-row">
+              <h4>Needs — Yêu cầu bổ sung</h4>
+              <div class="label-chips">
+                <span class="chip">needs:clarification</span>
+                <span class="chip">needs:design</span>
+                <span class="chip">needs:review</span>
+                <span class="chip">needs:decision</span>
+                <span class="chip">blocked</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 6: Issue template -->
+        <div class="slide">
+          <div class="slide-meta">
+            <span class="slide-number">06 / 10</span>
+            <span class="slide-tag">Template</span>
+          </div>
+          <h2>Issue template chuẩn SDD</h2>
+          <p>Mỗi issue tốt phải có tiêu đề rõ hành động, phạm vi xác định và acceptance criteria có thể kiểm tra:</p>
+          <div class="code-block">## Mục tiêu
+Mô tả kết quả cần đạt.
+
+## Bối cảnh
+Vì sao việc này cần làm? Liên quan đến người dùng,
+hệ thống hoặc quy trình nào?
+
+## Phạm vi
+Trong scope:
+- ...
+Ngoài scope:
+- ...
+
+## Acceptance Criteria
+- [ ] Điều kiện 1
+- [ ] Điều kiện 2
+
+## Validation
+- [ ] Cách kiểm tra 1
+- [ ] Cách kiểm tra 2
+
+## Ghi chú
+Link, quyết định, rủi ro hoặc thông tin bổ sung.</div>
+        </div>
+
+        <!-- Slide 7: Definition of Ready / Done -->
+        <div class="slide">
+          <div class="slide-meta">
+            <span class="slide-number">07 / 10</span>
+            <span class="slide-tag">Chất lượng</span>
+          </div>
+          <h2>Definition of Ready và Done</h2>
+          <div class="two-col">
+            <div class="col-block">
+              <h4>Definition of Ready</h4>
+              <ul>
+                <li>Mục tiêu rõ ràng</li>
+                <li>Phạm vi xác định</li>
+                <li>Acceptance criteria có thể kiểm tra</li>
+                <li>Validation / test plan tối thiểu có sẵn</li>
+                <li>Không thiếu thông tin quan trọng</li>
+                <li>Priority đã được gán</li>
+                <li>Project hoặc cycle đã được gán nếu cần</li>
+              </ul>
+            </div>
+            <div class="col-block">
+              <h4>Definition of Done</h4>
+              <ul>
+                <li>Tất cả acceptance criteria đã đạt</li>
+                <li>Validation đã thực hiện</li>
+                <li>Code, tài liệu hoặc quy trình đã cập nhật</li>
+                <li>Review hoặc approval đã xong nếu cần</li>
+                <li>Link PR, tài liệu hoặc bằng chứng đã gắn vào issue</li>
+                <li>Follow-up issue đã tạo cho việc ngoài scope</li>
+              </ul>
+            </div>
+          </div>
+          <div class="callout">Chỉ đưa issue vào <strong>Done</strong> khi đã đạt tất cả điều kiện trên — không có ngoại lệ.</div>
+        </div>
+
+        <!-- Slide 8: 4 giai đoạn triển khai -->
+        <div class="slide">
+          <div class="slide-meta">
+            <span class="slide-number">08 / 10</span>
+            <span class="slide-tag">Lộ trình</span>
+          </div>
+          <h2>Lộ trình triển khai — 4 giai đoạn</h2>
+          <div class="phase-grid">
+            <div class="phase-card">
+              <div class="phase-num">Giai đoạn 1</div>
+              <h4>Chuẩn hóa</h4>
+              <ul>
+                <li>Tạo workspace, team và state workflow</li>
+                <li>Tạo label convention và issue template</li>
+                <li>Đưa việc hiện có vào backlog</li>
+                <li>Triage mỗi ngày</li>
+              </ul>
+            </div>
+            <div class="phase-card">
+              <div class="phase-num">Giai đoạn 2</div>
+              <h4>Điều phối</h4>
+              <ul>
+                <li>Dùng project và cycle</li>
+                <li>Gán priority và owner</li>
+                <li>Theo dõi blocked issue</li>
+                <li>Đưa review và validation vào issue</li>
+              </ul>
+            </div>
+            <div class="phase-card">
+              <div class="phase-num">Giai đoạn 3</div>
+              <h4>Tối ưu</h4>
+              <ul>
+                <li>Kết nối GitHub / PR</li>
+                <li>Tạo automation cho issue state</li>
+                <li>Tạo dashboard delivery</li>
+                <li>Đo lead time, throughput, blocked time</li>
+              </ul>
+            </div>
+            <div class="phase-card">
+              <div class="phase-num">Giai đoạn 4</div>
+              <h4>Tự động hóa</h4>
+              <ul>
+                <li>Kết nối Codex / agent</li>
+                <li>Tự động tạo workpad, checklist, validation</li>
+                <li>Tự động cập nhật issue theo PR / CI</li>
+                <li>Tự động tạo follow-up issue ngoài scope</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 9: Metrics -->
+        <div class="slide">
+          <div class="slide-meta">
+            <span class="slide-number">09 / 10</span>
+            <span class="slide-tag">Đo lường</span>
+          </div>
+          <h2>Metrics nên theo dõi</h2>
+          <p>Dùng metric để phát hiện nút thắt quy trình — không phải để ép tốc độ.</p>
+          <div class="metric-list">
+            <div class="metric-item" data-icon="📥">Issue tạo mới mỗi tuần</div>
+            <div class="metric-item" data-icon="✅">Issue hoàn tất mỗi tuần</div>
+            <div class="metric-item" data-icon="⏱">Thời gian trung bình từ <code>Ready</code> đến <code>Done</code></div>
+            <div class="metric-item" data-icon="🚧">Số issue đang ở trạng thái <code>Blocked</code></div>
+            <div class="metric-item" data-icon="🔄">Số issue bị reopen hoặc quay lại <code>Review</code></div>
+            <div class="metric-item" data-icon="📊">Tỷ lệ bug / feature / docs / infra</div>
+            <div class="metric-item" data-icon="🔁">Cycle completion rate</div>
+            <div class="metric-item" data-icon="🗺">Project on-track / at-risk / off-track</div>
+          </div>
+        </div>
+
+        <!-- Slide 10: Giải thích SDD và Linear -->
+        <div class="slide">
+          <div class="slide-meta">
+            <span class="slide-number">10 / 11</span>
+            <span class="slide-tag">Tham chiếu</span>
+          </div>
+          <h2>SDD và Linear là gì?</h2>
+          <div class="two-col">
+            <div class="col-block">
+              <h4>SDD — Software Development Department</h4>
+              <ul>
+                <li>Governed multi-agent harness xây dựng trên Claude Code</li>
+                <li>28 agents theo 3 tầng: Executive → Leads → Specialists</li>
+                <li>126 context-optimized skills với routing tự động</li>
+                <li>Áp đặt coordination patterns của một engineering department thực sự lên AI session</li>
+                <li>Enforced process qua hooks và verification gates — không phải lời khuyên</li>
+                <li>5-layer durable memory tồn tại qua từng session</li>
+              </ul>
+            </div>
+            <div class="col-block">
+              <h4>Linear</h4>
+              <ul>
+                <li>Công cụ quản lý dự án và issue tracker dành cho engineering team</li>
+                <li>Cung cấp workspace, team, project, cycle và issue</li>
+                <li>GraphQL API mạnh — dễ tích hợp với agent và automation</li>
+                <li>Theo dõi tiến độ delivery theo thời gian thực</li>
+                <li>Human quan sát công việc của agent mà không cần mở terminal</li>
+                <li>Source of truth cho toàn bộ công việc của bộ phận</li>
+              </ul>
+            </div>
+          </div>
+          <div class="callout">SDD là bộ não vận hành — Linear là màn hình hiển thị. Hai hệ thống bổ sung cho nhau để tạo ra vòng lặp delivery có thể quan sát và cải tiến liên tục.</div>
+        </div>
+
+        <!-- Slide 11: Kết luận -->
+        <div class="slide">
+          <div class="slide-meta">
+            <span class="slide-number">11 / 11</span>
+            <span class="slide-tag">Kết luận</span>
+          </div>
+          <h2>Linear — Bộ nhớ vận hành của SDD</h2>
+          <p>Mọi việc cần làm, đang làm, bị chặn, chờ review và đã xong đều nằm trong Linear. SDD không dùng Linear như todo list đơn giản, mà dùng như hệ thống điều hành delivery:</p>
+
+          <div class="flow">
+            <div class="flow-node accent">Yêu cầu</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-node">Issue</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-node">Agent làm</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-node">Review</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-node accent">Done</div>
+          </div>
+
+          <ul class="item-list" style="margin-top: 24px;">
+            <li>Có quy trình — workflow state rõ ràng, không mơ hồ.</li>
+            <li>Có tiêu chuẩn — definition of ready, definition of done.</li>
+            <li>Có bằng chứng — PR, tài liệu, validation gắn vào issue.</li>
+            <li>Có dữ liệu — metrics để cải tiến quy trình liên tục.</li>
+          </ul>
+          <div class="callout">Linear trở thành bộ nhớ vận hành của SDD — không phải công cụ quản lý task thông thường.</div>
+        </div>
+
+      </div><!-- /track -->
+    </div><!-- /container -->
+  </div><!-- /wrapper -->
+
+  <div class="nav">
+    <button class="nav-btn" id="prevBtn" onclick="go(-1)" disabled>← Trước</button>
+    <div class="dots" id="dots"></div>
+    <button class="nav-btn" id="nextBtn" onclick="go(1)">Tiếp →</button>
+  </div>
+
+  <script>
+    const TOTAL = 11;
+    let current = 0;
+
+    const track = document.getElementById('track');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const dotsEl = document.getElementById('dots');
+    const fill = document.getElementById('progressFill');
+
+    // Build dots
+    for (let i = 0; i < TOTAL; i++) {
+      const d = document.createElement('button');
+      d.className = 'dot' + (i === 0 ? ' active' : '');
+      d.setAttribute('aria-label', 'Slide ' + (i + 1));
+      d.onclick = () => goTo(i);
+      dotsEl.appendChild(d);
+    }
+
+    function goTo(n) {
+      current = Math.max(0, Math.min(TOTAL - 1, n));
+      track.style.transform = `translateX(-${current * 100}%)`;
+      prevBtn.disabled = current === 0;
+      nextBtn.disabled = current === TOTAL - 1;
+      fill.style.width = `${((current + 1) / TOTAL) * 100}%`;
+      document.querySelectorAll('.dot').forEach((d, i) => {
+        d.classList.toggle('active', i === current);
+      });
+    }
+
+    function go(dir) { goTo(current + dir); }
+
+    // Keyboard navigation
+    document.addEventListener('keydown', e => {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') go(1);
+      if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') go(-1);
+    });
+
+    // Touch swipe
+    let startX = 0;
+    track.addEventListener('touchstart', e => { startX = e.touches[0].clientX; }, { passive: true });
+    track.addEventListener('touchend', e => {
+      const dx = e.changedTouches[0].clientX - startX;
+      if (Math.abs(dx) > 50) go(dx < 0 ? 1 : -1);
+    }, { passive: true });
+  </script>
+</body>
+</html>
