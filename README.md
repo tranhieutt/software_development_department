@@ -33,7 +33,7 @@ Lập trình với một agent thường bỏ qua quy trình: spec mơ hồ, edi
 | Năng lực | Triển khai |
 |---|---|
 | Structured Agent Definitions | 28 agents với role, model, ownership, escalation path, và tool scope |
-| Skill routing | 128 skills với `when_to_use`, `allowed-tools`, effort hints, và workflow gates |
+| Skill Routing | 128 skills với `when_to_use`, `allowed-tools`, effort hints, và workflow gates |
 | Lifecycle map | `DEFINE -> PLAN -> BUILD -> VERIFY -> REVIEW -> SHIP` cho mọi việc không tầm thường |
 | Verification gates | Pre-code gate, TDD workflow, review gates, completion evidence, và Codex preflight |
 | Rules theo phạm vi đường dẫn | 15 rules áp theo vùng file: API, UI, DB, AI, config, tests, docs, và source code |
@@ -90,7 +90,7 @@ powershell -ExecutionPolicy Bypass -File scripts\codex-preflight.ps1
 
 ### Department Hierarchy
 
-```text
+```
 Tier 1; Executive
   cto                 technical-director    producer
 

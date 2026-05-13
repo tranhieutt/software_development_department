@@ -12,15 +12,15 @@ Tài liệu này ghi lại lịch sử cập nhật tài liệu và source code 
 
 #### Fixed - README sync validation
 
-- README.md: restore canonical inventory phrases required by scripts/validate-readme-sync.js while keeping Vietnamese copy.
-- README.md: remove 	ext language tag from Department Hierarchy roster fence so roster validation does not count it as an agent.
+- `README.md`: restore canonical inventory phrases required by `scripts/validate-readme-sync.js` while keeping Vietnamese copy.
+- `README.md`: remove `text` language tag from Department Hierarchy roster fence so roster validation does not count it as an agent.
 
 #### Verification
 
-- 
-ode scripts\validate-readme-sync.js: PASS.
+- `node scripts\validate-readme-sync.js`: PASS.
 
 ---
+
 ### [v1.67.1] - 2026-05-13
 
 **Chu de:** Rule scope labels and skill validator aliases
