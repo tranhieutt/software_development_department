@@ -6,7 +6,7 @@ Tài liệu này ghi lại lịch sử cập nhật tài liệu và source code 
 
 ## 🗓️ Lịch sử cập nhật
 
-### [Unreleased] - 2026-05-13
+### [v1.61.0] - 2026-05-13
 
 **Chu de:** Product-safe SDD initializer
 
