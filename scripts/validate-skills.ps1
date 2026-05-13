@@ -133,11 +133,23 @@ Get-ChildItem -LiteralPath $skillsDir -Directory |
         }
 
         # Check 3: Broken references - find /skill-name patterns outside code blocks
+        # Some slash commands are command aliases for canonical skill directories.
+        $slashCommandAliases = @{
+            "plan" = "planning-and-task-breakdown"
+            "spec" = "spec-driven-development"
+            "tdd" = "test-driven-development"
+        }
         $noCodeBlocks = [regex]::Replace($allContent, '```[\s\S]*?```', '')
         $noInlineCode = [regex]::Replace($noCodeBlocks, '`[^`]+`', '')
         $refMatches = [regex]::Matches($noInlineCode, '(?<=^|[\s(])/([a-z][a-z0-9-]+[a-z0-9])(?=[\s).,;:!?]|$)', [System.Text.RegularExpressions.RegexOptions]::Multiline)
         foreach ($refMatch in $refMatches) {
             $refName = $refMatch.Groups[1].Value
+            if ($slashCommandAliases.ContainsKey($refName)) {
+                $aliasDir = Join-Path $skillsDir $slashCommandAliases[$refName]
+                if (Test-Path -LiteralPath $aliasDir) {
+                    continue
+                }
+            }
             $refDir = Join-Path $skillsDir $refName
             if ($refName -ne $skillName -and -not (Test-Path -LiteralPath $refDir)) {
                 $extraWarnings.Add("broken reference: /$refName (directory not found)")

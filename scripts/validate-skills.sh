@@ -87,10 +87,20 @@ for skill_dir in "$SKILLS_DIR"/*/; do
   fi
 
   # Check 3: Broken references - find /skill-name patterns outside code blocks
+  # Some slash commands are command aliases for canonical skill directories.
   no_code=$(sed '/^```/,/^```/d' "$skill_file" | sed 's/`[^`]*`//g')
   while IFS= read -r ref_name; do
     [[ -z "$ref_name" ]] && continue
     [[ "$ref_name" == "$skill_name" ]] && continue
+    case "$ref_name" in
+      plan) alias_name="planning-and-task-breakdown" ;;
+      spec) alias_name="spec-driven-development" ;;
+      tdd) alias_name="test-driven-development" ;;
+      *) alias_name="" ;;
+    esac
+    if [[ -n "$alias_name" && -d "$SKILLS_DIR/$alias_name" ]]; then
+      continue
+    fi
     ref_dir="$SKILLS_DIR/$ref_name"
     if [[ ! -d "$ref_dir" ]]; then
       extra_warnings+=("broken reference: /$ref_name (directory not found)")
