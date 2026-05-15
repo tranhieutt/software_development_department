@@ -6,6 +6,49 @@ Tài liệu này ghi lại lịch sử cập nhật tài liệu và source code 
 
 ## 🗓️ Lịch sử cập nhật
 
+### [v1.68.0] - 2026-05-15
+
+**Chủ đề:** Skills cull — merge, delete, slim hooks
+
+#### Removed — Skills merged into canonical targets
+
+- `patch-notes/` → merged into `changelog/SKILL.md` (patch notes style section added)
+- `backend-security-coder/` → merged into `security-audit/SKILL.md`
+- `frontend-security-coder/` → merged into `security-audit/SKILL.md`
+- `deployment-engineer/` → merged into `devops-deploy/SKILL.md`
+- `deployment-procedures/` → merged into `devops-deploy/SKILL.md`
+- `team-mobile/` → deleted (mobile-specific team skill, not universal)
+- `mobile-developer/` → deleted
+- `ios-developer/` → deleted
+- `flutter-expert/` → deleted
+- `compose-multiplatform-patterns/` → deleted
+- `react-native-architecture/` → deleted
+- `mobile-review/` → deleted
+- Skills count: 128 → 116
+
+#### Enhanced — Canonical skills enriched by merges
+
+- `changelog/SKILL.md`: added "User-Facing Patch Notes Style" section (Brief + Detailed templates)
+- `security-audit/SKILL.md`: added "Secure Coding Reference" (8 backend + 7 frontend patterns)
+- `devops-deploy/SKILL.md`: added Pipeline Design section (stages, strategies, GitOps, DORA metrics) and Deployment Runbook Principles section
+
+#### Removed — Dead hooks
+
+- `hooks/pre-refactor-impact.sh`: warn-only, GitNexus dependency not always available, covered by `pre-code-gate.sh`
+- `hooks/validate-assets.sh`: domain-specific (`assets/`), not universal for downstream projects
+- `settings.json`: removed references to deleted hooks
+- Hook count: 28 → 26
+
+#### Removed — Scripts
+
+- `scripts/auto_resume_claude.ps1`: AFK keystroke automation, not SDD infrastructure
+
+#### Updated
+
+- `README.md`: badge counts updated (skills 128→116, hooks 28→26)
+
+---
+
 ### [v1.67.2] - 2026-05-13
 
 **Chu de:** README inventory sync fix

@@ -179,11 +179,6 @@
             "command": "powershell -NoProfile -NonInteractive -ExecutionPolicy Bypass -File .claude/hooks/pre-code-gate.ps1 || bash .claude/hooks/pre-code-gate.sh",
             "timeout": 5
           },
-          {
-            "type": "command",
-            "command": "bash .claude/hooks/pre-refactor-impact.sh",
-            "timeout": 10
-          }
         ]
       },
       {
@@ -205,11 +200,6 @@
             "type": "command",
             "command": "bash .claude/hooks/log-writes.sh",
             "timeout": 5
-          },
-          {
-            "type": "command",
-            "command": "bash .claude/hooks/validate-assets.sh",
-            "timeout": 10
           },
           {
             "type": "command",

@@ -153,6 +153,53 @@ Deliver exactly:
 - **Excluded items count** — internal-only changes omitted from user version
 
 
-## See Also
+## User-Facing Patch Notes Style
 
-- Use `/patch-notes` to generate user-facing release notes from this changelog
+When the user asks for "patch notes" (as opposed to full changelog), generate
+a condensed user-facing version using the Brief or Detailed style below.
+Translate developer language to user language and omit internal jargon.
+
+### Brief Style
+
+```markdown
+# Patch [Version] — [Title]
+
+**New**
+- [Feature 1]
+
+**Changes**
+- [Balance/mechanic change — before → after values]
+
+**Fixes**
+- [Bug fix in user terms]
+
+**Known Issues**
+- [Issue and workaround]
+```
+
+### Detailed Style (default for `/patch-notes`)
+
+```markdown
+# Patch [Version] — [Title]
+*[Date]*
+
+## Highlights
+[1-2 sentence summary of the most exciting changes]
+
+## New Content / Features
+[2-3 sentences per major feature — focus on user experience]
+
+## Changes & Balance
+| Change | Before | After | Reason |
+|--------|--------|-------|--------|
+| [Item] | [old]  | [new] | [brief rationale] |
+
+## Bug Fixes
+- Fixed [user-visible symptom description]
+
+## Known Issues
+- [Issue and workaround if available]
+```
+
+Invoke with `/changelog [version] --style patch-notes` or `/changelog [version] --style brief`.
+Save patch notes to `production/releases/[version]/patch-notes.md`.

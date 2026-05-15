@@ -202,6 +202,30 @@ Deliver exactly:
 - **Report file** saved to `docs/technical/security-audit-{YYYY-MM-DD}.md`
 - **Verdict**: `CLEAN` / `LOW RISK` / `MEDIUM RISK` / `HIGH RISK — DO NOT DEPLOY`
 
+## Secure Coding Reference
+
+When the audit finds a vulnerability and the fix requires hands-on secure
+coding guidance, apply the following patterns inline (no separate skill needed).
+
+### Backend Secure Coding Patterns
+- **Input validation**: allowlist approach — reject anything not explicitly allowed
+- **Injection prevention**: parameterized queries only; never string-concat into SQL/shell
+- **Auth**: bcrypt or Argon2 for passwords; JWT with expiry + rotation; PKCE for OAuth
+- **CORS**: explicit origin allowlist; never `Access-Control-Allow-Origin: *` on credentialed routes
+- **CSRF**: HttpOnly + SameSite=Strict cookies; double-submit or synchronizer token for mutations
+- **SSRF**: URL allowlist before any server-side fetch; block internal IP ranges
+- **Error handling**: never expose stack traces or internal paths to API consumers
+- **Secrets**: never hardcode; use env vars + secret manager; rotate on suspected exposure
+
+### Frontend Secure Coding Patterns
+- **XSS**: prefer `textContent` over `innerHTML`; sanitize with DOMPurify if HTML is required
+- **CSP**: configure `Content-Security-Policy` with nonce-based script restrictions; report-only first
+- **Token storage**: HttpOnly cookies over localStorage for session tokens
+- **Redirects**: validate destination against allowlist before any client-side navigation
+- **SRI**: use `integrity=` attribute on all third-party script/style tags from CDN
+- **Clickjacking**: set `X-Frame-Options: DENY` or CSP `frame-ancestors 'none'` at server level
+- **Open redirect**: never use raw query params as redirect destinations; use identifier mapping
+
 ## Related Skills
 
 - `code-review` — line-by-line review with security lens

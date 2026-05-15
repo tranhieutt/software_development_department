@@ -19,6 +19,131 @@ This skill forces the agent to pause, analyze, and agree upon a specification be
 
 ---
 
+## Task Classification — Run First
+
+Before any other step, classify the task. The classification determines which gate path applies.
+
+| Class | Criteria | Gate path |
+|---|---|---|
+| **Simple** | ≤ 1 file, ≤ 30 min, intent unambiguous, no data model change | Assumption Log (≤ 3 items) → Fast Gate → code |
+| **Medium** | Multi-file, ≤ 2 days, some data or logic change | Ground Truth Gate → Spec Gate → plan → tdd |
+| **Complex** | Cross-domain, > 2 days, new entities, auth, billing, or architecture change | Interview Gate → Ground Truth Gate → Spec Gate → plan → tdd |
+
+State the classification in one line before proceeding:
+
+```text
+Classification: [Simple|Medium|Complex] — reason: <one sentence>
+```
+
+### Simple Task — Assumption Log
+
+For Simple tasks, skip the full spec. Instead, surface assumptions in a scannable 3-item max format and pause for user confirmation before any edit:
+
+```text
+Trước khi bắt đầu, confirm 3 điều:
+
+1. [Assumption về stack / file / scope] → đúng không? [y/n]
+2. [Assumption về behavior / constraint] → đúng không? [y/n]
+3. Scope: chỉ làm X, KHÔNG làm Y → đúng không? [y/n]
+
+(Nếu có gì sai, nói ngay — tôi chờ trước khi tiếp tục.)
+```
+
+If any answer is "n" or ambiguous → reclassify as Medium and run Ground Truth Gate.
+
+---
+
+## Ground Truth Gate — Required for Medium and Complex tasks
+
+**This gate must pass before a spec can be drafted or approved.**
+
+The agent must produce — and the user must explicitly confirm — all three documents:
+
+### Document 1: Data Model
+
+List every entity involved in the feature. For each entity, specify field names, types, and constraints. No prose allowed — use a table or code block.
+
+```text
+Entity: User
+  - id: UUID, primary key
+  - email: string, unique, not null
+  - role: enum(admin, member), default=member
+  - created_at: timestamp
+
+Entity: Session
+  - token: string, primary key
+  - user_id: FK → User.id
+  - expires_at: timestamp, not null
+```
+
+Gate check: If any field name, type, or relationship is written as "TBD", "flexible", or left blank → gate FAILS. Stop and fill in before continuing.
+
+### Document 2: Business Rules
+
+List every logic condition that governs the feature. Use explicit if/then/else format. No prose paragraphs.
+
+```text
+Rule 1: Login attempt
+  IF email not found → return "Invalid credentials" (do not reveal which field failed)
+  IF password wrong → return "Invalid credentials"
+  IF account locked → return "Account locked, contact support"
+  IF success → create Session, set HttpOnly cookie, redirect to dashboard
+
+Rule 2: Session expiry
+  IF Session.expires_at < now() → destroy session, redirect to login
+  IF user is active within 30 min → extend expires_at by 30 min
+```
+
+Gate check: If any rule uses vague language ("handle appropriately", "validate properly", "standard logic") → gate FAILS. Rewrite as explicit condition before continuing.
+
+### Document 3: Acceptance Criteria
+
+Every criterion must be in Given/When/Then format and be independently testable. Minimum 3 criteria per Medium task, 5 per Complex task.
+
+```text
+AC-1:
+  Given a registered user with correct credentials
+  When they submit the login form
+  Then a session cookie is set and they are redirected to /dashboard
+
+AC-2:
+  Given a wrong password is entered
+  When they submit the login form
+  Then "Invalid credentials" is shown and no session is created
+
+AC-3:
+  Given a session expired
+  When the user navigates to any protected route
+  Then they are redirected to /login and the expired session is destroyed
+```
+
+Gate check: If any criterion contains "works correctly", "as expected", "handles the case" → gate FAILS. Rewrite as specific observable outcome.
+
+### Out-of-Scope Declaration (required)
+
+State explicitly what this feature does NOT do. Minimum 2 items.
+
+```text
+Out of scope:
+- Registration / sign-up flow
+- Password reset
+- OAuth / social login
+- Rate limiting (tracked separately in SPEC-20260515-002)
+```
+
+**Ground Truth Gate summary checklist — all must be ✅ before spec draft:**
+
+```
+□ Data Model: all entities with field names, types, constraints — no TBDs
+□ Business Rules: all conditions as if/then/else — no vague language
+□ Acceptance Criteria: Given/When/Then, independently testable — no "works correctly"
+□ Out-of-Scope: ≥ 2 explicit exclusions stated
+```
+
+If any checkbox is unchecked → STOP. Do not draft the spec. Return to the user with the specific gap.
+
+---
+
 ## Workflow (Strict Process)
 
 **ABSOLUTE DIRECTIVE**: You are an Agent. You MUST NOT start writing implementation files (.ts, .js, .py, etc.) until you have completed this workflow and the user has explicitly approved the spec or the documented Fast Gate/Override Gate from `using-sdd`.
@@ -157,12 +282,22 @@ Be aware of lazy logic that an Agent typically uses to skip this step. If a thou
 | "I'll write the RED test now; that isn't production code." | **REJECTED unless approved.** RED tests are part of execution. Do not write them until the Spec Gate or Plan Gate is approved. |
 | "The user said 'continue', so approval is implied." | **REJECTED.** Approval must clearly authorize implementation of the shown spec/task sequence. Ask if unclear. |
 | "The spec changed while I was coding, but the new path is obvious." | **REJECTED.** Route through `spec-evolution` before changing the approved scope or architecture. |
+| "I understand the data model intuitively, no need to write it out." | **REJECTED.** Unwritten models are assumptions, not ground truth. Write every entity, field, and type explicitly — then let the user correct it. |
+| "The business rules are standard / obvious for this kind of feature." | **REJECTED.** "Standard" is where hallucinations live. Write every if/then/else. If the user confirms it is obvious, they will confirm it quickly — the cost is 30 seconds, not hours of rework. |
+| "The user said 'you know what I mean' — I'll infer the details." | **REJECTED.** Inference is the root cause of misaligned implementations. Surface every assumption as a numbered item and require explicit confirmation before proceeding. |
 
 ---
 
 ## Verification Gates
 
 Do not conclude your first interaction turn unless you have fulfilled the following:
+
+**Classification & Ground Truth (run before spec):**
+- [ ] Task classified as Simple / Medium / Complex with stated reason.
+- [ ] Simple: Assumption Log (≤ 3 items) presented and user confirmed before any edit.
+- [ ] Medium/Complex: Ground Truth Gate passed — Data Model, Business Rules, Acceptance Criteria, Out-of-Scope all ✅.
+
+**Spec content:**
 - [ ] Displayed the Spec structure and Task Checklist to the user.
 - [ ] Surfaced assumptions, open questions, and non-goals.
 - [ ] Reframed vague requirements as specific, testable success criteria.

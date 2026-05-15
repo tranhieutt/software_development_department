@@ -3,15 +3,15 @@
   <p align="center">
     Bộ harness đa tác tử có quản trị cho Claude Code.
     <br /><br />
-    28 agents - 128 context-optimized skills - 28 hook files - 15 rules
+    28 agents - 116 context-optimized skills - 26 hook files - 15 rules
   </p>
 </p>
 
 <p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT License"></a>
   <a href=".claude/agents"><img src="https://img.shields.io/badge/agents-28-blueviolet" alt="28 Agents"></a>
-  <a href=".claude/skills"><img src="https://img.shields.io/badge/skills-128-green" alt="128 Skills"></a>
-  <a href=".claude/hooks"><img src="https://img.shields.io/badge/hooks-28-orange" alt="28 Hook Files"></a>
+  <a href=".claude/skills"><img src="https://img.shields.io/badge/skills-116-green" alt="116 Skills"></a>
+  <a href=".claude/hooks"><img src="https://img.shields.io/badge/hooks-26-orange" alt="26 Hook Files"></a>
   <a href=".claude/rules"><img src="https://img.shields.io/badge/rules-15-red" alt="15 Rules"></a>
   <a href="https://docs.anthropic.com/en/docs/claude-code"><img src="https://img.shields.io/badge/built%20for-Claude%20Code-f5f5f5?logo=anthropic" alt="Built for Claude Code"></a>
 </p>

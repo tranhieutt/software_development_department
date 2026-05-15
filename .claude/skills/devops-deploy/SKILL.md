@@ -1,12 +1,12 @@
 ﻿---
 name: devops-deploy
 type: workflow
-description: "Executes infrastructure deployment operations including Docker, CI/CD, AWS Lambda, SAM, Terraform, and GitHub Actions. Use when dockerizing applications, configuring CI/CD pipelines, or deploying to cloud infrastructure."
-paths: ["**/Dockerfile*", "**/k8s/**", "**/infra/**", "**/.github/workflows/**", "**/template.yaml"]
+description: "Designs and executes CI/CD pipelines, GitOps workflows, deployment automation, and cloud infrastructure deployment including Docker, AWS Lambda, SAM, Terraform, and GitHub Actions. Use when building or improving CI/CD pipelines, containerizing applications, creating deployment runbooks, or deploying to cloud infrastructure."
+paths: ["**/Dockerfile*", "**/k8s/**", "**/infra/**", "**/.github/workflows/**", "**/template.yaml", "**/deploy/**"]
 effort: 3
-argument-hint: "[target: docker|lambda|k8s|terraform|github-actions]"
+argument-hint: "[target: docker|lambda|k8s|terraform|github-actions|pipeline|runbook]"
 user-invocable: true
-when_to_use: "When dockerizing applications, configuring CI/CD pipelines, deploying to AWS, or setting up infrastructure as code"
+when_to_use: "When dockerizing applications, configuring CI/CD pipelines, deploying to AWS, setting up infrastructure as code, designing GitOps workflows, or creating deployment runbooks"
 allowed-tools: Read, Glob, Grep, Write, Edit, Bash
 ---
 
@@ -177,6 +177,124 @@ async def health():
         "version": os.environ.get("APP_VERSION", "unknown"),
     }
 ```
+
+## Pipeline Design
+
+### Standard Pipeline Stages
+
+```
+[Build] -> [Test] -> [Security Scan] -> [Package] -> [Deploy Staging] -> [Integration Test] -> [Approval] -> [Deploy Prod] -> [Verify]
+```
+
+| Stage | Actions | Failure Policy |
+|-------|---------|----------------|
+| Build | Compile, lint, type-check | Block |
+| Test | Unit + integration tests | Block |
+| Security | SAST, dependency scan, container scan | Block on Critical/High |
+| Package | Docker build, push to registry, sign image | Block |
+| Deploy Staging | Apply manifests/Helm, run smoke tests | Block |
+| Approval | Manual gate for production | Require approval |
+| Deploy Prod | Progressive rollout | Auto-rollback on failure |
+| Verify | Health checks, metrics validation | Auto-rollback |
+
+### Deployment Strategy Selection
+
+| Strategy | Zero-downtime | Rollback Speed | Resource Cost | Use When |
+|----------|---------------|----------------|---------------|----------|
+| Rolling Update | Yes | Slow (redeploy) | Low | Default for most services |
+| Blue/Green | Yes | Instant (switch) | 2x | Critical services, DB-independent |
+| Canary | Yes | Fast (shift) | 1.1x | High-traffic, need real-user validation |
+
+### GitOps Repository Structure
+
+```
+app-repo/           # Application source code + Dockerfile
+env-repo/           # Environment configs
+  base/             # Base manifests
+  overlays/
+    dev/
+    staging/
+    prod/
+```
+
+Tools: ArgoCD or Flux v2 · Kustomize or Helm · External Secrets Operator
+
+### Security Scanning in Pipeline
+
+- SAST: CodeQL, Semgrep, SonarQube
+- Dependency: Snyk, Dependabot, npm audit
+- Container: Trivy, Grype
+- Secrets: GitLeaks, TruffleHog
+- SBOM: Syft · Image signing: Cosign
+
+### DORA Metrics to Track
+
+- Deployment frequency
+- Lead time for changes
+- Change failure rate
+- Mean time to recovery (MTTR)
+
+---
+
+## Deployment Runbook Principles
+
+### Platform Selection
+
+```
+What are you deploying?
+├── Static site → Vercel, Netlify, Cloudflare Pages
+├── Simple web app → Railway, Render, Fly.io / VPS + PM2
+├── Microservices → Container orchestration
+└── Serverless → Edge functions, Lambda
+```
+
+| Platform | Deployment Method | Rollback |
+|----------|------------------|---------|
+| Vercel/Netlify | Git push, auto-deploy | Redeploy previous commit |
+| Railway/Render | Git push or CLI | Dashboard rollback |
+| VPS + PM2 | SSH + manual steps | Restore backup, restart |
+| Docker | Image push + orchestration | Previous image tag |
+| Kubernetes | kubectl apply | kubectl rollout undo |
+
+### 5-Phase Deployment Process
+
+```
+1. PREPARE  → Verify code, build, env vars
+2. BACKUP   → Save current state before changing
+3. DEPLOY   → Execute with monitoring open
+4. VERIFY   → Health check, logs, key flows
+5. CONFIRM or ROLLBACK
+```
+
+### Verification Window
+
+- First 5 min: Active monitoring
+- 15 min: Confirm stable
+- 1 hour: Final verification
+- Next day: Review metrics
+
+### Rollback Decision
+
+| Symptom | Action |
+|---------|--------|
+| Service down | Rollback immediately |
+| Critical errors | Rollback |
+| Performance >50% degraded | Consider rollback |
+| Minor issues | Fix forward if quick |
+
+Rollback principles: Speed over perfection → Communicate → Post-mortem after stable.
+
+### Anti-Patterns
+
+| ❌ Don't | ✅ Do |
+|----------|-------|
+| Deploy on Friday | Deploy early in week |
+| Skip staging | Always test first |
+| Deploy without backup | Backup before deploy |
+| Walk away after deploy | Monitor for 15+ min |
+| Multiple changes at once | One change at a time |
+
+---
 
 ## CloudWatch alarm (Python)
 
