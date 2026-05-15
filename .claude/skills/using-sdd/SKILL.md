@@ -60,6 +60,7 @@ skill and follow its gates.
 | Release or launch preparation | `release-checklist` or `launch-checklist` |
 | Completion claim, success claim, task done, fixed, passing, ready, clean, merge-ready | `verification-before-completion` |
 | Commit requested | `commit` |
+| Create, update, refine, or evaluate an SDD skill; repeated prompt should become a skill; agent failure suggests missing/broken skill | `learner` |
 | Save reusable lesson or preference | `learner` or `annotate` |
 | Context is too large or stale | `context-engineering` or `save-state` |
 
@@ -75,6 +76,8 @@ When multiple skills apply, use process skills before implementation skills:
 4. Review and release: `verification-before-completion`, `code-review`,
    `style-review`, `code-simplification`, `receiving-code-review`,
    `gate-check`, `release-checklist`
+5. Skill evolution: `learner` after evidence exists, or before edits when the
+   task is explicitly to improve skills.
 
 ## Mandatory Gates
 

@@ -1,82 +1,145 @@
-﻿---
+---
 name: learner
 type: workflow
-description: "Extracts reusable patterns, preferences, and lessons from the current session and saves them to .claude/memory/ for future use. Use at the end of a session or when the user wants to save patterns for future sessions."
-argument-hint: "[session summary or learning focus]"
-level: 7
-allowed-tools: Read, Glob, Grep, Write, Edit
+description: "Turns real agent failures, repeated prompts, team-specific workflows, and durable project lessons into better SDD skills or memory entries. Use when the user asks to create/update/refine skills, extract reusable lessons, improve skill routing, encode team process, or save patterns for future sessions."
+argument-hint: "[session summary, failure mode, repeated prompt, or skill improvement request]"
+allowed-tools: Read, Glob, Grep, Write, Edit, Bash
 user-invocable: true
 effort: 3
-when_to_use: "Use at the end of a session when complex problems were solved or novel patterns discovered, to persist reusable heuristics to .claude/memory/ for future sessions."
+when_to_use: "Use when a lesson should become durable: after repeated corrections, wrong skill routing, repeated long prompts, team-specific process discovery, or a complex session worth converting into a skill or memory entry."
 ---
 
-# Learner Skill
+# Learner
 
-This skill helps Claude Code to automatically distill experiences after solving complex problems and transform them into reusable principles and decision-making heuristics for future use.
+Convert real SDD usage into durable operating knowledge.
 
-It consists of two main sections:
-- **Expertise Base**: Core knowledge about what constitutes a high-quality Skill.
-- **Workflow**: The systematic procedure used to extract and save a Skill.
+Use this workflow to decide whether a lesson belongs in:
 
----
+- an existing skill,
+- a new skill,
+- `.claude/memory/annotations.md`,
+- another Tier 2 memory file,
+- or no durable artifact.
 
-## 1. Quality Gate
+## Source Principles
 
-Before deciding to extract a new Skill, ALL of the following criteria must be met:
-- "Could someone easily Google this in 5 minutes?" -> **NO**
-- "Is this solution necessary and highly specific to the current codebase?" -> **YES**
-- "Did finding this solution require significant debugging or analysis effort?" -> **YES**
+This workflow adopts the Agent Skills guidance that durable skills come from
+real expertise, project artifacts, execution traces, and repeated refinement.
+Skills should capture team-specific process and failure modes, not generic
+best practices or deterministic glue better handled by scripts, hooks, or MCP.
 
-A saved Skill SHOULD NOT be a trivial, copy-paste code snippet. It must be a **Mental model / Heuristic** that teaches Claude HOW TO THINK when encountering similar errors.
+## Extraction Gate
 
-### Recognition Signals:
-Only trigger the skill extraction process after:
-- Solving a complex bug that demanded deep investigation.
-- Discovering a unique workaround that is specific to this repository.
-- Uncovering a hidden "gotcha" that wastes significant time if forgotten.
+Create or modify a skill only when at least one signal is present:
 
----
+- Agent made a wrong choice despite a correct prompt.
+- Existing skill fired but failed its mission.
+- Needed skill did not fire because `description` was weak or absent.
+- A teammate/user wrote the same long prompt, plan, or checklist a second time.
+- Session repeated a costly investigation, setup, verification, or handoff loop.
+- User corrected a project convention, team preference, or non-obvious edge case.
+- Internal process, internal system, or proprietary data pattern must be reused.
 
-## 2. Workflow
+Do not create a skill for:
 
-When the user asks to extract a lesson (e.g., by typing `learner` or requesting a lesson extraction), execute the following steps in order:
+- General advice the model already knows.
+- One-off code snippets.
+- Secrets, credentials, or environment-specific auth hacks.
+- Simple deterministic checks better implemented as hooks, scripts, tests, or MCP.
+- Large copied docs without a clear load condition.
 
-### Step 1: Gather Information
-- **Problem Statement**: The specific error, symptom, error code, file name, and line numbers.
-- **Solution**: The exact fix provided (e.g., code logic, configuration, workflow changes).
-- **Triggers**: An array of keywords that will automatically wake up this Skill in the future (e.g., `["TypeError", "auth_controller.ts", "session undefined"]`).
+## Decision
 
-### Step 2: Classification
-- If the insight is about **Domain Knowledge / Gotcha** -> Save with the suffix `{topic_name}-expertise.md`
-- If the insight is about an **Operational Procedure** -> Save with the suffix `{topic_name}-workflow.md`
+Classify the lesson before editing:
 
-### Step 3: Save the New Skill File
-- Saving a new Skill MUST ONLY BE DONE in the project-level directory:
-  **Default path:** `.claude/skills/`
+| Lesson type | Target |
+| --- | --- |
+| Existing workflow missed a rule, edge case, or output shape | Update that skill body |
+| Existing skill should have fired but did not | Tighten that skill `description` |
+| Repeated team-specific process forms a coherent unit | Create or update a skill |
+| Non-obvious caveat tied to a service/library/repo area | Use `annotate` memory |
+| Broad preference or project operating rule | Update the right Tier 2 memory/doc |
+| Deterministic repeated operation | Prefer tested script/hook/MCP; skill only orchestrates when needed |
 
-### Skill Body Template
+Prefer updating an existing skill over adding a new one when the lesson fits an
+existing coherent workflow.
 
-Any new Skill generated by the Learner must strictly follow this Markdown structure:
+## Workflow
+
+1. Gather evidence:
+   - original prompt or task,
+   - correction or failure mode,
+   - first point where the agent went wrong,
+   - skills that fired or failed to fire,
+   - files, commands, traces, review comments, or user preferences involved.
+2. Choose the smallest durable target using the Decision table.
+3. Edit with progressive disclosure:
+   - keep `SKILL.md` under 500 lines when practical,
+   - keep only always-needed instructions in `SKILL.md`,
+   - move long examples, schemas, or domain references into `references/`,
+   - state exactly when to read each reference file.
+4. Tune invocation:
+   - put trigger phrases and scope in `description`,
+   - add exclusions when false positives are likely,
+   - avoid relying on body-only "when to use" text for activation.
+5. Preserve SDD gates:
+   - do not weaken `using-sdd`, permissions, hooks, or source-of-truth rules,
+   - route spec, plan, code, review, and release changes through their owning skills.
+6. Validate:
+   - run `powershell -ExecutionPolicy Bypass -File scripts\validate-skills.ps1`,
+   - run `node scripts\validate-readme-sync.js` if counts or README inventory changed,
+   - run `node scripts\harness-audit.js --compact` for routing, hook, or harness changes.
+
+## Skill Edit Rules
+
+- Add what the agent lacks; cut what generic model knowledge already covers.
+- Prefer procedures over declarations.
+- Use defaults, not broad menus of equal options.
+- Make fragile operations prescriptive; leave flexible judgment where multiple approaches are valid.
+- Add concrete gotchas where the agent is likely to make the wrong assumption.
+- Keep bundled scripts deterministic and tested.
+- Treat each skill like a function: one coherent responsibility, composable with other skills.
+
+## New Skill Template
+
+Use this shape when a new SDD skill is justified:
 
 ````markdown
 ---
-name: [Short Skill Name]
-description: "Extracts reusable patterns, preferences, and lessons from the current session and saves them to .claude/memory/ for future use. Use at the end of a session or when the user wants to save patterns for future sessions."
-triggers: ["keyword 1", "keyword 2"]
+name: short-action-name
+type: workflow
+description: "What this skill does. Use when <specific trigger phrases, task contexts, and boundaries>."
+argument-hint: "[expected input]"
+user-invocable: true
+allowed-tools: Read, Glob, Grep
+effort: 2
+when_to_use: "One sentence matching the description scope for SDD docs and humans."
 ---
 
-# The Insight
-What underlying principle did you just discover? (Focus on the "Mental Model", not merely the line of code).
+# Purpose
 
-# Why This Matters
-If this experience is neglected, what errors will the system encounter? What symptoms lead to these errors?
+State the reusable team-specific capability.
 
-# Recognition Pattern
-How do you know when to apply this experience in practice? What are the signs or triggers?
+## Workflow
 
-# The Approach
-How should Claude THINK about this problem? Outline the specific resolution direction.
+1. Do the first required action.
+2. Make the context-dependent decision.
+3. Verify with a concrete check.
 
-# Example Code (Recommended)
-Display code snippet strictly to illustrate the principle, not as a blind copy-paste solution.
+## Gotchas
+
+- Add only non-obvious failure modes discovered from real use.
+
+## Output
+
+Specify the exact artifact or response shape when consistency matters.
 ````
+
+## Completion Output
+
+Report:
+
+- artifact changed or created,
+- evidence source that justified it,
+- validation commands and results,
+- remaining skill debt or telemetry gap.

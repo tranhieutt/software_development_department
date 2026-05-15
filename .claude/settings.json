@@ -178,7 +178,7 @@
             "type": "command",
             "command": "powershell -NoProfile -NonInteractive -ExecutionPolicy Bypass -File .claude/hooks/pre-code-gate.ps1 || bash .claude/hooks/pre-code-gate.sh",
             "timeout": 5
-          },
+          }
         ]
       },
       {

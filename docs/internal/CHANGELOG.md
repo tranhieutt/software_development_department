@@ -6,6 +6,43 @@ Tài liệu này ghi lại lịch sử cập nhật tài liệu và source code 
 
 ## 🗓️ Lịch sử cập nhật
 
+### [v1.68.1] - 2026-05-15
+
+**Chủ đề:** Skill collaboration loop from Agent Skills guidance
+
+#### Changed - Skill evolution workflow
+
+- `.claude/skills/learner/SKILL.md`: rewrite from narrow lesson extraction into
+  SDD skill-evolution workflow for agent failures, repeated prompts,
+  team-specific workflows, and durable project lessons.
+- Add decision table for whether a lesson belongs in an existing skill, new
+  skill, annotation memory, Tier 2 memory, deterministic script/hook/MCP, or no
+  artifact.
+- Add skill-edit rules: tune `description`, keep `SKILL.md` lean, use
+  progressive disclosure, prefer procedures over declarations, and validate
+  skill changes.
+
+#### Changed - Routing
+
+- `.claude/skills/using-sdd/SKILL.md`: route skill creation, updates,
+  refinement, repeated prompts, and missing/broken skill failures to `learner`.
+
+#### Fixed - Settings syntax
+
+- `.claude/settings.json`: remove trailing comma left by prior hook cull so
+  harness audit can parse settings again. No permission or hook policy weakened.
+
+#### Source verification
+
+- PulseMCP article "Agentic Engineering Playbook: How Teams Should Collaborate
+  on Agent Skills" (2026-05-11): team failures and repeated workflows should
+  drive skill creation/refinement.
+- Agent Skills best practices: skills should come from real expertise, use
+  project artifacts, refine from execution traces, keep context lean, and tune
+  `description` for invocation.
+
+---
+
 ### [v1.68.0] - 2026-05-15
 
 **Chủ đề:** Skills cull — merge, delete, slim hooks
