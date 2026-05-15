@@ -3,15 +3,15 @@
   <p align="center">
     Harness multi-agent có kiểm soát cho Claude Code.
     <br /><br />
-    28 agents · 128 context-optimized skills · 28 hook files · 15 rules
+    28 agents · 116 context-optimized skills · 26 hook files · 15 rules
   </p>
 </p>
 
 <p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT License"></a>
   <a href=".claude/agents"><img src="https://img.shields.io/badge/agents-28-blueviolet" alt="28 Agents"></a>
-  <a href=".claude/skills"><img src="https://img.shields.io/badge/skills-128-green" alt="128 Skills"></a>
-  <a href=".claude/hooks"><img src="https://img.shields.io/badge/hooks-28-orange" alt="28 Hook Files"></a>
+  <a href=".claude/skills"><img src="https://img.shields.io/badge/skills-116-green" alt="116 Skills"></a>
+  <a href=".claude/hooks"><img src="https://img.shields.io/badge/hooks-26-orange" alt="26 Hook Files"></a>
   <a href=".claude/rules"><img src="https://img.shields.io/badge/rules-15-red" alt="15 Rules"></a>
   <a href="https://docs.anthropic.com/en/docs/claude-code"><img src="https://img.shields.io/badge/built%20for-Claude%20Code-f5f5f5?logo=anthropic" alt="Built for Claude Code"></a>
 </p>
@@ -41,11 +41,11 @@ trước khi claim hoàn thành.
 | Năng lực | Triển khai |
 |---|---|
 | Structured Agent Definitions | 28 agents có role, model, ownership, escalation path, và tool scope |
-| Skill Routing | 128 skills có `when_to_use`, `allowed-tools`, effort hints, và workflow gates |
+| Skill Routing | 116 skills có `when_to_use`, `allowed-tools`, effort hints, và workflow gates |
 | Lifecycle Map | `DEFINE -> PLAN -> BUILD -> VERIFY -> REVIEW -> SHIP` cho mọi việc non-trivial |
 | Verification Gates | Pre-code gate, TDD workflow, review gates, completion evidence, và Codex preflight |
 | Path-Scoped Rules | 15 rules theo vùng file: API, UI, DB, AI, config, tests, docs, source code |
-| Runtime Hooks | 28 hook files cho bash guard, trace logging, skill telemetry, circuit state, validation |
+| Runtime Hooks | 26 hook files cho bash guard, trace logging, skill telemetry, circuit state, validation |
 | Durable Memory | Memory nhiều tầng từ `MEMORY.md` index tới topic files, archive, semantic recall tùy chọn |
 | Circuit Breaker | Per-agent failure state với fallback routing và transition có audit |
 | Fork-Join Execution | Git worktree workflow cho các workstream độc lập, dễ review |
@@ -174,7 +174,7 @@ Entry points hay dùng:
 | Review prose | `/style-review` |
 | Chuẩn bị release | `/release-checklist` |
 
-Gõ `/` trong Claude Code để thấy workflow phù hợp; SDD có 128 workflows nhưng
+Gõ `/` trong Claude Code để thấy workflow phù hợp; SDD có 116 workflows nhưng
 agent chỉ nên load skill cần thiết cho task hiện tại.
 
 ## Thành phần
@@ -182,8 +182,8 @@ agent chỉ nên load skill cần thiết cho task hiện tại.
 | Category | Count | Purpose |
 |---|---:|---|
 | **Agents** | 28 | Domain ownership và escalation |
-| **Skills** | 128 | Workflow routing và specialist procedures |
-| **Hooks** | 28 | Guardrails, telemetry, validation, lifecycle checks |
+| **Skills** | 116 | Workflow routing và specialist procedures |
+| **Hooks** | 26 | Guardrails, telemetry, validation, lifecycle checks |
 | **Rules** | 15 | Path-scoped standards |
 | **Templates** | 22+ | Specs, ADRs, plans, reports, release artifacts |
 
@@ -196,8 +196,8 @@ AGENTS.md                           # Codex adapter instructions
 .claude/
   settings.json                     # Permissions và hook registration
   agents/                           # 28 agent definitions
-  skills/                           # 128 skills
-  hooks/                            # 28 hook scripts
+  skills/                           # 116 skills
+  hooks/                            # 26 hook scripts
   rules/                            # 15 path-scoped rules
   memory/                           # Durable memory system
 docs/                               # Technical docs, ADRs, compatibility notes

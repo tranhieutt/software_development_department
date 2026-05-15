@@ -152,7 +152,7 @@ function validateReadme(file, separator) {
   requireRegex(file, text, new RegExp(`hooks/\\s+# ${inventory.hooks} hook scripts`), 'tree hooks count');
 
   rejectRegex(file, text, /\b31 agents\b|agents-31|31 Agents|31 agent definitions/i, '31-agent count');
-  rejectRegex(file, text, /\b116 context-optimized skills\b|skills-116|116 Skills|\b117 skills\b|\b123 skills\b|\b123 workflows\b/i, 'skill count');
+  rejectRegex(file, text, /\b128 context-optimized skills\b|skills-128|128 Skills|\b117 skills\b|\b123 skills\b|\b123 workflows\b|\b128 workflows\b/i, 'skill count');
   rejectRegex(file, text, /hooks-20|20 Hooks|20 hooks|15 hook scripts/i, 'hook count');
   rejectRegex(file, text, /\bqa-tester\b/, 'ghost qa-tester reference');
 
